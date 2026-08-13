@@ -23,6 +23,7 @@ run() {
 
 run "token lint" node test/token-lint.mjs
 run "pixel regression vs designer overlays" ./.venv/bin/python test/pixel_diff.py
+run "deck slide overflow" node test/slide-overflow.mjs
 
 echo
 if [ "$fail" -ne 0 ]; then

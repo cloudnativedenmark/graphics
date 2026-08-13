@@ -1,0 +1,731 @@
+/* Cloud Native Denmark — deck layout catalogue, 1920×1080.
+ *
+ * Every number here traces to the designer's own deck pages in the 2026 brand
+ * book, which are 1280×720. Her grid and type scale were measured off those
+ * pages and multiplied by 1.5 — same 16:9, so nothing is reproportioned.
+ *
+ *   margins        60 → 90
+ *   columns        550 + 60 gutter + 550 → 825 + 90 + 825
+ *   red rule       4px thick, 20px above the title → 6px, 30px
+ *   card           x 670, 41px padding → x 1005, 62px
+ *   footer rule    y 642 → y 963
+ *
+ * Type, measured from cap heights in her rendered slides:
+ *
+ *   title display  112 → 168 (leading 0.948)
+ *   section        124 → 186
+ *   slide title     67 → 101
+ *   giant stat     165 → 247
+ *   lead body       39 →  58 (leading 1.216)
+ *   col heading     35 →  52
+ *   card heading    33 →  49
+ *   body            26 →  40 (leading 1.346)
+ *   eyebrow         22 →  34
+ *   footer          14 →  21
+ *
+ * Palette and families come from brand/tokens.css — never redeclare a colour
+ * here, or the token lint fails and it should.
+ */
+
+/* ── stage ───────────────────────────────────────────────────────────── */
+
+.deck {
+  --slide-w: 1920;
+  --slide-h: 1080;
+  --fit: 1;
+  margin: 0;
+  background: #000;
+  min-height: 100vh;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: calc(var(--slide-w) * 1px);
+  height: calc(var(--slide-h) * 1px);
+  transform: scale(var(--fit));
+  transform-origin: center center;
+  overflow: hidden;
+  display: none;
+  background: var(--cnd-bone);
+  color: var(--cnd-navy);
+  font-family: var(--cnd-font-body);
+}
+
+.slide[data-active] {
+  display: block;
+}
+
+/* ── grid ────────────────────────────────────────────────────────────── */
+
+.slide {
+  --m: 90px; /* margin */
+  --col: 825px; /* column width */
+  --gutter: 90px;
+}
+
+.pad {
+  position: absolute;
+  inset: var(--m);
+}
+
+/* ── type ────────────────────────────────────────────────────────────── */
+
+.eyebrow {
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 34px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-red);
+  margin: 0;
+}
+
+.slide-title {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 101px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+  /* The red rule is a border on the heading itself, so it spans the text
+   * rather than a fixed width — which is how it behaves across her slides,
+   * where the rule is 620px over a 651px title and shorter over a shorter one. */
+  display: inline-block;
+  border-top: 6px solid var(--cnd-red);
+  padding-top: 30px;
+}
+
+.display {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 168px;
+  line-height: 0.948;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: 58px;
+  line-height: 1.216;
+  margin: 0;
+  max-width: var(--col);
+}
+
+.body {
+  font-size: 40px;
+  line-height: 1.346;
+  color: var(--cnd-ink-muted);
+  margin: 0;
+  max-width: var(--col);
+}
+
+.col-heading {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── footer ──────────────────────────────────────────────────────────── */
+
+.slide-footer {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  bottom: 56px;
+  padding-top: 21px;
+  border-top: 1px solid color-mix(in srgb, var(--cnd-navy) 18%, transparent);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 21px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+}
+
+/* ── grounds ─────────────────────────────────────────────────────────── */
+
+.slide[data-ground="navy"] {
+  background: var(--cnd-navy);
+  color: var(--cnd-white);
+}
+.slide[data-ground="navy"] .body {
+  color: color-mix(in srgb, var(--cnd-sand) 76%, transparent);
+}
+.slide[data-ground="navy"] .slide-footer {
+  border-top-color: color-mix(in srgb, var(--cnd-sand) 24%, transparent);
+}
+.slide[data-ground="red"] {
+  background: var(--cnd-red);
+  color: var(--cnd-white);
+}
+.slide[data-ground="red"] .eyebrow {
+  color: var(--cnd-navy);
+}
+.slide[data-ground="sand"] {
+  background: var(--cnd-sand);
+}
+
+/* ── layout: title ───────────────────────────────────────────────────── */
+/* Bone ground with a full-bleed red field over the right 46.9%, matching her
+ * title page exactly (x 680 of 1280). */
+
+.slide[data-layout="title"] .field {
+  position: absolute;
+  inset: 0 0 0 53.125%;
+  background: var(--cnd-red);
+}
+.slide[data-layout="title"] .pad {
+  display: flex;
+  flex-direction: column;
+}
+.slide[data-layout="title"] .display {
+  margin-top: 45px;
+  max-width: 900px;
+}
+/* Date, hairline divider, blurb — her three-part meta row.
+ *
+ * Her own page lets the blurb run under the red field, where it stops being
+ * readable. The column widths here keep it inside the bone area: the field
+ * starts at 53.125% (1020px), and 90 + 400 + 50 + 3 + 50 + 400 lands at 993. */
+.slide[data-layout="title"] .title-meta {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 400px 3px 400px;
+  gap: 50px;
+  align-items: center;
+}
+.slide[data-layout="title"] .when {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 52px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+}
+.slide[data-layout="title"] .divider {
+  width: 3px;
+  height: 60px;
+  background: var(--cnd-navy);
+}
+.slide[data-layout="title"] .blurb {
+  font-size: 32px;
+  line-height: 1.35;
+  color: var(--cnd-ink-muted);
+  margin: 0;
+}
+
+/* ── layout: section divider ─────────────────────────────────────────── */
+/* Centred eyebrow, huge display with a terminal period, short red underline.
+ * Her underline is 100×10 at 1280 → 150×15. */
+
+.slide[data-layout="section"] .pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 30px;
+}
+.slide[data-layout="section"] .display {
+  font-size: 186px;
+}
+.slide[data-layout="section"] .rule {
+  width: 150px;
+  height: 15px;
+  background: var(--cnd-red);
+  margin-top: 30px;
+}
+
+/* ── layout: split (title + body + card) ─────────────────────────────── */
+
+.slide[data-layout="split"] .cols {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  top: 345px;
+  display: grid;
+  grid-template-columns: var(--col) var(--col);
+  gap: var(--gutter);
+  align-items: start;
+}
+.slide[data-layout="split"] .stack {
+  display: grid;
+  gap: 46px;
+}
+
+.card {
+  background: var(--cnd-white);
+  border-radius: 24px;
+  padding: 62px;
+  display: grid;
+  gap: 30px;
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--cnd-navy) 6%, transparent),
+    0 18px 48px color-mix(in srgb, var(--cnd-navy) 7%, transparent);
+}
+.card .card-heading {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 49px;
+  text-transform: uppercase;
+  color: var(--cnd-red);
+  margin: 0;
+}
+.card .body {
+  max-width: none;
+}
+
+/* ── layout: stat ────────────────────────────────────────────────────── */
+
+.slide[data-layout="stat"] .cols {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  top: 340px;
+  display: grid;
+  grid-template-columns: var(--col) var(--col);
+  gap: var(--gutter);
+  align-items: start;
+}
+.figure {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 247px;
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.figure-caption {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-red);
+  margin: 18px 0 0;
+}
+.marked {
+  list-style: none;
+  padding: 0;
+  margin: 40px 0 0;
+  display: grid;
+  gap: 22px;
+  font-size: 40px;
+}
+.marked li {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+/* The mark is the brand silhouette, filled with a palette accent — the one
+ * device borrowed from the handoff bundle, verified to be this logo's own
+ * outline. */
+.marked li::before {
+  content: "";
+  width: 34px;
+  height: 33px;
+  margin-top: 12px;
+  background: var(--mark-color, var(--cnd-red));
+  clip-path: path(
+    "M32.4 19.4L29.7 7.6a2.1 2.1 0 0 0-1.1-1.4L17.5 1a2.1 2.1 0 0 0-1.8 0L4.6 6.1a2.1 2.1 0 0 0-1.2 1.4L0.7 19.4a2.1 2.1 0 0 0 0.3 1.6c0 0 0.1 0.1 0.1 0.2l7.7 9.5a2.2 2.2 0 0 0 1.6 0.8l12.3 0a2.2 2.2 0 0 0 1.6-0.8l7.7-9.5a2.1 2.1 0 0 0 0.4-1.8z"
+  );
+}
+.marked li:nth-child(2)::before {
+  --mark-color: var(--cnd-peach);
+}
+.marked li:nth-child(3)::before {
+  --mark-color: var(--cnd-slate);
+}
+
+/* ── layout: quote ───────────────────────────────────────────────────── */
+
+.slide[data-layout="quote"] .pad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.quote {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 86px;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 1400px;
+  text-wrap: balance;
+}
+.attribution {
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 30px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-ink-muted);
+  margin: 54px 0 0;
+}
+.quote-mark {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 150px;
+  line-height: 0.5;
+  color: var(--cnd-peach);
+  margin: 0 0 40px;
+}
+
+/* ── layout: people grid ─────────────────────────────────────────────── */
+/* Organiser and speaker boards. The portrait is a circle, matching the
+ * designer's own speaker treatment. */
+
+.people {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  top: 320px;
+  display: grid;
+  grid-template-columns: repeat(var(--per-row, 5), 1fr);
+  gap: 54px 40px;
+}
+.person {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
+.person img,
+.person .avatar {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  background: color-mix(in srgb, var(--cnd-slate) 30%, var(--cnd-bone));
+}
+.person .who {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.person .what {
+  font-size: 26px;
+  line-height: 1.25;
+  color: var(--cnd-ink-muted);
+}
+
+/* ── layout: speaker intro ───────────────────────────────────────────── */
+/* One per session. Navy ground, portrait left, talk title right. */
+
+.slide[data-layout="speaker"] .cols {
+  position: absolute;
+  inset: var(--m);
+  display: grid;
+  grid-template-columns: 620px 1fr;
+  gap: 100px;
+  align-items: center;
+}
+.slide[data-layout="speaker"] .portrait {
+  width: 620px;
+  height: 620px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: color-mix(in srgb, var(--cnd-sand) 22%, transparent);
+}
+.slide[data-layout="speaker"] .talk {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 86px;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  margin: 24px 0 0;
+  text-wrap: balance;
+}
+.slide[data-layout="speaker"] .who {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 46px;
+  text-transform: uppercase;
+  margin: 40px 0 0;
+}
+.slide[data-layout="speaker"] .what {
+  font-size: 34px;
+  color: var(--cnd-red);
+  margin: 10px 0 0;
+}
+.badge {
+  display: inline-block;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--cnd-red);
+  color: var(--cnd-white);
+}
+
+/* ── layout: rate this session ───────────────────────────────────────── */
+
+.slide[data-layout="rate"] .pad {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 100px;
+  align-items: center;
+}
+.slide[data-layout="rate"] .qr {
+  width: 480px;
+  height: 480px;
+  background: var(--cnd-white);
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  font-family: var(--cnd-font-display);
+  font-size: 26px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-ink-muted);
+  overflow: hidden;
+}
+.slide[data-layout="rate"] .qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ── layout: full-bleed photo ────────────────────────────────────────── */
+
+.slide[data-layout="photo"] .shot {
+  position: absolute;
+  inset: 0;
+}
+.slide[data-layout="photo"] .shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slide[data-layout="photo"] .scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--cnd-navy) 92%, transparent),
+    color-mix(in srgb, var(--cnd-navy) 40%, transparent) 45%,
+    color-mix(in srgb, var(--cnd-navy) 8%, transparent)
+  );
+}
+.slide[data-layout="photo"] .pad {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: var(--cnd-white);
+}
+
+/* ── layout: logistics (big single message) ──────────────────────────── */
+
+.slide[data-layout="logistics"] .pad {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+.slide[data-layout="logistics"] .display {
+  font-size: 140px;
+}
+.kv {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 20px 54px;
+  font-size: 44px;
+  margin: 20px 0 0;
+}
+.kv dt {
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 30px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-red);
+  align-self: center;
+}
+.kv dd {
+  margin: 0;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+}
+
+/* ── layout: sponsor tier ────────────────────────────────────────────── */
+
+.tier {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  top: 320px;
+  display: grid;
+  gap: 60px;
+}
+.tier-row {
+  display: grid;
+  gap: 26px;
+}
+.tier-label {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-red);
+}
+.tier-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.tier-logos > * {
+  background: var(--cnd-white);
+  border-radius: 16px;
+  height: 150px;
+  min-width: 300px;
+  display: grid;
+  place-items: center;
+  padding: 24px 40px;
+}
+.tier-logos img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.tier[data-size="gold"] .tier-logos > * {
+  height: 200px;
+  min-width: 400px;
+}
+
+/* ── layout: table ───────────────────────────────────────────────────── */
+/* Her own table slide had drifted to an off-brand blue header and green
+ * status text. Rebuilt in navy with red for the live row. */
+
+.slide[data-layout="table"] .wrap {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  top: 340px;
+  overflow-x: auto;
+}
+table.cnd {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 36px;
+}
+table.cnd thead th {
+  background: var(--cnd-navy);
+  color: var(--cnd-sand);
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 26px 34px;
+}
+table.cnd tbody td {
+  padding: 26px 34px;
+  border-bottom: 1px solid color-mix(in srgb, var(--cnd-navy) 12%, transparent);
+  background: var(--cnd-white);
+  font-variant-numeric: tabular-nums;
+}
+table.cnd tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--cnd-sand) 45%, var(--cnd-white));
+}
+table.cnd tbody tr[data-live] td {
+  background: color-mix(in srgb, var(--cnd-red) 8%, var(--cnd-white));
+  font-weight: 600;
+}
+.state {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-slate);
+}
+tr[data-live] .state {
+  color: var(--cnd-red);
+}
+
+/* ── accents ─────────────────────────────────────────────────────────── */
+/* Corner-bleeding shapes, as on her mission and quote pages. Always the
+ * brand silhouette or a palette accent, never a new hue. */
+
+.accent {
+  position: absolute;
+  width: 210px;
+  height: 204px;
+  background: var(--accent-color, var(--cnd-peach));
+  clip-path: path(
+    "M203.9 122.2L186.7 47.7a13.4 13.4 0 0 0-7.2-8.9l-69.5-33.2a13.4 13.4 0 0 0-11.5 0L28.7 38.6a13.4 13.4 0 0 0-7.2 8.9L3.9 122.2a13.2 13.2 0 0 0 1.8 10.1c0.2 0.4 0.5 0.7 0.8 1l48.1 59.8a13.5 13.5 0 0 0 10.4 5l77.1 0a13.5 13.5 0 0 0 10.4-5l48.1-59.8a13.3 13.3 0 0 0 2.6-11.1z"
+  );
+}
+.accent[data-at="top-right"] {
+  top: -46px;
+  right: 120px;
+}
+.accent[data-at="bottom-left"] {
+  bottom: -50px;
+  left: 140px;
+}
+
+/* ── nav hint ────────────────────────────────────────────────────────── */
+
+.deck-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: var(--cnd-red);
+  transition: width 0.2s;
+  z-index: 10;
+}
+
+/* ── print / PDF export ──────────────────────────────────────────────── */
+/* Chrome --print-to-pdf with --no-pdf-header-footer gives one slide per page
+ * at exactly 1920×1080. */
+
+/* 1920×1080 css px at 96dpi is exactly 20in × 11.25in. Declaring it in
+ * inches rather than px matters: with a px size Chrome's printable area came
+ * out a hair under 1080, so tall slides spilled a blank page after
+ * themselves — 17 slides produced 20 pages. */
+@page {
+  size: 20in 11.25in;
+  margin: 0;
+}
+
+@media print {
+  .deck {
+    background: none;
+  }
+  .slide {
+    display: block !important;
+    position: relative;
+    inset: auto;
+    transform: none;
+    /* Only between slides — a trailing break adds an empty final page. */
+    break-after: page;
+    overflow: hidden;
+  }
+  .slide:last-of-type {
+    break-after: auto;
+  }
+  .deck-progress {
+    display: none;
+  }
+}

@@ -5,3 +5,4 @@ brand/.venv/
 .DS_Store
 graphics/templates/.render-*.html
 demo/
+decks/*/.overflow-probe.html
