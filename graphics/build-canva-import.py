@@ -345,6 +345,16 @@ def main() -> int:
     -webkit-text-stroke: 3px {color["red"]};
     font-weight: 500;
   }}
+
+  /* One PDF page per template, at exactly 1080x1350 css px. Declared in
+   * inches (1080/96 x 1350/96) because a px @page size left Chrome's
+   * printable area a hair short and spilled a blank page after each. */
+  @page {{ size: 11.25in 14.0625in; margin: 0; }}
+  @media print {{
+    body {{ background: none; }}
+    .page {{ margin: 0; break-after: page; }}
+    .page:last-of-type {{ break-after: auto; }}
+  }}
 </style>
 </head>
 <body>
@@ -355,10 +365,27 @@ def main() -> int:
 
     target = OUT / "cnd-templates.html"
     target.write_text(html)
-    size_kb = target.stat().st_size // 1024
-    print(f"wrote {target.relative_to(ROOT)}  ({size_kb} KB, {len(pages)} pages)")
-    print("\nNext: host it on a site you already run, then import with")
-    print("  import-design-from-url  →  intended_design_type: instagram_post")
+    print(f"wrote {target.relative_to(ROOT)}  ({target.stat().st_size // 1024} KB)")
+
+    # PDF is the route that needs no hosting: Canva's UI imports PDF directly
+    # and keeps text as text, so the templates arrive editable from a drag and
+    # drop. The HTML stays for import-design-from-url if that is ever wanted.
+    pdf = OUT / "cnd-templates.pdf"
+    chrome = (
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    )
+    subprocess.run(
+        [
+            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+            "--virtual-time-budget=8000", f"--print-to-pdf={pdf}",
+            f"file://{target}",
+        ],
+        check=True, capture_output=True,
+    )
+    print(f"wrote {pdf.relative_to(ROOT)}  ({pdf.stat().st_size // 1024} KB, {len(pages)} pages)")
+    print("\nDrag the PDF into Canva — Uploads, or File > Import. Text stays")
+    print("editable. Set the CND 2026 brand fonts first if Space Grotesk is")
+    print("not already uploaded there.")
     return 0
 
 
