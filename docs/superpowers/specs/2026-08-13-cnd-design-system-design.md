@@ -373,7 +373,37 @@ anything half-built.
    is written last so it documents what was actually built rather than what was
    planned.
 
-## 11. Risks and open items
+## 11. Decisions from the CNN-handoff bundle
+
+A second bundle (`CNN-handoff`) arrived mid-build: a Claude Design export
+containing an independently-designed CND system. It ships a competing palette
+(`#0B1E3F` midnight, harbor/electric/sky blues, coral, amber) and Manrope for
+body. None of that is adopted — the print-ready files remain the source of
+truth, and its red is `#E0132A` where the mark is `#FF281E`.
+
+One idea from it *is* adopted, and one is deferred:
+
+- **Adopted — the logo silhouette as a reusable motif.** Its central idea is
+  that the mark's outline should become a container for portraits, sponsor
+  tiles, numbered callouts and clusters. Verified against the designer's
+  extracted `cnd-mark.svg` at **0.9977 IoU** (0.23% symmetric difference), so
+  it is her mark's own outline rather than a lookalike. Now `tokens.json`
+  `shape`, with `cnd-shape.svg` generated from it. Speaker portraits clip to it
+  **as an opt-in** via `--portrait-shape mark`. The default stays her circle:
+  most of this system also has to hold up in print, so where she made an
+  explicit choice, that choice wins and the motif is the alternative rather
+  than the replacement. Note it is a rounded heptagon — her 4-hexagon cluster
+  is genuinely hexagonal and unrelated, and both coexist.
+- **Rejected — mono eyebrows.** The bundle sets eyebrows and section marks in
+  JetBrains Mono, which reads well for an infrastructure audience but would be
+  a third typeface. Her social templates are strictly one face at one weight,
+  and that consistency wins.
+- **Deferred — isometric Danish landmarks.** Aalborg Tower, Great Belt Bridge,
+  the ARoS rainbow and Nyhavn, mapping onto the three cities CND runs in. The
+  one thing in the bundle that cannot be derived from her files, and worth
+  revisiting after phases 3 and 4 ship.
+
+## 12. Risks and open items
 
 - **Font licensing.** Space Grotesk (SIL OFL) and Inter (SIL OFL) both permit
   self-hosting and embedding. No action needed, noted for the record.

@@ -21,6 +21,8 @@
  *   --label TEXT      override the tab label
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
+ *   --portrait-shape circle|mark  portrait frame; circle is the designer's
+ *                     own choice and the default
  *   --theme light|dark  linkedin-cover only: sand ground or navy ground
  *   --out PATH        output PNG
  *   --keep-html       leave the intermediate HTML in place for debugging
@@ -227,14 +229,18 @@ function main() {
     const layout = existsSync(specific) ? specific : join(TEMPLATES, "statement.svg");
 
     // Portrait frame, as ratios of the card window so it survives a card
-    // change. Defaults to the brand silhouette — the handoff bundle's best
-    // idea, and verified to be this mark's own outline — with the designer's
-    // circle still available via --portrait-shape circle.
+    // change.
+    //
+    // Defaults to the circle, because that is what the designer used in her
+    // own composed example and most of this system also has to hold up in
+    // print. The brand silhouette is available via --portrait-shape mark:
+    // it is verified to be this mark's own outline (0.9977 IoU) so it is not
+    // off-brand, but it is not her choice, so it does not get to be default.
     const pr = tokens.portrait;
     const side = Math.round(box.h * pr.sideOfCardHeight);
     const pcx = Math.round(box.x + box.w * pr.centreXOfCardWidth);
     const pcy = Math.round(box.y + box.h * pr.centreYOfCardHeight);
-    const useCircle = (opts["portrait-shape"] ?? "mark") === "circle";
+    const useCircle = (opts["portrait-shape"] ?? "circle") === "circle";
     const clip = useCircle ? "portrait-circle" : "brand-shape";
 
     const portraitLayer = opts.portrait
@@ -313,7 +319,18 @@ function main() {
     process.exit(2);
   }
 
-  const yearSpec = frameSpec?.year;
+  // The "clean" category has no PSD group of its own, so it has no frame spec
+  // and would silently lose the outline year. The year is identical across
+  // every category the designer drew, so borrow it from any of them.
+  const yearSpec =
+    frameSpec?.year ??
+    Object.values(geometry.frames)
+      .map((byVariant) => byVariant[variant]?.year)
+      .find(Boolean);
+  if (!yearSpec) {
+    console.error(`no year type spec available for variant ${variant}`);
+    process.exit(2);
+  }
   const svg = fill(stripLeadComment(load(join(TEMPLATES, "_social-frame.svg"))), {
     canvasW,
     canvasH,
@@ -353,11 +370,12 @@ function main() {
     markW: place.mark.w,
     markH: place.mark.h,
     year: tokens.event.year,
-    yearX: yearSpec?.x ?? 0,
-    yearY: yearSpec?.baseline ?? 0,
-    yearSize: yearSpec?.runs[0].size_px ?? 0,
-    yearTracking: `${yearSpec?.runs[0].tracking_em ?? 0}em`,
-    yearGround: yearSpec?.runs[0].color ?? "none",
+    yearX: yearSpec.x,
+    yearY: yearSpec.baseline,
+    yearSize: yearSpec.runs[0].size_px,
+    yearTracking: `${yearSpec.runs[0].tracking_em}em`,
+    // Outline fill matches the ground it sits on, which differs per variant.
+    yearGround: overlay.ground,
     yearStroke: YEAR_STROKE,
   });
 
