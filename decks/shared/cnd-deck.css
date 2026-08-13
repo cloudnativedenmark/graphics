@@ -38,13 +38,20 @@
   min-height: 100vh;
 }
 
+/* Centring uses top/left 50% plus translate(-50%, -50%) rather than
+ * inset:0 + margin:auto. The stage is 1920×1080, which is *larger* than the
+ * window on any laptop, and CSS resolves `margin: auto` to 0 when the free
+ * space is negative — so the slide sat flush left at 0..1920, scaled about its
+ * own centre, and landed at 240..1680, clipped on the right. A percentage
+ * translate resolves against the element's own box, so it centres at any
+ * window size. */
 .slide {
   position: absolute;
-  inset: 0;
-  margin: auto;
+  top: 50%;
+  left: 50%;
   width: calc(var(--slide-w) * 1px);
   height: calc(var(--slide-h) * 1px);
-  transform: scale(var(--fit));
+  transform: translate(-50%, -50%) scale(var(--fit));
   transform-origin: center center;
   overflow: hidden;
   display: none;
@@ -716,7 +723,8 @@ tr[data-live] .state {
   .slide {
     display: block !important;
     position: relative;
-    inset: auto;
+    top: auto;
+    left: auto;
     transform: none;
     /* Only between slides — a trailing break adds an empty final page. */
     break-after: page;

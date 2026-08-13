@@ -21,6 +21,8 @@
  *   --label TEXT      override the tab label
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
+ *   --surface post|square  post is her native 1080×1350; square is 1080×1080,
+ *                     DERIVED rather than measured — see deriveSquare
  *   --portrait-shape circle|mark  portrait frame; circle is the designer's
  *                     own choice and the default
  *   --theme light|dark  linkedin-cover only: sand ground or navy ground
@@ -149,6 +151,58 @@ const escapeXML = (s) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[c],
   );
 
+/**
+ * Derive a 1080×1080 square frame from the designer's 1080×1350 one.
+ *
+ * She never drew a square, so this is DERIVED, not measured — the one surface
+ * in the system that does not trace back to her files. It is adapted by an
+ * explicit rule rather than by eye, so it stays predictable:
+ *
+ *   x geometry     unchanged. The width is identical at 1080, so every
+ *                  horizontal position and the tab carry over untouched.
+ *   footer zone    unchanged distance from the bottom edge. The lockup, mark
+ *                  and year are fixed-size artwork and must not be rescaled,
+ *                  so they simply move up by the 270px the canvas lost.
+ *   card window    absorbs the whole 270px difference.
+ *   card text      vertical offsets scale by the card's height ratio, which
+ *                  keeps the composition's proportions inside the shorter
+ *                  card instead of letting the statement run out of it.
+ *
+ * Anything printed should use her native 1080×1350 instead.
+ */
+function deriveSquare(overlay, content) {
+  const LOST = 270; // 1350 - 1080
+  const card = overlay.content;
+  const squareCard = { ...card, h: card.h - LOST };
+  const ratio = squareCard.h / card.h;
+
+  const shift = (box) => (box ? { ...box, y: box.y - LOST } : box);
+  const scaleText = (spec) => ({
+    ...spec,
+    baseline: +(card.y + (spec.baseline - card.y) * ratio).toFixed(2),
+    leading_derived_px:
+      spec.leading_derived_px == null
+        ? null
+        : +(spec.leading_derived_px * ratio).toFixed(2),
+  });
+
+  return {
+    overlay: {
+      ...overlay,
+      size: [1080, 1080],
+      content: squareCard,
+      rule: shift(overlay.rule),
+      band: shift(overlay.band),
+      lockup: shift(overlay.lockup),
+      mark: shift(overlay.mark),
+    },
+    content: Object.fromEntries(
+      Object.entries(content).map(([k, v]) => [k, scaleText(v)]),
+    ),
+    yearShift: LOST,
+  };
+}
+
 /** Portrait frame box, derived from the card window by token ratios. */
 function portraitBox(card, pr) {
   const side = Math.round(card.h * pr.sideOfCardHeight);
@@ -194,14 +248,28 @@ function main() {
 
   const category =
     opts.category ?? DEFAULT_CATEGORY[opts.template] ?? "speaker-highlights";
-  const overlay = geometry.overlays[category]?.[variant];
-  if (!overlay) {
+  if (!geometry.overlays[category]?.[variant]) {
     console.error(`no measured geometry for ${category} v${variant}`);
     process.exit(2);
   }
   const frameSpec = geometry.frames[category]?.[variant];
-  const content = geometry.content[variant === "1" ? "1" : "2"];
-  const { w: canvasW, h: canvasH } = geometry.canvas;
+  let overlay = geometry.overlays[category][variant];
+  let content = geometry.content[variant === "1" ? "1" : "2"];
+  let canvasW = geometry.canvas.w;
+  let canvasH = geometry.canvas.h;
+  let yearShift = 0;
+
+  const surface = (opts.surface ?? "post").toLowerCase();
+  if (surface === "square") {
+    const derived = deriveSquare(overlay, content);
+    overlay = derived.overlay;
+    content = derived.content;
+    canvasH = 1080;
+    yearShift = derived.yearShift;
+  } else if (surface !== "post") {
+    console.error(`--surface must be post or square (got ${surface})`);
+    process.exit(2);
+  }
   const color = tokens.color;
 
   // --- content layer -----------------------------------------------------
@@ -371,7 +439,7 @@ function main() {
     markH: place.mark.h,
     year: tokens.event.year,
     yearX: yearSpec.x,
-    yearY: yearSpec.baseline,
+    yearY: yearSpec.baseline - yearShift,
     yearSize: yearSpec.runs[0].size_px,
     yearTracking: `${yearSpec.runs[0].tracking_em}em`,
     // Outline fill matches the ground it sits on, which differs per variant.
@@ -391,9 +459,9 @@ function main() {
         ROOT,
         "graphics",
         "out",
-        `${opts.template}-v${variant}${opts.frame ? "-frame" : ""}.png`,
+        `${opts.template}-v${variant}${surface === "square" ? "-square" : ""}${opts.frame ? "-frame" : ""}.png`,
       ),
-    label: `${category} v${variant}${opts.frame ? " (frame only)" : ""}`,
+    label: `${category} v${variant} ${surface}${opts.frame ? " (frame only)" : ""}`,
   });
 }
 
