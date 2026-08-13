@@ -58,6 +58,9 @@ OVERLAY_DIR = SOURCE / "overlays"
 # (700 / 1000 unitsPerEm). Used to turn an ink bbox into a text baseline.
 CAP_RATIO = 0.700
 
+# The sand ground the designer composed the hexagon overlay against.
+SAND = "#F2E6D5"
+
 # Overlay categories the designer shipped, and the variant suffixes.
 CATEGORIES = [
     "speaker-highlights",
@@ -158,6 +161,177 @@ def extract_logos(psd: PSDImage) -> dict:
             print(f"  logo: {target.name}")
 
     return placements
+
+
+def extract_cover_art(psd: PSDImage) -> dict:
+    """Pull the cover's own artwork: the hexagon cluster and its lockup.
+
+    The cover uses a different lockup from the social frames — wordmark and
+    flag mark combined into one placed object — plus the hexagon cluster that
+    also appears on the roll-ups and beachflag.
+
+    Placement comes from the smart-object layer bounds here rather than from
+    pixel measurement, because the hexagons are semi-transparent and overlap:
+    colour masking cannot separate them. Those bounds are safe to use because
+    they are ink bounds, not the padded canvas — the lockup's bbox aspect
+    (1.801) matches its ink-cropped artwork, and the whole cover is checked
+    against the designer's flattened PNG afterwards.
+    """
+    LOGO_DIR.mkdir(parents=True, exist_ok=True)
+    placement: dict[str, dict] = {}
+
+    for layer in psd.descendants():
+        if layer.kind != "smartobject" or not layer.visible:
+            continue
+        try:
+            data = layer.smart_object.data
+        except Exception:
+            continue
+        if not data.startswith(b"%PDF"):
+            continue
+        x0, y0, x1, y1 = layer.bbox
+        w, h = x1 - x0, y1 - y0
+        name = "cnd-hexagons" if w > h * 1.05 and h > 200 else "cnd-lockup-cover"
+        key = "hexagons" if name == "cnd-hexagons" else "lockup"
+        placement[key] = {"x": x0, "y": y0, "w": w, "h": h}
+
+        target = LOGO_DIR / f"{name}.svg"
+        if not target.exists():
+            pdf_to_svg(data, target)
+            tighten_svg(target)
+            print(f"  cover art: {target.name}  ({w}x{h} at {x0},{y0})")
+        # The hexagons are a darkening overlay, so they need a ground-baked
+        # twin to survive on navy. See bake_over_ground.
+        if name == "cnd-hexagons":
+            baked = LOGO_DIR / "cnd-hexagons-solid.svg"
+            if not baked.exists():
+                bake_over_ground(target, baked, SAND)
+
+    return placement
+
+
+def bake_over_ground(src: Path, dst: Path, ground_hex: str) -> None:
+    """Flatten an SVG's semi-transparent fills against a known ground.
+
+    The hexagon cluster is built as a *darkening overlay*: four shapes at
+    fill-opacity 0.5, two of them plain black. Over sand that composites to
+    the warm grey, rose and peach in the palette — those three tokens are
+    literally the result of this blend. Over navy the same file just darkens
+    navy and the cluster disappears.
+
+    Baking the composite against sand once produces artwork that carries its
+    intended colours onto any ground, which is what the dark cover needs. It
+    is the same picture, not a recolouring: on sand the baked file is
+    indistinguishable from the original.
+
+    The transparency does not live on the artwork. pdftocairo renders each
+    hexagon as an opaque <path> drawn through a <mask> containing a 50%-alpha
+    rect, so baking has two halves: composite each path's fill against the
+    ground at the mask's alpha, then neutralise the masks to fully opaque.
+    Rewriting fill-opacity alone silently edits the mask rects and changes
+    nothing visible — which is exactly the wrong-looking result it replaced.
+    """
+    ground = np.array([int(ground_hex[i : i + 2], 16) for i in (1, 3, 5)], dtype=float)
+    text = src.read_text()
+
+    mask_rect = re.compile(r'(<rect\b[^>]*?fill-opacity=")([\d.]+)(")')
+    alphas = {float(m.group(2)) for m in mask_rect.finditer(text)}
+    if len(alphas) != 1:
+        sys.exit(
+            f"{src.name}: expected one mask alpha, found {sorted(alphas)} — "
+            "the artwork's structure changed and the bake needs revisiting"
+        )
+    alpha = alphas.pop()
+
+    def composite(match: re.Match) -> str:
+        src_rgb = (
+            np.array([float(match["r"]), float(match["g"]), float(match["b"])])
+            * 255.0
+            / 100.0
+        )
+        out = alpha * src_rgb + (1.0 - alpha) * ground
+        return '{}"{}"'.format(
+            match["lead"], "#%02X%02X%02X" % tuple(int(round(v)) for v in out)
+        )
+
+    path_fill = re.compile(
+        r'(?P<lead><path\b[^>]*?fill=)"rgb\((?P<r>[\d.]+)%,\s*(?P<g>[\d.]+)%,'
+        r'\s*(?P<b>[\d.]+)%\)"'
+    )
+    baked, n_paths = path_fill.subn(composite, text)
+    baked, n_masks = mask_rect.subn(r"\g<1>1\g<3>", baked)
+
+    dst.write_text(baked)
+    print(
+        f"    baked {dst.name}: {n_paths} fills composited at alpha {alpha} "
+        f"over {ground_hex}, {n_masks} masks opened"
+    )
+
+
+def measure_cover(png: Path, left_bound: int, ground_hex: str = SAND) -> dict:
+    """Measure the cover's wordmark and mark from the designer's flattened PNG.
+
+    Replaces an earlier attempt that derived these by transferring the social
+    footer's internal proportions onto the cover's fused lockup box. That put
+    the wordmark 8px low: the cover spaces wordmark and mark slightly
+    differently from the social footer, so the ratios do not carry over.
+    Measuring the artefact directly avoids the assumption entirely.
+
+    Wordmark and mark cannot be separated by position: "DENMARK." runs on
+    underneath the flag, so cutting at the mark's left edge reads the wordmark
+    ~37px narrow, and aspect-fit then shrinks the whole lockup. They separate
+    by colour instead — every pixel is classified to the nearest of sand,
+    navy, red and white, and the wordmark is the navy class. Nearest-colour
+    rather than a tolerance band because the hairline "DENMARK." outline is
+    mostly antialiased blend: a tight navy match loses it, a loose one starts
+    collecting the flag's white.
+
+    A left bound past the hexagon cluster is still needed, since the cluster's
+    slate hexagons also classify as navy-ish.
+    """
+    arr = np.array(Image.open(png).convert("RGB")).astype(int)
+    h, w = arr.shape[:2]
+    ground = [int(ground_hex[i : i + 2], 16) for i in (1, 3, 5)]
+
+    def denoised_bbox(mask: np.ndarray) -> dict | None:
+        pad = np.pad(mask.astype(np.uint8), 1)
+        neighbours = sum(
+            pad[1 + dy : 1 + dy + mask.shape[0], 1 + dx : 1 + dx + mask.shape[1]]
+            for dy in (-1, 0, 1)
+            for dx in (-1, 0, 1)
+            if (dy, dx) != (0, 0)
+        )
+        keep = mask & (neighbours >= 2)
+        ys, xs = np.where(keep)
+        if len(ys) == 0:
+            return None
+        return {
+            "x": int(xs.min()),
+            "y": int(ys.min()),
+            "w": int(xs.max() - xs.min() + 1),
+            "h": int(ys.max() - ys.min() + 1),
+        }
+
+    SAND_I, NAVY_I, RED_I = 0, 1, 2
+    palette = np.array(
+        [ground, [0x19, 0x21, 0x3C], [0xFF, 0x28, 0x1E], [0xFF, 0xFF, 0xFF]],
+        dtype=float,
+    )
+    nearest = np.argmin(
+        ((arr[:, :, None, :] - palette[None, None, :, :]) ** 2).sum(axis=3), axis=2
+    )
+
+    band = np.zeros((h, w), bool)
+    band[:, left_bound:] = True
+
+    mark = denoised_bbox((nearest == RED_I) & band)
+    if mark is None:
+        sys.exit(f"{png.name}: could not find the flag mark")
+    wordmark = denoised_bbox((nearest == NAVY_I) & band)
+    if wordmark is None:
+        sys.exit(f"{png.name}: could not find the wordmark")
+
+    return {"wordmark": wordmark, "mark": mark}
 
 
 # --------------------------------------------------------------------------
@@ -590,9 +764,22 @@ def main() -> None:
         for layer in cover.descendants()
         if layer.kind == "type"
     }
+    cover_placement = extract_cover_art(cover)
+    cover_ref = SOURCE / "cloud_native_denmark_cover_2026.png"
+    if cover_ref.exists():
+        REF_DIR.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(cover_ref, REF_DIR / cover_ref.name)
 
     print("measuring overlays ...")
     overlays = measure_overlays()
+
+    # Wordmark and mark are measured off the designer's flattened cover so the
+    # cover can use per-theme colourways of the separate assets.
+    if cover_ref.exists():
+        hexes = cover_placement["hexagons"]
+        cover_placement.update(
+            measure_cover(cover_ref, left_bound=hexes["x"] + hexes["w"])
+        )
 
     geometry = {
         "$generated": "brand/extract.py — do not hand-edit",
@@ -606,7 +793,11 @@ def main() -> None:
         "frames": frames,
         "content": content,
         "placement": placements,
-        "cover": {"canvas": list(cover.size), "text": cover_text},
+        "cover": {
+            "canvas": list(cover.size),
+            "text": cover_text,
+            "placement": cover_placement,
+        },
         "overlays": overlays,
     }
 

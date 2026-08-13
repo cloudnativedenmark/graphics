@@ -1,0 +1,46 @@
+<!--
+  LinkedIn page cover, 1128x191. Self-contained: render.mjs uses this as the
+  whole document rather than composing it into _social-frame.svg, because a
+  cover has no tab, no card window and no footer band.
+
+  Composition follows the designer's cover exactly — display lines at x 280,
+  the outline device beneath them, hexagon cluster centre, lockup right.
+
+  The left 280px stays empty on purpose. LinkedIn overlays the page's logo
+  there, so anything placed in that band is hidden on the live profile. That
+  constraint is why her own cover starts its text so far in.
+
+  Themes reuse the social colourways: navy-on-sand for light, cream-on-navy
+  for dark. No new artwork is needed because the cover's fused lockup is
+  split back into wordmark + mark by extract.py.
+
+  Slots
+    line1, line2   display lines, uppercase
+    outline        the outline-numeral device; the year by default
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{canvasW}}" height="{{canvasH}}" viewBox="0 0 {{canvasW}} {{canvasH}}">
+
+  <rect width="{{canvasW}}" height="{{canvasH}}" fill="{{ground}}"/>
+
+  <image xlink:href="{{hexagons}}" x="{{hexX}}" y="{{hexY}}"
+         width="{{hexW}}" height="{{hexH}}"/>
+
+  <text font-family="Space Grotesk" font-weight="500"
+        font-size="{{displaySize}}" letter-spacing="{{displayTracking}}"
+        fill="{{displayColor}}">
+    <tspan x="{{textX}}" y="{{line1Y}}">{{line1}}</tspan>
+    <tspan x="{{textX}}" y="{{line2Y}}">{{line2}}</tspan>
+  </text>
+
+  <text x="{{textX}}" y="{{outlineY}}"
+        font-family="Space Grotesk" font-weight="500"
+        font-size="{{outlineSize}}" letter-spacing="{{outlineTracking}}"
+        fill="{{ground}}" stroke="{{red}}" stroke-width="{{outlineStroke}}"
+        paint-order="stroke fill">{{outline}}</text>
+
+  <image xlink:href="{{wordmark}}" x="{{wordmarkX}}" y="{{wordmarkY}}"
+         width="{{wordmarkW}}" height="{{wordmarkH}}"/>
+  <image xlink:href="{{mark}}" x="{{markX}}" y="{{markY}}"
+         width="{{markW}}" height="{{markH}}"/>
+</svg>

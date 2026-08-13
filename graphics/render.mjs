@@ -21,6 +21,7 @@
  *   --label TEXT      override the tab label
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
+ *   --theme light|dark  linkedin-cover only: sand ground or navy ground
  *   --out PATH        output PNG
  *   --keep-html       leave the intermediate HTML in place for debugging
  *
@@ -62,7 +63,12 @@ const DEFAULT_CATEGORY = {
   "schedule-announcement": "schedule-announcements",
   "cfp-notification": "CFP-notifications",
   clean: null,
+  "linkedin-cover": null,
 };
+
+// Templates that are a whole document rather than a content layer composed
+// into _social-frame.svg. A cover has no tab, card window or footer band.
+const SELF_CONTAINED = new Set(["linkedin-cover"]);
 
 // ---------------------------------------------------------------------------
 
@@ -150,6 +156,10 @@ function main() {
   const opts = parseArgs(process.argv.slice(2));
   const geometry = loadJSON(join(ROOT, "brand", "geometry.json"));
   const tokens = loadJSON(join(ROOT, "brand", "tokens.json"));
+
+  if (SELF_CONTAINED.has(opts.template)) {
+    return renderCover(opts, geometry, tokens);
+  }
 
   const variant = String(opts.variant);
   if (!["1", "2", "3"].includes(variant)) {
@@ -304,7 +314,113 @@ function main() {
     yearStroke: YEAR_STROKE,
   });
 
-  // --- rasterise ---------------------------------------------------------
+  rasterise(svg, {
+    canvasW,
+    canvasH,
+    scale: opts.scale,
+    keepHtml: opts["keep-html"],
+    slug: `${opts.template}-${variant}`,
+    out:
+      opts.out ??
+      join(
+        ROOT,
+        "graphics",
+        "out",
+        `${opts.template}-v${variant}${opts.frame ? "-frame" : ""}.png`,
+      ),
+    label: `${category} v${variant}${opts.frame ? " (frame only)" : ""}`,
+  });
+}
+
+/**
+ * The LinkedIn page cover, 1128x191, in either colourway.
+ *
+ * Themes reuse the social colourways rather than inventing cover-specific
+ * ones: navy on sand for light, cream on navy for dark. That works because
+ * extract.py splits the cover's fused lockup back into wordmark + mark, so
+ * the cream wordmark can stand in for the navy one.
+ */
+function renderCover(opts, geometry, tokens) {
+  const theme = (opts.theme ?? "light").toLowerCase();
+  if (!["light", "dark"].includes(theme)) {
+    console.error(`--theme must be light or dark (got ${theme})`);
+    process.exit(2);
+  }
+  const dark = theme === "dark";
+  const color = tokens.color;
+  const cover = geometry.cover;
+  const [canvasW, canvasH] = cover.canvas;
+  const place = cover.placement;
+
+  // The designer's own two display lines and outline year, reused as the
+  // type spec for whatever copy the caller supplies.
+  const display = cover.text["COPEN HAGEN"];
+  const outlineSpec = cover.text["2026"];
+  const ground = dark ? color.navy : color.sand;
+
+  const svg = fill(stripLeadComment(load(join(TEMPLATES, "linkedin-cover.svg"))), {
+    canvasW,
+    canvasH,
+    ground,
+    red: color.red,
+
+    // The stock cluster is a darkening overlay and vanishes on navy, so the
+    // dark cover uses the ground-baked twin. On sand the two are identical.
+    hexagons: assetURL(
+      join(
+        ROOT,
+        "brand",
+        "logo",
+        dark ? "cnd-hexagons-solid.svg" : "cnd-hexagons.svg",
+      ),
+    ),
+    hexX: place.hexagons.x,
+    hexY: place.hexagons.y,
+    hexW: place.hexagons.w,
+    hexH: place.hexagons.h,
+
+    textX: display.x,
+    displaySize: display.runs[0].size_px,
+    displayTracking: `${display.runs[0].tracking_em}em`,
+    displayColor: dark ? color.sand : color.navy,
+    line1: escapeXML((opts.line1 ?? "Schedule").toUpperCase()),
+    line2: escapeXML((opts.line2 ?? "Is live").toUpperCase()),
+    line1Y: display.baseline,
+    line2Y: +(display.baseline + leadingOf(display)).toFixed(2),
+
+    outline: escapeXML((opts.outline ?? tokens.event.year).toUpperCase()),
+    outlineY: outlineSpec.baseline,
+    outlineSize: outlineSpec.runs[0].size_px,
+    outlineTracking: `${outlineSpec.runs[0].tracking_em}em`,
+    outlineStroke: YEAR_STROKE,
+
+    wordmark: assetURL(
+      join(ROOT, "brand", "logo", dark ? "cnd-lockup-cream.svg" : "cnd-lockup-navy.svg"),
+    ),
+    wordmarkX: place.wordmark.x,
+    wordmarkY: place.wordmark.y,
+    wordmarkW: place.wordmark.w,
+    wordmarkH: place.wordmark.h,
+    mark: assetURL(join(ROOT, "brand", "logo", "cnd-mark.svg")),
+    markX: place.mark.x,
+    markY: place.mark.y,
+    markW: place.mark.w,
+    markH: place.mark.h,
+  });
+
+  rasterise(svg, {
+    canvasW,
+    canvasH,
+    scale: opts.scale,
+    keepHtml: opts["keep-html"],
+    slug: `linkedin-cover-${theme}`,
+    out: opts.out ?? join(ROOT, "graphics", "out", `linkedin-cover-${theme}.png`),
+    label: `cover, ${theme}`,
+  });
+}
+
+/** Wrap an SVG in a minimal document and screenshot it with Chrome. */
+function rasterise(svg, { canvasW, canvasH, scale, keepHtml, slug, out, label }) {
   const html = `<!doctype html>
 <meta charset="utf-8">
 <link rel="stylesheet" href="${assetURL(join(ROOT, "brand", "tokens.css"))}">
@@ -315,19 +431,11 @@ function main() {
 ${svg}
 `;
 
-  const tmp = join(TEMPLATES, `.render-${opts.template}-${variant}.html`);
+  const tmp = join(TEMPLATES, `.render-${slug}.html`);
   writeFileSync(tmp, html);
 
-  const out = resolve(
-    opts.out ??
-      join(
-        ROOT,
-        "graphics",
-        "out",
-        `${opts.template}-v${variant}${opts.frame ? "-frame" : ""}.png`,
-      ),
-  );
-  mkdirSync(dirname(out), { recursive: true });
+  const target = resolve(out);
+  mkdirSync(dirname(target), { recursive: true });
 
   try {
     execFileSync(
@@ -336,11 +444,11 @@ ${svg}
         "--headless",
         "--disable-gpu",
         "--hide-scrollbars",
-        `--force-device-scale-factor=${opts.scale}`,
+        `--force-device-scale-factor=${scale}`,
         `--window-size=${canvasW},${canvasH}`,
         "--default-background-color=00000000",
         "--virtual-time-budget=4000",
-        `--screenshot=${out}`,
+        `--screenshot=${target}`,
         `file://${tmp}`,
       ],
       { stdio: ["ignore", "ignore", "pipe"] },
@@ -349,16 +457,15 @@ ${svg}
     console.error(`Chrome failed:\n${err.stderr?.toString() ?? err.message}`);
     process.exit(1);
   } finally {
-    if (!opts["keep-html"]) rmSync(tmp, { force: true });
+    if (!keepHtml) rmSync(tmp, { force: true });
   }
 
-  if (!existsSync(out)) {
+  if (!existsSync(target)) {
     console.error("Chrome produced no output");
     process.exit(1);
   }
   console.log(
-    `${relative(ROOT, out)}  ${canvasW * opts.scale}x${canvasH * opts.scale}` +
-      `  ${category} v${variant}${opts.frame ? " (frame only)" : ""}`,
+    `${relative(ROOT, target)}  ${canvasW * scale}x${canvasH * scale}  ${label}`,
   );
 }
 

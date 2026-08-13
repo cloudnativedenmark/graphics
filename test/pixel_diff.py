@@ -46,6 +46,13 @@ OUT_DIR = ROOT / "graphics" / "out" / "diff"
 INK_DE_MAX = 16.0
 ALPHA_MAX = 1.5
 
+# The cover is checked whole rather than frame-only: the designer shipped a
+# finished 1128x191 artwork, so we re-render her exact copy and compare
+# everything. Floor is 1.41 dE from a colour-profile offset in her export
+# (#F3E6D6 where the palette says #F2E6D5), so this cannot reach zero.
+COVER_REF = "cloud_native_denmark_cover_2026.png"
+COVER_DE_MAX = 12.0
+
 # Category -> the template that draws it.
 TEMPLATE_FOR = {
     "speaker-highlights": "speaker-highlight",
@@ -99,6 +106,32 @@ def compare(ours: Path, reference: Path, write_diff: bool) -> tuple[float, float
     return ink_de, alpha_mae
 
 
+def check_cover(write_diff: bool) -> tuple[float, bool] | None:
+    """Re-render the designer's own cover copy and compare the whole canvas."""
+    reference = REF_DIR / COVER_REF
+    if not reference.exists():
+        return None
+    out = ROOT / "graphics" / "out" / "frames" / "cover-check.png"
+    subprocess.run(
+        ["node", str(ROOT / "graphics" / "render.mjs"), "linkedin-cover",
+         "--theme", "light", "--line1", "Copen", "--line2", "Hagen",
+         "--out", str(out)],
+        check=True, capture_output=True,
+    )
+    a = np.array(Image.open(out).convert("RGB")).astype(float)
+    b = np.array(Image.open(reference).convert("RGB")).astype(float)
+    if a.shape != b.shape:
+        sys.exit(f"cover size mismatch: {a.shape} vs {b.shape}")
+    delta = np.sqrt(((a - b) ** 2).sum(axis=2))
+    if write_diff:
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        Image.fromarray(np.clip(delta / 2, 0, 255).astype(np.uint8)).save(
+            OUT_DIR / "diff-cover.png"
+        )
+    mean = float(delta.mean())
+    return mean, mean <= COVER_DE_MAX
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--category", help="limit to one category")
@@ -127,8 +160,16 @@ def main() -> int:
                 f"{'ok' if ok else 'FAIL'}"
             )
 
+    cover = check_cover(args.write_diff)
+    if cover is not None:
+        mean, ok = cover
+        failures += not ok
+        print(f"{'linkedin cover (whole canvas)':44} {mean:8.2f} {'—':>7}   "
+              f"{'ok' if ok else 'FAIL'}")
+
     print("-" * 74)
-    print(f"thresholds: ink dE <= {INK_DE_MAX}, alpha <= {ALPHA_MAX}")
+    print(f"thresholds: ink dE <= {INK_DE_MAX}, alpha <= {ALPHA_MAX}, "
+          f"cover dE <= {COVER_DE_MAX}")
     if failures:
         print(f"\n{failures} frame(s) outside threshold")
         print("re-run with --write-diff and inspect graphics/out/diff/")
