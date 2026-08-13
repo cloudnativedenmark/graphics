@@ -3,3 +3,4 @@ graphics/out/
 brand/.venv/
 .venv/
 .DS_Store
+graphics/templates/.render-*.html

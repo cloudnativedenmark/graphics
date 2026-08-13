@@ -1,0 +1,115 @@
+/* GENERATED FILE — do not edit.
+ * Source: brand/tokens.json
+ * Regenerate: node brand/build-tokens.mjs
+ */
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("fonts/SpaceGrotesk-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("fonts/SpaceGrotesk-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("fonts/SpaceGrotesk-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("fonts/SpaceGrotesk-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("fonts/SpaceGrotesk-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-Variable-Italic.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: block;
+}
+
+:root {
+  /* palette */
+  --cnd-navy: #19213C;
+  --cnd-red: #FF281E;
+  --cnd-sand: #F2E6D5;
+  --cnd-bone: #F8F5F2;
+  --cnd-white: #FFFFFF;
+  --cnd-rose: #E07E77;
+  --cnd-peach: #F0AD95;
+  --cnd-slate: #858388;
+  --cnd-ink-muted: #4A5568;
+
+  /* families */
+  --cnd-font-display: "Space Grotesk", system-ui, sans-serif;
+  --cnd-font-body: "Inter", system-ui, sans-serif;
+
+  /* tracking */
+  --cnd-track-display: 0.02em;
+  --cnd-track-eyebrow: 0.08em;
+  --cnd-track-year-wide: 0.24em;
+
+  /* leading */
+  --cnd-lead-display: 0.92;
+  --cnd-lead-tab: 1.12;
+  --cnd-lead-body: 1.65;
+}
+
+/* Reset shared by every rendered surface. Renders are fixed-size canvases,
+ * never responsive documents, so margin and overflow must be zeroed. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* The outline-numeral device: fill matches the ground, stroke is red.
+ * Set --cnd-outline-ground to whatever sits behind it. */
+.cnd-outline {
+  color: var(--cnd-outline-ground, transparent);
+  -webkit-text-stroke: var(--cnd-outline-width, 2px) var(--cnd-red);
+  letter-spacing: var(--cnd-track-display);
+}

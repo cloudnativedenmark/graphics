@@ -127,15 +127,21 @@ tracking `0.02em`.** No Bold, no Inter. This was verified against every text
 layer in `CND-linkedin-template-1.psd` and the cover PSD. Reference sizes at
 the 1080×1350 canvas:
 
-| Role | Size | Color | Notes |
+| Role | Rendered size | Color | Notes |
 |---|---|---|---|
-| Speaker name | 40px | white on navy / navy on white | |
-| Role / title | 29px | `--cnd-red` | |
-| Highlight statement | 49px | white on navy / navy on white | multi-line |
-| Tab label | 33px | white | leading 37px, centered |
-| Year `2026` | 50px | outline (see below) | tracking 0.02em |
+| Speaker name | 40px | white on navy / navy on white | layer scale 1.0 |
+| Role / title | 29px | `--cnd-red` | layer scale 1.0 |
+| Highlight statement | 49px | white on navy / navy on white | multi-line, layer scale 1.0 |
+| Tab label | **43px** | white | leading 48px, centered; `FontSize` 33 × scale 1.3032 |
+| Year `2026` | **65px** | outline (see below) | `FontSize` 50 × scale 1.3032 |
 | Cover wordmark | 41px | navy | tracking 0.02em, leading 35px |
 | Cover year | 41px | outline | tracking `0.24em` |
+
+The tab label and year sit on layers carrying a **1.3032 affine scale**, so
+their raw `FontSize` is not their rendered size. `geometry.json` exposes both:
+always read `size_px`, never `size`. The body-copy layers are unscaled, which is
+why 40/29/49 pass through unchanged. The v1 tab label is additionally **rotated
+30°**.
 
 **Decks** use Space Grotesk for display and eyebrows, Inter for body copy at
 `1.65` line-height. Never Inter for a headline; never Space Grotesk for a
@@ -167,7 +173,7 @@ design. Each becomes a documented CSS class.
    canvas edge, in accent colors.
 8. **Rounded content card** — a *window* rather than a filled shape: the
    overlay is transparent there so a photo or color shows through. At the
-   1080×1350 canvas it spans x 38–1042, y 40–984 with a **≈48px** corner
+   1080×1350 canvas it spans x 38–1042, y 40–984 with a **51px** corner
    radius, all measured from the overlay's alpha channel (see §5 on why not
    from the PSD).
 9. **Footer rule with edition + domain** — thin rule, `EDITION N° 04` left,
