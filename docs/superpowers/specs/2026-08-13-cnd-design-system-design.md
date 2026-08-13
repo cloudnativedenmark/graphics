@@ -165,8 +165,11 @@ design. Each becomes a documented CSS class.
    arrangement.
 7. **Corner-bleeding pentagon blobs** — irregular pentagons cropped by the
    canvas edge, in accent colors.
-8. **Rounded content card** — white, **91px** corner radius at the 1080×1350
-   canvas (from `RoundedRectangle` origination data), subtle shadow.
+8. **Rounded content card** — a *window* rather than a filled shape: the
+   overlay is transparent there so a photo or color shows through. At the
+   1080×1350 canvas it spans x 38–1042, y 40–984 with a **≈48px** corner
+   radius, all measured from the overlay's alpha channel (see §5 on why not
+   from the PSD).
 9. **Footer rule with edition + domain** — thin rule, `EDITION N° 04` left,
    `CLOUDNATIVEDENMARK.DK` right.
 
@@ -193,12 +196,33 @@ What it does, all verified working during design:
 - **Vector shapes → SVG paths.** `psd-tools` exposes `vector_mask.paths` as
   bezier knots. Knot anchors are `(y, x)` normalized to document height and
   width, so `anchor × (height, width)` gives canvas coordinates. This yields the
-  trapezoid tab's 10-knot path exactly.
-- **Rounded-rect radii** from `origination` — the white card's 91px.
+  trapezoid tab's 10-knot path exactly — verified by rendering it and comparing
+  to the overlay, where it matched at x 304–775 along the top edge.
 - **Type specs** from `engine_dict.StyleRun` — font name, size, tracking
   (1/1000 em), leading, caps flag, and ARGB fill.
-- **Layer bboxes** for every element of all 12 template variants.
-- **Layer effects** for stroke widths on the outline numerals.
+- **Layer bboxes** for text and smart-object placement.
+
+### 5.1 Which source wins for which fact
+
+Vector-mask paths and `origination` radii live in the layer's *untransformed*
+space, and several layers carry a scale transform. Taken at face value they are
+wrong: the card's path implies x −3–1084 with a 91px radius, while the exported
+overlay's actual window is x 38–1042 with a ≈48px radius. The tab path happened
+to have an identity transform, which is why it matched.
+
+So the split is:
+
+| Fact | Source |
+|---|---|
+| Frame furniture geometry — card window, footer band, rules, tab placement | **Measured from the overlay PNGs** (post-transform, unambiguous) |
+| Tab outline path | PSD vector mask, *after* verifying against the overlay |
+| Type specs — family, size, tracking, leading, color | PSD `engine_dict` |
+| Logo and mark artwork | PSD embedded smart objects |
+
+`extract.py` therefore does both: it reads the PSDs for type and artwork, and
+measures the overlay PNGs for geometry. The measurement is the part that must
+not be replaced with a hardcoded guess — it is how the numbers stay correct if
+the designer ships a v5 with a different layout.
 
 `geometry.json` is committed, so day-to-day work never needs the venv or the
 590MB of sources.
