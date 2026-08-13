@@ -54,6 +54,10 @@ MASTER_PSD = SOURCE / "CND-linkedin-template-1.psd"
 COVER_PSD = SOURCE / "cloud_native_denmark_cover_2026.psd"
 OVERLAY_DIR = SOURCE / "overlays"
 
+# Cap-height ratio of Space Grotesk, read from the font's OS/2 sCapHeight
+# (700 / 1000 unitsPerEm). Used to turn an ink bbox into a text baseline.
+CAP_RATIO = 0.700
+
 # Overlay categories the designer shipped, and the variant suffixes.
 CATEGORIES = [
     "speaker-highlights",
@@ -150,7 +154,8 @@ def extract_logos(psd: PSDImage) -> dict:
         target = LOGO_DIR / f"{name}.svg"
         if not target.exists():
             pdf_to_svg(data, target)
-            print(f"  logo: {target.name}  ({w}x{h} at {x0},{y0})")
+            tighten_svg(target)
+            print(f"  logo: {target.name}")
 
     return placements
 
@@ -185,6 +190,50 @@ def knots_to_path(layer, doc_w: int, doc_h: int) -> str:
             out.append(f"C{c1[0]},{c1[1]} {c2[0]},{c2[1]} {end[0]},{end[1]}")
         out.append("Z")
     return " ".join(out)
+
+
+def tighten_svg(svg: Path) -> None:
+    """Crop an extracted SVG's viewBox to the artwork's ink bounds.
+
+    The smart-object canvases carry a lot of empty space — the lockup ink
+    fills only about 76% x 59% of its own canvas. Left alone, drawing that
+    SVG into an <image> of the lockup's size aspect-fits the whole padded
+    canvas, so the artwork lands noticeably smaller and higher than the
+    designer placed it. Rasterise once, find the ink, and rewrite the
+    viewBox so the file's box *is* the artwork.
+    """
+    head = svg.read_text()
+    m = re.search(r'viewBox="([\d.\-]+) ([\d.\-]+) ([\d.\-]+) ([\d.\-]+)"', head)
+    if not m:
+        return
+    vx, vy, vw, vh = (float(g) for g in m.groups())
+
+    with tempfile.TemporaryDirectory() as td:
+        png = Path(td) / "probe.png"
+        raster_w = 1600
+        run(["rsvg-convert", "-w", str(raster_w), str(svg), "-o", str(png)])
+        arr = np.array(Image.open(png).convert("RGBA"))
+
+    ys, xs = np.where(arr[:, :, 3] > 10)
+    if len(xs) == 0:
+        return
+    raster_h = arr.shape[0]
+    sx, sy = vw / raster_w, vh / raster_h
+    nx = vx + xs.min() * sx
+    ny = vy + ys.min() * sy
+    nw = (xs.max() - xs.min() + 1) * sx
+    nh = (ys.max() - ys.min() + 1) * sy
+
+    out = re.sub(
+        r'viewBox="[^"]+"',
+        f'viewBox="{nx:.3f} {ny:.3f} {nw:.3f} {nh:.3f}"',
+        head,
+        count=1,
+    )
+    out = re.sub(r'width="[^"]+"', f'width="{nw:.3f}pt"', out, count=1)
+    out = re.sub(r'height="[^"]+"', f'height="{nh:.3f}pt"', out, count=1)
+    svg.write_text(out)
+    print(f"    tightened {svg.name}: viewBox -> {nw:.0f}x{nh:.0f}pt")
 
 
 def path_bbox(path: str) -> dict:
@@ -256,11 +305,42 @@ def type_specs(layer) -> dict:
         spec["leading_px"] = round(spec["leading"] * scale, 2)
 
     x0, y0, x1, y1 = layer.bbox
+    w, h = x1 - x0, y1 - y0
+
+    # How many lines the designer's own placeholder occupies. Point text
+    # carries explicit returns; box text (the tab label) wraps, so fall back
+    # to inferring from the ink height.
+    try:
+        # Photoshop marks paragraph breaks with ETX (\x03), not \r.
+        raw = layer.text.replace("\x03", "\r")
+    except Exception:
+        raw = ""
+    size_px = runs[0]["size_px"] if runs else 0
+    cap = CAP_RATIO * size_px
+    lines = max(1, raw.count("\r") + 1) if raw else 1
+    if lines == 1 and size_px and h > cap * 1.6:
+        lines = max(1, round((h - cap) / (size_px * 1.16)) + 1)
+
+    # Leading derived from the designer's block rather than trusted from the
+    # PSD. The stored Leading is the same 33.76 on layers of 40, 29 and 49px,
+    # so it is a stale auto value and cannot be used for body copy. Ink height
+    # of n lines is (n-1)*leading + capHeight, which inverts cleanly.
+    leading_derived = (
+        round((h - cap) / (lines - 1), 2) if lines > 1 and size_px else None
+    )
+
     return {
         "x": x0,
         "y": y0,
-        "w": x1 - x0,
-        "h": y1 - y0,
+        "w": w,
+        "h": h,
+        # SVG positions text by baseline. Photoshop's layer transform is the
+        # text-box origin, not the baseline, so derive it: the ink top plus
+        # one cap height. Verified against the 3-line highlight block, where
+        # this and (ink bottom - 2*leading) agree exactly.
+        "baseline": round(y0 + cap, 2),
+        "lines": lines,
+        "leading_derived_px": leading_derived,
         "origin": [round(tx, 2), round(ty, 2)],
         "scale": scale,
         "rotation": rotation,
@@ -363,6 +443,39 @@ def measure_overlay(path: Path) -> dict:
         close = np.all(np.abs(rgb - target) < tol, axis=2)
         return close & (alpha > 250)
 
+    def ink_bbox(mask: np.ndarray) -> dict | None:
+        """Bounding box of a mask, after dropping isolated pixels.
+
+        A plain min/max is at the mercy of antialiasing speckle: one stray
+        pixel where the mark's white cross blends toward cream widened the
+        lockup box by 22px. But discarding sparse *rows and columns* is too
+        blunt — the outlined "DENMARK." is drawn in hairline strokes with
+        only one or two pixels per column, and thresholding on column counts
+        ate its trailing period.
+
+        Neighbour counting threads between the two: a speckle has no
+        neighbours and goes, while a hairline stroke pixel always has
+        neighbours along the stroke and stays.
+        """
+        m = mask.astype(np.uint8)
+        padded = np.pad(m, 1)
+        neighbours = sum(
+            padded[1 + dy : 1 + dy + m.shape[0], 1 + dx : 1 + dx + m.shape[1]]
+            for dy in (-1, 0, 1)
+            for dx in (-1, 0, 1)
+            if (dy, dx) != (0, 0)
+        )
+        keep = mask & (neighbours >= 2)
+        ys_k, xs_k = np.where(keep)
+        if len(ys_k) == 0:
+            return None
+        return {
+            "x": int(xs_k.min()),
+            "y": int(ys_k.min()),
+            "w": int(xs_k.max() - xs_k.min() + 1),
+            "h": int(ys_k.max() - ys_k.min() + 1),
+        }
+
     result: dict = {
         "size": [w, h],
         "content": {
@@ -396,7 +509,9 @@ def measure_overlay(path: Path) -> dict:
         result["ground"] = "#%02X%02X%02X" % (r, g, b)
 
     # The v1 layout separates the photo from the footer band with a
-    # full-width red rule. Find any full-width run of red rows.
+    # full-width red rule. Detected before the footer artwork below, because
+    # the rule is itself red and left of centre and would otherwise be
+    # swallowed into the mark's bounding box.
     full_red_rows = [
         int(y) for y in range(h) if red[y].sum() >= w - 2 and y > cy1 - 40
     ]
@@ -407,6 +522,30 @@ def measure_overlay(path: Path) -> dict:
         }
         band_top = full_red_rows[-1] + 1
         result["band"] = {"y": band_top, "h": h - band_top}
+
+    # Footer artwork, measured rather than taken from the PSD layer bounds
+    # (which describe the placed canvas, padding included, not the ink).
+    #
+    # The three footer elements separate cleanly by colour and position:
+    #   lockup  the only ink in the *opposite* tone to the ground — cream on
+    #           the navy variants, navy on the sand variant. The year's fill
+    #           matches the ground by design, so it contributes nothing here.
+    #   mark    red, and always left of centre; the year's red stroke is right
+    #           of centre, so an x split separates them.
+    footer_top = (
+        result["rule"]["y"] + result["rule"]["h"] if "rule" in result else cy1 + 1
+    )
+    ground_is_dark = result.get("ground", "").upper() == "#19213C"
+    lockup_ink = mask_for("#F2E6D5" if ground_is_dark else "#19213C", tol=14)
+    lockup_ink[:footer_top] = False
+    if box := ink_bbox(lockup_ink):
+        result["lockup"] = box
+
+    mark_ink = red.copy()
+    mark_ink[:footer_top] = False
+    mark_ink[:, w // 2 :] = False
+    if box := ink_bbox(mark_ink):
+        result["mark"] = box
 
     return result
 

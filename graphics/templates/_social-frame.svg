@@ -1,0 +1,68 @@
+<!--
+  Shared frame for every 1080x1350 social graphic.
+
+  Draw order matters and is uniform across all three variants:
+
+    1. content, clipped to the window   (skipped in --frame mode)
+    2. ground, MASKED to knock the window out
+    3. red rule, if this variant has one
+    4. tab + label, if this category has one
+    5. footer: lockup, mark, year
+
+  Masking the ground rather than filling it is what makes the window a real
+  hole. In --frame mode nothing is drawn behind it, so the window renders
+  transparent exactly as the designer's overlay PNGs do — which is what lets
+  the pixel-diff test compare like with like.
+
+  All numbers arrive as {{...}} substitutions from brand/geometry.json via
+  render.mjs. Nothing here is hardcoded.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{canvasW}}" height="{{canvasH}}" viewBox="0 0 {{canvasW}} {{canvasH}}">
+  <defs>
+    <clipPath id="window">
+      <rect x="{{contentX}}" y="{{contentY}}" width="{{contentW}}" height="{{contentH}}" rx="{{contentR}}"/>
+    </clipPath>
+
+    <mask id="not-window">
+      <rect width="{{canvasW}}" height="{{canvasH}}" fill="#fff"/>
+      <rect x="{{contentX}}" y="{{contentY}}" width="{{contentW}}" height="{{contentH}}" rx="{{contentR}}" fill="#000"/>
+    </mask>
+
+    <!-- Scrim over full-bleed photos so display text stays legible. Only
+         referenced by the v1 layout, where content runs edge to edge. -->
+    <linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="{{navy}}" stop-opacity="0.15"/>
+      <stop offset="0.45" stop-color="{{navy}}" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="{{navy}}" stop-opacity="0.92"/>
+    </linearGradient>
+
+    <filter id="tab-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="{{tabGlowBlur}}"
+                    flood-color="{{red}}" flood-opacity="{{tabGlowOpacity}}"/>
+    </filter>
+  </defs>
+
+  <!-- 1. content -->
+  <g clip-path="url(#window)">{{content}}</g>
+
+  <!-- 2. ground, window knocked out -->
+  <rect width="{{canvasW}}" height="{{canvasH}}" fill="{{ground}}" mask="url(#not-window)"/>
+
+  <!-- 3. red rule (v1 only) -->
+  {{rule}}
+
+  <!-- 4. tab -->
+  {{tab}}
+
+  <!-- 5. footer -->
+  <image xlink:href="{{lockup}}" x="{{lockupX}}" y="{{lockupY}}"
+         width="{{lockupW}}" height="{{lockupH}}"/>
+  <image xlink:href="{{mark}}" x="{{markX}}" y="{{markY}}"
+         width="{{markW}}" height="{{markH}}"/>
+  <text x="{{yearX}}" y="{{yearY}}"
+        font-family="Space Grotesk" font-weight="500"
+        font-size="{{yearSize}}" letter-spacing="{{yearTracking}}"
+        fill="{{yearGround}}" stroke="{{red}}" stroke-width="{{yearStroke}}"
+        paint-order="stroke fill">{{year}}</text>
+</svg>
