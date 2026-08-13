@@ -147,6 +147,29 @@ const escapeXML = (s) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[c],
   );
 
+/** Portrait frame box, derived from the card window by token ratios. */
+function portraitBox(card, pr) {
+  const side = Math.round(card.h * pr.sideOfCardHeight);
+  return {
+    side,
+    cx: Math.round(card.x + card.w * pr.centreXOfCardWidth),
+    cy: Math.round(card.y + card.h * pr.centreYOfCardHeight),
+  };
+}
+
+/**
+ * Map the shape's viewBox onto a square box, so one path serves any size.
+ * The shape is slightly wider than tall, so it is fitted by width and
+ * centred vertically — matching how it reads in the mark.
+ */
+function shapeTransform(viewBox, { side, cx, cy }) {
+  const [vx, vy, vw, vh] = viewBox.split(/\s+/).map(Number);
+  const scale = side / vw;
+  const x = cx - side / 2;
+  const y = cy - (vh * scale) / 2;
+  return `translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${scale.toFixed(5)}) translate(${-vx} ${-vy})`;
+}
+
 /** Path relative to the intermediate HTML, which lives in templates/. */
 const assetURL = (abs) => relative(TEMPLATES, abs).split("\\").join("/");
 
@@ -203,7 +226,26 @@ function main() {
     const specific = join(TEMPLATES, `${opts.template}.svg`);
     const layout = existsSync(specific) ? specific : join(TEMPLATES, "statement.svg");
 
+    // Portrait frame, as ratios of the card window so it survives a card
+    // change. Defaults to the brand silhouette — the handoff bundle's best
+    // idea, and verified to be this mark's own outline — with the designer's
+    // circle still available via --portrait-shape circle.
+    const pr = tokens.portrait;
+    const side = Math.round(box.h * pr.sideOfCardHeight);
+    const pcx = Math.round(box.x + box.w * pr.centreXOfCardWidth);
+    const pcy = Math.round(box.y + box.h * pr.centreYOfCardHeight);
+    const useCircle = (opts["portrait-shape"] ?? "mark") === "circle";
+    const clip = useCircle ? "portrait-circle" : "brand-shape";
+
+    const portraitLayer = opts.portrait
+      ? `<g clip-path="url(#${clip})"><image xlink:href="${assetURL(
+          resolve(opts.portrait),
+        )}" x="${pcx - side / 2}" y="${pcy - side / 2}" width="${side}" ` +
+        `height="${side}" preserveAspectRatio="xMidYMid slice"/></g>`
+      : "";
+
     contentSVG = fill(stripLeadComment(load(layout)), {
+      portraitLayer,
       photoLayer,
       nameX: nameSpec.x,
       nameY: nameSpec.baseline,
@@ -286,6 +328,11 @@ function main() {
     content: contentSVG,
     rule,
     tab,
+    shapePath: tokens.shape.path,
+    shapeTransform: shapeTransform(tokens.shape.viewBox, portraitBox(overlay.content, tokens.portrait)),
+    portraitCX: portraitBox(overlay.content, tokens.portrait).cx,
+    portraitCY: portraitBox(overlay.content, tokens.portrait).cy,
+    portraitR: portraitBox(overlay.content, tokens.portrait).side / 2,
     tabGlowBlur: TAB_GLOW_BLUR,
     tabGlowOpacity: TAB_GLOW_OPACITY,
     lockup: assetURL(

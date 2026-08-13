@@ -82,8 +82,19 @@ body {
 `;
 
 writeFileSync(join(here, "tokens.css"), css);
+
+// The shape motif ships as a standalone asset too, generated from the same
+// token so the path exists in exactly one place.
+writeFileSync(
+  join(here, "logo", "cnd-shape.svg"),
+  `<!-- GENERATED from brand/tokens.json shape.path — do not edit -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="${t.shape.viewBox}">
+  <path d="${t.shape.path}" fill="currentColor"/>
+</svg>
+`,
+);
 console.log(
-  `wrote tokens.css — ${Object.keys(t.color).length} colors, ${
+  `wrote tokens.css (${Object.keys(t.color).length} colors, ${
     Object.values(t.fontFile).flat().length
-  } font faces`,
+  } font faces) and logo/cnd-shape.svg`,
 );

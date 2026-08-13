@@ -37,6 +37,17 @@
       <stop offset="1" stop-color="{{navy}}" stop-opacity="0.92"/>
     </linearGradient>
 
+    <!-- Speaker portraits and other tiles clip to the brand's own
+         silhouette: the rounded heptagon the flag mark is built on. The
+         transform maps the shape's viewBox onto the portrait box. -->
+    <clipPath id="brand-shape">
+      <path d="{{shapePath}}" transform="{{shapeTransform}}"/>
+    </clipPath>
+
+    <clipPath id="portrait-circle">
+      <circle cx="{{portraitCX}}" cy="{{portraitCY}}" r="{{portraitR}}"/>
+    </clipPath>
+
     <filter id="tab-glow" x="-60%" y="-60%" width="220%" height="220%">
       <feDropShadow dx="0" dy="0" stdDeviation="{{tabGlowBlur}}"
                     flood-color="{{red}}" flood-opacity="{{tabGlowOpacity}}"/>

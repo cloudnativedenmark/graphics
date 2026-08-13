@@ -11,12 +11,16 @@
     role       role and organisation, e.g. "PLATFORM LEAD, JYSK"
     highlight  the pull statement. Split lines with "|" — a human choosing
                where a hero line breaks beats greedy wrapping every time.
+    portrait   headshot for the v2/v3 card layouts, clipped to either the
+               brand silhouette or a circle.
 
   Positions and sizes come from geometry.json content.{1,2}, which is why v1
   text sits low over the photo and v2/v3 text sits right of the portrait.
 -->
 
 {{photoLayer}}
+
+{{portraitLayer}}
 
 <text font-family="Space Grotesk" font-weight="500" text-transform="uppercase">
   <tspan x="{{nameX}}" y="{{nameY}}"
