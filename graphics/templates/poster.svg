@@ -1,0 +1,50 @@
+<!--
+  Type-led poster. No card, no tab — the composition IS the typography.
+
+  The idea is lifted straight from the lockup, which sets "CLOUD NATIVE" solid
+  and "DENMARK." as an outline. This does the same thing at display scale: a
+  stack of big uppercase lines where any line can be switched to the outline
+  treatment, so the emphasis lands the way it does in the mark itself.
+
+  Outline is her mechanism, not a CSS trick: the glyph is filled with the
+  ground colour and stroked in red, which is how both "DENMARK." and the year
+  are drawn. It separates correctly for print rather than relying on
+  transparency.
+
+  Slots
+    lines    display stack, "|" between lines. Prefix a line with "*" to
+             switch it to the outline treatment.
+    meta     small red line above the stack — date, venue, whatever anchors it
+    ground   navy, sand or red
+
+  Self-contained rather than composed into _social-frame.svg, because it shares
+  only the footer with the framed layouts.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{canvasW}}" height="{{canvasH}}" viewBox="0 0 {{canvasW}} {{canvasH}}">
+
+  <rect width="{{canvasW}}" height="{{canvasH}}" fill="{{ground}}"/>
+
+  {{decoration}}
+
+  <!-- eyebrow -->
+  <text x="{{textX}}" y="{{metaY}}"
+        font-family="Space Grotesk" font-weight="500"
+        font-size="{{metaSize}}" letter-spacing="{{metaTracking}}"
+        fill="{{metaColor}}">{{meta}}</text>
+
+  <!-- the stack -->
+  <text font-family="Space Grotesk" font-weight="700"
+        font-size="{{displaySize}}" letter-spacing="{{displayTracking}}">{{lines}}</text>
+
+  <!-- footer, unchanged from the framed layouts -->
+  <image xlink:href="{{lockup}}" x="{{lockupX}}" y="{{lockupY}}"
+         width="{{lockupW}}" height="{{lockupH}}"/>
+  <image xlink:href="{{mark}}" x="{{markX}}" y="{{markY}}"
+         width="{{markW}}" height="{{markH}}"/>
+  <text x="{{yearX}}" y="{{yearY}}"
+        font-family="Space Grotesk" font-weight="500"
+        font-size="{{yearSize}}" letter-spacing="{{yearTracking}}"
+        fill="{{ground}}" stroke="{{red}}" stroke-width="{{yearStroke}}"
+        paint-order="stroke fill">{{year}}</text>
+</svg>

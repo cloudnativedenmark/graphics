@@ -21,6 +21,10 @@
  *   --label TEXT      override the tab label
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
+ *   --ground navy|sand|red  poster only
+ *   --lines "A|B|*C"   poster only; "*" makes a line the red outline
+ *   --meta TEXT        poster only; the small red line above the stack
+ *   --hexagons         poster only; bleed the hexagon cluster off the right
  *   --surface post|square  post is her native 1080×1350; square is 1080×1080,
  *                     DERIVED rather than measured — see deriveSquare
  *   --portrait-shape circle|mark  portrait frame; circle is the designer's
@@ -68,11 +72,12 @@ const DEFAULT_CATEGORY = {
   "cfp-notification": "CFP-notifications",
   clean: null,
   "linkedin-cover": null,
+  poster: null,
 };
 
 // Templates that are a whole document rather than a content layer composed
 // into _social-frame.svg. A cover has no tab, card window or footer band.
-const SELF_CONTAINED = new Set(["linkedin-cover"]);
+const SELF_CONTAINED = new Set(["linkedin-cover", "poster"]);
 
 // ---------------------------------------------------------------------------
 
@@ -236,9 +241,8 @@ function main() {
   const geometry = loadJSON(join(ROOT, "brand", "geometry.json"));
   const tokens = loadJSON(join(ROOT, "brand", "tokens.json"));
 
-  if (SELF_CONTAINED.has(opts.template)) {
-    return renderCover(opts, geometry, tokens);
-  }
+  if (opts.template === "linkedin-cover") return renderCover(opts, geometry, tokens);
+  if (opts.template === "poster") return renderPoster(opts, geometry, tokens);
 
   const variant = String(opts.variant);
   if (!["1", "2", "3"].includes(variant)) {
@@ -549,6 +553,131 @@ function renderCover(opts, geometry, tokens) {
     slug: `linkedin-cover-${theme}`,
     out: opts.out ?? join(ROOT, "graphics", "out", `linkedin-cover-${theme}.png`),
     label: `cover, ${theme}`,
+  });
+}
+
+
+/**
+ * Type-led poster: no card, no tab, the stack carries the whole composition.
+ *
+ * Display type here follows her *deck* display spec rather than her social one:
+ * weight 700 at negative tracking. Her social templates set everything in
+ * Medium at +0.02em, which is right at 40-49px but goes slack at 130px — and
+ * her own lockup and deck titles are heavy with tight tracking, so this is the
+ * in-system choice for type at display scale.
+ */
+function renderPoster(opts, geometry, tokens) {
+  const color = tokens.color;
+  const grounds = { navy: color.navy, sand: color.sand, red: color.red };
+  const groundName = (opts.ground ?? "navy").toLowerCase();
+  const ground = grounds[groundName];
+  if (!ground) {
+    console.error(`--ground must be navy, sand or red (got ${groundName})`);
+    process.exit(2);
+  }
+
+  const square = (opts.surface ?? "post").toLowerCase() === "square";
+  const canvasW = geometry.canvas.w;
+  const canvasH = square ? 1080 : geometry.canvas.h;
+  const shift = square ? geometry.canvas.h - 1080 : 0;
+
+  // Footer artwork and the year come from the measured "clean" frame, so the
+  // poster's footer is identical to every framed layout's.
+  const clean = geometry.overlays.clean[groundName === "sand" ? "3" : "2"];
+  const yearSpec = Object.values(geometry.frames)
+    .map((byVariant) => byVariant["2"]?.year)
+    .find(Boolean);
+
+  const onLight = groundName === "sand";
+  const solid = onLight ? color.navy : color.white;
+
+  const size = Number(opts.size ?? 190);
+  const leading = +(size * 0.948).toFixed(2);
+  const textX = clean.lockup.x; // align the stack to the lockup's left edge
+
+  const rawLines = (opts.lines ?? "The|schedule|is|*live").split("|");
+  const metaSize = 34;
+
+  // Bottom-anchored against the footer rather than centred in the space above
+  // it. Centring left the stack floating with dead air above and below; sitting
+  // it on the footer with one clear gap gives the type somewhere to push
+  // against, and the air collects at the top where it reads as intentional.
+  const footerTop = clean.mark.y - shift;
+  const lastBaseline = footerTop - 190;
+  const firstBaseline = Math.round(lastBaseline - (rawLines.length - 1) * leading);
+
+  const lines = rawLines
+    .map((raw, i) => {
+      const outline = raw.trim().startsWith("*");
+      const text = escapeXML(raw.trim().replace(/^\*/, "").toUpperCase());
+      const y = +(firstBaseline + i * leading).toFixed(2);
+      const paint = outline
+        ? `fill="${ground}" stroke="${color.red}" stroke-width="${Math.max(
+            3,
+            Math.round(size / 26),
+          )}" paint-order="stroke fill"`
+        : `fill="${solid}"`;
+      return `<tspan x="${textX}" y="${y}" ${paint}>${text}</tspan>`;
+    })
+    .join("");
+
+  // Optional hexagon cluster, bled off the right edge. Uses the ground-baked
+  // artwork so it holds its colours on navy as well as sand.
+  const decoration = opts.hexagons
+    ? `<image xlink:href="${assetURL(
+        join(ROOT, "brand", "logo", "cnd-hexagons-solid.svg"),
+      )}" x="${canvasW - 300}" y="${Math.round(canvasH * 0.06)}" width="460" height="387" opacity="0.9"/>`
+    : "";
+
+  const svg = fill(stripLeadComment(load(join(TEMPLATES, "poster.svg"))), {
+    canvasW,
+    canvasH,
+    ground,
+    red: color.red,
+    decoration,
+
+    textX,
+    meta: escapeXML((opts.meta ?? `${tokens.event.dates} · ${tokens.event.venue}`).toUpperCase()),
+    // Clear of the first line's ink, not just its baseline: cap height is
+    // 0.7em, so a 0.62em offset put the eyebrow *inside* the display type.
+    metaY: firstBaseline - Math.round(size * 0.7) - 44,
+    metaSize,
+    metaTracking: "0.08em",
+    metaColor: color.red,
+
+    lines,
+    displaySize: size,
+    displayTracking: "-0.01em",
+
+    lockup: assetURL(
+      join(ROOT, "brand", "logo", onLight ? "cnd-lockup-navy.svg" : "cnd-lockup-cream.svg"),
+    ),
+    lockupX: clean.lockup.x,
+    lockupY: clean.lockup.y - shift,
+    lockupW: clean.lockup.w,
+    lockupH: clean.lockup.h,
+    mark: assetURL(join(ROOT, "brand", "logo", "cnd-mark.svg")),
+    markX: clean.mark.x,
+    markY: clean.mark.y - shift,
+    markW: clean.mark.w,
+    markH: clean.mark.h,
+
+    year: tokens.event.year,
+    yearX: yearSpec.x,
+    yearY: yearSpec.baseline - shift,
+    yearSize: yearSpec.runs[0].size_px,
+    yearTracking: `${yearSpec.runs[0].tracking_em}em`,
+    yearStroke: YEAR_STROKE,
+  });
+
+  rasterise(svg, {
+    canvasW,
+    canvasH,
+    scale: opts.scale,
+    keepHtml: opts["keep-html"],
+    slug: `poster-${groundName}`,
+    out: opts.out ?? join(ROOT, "graphics", "out", `poster-${groundName}.png`),
+    label: `poster, ${groundName}, ${square ? "square" : "4:5"}`,
   });
 }
 
