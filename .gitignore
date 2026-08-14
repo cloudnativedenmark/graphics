@@ -6,3 +6,5 @@ brand/.venv/
 graphics/templates/.render-*.html
 demo/
 decks/*/.overflow-probe.html
+
+# assets/ IS tracked — speaker photos and sponsor logos live there.

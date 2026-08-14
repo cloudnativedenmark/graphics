@@ -15,15 +15,34 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DECKS = join(ROOT, "decks");
-const CHROME =
-  process.env.CHROME_BIN ??
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+
+/**
+ * Locate Chrome. CHROME_BIN wins; otherwise try the usual places per platform.
+ * Hardcoding the macOS path meant these scripts only ran on one machine.
+ */
+function findChrome() {
+  if (process.env.CHROME_BIN) return process.env.CHROME_BIN;
+  const candidates = [
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "/snap/bin/chromium",
+  ];
+  for (const path of candidates) if (existsSync(path)) return path;
+  console.error("Could not find Chrome. Install it, or set CHROME_BIN.");
+  process.exit(1);
+}
+
+const CHROME = findChrome();
 
 const STAGE_W = 1920;
 const STAGE_H = 1080;

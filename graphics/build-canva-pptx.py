@@ -43,6 +43,7 @@ in EMU (914400 per inch) and type in points (px * 0.75).
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -92,6 +93,31 @@ SLIDES = [
      "CFP notification - sand card"),
 ]
 
+
+
+def find_chrome() -> str:
+    """Locate Chrome, honouring CHROME_BIN first.
+
+    Hardcoding the macOS path meant these scripts only ran on one machine.
+    """
+    import shutil
+
+    if os.environ.get("CHROME_BIN"):
+        return os.environ["CHROME_BIN"]
+    candidates = [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    ]
+    for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
+        found = shutil.which(name)
+        if found:
+            candidates.append(found)
+    for path in candidates:
+        if Path(path).exists():
+            return path
+    sys.exit(
+        "Could not find Chrome. Install it, or set CHROME_BIN to its path."
+    )
 
 def px(v: float) -> Emu:
     return Emu(int(round(v * EMU_PER_PX)))

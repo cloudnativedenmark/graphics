@@ -43,6 +43,7 @@ import base64
 import io
 import sys
 import json
+import os
 import subprocess
 import tempfile
 from pathlib import Path
@@ -57,6 +58,31 @@ CAP_RATIO = 0.700
 # Latin-1 plus the punctuation the templates actually use.
 SUBSET = "U+0020-007E,U+00A0-00FF,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+00B7,U+00B0,U+00AA"
 
+
+
+def find_chrome() -> str:
+    """Locate Chrome, honouring CHROME_BIN first.
+
+    Hardcoding the macOS path meant these scripts only ran on one machine.
+    """
+    import shutil
+
+    if os.environ.get("CHROME_BIN"):
+        return os.environ["CHROME_BIN"]
+    candidates = [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    ]
+    for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
+        found = shutil.which(name)
+        if found:
+            candidates.append(found)
+    for path in candidates:
+        if Path(path).exists():
+            return path
+    sys.exit(
+        "Could not find Chrome. Install it, or set CHROME_BIN to its path."
+    )
 
 def b64_font(path: Path, tmp: Path, instance: str | None = None) -> str:
     """Subset to woff2, optionally pinning a variable font to one instance.
@@ -927,7 +953,7 @@ def main() -> int:
 </html>
 """
 
-    chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    chrome = find_chrome()
     written = []
     for name, pages, height in [
         ("cnd-templates-4x5", portrait_pages, canvas_h),
@@ -941,7 +967,7 @@ def main() -> int:
         pdf_path = OUT / f"{name}.pdf"
         subprocess.run(
             [
-                chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+                find_chrome(), "--headless", "--disable-gpu", "--no-pdf-header-footer",
                 "--virtual-time-budget=8000", f"--print-to-pdf={pdf_path}",
                 f"file://{html_path}",
             ],

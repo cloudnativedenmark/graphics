@@ -1,0 +1,15 @@
+# Python dependencies for the extraction and verification scripts.
+#
+#   python3 -m venv .venv
+#   .venv/bin/pip install -r requirements.txt
+#
+# Day-to-day rendering (graphics/render.mjs, the decks) needs none of this —
+# only Node and Chrome. These are for re-extracting from the designer's source
+# files, running the pixel checks, and building the Canva hand-off.
+
+pillow>=10.0          # image measurement, resampling, the pixel diffs
+numpy>=1.26           # the geometry measurement in extract.py
+psd-tools>=1.18       # reading the designer's PSDs (extract.py only)
+fonttools[woff]>=4.50 # font metrics, subsetting, static instances
+lxml>=5.0             # injecting text outline XML into PPTX
+python-pptx>=1.0      # the PPTX Canva hand-off

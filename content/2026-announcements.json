@@ -7,7 +7,7 @@
       "headline": "Your agent|has no idea|where it’s|running.",
       "body": "Joseph Sandoval.|Day one, main hall.",
       "ground": "sand",
-      "portrait": "demo/joseph-sandoval.jpg"
+      "portrait": "assets/speakers/joseph-sandoval.jpg"
     },
     {
       "slug": "d1-whose-code",
@@ -15,8 +15,8 @@
       "headline": "Whose code|is it anyways?",
       "body": "Adriana Villela & Josh Lee.|Day one, main hall.",
       "ground": "navy",
-      "portrait": "demo/speakers/adriana.jpg",
-      "portrait2": "demo/speakers/josh.jpg"
+      "portrait": "assets/speakers/adriana.jpg",
+      "portrait2": "assets/speakers/josh.jpg"
     },
     {
       "slug": "d1-goblins-druids",
@@ -24,7 +24,7 @@
       "headline": "What goblins|and druids teach|us about|enterprise AI.",
       "body": "Michael Coté.|Day one, main hall.",
       "ground": "sand",
-      "portrait": "demo/speakers/michael_cote.png",
+      "portrait": "assets/speakers/michael_cote.png",
       "align": "xMidYMin"
     },
     {
@@ -33,8 +33,8 @@
       "headline": "The developer's|nightmare.",
       "body": "Surviving compliance checklists and still|shipping fast. Thomas Vitale &|Alexandra Hou Aldershaab. Day two.",
       "ground": "navy",
-      "portrait": "demo/speakers/thomas_vitale.jpg",
-      "portrait2": "demo/speakers/alexandra.png"
+      "portrait": "assets/speakers/thomas_vitale.jpg",
+      "portrait2": "assets/speakers/alexandra.png"
     },
     {
       "slug": "d2-map-keeps-changing",
@@ -42,7 +42,7 @@
       "headline": "How do you|explore when the|map keeps|changing?",
       "body": "Paula Kennedy.|Day two, main hall.",
       "ground": "sand",
-      "portrait": "demo/speakers/paula_kennedy.jpg",
+      "portrait": "assets/speakers/paula_kennedy.jpg",
       "align": "xMinYMid"
     },
     {
@@ -51,7 +51,7 @@
       "headline": "Beyond the|DBaaS trap.",
       "body": "Data sovereignty with Kubernetes and|CloudNativePG. Gabriele Bartolini.|Day two, main hall.",
       "ground": "navy",
-      "portrait": "demo/speakers/gabriele.png"
+      "portrait": "assets/speakers/gabriele.png"
     }
   ],
   "sponsors": [
@@ -59,67 +59,67 @@
       "slug": "scannet",
       "name": "ScanNet",
       "tier": "Platinum",
-      "logo": "demo/sponsors/scannet.png"
+      "logo": "assets/sponsors/scannet.png"
     },
     {
       "slug": "aws",
       "name": "AWS",
       "tier": "Gold",
-      "logo": "demo/sponsors/aws.svg"
+      "logo": "assets/sponsors/aws.svg"
     },
     {
       "slug": "exoscale",
       "name": "Exoscale",
       "tier": "Gold",
-      "logo": "demo/sponsors/exoscale.svg"
+      "logo": "assets/sponsors/exoscale.svg"
     },
     {
       "slug": "netic",
       "name": "Netic",
       "tier": "Gold",
-      "logo": "demo/sponsors/netic.png"
+      "logo": "assets/sponsors/netic.png"
     },
     {
       "slug": "suse",
       "name": "SUSE",
       "tier": "Gold",
-      "logo": "demo/sponsors/suse.svg"
+      "logo": "assets/sponsors/suse.svg"
     },
     {
       "slug": "chainguard",
       "name": "Chainguard",
       "tier": "Bronze",
-      "logo": "demo/sponsors/chainguard.svg"
+      "logo": "assets/sponsors/chainguard.svg"
     },
     {
       "slug": "dash0",
       "name": "Dash0",
       "tier": "Bronze",
-      "logo": "demo/sponsors/dash0.svg"
+      "logo": "assets/sponsors/dash0.svg"
     },
     {
       "slug": "edb",
       "name": "EDB",
       "tier": "Bronze",
-      "logo": "demo/sponsors/edb.svg"
+      "logo": "assets/sponsors/edb.svg"
     },
     {
       "slug": "everpure",
       "name": "Everpure",
       "tier": "Bronze",
-      "logo": "demo/sponsors/everpure.svg"
+      "logo": "assets/sponsors/everpure.svg"
     },
     {
       "slug": "systematic",
       "name": "Systematic",
       "tier": "Bronze",
-      "logo": "demo/sponsors/systematic.svg"
+      "logo": "assets/sponsors/systematic.svg"
     },
     {
       "slug": "tigera",
       "name": "Tigera",
       "tier": "Bronze",
-      "logo": "demo/sponsors/tigera.svg"
+      "logo": "assets/sponsors/tigera.svg"
     }
   ],
   "tiers": [
