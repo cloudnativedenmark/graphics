@@ -343,24 +343,30 @@ def main() -> int:
 
     def sponsors_svg(logos: list[Path], per_row: int, top: float) -> str:
         """A honeycomb row of logos, each in a white hexagon."""
+        # Same lattice the renderer uses: alternate rows shift half a pitch
+        # right and step down 0.8 of a cell. Staggering columns downward
+        # instead merges same-column hexagons into a blob.
         gap = 20
-        cell_w = min(
-            round((1080 - 86 * 2 - gap * (per_row - 1)) / per_row),
-            round((1080 - top - 200) / 1.35),
+        rows = -(-len(logos) // per_row)
+        ROW_STEP = 0.8
+        stack = 1 + (rows - 1) * ROW_STEP
+        cell_h = min(
+            ((1080 - 86 * 2 - gap * per_row) / per_row) * (1090.11 / 1005.874),
+            (1080 - top - 60) / stack,
         )
-        cell_h = cell_w * 1090.11 / 1005.874
+        cell_w = round(cell_h * 1005.874 / 1090.11)
+        draw_w = round(cell_w * 0.94)
         body = []
         for i, logo in enumerate(logos):
             row, col = divmod(i, per_row)
             in_row = min(per_row, len(logos) - row * per_row)
-            row_w = in_row * cell_w + (in_row - 1) * gap
-            x0 = (1080 - row_w) / 2
-            cx = x0 + col * (cell_w + gap) + cell_w / 2
-            cy = top + row * (cell_h * 0.84) + cell_h / 2 + (
-                cell_h * 0.24 if col % 2 else 0
-            )
-            box = hex_box(cell_w, cx, cy)
-            pad = cell_w * 0.2
+            pitch = cell_w + gap
+            row_w = in_row * pitch - gap
+            x0 = (1080 - row_w) / 2 + (pitch / 2 if row % 2 else 0)
+            cx = x0 + col * pitch + cell_w / 2
+            cy = top + row * cell_h * ROW_STEP + cell_h / 2
+            box = hex_box(draw_w, cx, cy)
+            pad = draw_w * 0.2
             body.append(
                 f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
                 f'fill="{color["white"]}"/>'

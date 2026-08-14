@@ -1,0 +1,89 @@
+{
+  "$comment": "Content for the 2026 announcement graphics. Edit this, then run: node graphics/build-announcements.mjs. Headlines take the punchy part of the talk title; the full title, speakers and slot go in the body. '|' is a line break, and the renderer shrinks display type to fit, so a longer name will not break the layout.",
+
+  "keynotes": [
+    {
+      "slug": "d1-whose-code",
+      "eyebrow": "Keynote · day one",
+      "headline": "Whose code|is it anyways?",
+      "body": "Adriana Villela & Josh Lee.|Day one, main hall.",
+      "ground": "navy",
+      "portrait": "demo/speakers/adriana.jpg",
+      "portrait2": "demo/speakers/josh.jpg"
+    },
+    {
+      "slug": "d1-goblins-druids",
+      "eyebrow": "Keynote · day one",
+      "headline": "What goblins|and druids teach|us about|enterprise AI.",
+      "body": "Michael Coté.|Day one, main hall.",
+      "ground": "sand",
+      "portrait": "demo/speakers/michael_cote.png",
+      "align": "xMidYMin"
+    },
+    {
+      "slug": "d2-developers-nightmare",
+      "eyebrow": "Keynote · day two",
+      "headline": "The developer's|nightmare.",
+      "body": "Surviving compliance checklists and still|shipping fast. Thomas Vitale &|Alexandra Hou Aldershaab. Day two.",
+      "ground": "navy",
+      "portrait": "demo/speakers/thomas_vitale.jpg",
+      "portrait2": "demo/speakers/alexandra.png"
+    },
+    {
+      "slug": "d2-map-keeps-changing",
+      "eyebrow": "Keynote · day two",
+      "headline": "How do you|explore when the|map keeps|changing?",
+      "body": "Paula Kennedy.|Day two, main hall.",
+      "ground": "sand",
+      "portrait": "demo/speakers/paula_kennedy.jpg",
+      "align": "xMinYMid"
+    },
+    {
+      "slug": "d2-dbaas-trap",
+      "eyebrow": "Keynote · day two",
+      "headline": "Beyond the|DBaaS trap.",
+      "body": "Data sovereignty with Kubernetes and|CloudNativePG. Gabriele Bartolini.|Day two, main hall.",
+      "ground": "navy",
+      "portrait": "demo/sponsors/../speakers/gabriele.png"
+    }
+  ],
+
+  "sponsorTiers": [
+    {
+      "slug": "platinum",
+      "eyebrow": "Platinum sponsor",
+      "headline": "Thank you,|ScanNet.",
+      "ground": "navy",
+      "single": "demo/sponsors/scannet.png",
+      "body": "Platinum sponsor of Cloud Native Denmark 2026."
+    },
+    {
+      "slug": "gold",
+      "eyebrow": "Gold sponsors · 2026",
+      "headline": "Thank you,|gold sponsors.",
+      "ground": "navy",
+      "perRow": 4,
+      "logos": [
+        "demo/sponsors/aws.svg",
+        "demo/sponsors/exoscale.svg",
+        "demo/sponsors/netic.png",
+        "demo/sponsors/suse.svg"
+      ]
+    },
+    {
+      "slug": "bronze",
+      "eyebrow": "Bronze sponsors · 2026",
+      "headline": "Thank you,|bronze sponsors.",
+      "ground": "sand",
+      "perRow": 3,
+      "logos": [
+        "demo/sponsors/chainguard.svg",
+        "demo/sponsors/dash0.svg",
+        "demo/sponsors/edb.svg",
+        "demo/sponsors/everpure.svg",
+        "demo/sponsors/systematic.svg",
+        "demo/sponsors/tigera.svg"
+      ]
+    }
+  ]
+}

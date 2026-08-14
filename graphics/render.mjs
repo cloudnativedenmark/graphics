@@ -954,6 +954,18 @@ function hexField(geometry, tokens, canvasW, canvasH, opts, dark) {
   const hex = geometry.hexagon;
   const fills = [color.rose, color.peach, color.slate];
 
+  // Two-speaker keynotes need a matched pair rather than one big hexagon and a
+  // scattering. These interlock the way her cluster does: the second sits half
+  // a cell right and three-quarters of a cell down from the first.
+  const pairSpots = [
+    { w: 340, cx: 790, cy: 340 },
+    { w: 340, cx: 930, cy: 616 },
+    { w: 196, cx: 620, cy: 616 },
+    { w: 150, cx: 1046, cy: 300 },
+    { w: 236, cx: 790, cy: 892 },
+    { w: 124, cx: 606, cy: 900 },
+  ];
+
   // width, centre x, centre y — the big one first, so it can take the photo.
   // Kept clear of the text: at 132px the headline runs to about x 620, so the
   // photo hexagon starts past that. The first pass had it at cx 800 with
@@ -970,11 +982,28 @@ function hexField(geometry, tokens, canvasW, canvasH, opts, dark) {
   ];
 
   const media = opts.portrait ?? opts.logo;
+  const second = opts.portrait2;
+  const layout = second ? pairSpots : spots;
+  const mediaCount = second ? 2 : media ? 1 : 0;
   const parts = [];
   const defs = [];
 
-  spots.forEach((spot, i) => {
+  layout.forEach((spot, i) => {
     const box = hexTransform(hex.viewBox, spot);
+    if (i === 1 && second) {
+      const id = "hexmask1";
+      defs.push(
+        `<clipPath id="${id}"><path d="${hex.path}" transform="${box.transform}"/></clipPath>`,
+      );
+      parts.push(
+        `<g clip-path="url(#${id})"><image xlink:href="${assetURL(
+          resolve(second),
+        )}" x="${box.x.toFixed(2)}" y="${box.y.toFixed(2)}" ` +
+          `width="${box.w.toFixed(2)}" height="${box.h.toFixed(2)}" ` +
+          `preserveAspectRatio="${opts.align2 ?? "xMidYMid"} slice"/></g>`,
+      );
+      return;
+    }
     if (i === 0 && media) {
       const id = `hexmask${i}`;
       defs.push(
@@ -997,12 +1026,12 @@ function hexField(geometry, tokens, canvasW, canvasH, opts, dark) {
             resolve(opts.portrait),
           )}" x="${box.x.toFixed(2)}" y="${box.y.toFixed(2)}" ` +
             `width="${box.w.toFixed(2)}" height="${box.h.toFixed(2)}" ` +
-            `preserveAspectRatio="xMidYMid slice"/></g>`,
+            `preserveAspectRatio="${opts.align ?? "xMidYMid"} slice"/></g>`,
         );
       }
       return;
     }
-    const fill = fills[(i - (media ? 1 : 0)) % fills.length];
+    const fill = fills[Math.max(0, i - mediaCount) % fills.length];
     parts.push(
       `<path d="${hex.path}" transform="${box.transform}" fill="${fill}" ` +
         `fill-opacity="${dark ? 0.92 : 1}"/>`,
@@ -1068,15 +1097,30 @@ function renderSponsors(opts, geometry, tokens) {
   const headBottom = headFirst + (headLines.length - 1) * headLead;
 
   // Fit the honeycomb to the space left below the headline.
+  //
+  // The vertical budget has to know the row count *before* sizing a cell. A
+  // single-row formula sized two rows of bronze sponsors so they overlapped and
+  // the bottom row ran off the canvas. Total height of the block is one cell,
+  // plus 0.84 of a cell per additional row, plus the 0.24 stagger the odd
+  // columns are pushed down by.
   const perRow = Math.min(logos.length, Number(opts.perRow ?? 4));
-  const gap = 20;
-  const cellW = Math.min(
-    Math.round((canvasW - M * 2 - gap * (perRow - 1)) / perRow),
-    Math.round((canvasH - headBottom - 200) / 1.35),
-  );
-  const cellH = (cellW * 1090.11) / 1005.874;
   const rows = Math.ceil(logos.length / perRow);
+  const gap = 20;
   const fieldTop = headBottom + 118;
+
+  // A honeycomb offsets alternate *rows* horizontally by half a cell and steps
+  // down three-quarters of a cell. Staggering individual columns downward
+  // instead — which is what the first version did — stacks same-column
+  // hexagons on top of each other and they merge into a white blob.
+  const ROW_STEP = 0.8;
+  const stack = 1 + (rows - 1) * ROW_STEP;
+  const cellH = Math.min(
+    ((canvasW - M * 2 - gap * perRow) / perRow) * (1090.11 / 1005.874),
+    (canvasH - fieldTop - 60) / stack,
+  );
+  const cellW = Math.round((cellH * 1005.874) / 1090.11);
+  // Drawn slightly inside the lattice cell so neighbours have visible gaps.
+  const drawW = Math.round(cellW * 0.94);
 
   const defs = [];
   const cells = [];
@@ -1084,13 +1128,14 @@ function renderSponsors(opts, geometry, tokens) {
     const row = Math.floor(i / perRow);
     const col = i % perRow;
     const inRow = Math.min(perRow, logos.length - row * perRow);
-    const rowW = inRow * cellW + (inRow - 1) * gap;
-    const x0 = (canvasW - rowW) / 2;
-    const cx = x0 + col * (cellW + gap) + cellW / 2;
-    const cy =
-      fieldTop + row * (cellH * 0.84) + cellH / 2 + (col % 2 ? cellH * 0.24 : 0);
-    const box = hexTransform(hex.viewBox, { w: cellW, cx, cy });
-    const pad = cellW * 0.2;
+    const pitch = cellW + gap;
+    const rowW = inRow * pitch - gap;
+    // Odd rows shift half a pitch right, so cells nest between the row above.
+    const x0 = (canvasW - rowW) / 2 + (row % 2 ? pitch / 2 : 0);
+    const cx = x0 + col * pitch + cellW / 2;
+    const cy = fieldTop + row * cellH * ROW_STEP + cellH / 2;
+    const box = hexTransform(hex.viewBox, { w: drawW, cx, cy });
+    const pad = drawW * 0.2;
     cells.push(
       `<path d="${hex.path}" transform="${box.transform}" fill="${color.white}"/>` +
         `<image xlink:href="${assetURL(resolve(logoPath))}" ` +
