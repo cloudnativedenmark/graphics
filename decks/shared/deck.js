@@ -21,6 +21,55 @@
   progress.className = "deck-progress";
   document.body.append(progress);
 
+  /* ── chrome ─────────────────────────────────────────────────────────────
+   * Lockup bottom-left, edition and page number bottom-right, on every slide
+   * that does not opt out with data-chrome="none" — the cover and the closing
+   * slides. This is injected rather than written into each slide because it was
+   * hand-copied onto 17 of 48 slides before, and a footer you have to remember
+   * is a footer that drifts.
+   *
+   * The footer carries the *mark*, not the wordmark. The lockup is a three-line
+   * stacked block: at the 44px the footer allows, its strokes go sub-pixel and
+   * it renders as grey mush. The mark is one glyph and stays legible — and the
+   * footer text already spells the name, so the wordmark would only repeat it.
+   * The cover still carries the full lockup at size.
+   *
+   * Red grounds get no mark. The mark is a red flag with a white cross, so on
+   * red its field merges with the slide and all that survives is a floating
+   * white plus — the same knockout gap already open with the designer. The
+   * footer text carries the brand on those slides. */
+  const LOGO_DIR = new URL("../../brand/logo/", document.currentScript.src);
+  const footerMeta =
+    document.body.dataset.footer ?? "Edition N° 04 · cloudnativedenmark.dk";
+
+  slides.forEach((slide, i) => {
+    if (slide.dataset.chrome === "none") return;
+    slide.querySelector(".slide-footer")?.remove();
+
+    const footer = document.createElement("footer");
+    footer.className = "slide-footer";
+    if (slide.dataset.ground !== "red") {
+      footer.append(
+        Object.assign(document.createElement("img"), {
+          className: "slide-mark",
+          alt: "Cloud Native Denmark",
+          src: new URL("cnd-mark.svg", LOGO_DIR).href,
+        }),
+      );
+    }
+    footer.append(
+      Object.assign(document.createElement("span"), {
+        className: "slide-meta",
+        textContent: footerMeta,
+      }),
+      Object.assign(document.createElement("span"), {
+        className: "slide-page",
+        textContent: String(i + 1).padStart(2, "0"),
+      }),
+    );
+    slide.append(footer);
+  });
+
   let index = 0;
 
   /* The stage is a fixed 1920×1080 so every measurement in the CSS is a real

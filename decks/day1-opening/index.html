@@ -24,7 +24,9 @@
 <body class="deck" data-deck-title="Day 1 Opening">
 
 <!-- 01 ─ title ------------------------------------------------------- -->
-<section class="slide" data-layout="title">
+<!-- The cover carries the lockup at full size in the layout itself, so it opts
+     out of the injected footer chrome. -->
+<section class="slide" data-layout="title" data-chrome="none">
   <div class="field"></div>
   <div class="pad">
     <p class="eyebrow">Edition N° 04 — Scandic Copenhagen</p>
@@ -64,7 +66,6 @@
       cloud native stack, the name grew with it.</p>
     </div>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 04 ─ charity ----------------------------------------------------- -->
@@ -88,7 +89,6 @@
       </ul>
     </div>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 05 ─ three cities ------------------------------------------------ -->
@@ -121,7 +121,6 @@
     <div class="person"><div class="avatar"></div>
       <span class="who">Robert Jensen</span><span class="what">Cloud Native Consultant, 12F</span></div>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 07 ─ practicalities --------------------------------------------- -->
@@ -144,7 +143,6 @@
       <dt>Password</dt><dd>TODO — from venue</dd>
     </dl>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 09 ─ the rooms --------------------------------------------------- -->
@@ -164,7 +162,6 @@
       way. There is no such thing as a stupid question about a floor plan.</p>
     </div>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 10 ─ workshops --------------------------------------------------- -->
@@ -181,7 +178,6 @@
       <p class="body">TODO — tomorrow's workshops, rooms and times.</p>
     </div>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 11 ─ sharing is caring ------------------------------------------- -->
@@ -207,7 +203,6 @@
     conference, which is what lets every krone of profit go to charity. Go and
     talk to them — they are practitioners too, and they brought stickers.</p>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 13 ─ afterparty -------------------------------------------------- -->
@@ -236,7 +231,6 @@
       the mug you already have.</p>
     </div>
   </div>
-  <footer class="slide-footer"><span>Edition N° 04</span><span>cloudnativedenmark.dk</span></footer>
 </section>
 
 <!-- 15 ─ let's go ---------------------------------------------------- -->
@@ -251,13 +245,41 @@
 <!-- 16 ─ speaker intro ----------------------------------------------- -->
 <!-- TODO 2026: one intro + rate pair per session. Copy this pair and the next,
      fill in the name, role, talk title and headshot. -->
+<!-- The three day-one keynotes, from content/2026-announcements.json.
+     Which keynote opens and which closes is provisional until the final
+     schedule lands; reorder these sections, do not retype them. Each still
+     needs its rate-this-session pair. -->
 <section class="slide" data-layout="speaker" data-ground="navy">
   <div class="cols">
-    <div class="avatar portrait"></div>
+    <img class="portrait" src="../../assets/speakers/joseph-sandoval.jpg" alt="">
     <div>
       <span class="badge">Keynote</span>
-      <p class="talk">TODO — opening keynote title</p>
-      <p class="who">TODO — speaker name</p>
+      <p class="talk" style="font-size: 86px">Your Agent Has No Idea Where It’s Running</p>
+      <p class="who">Joseph Sandoval</p>
+      <p class="what">TODO — role, organization</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-layout="speaker" data-ground="navy">
+  <div class="cols">
+    <div class="pair"><img class="portrait" src="../../assets/speakers/adriana.jpg" alt=""><img class="portrait" src="../../assets/speakers/josh.jpg" alt=""></div>
+    <div>
+      <span class="badge">Keynote</span>
+      <p class="talk" style="font-size: 86px">Whose Code is it Anyways?</p>
+      <p class="who">Adriana Villela &amp; Josh Lee</p>
+      <p class="what">TODO — role, organization</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-layout="speaker" data-ground="navy">
+  <div class="cols">
+    <img class="portrait" src="../../assets/speakers/michael_cote.png" alt="">
+    <div>
+      <span class="badge">Keynote</span>
+      <p class="talk" style="font-size: 74px">What goblins and druids can teach us about enterprise AI</p>
+      <p class="who">Michael Coté</p>
       <p class="what">TODO — role, organization</p>
     </div>
   </div>
