@@ -57,11 +57,26 @@ CAP_RATIO = 0.700
 SUBSET = "U+0020-007E,U+00A0-00FF,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+00B7,U+00B0,U+00AA"
 
 
-def b64_font(path: Path, tmp: Path) -> str:
+def b64_font(path: Path, tmp: Path, instance: str | None = None) -> str:
+    """Subset to woff2, optionally pinning a variable font to one instance.
+
+    Inter ships variable-only. Canva substitutes variable fonts, so it is
+    pinned to a static weight before subsetting.
+    """
+    src = path
+    if instance:
+        src = tmp / (path.stem + "-static.ttf")
+        subprocess.run(
+            [
+                str(ROOT / ".venv" / "bin" / "fonttools"), "varLib.instancer",
+                "-o", str(src), str(path), *instance.split(),
+            ],
+            check=True, capture_output=True,
+        )
     dst = tmp / (path.stem + ".woff2")
     subprocess.run(
         [
-            str(ROOT / ".venv" / "bin" / "pyftsubset"), str(path),
+            str(ROOT / ".venv" / "bin" / "pyftsubset"), str(src),
             f"--unicodes={SUBSET}", "--flavor=woff2", f"--output-file={dst}",
         ],
         check=True, capture_output=True,
@@ -96,12 +111,17 @@ def main() -> int:
         tmp = Path(td)
         sg_medium = b64_font(ROOT / "brand" / "fonts" / "SpaceGrotesk-Medium.ttf", tmp)
         sg_bold = b64_font(ROOT / "brand" / "fonts" / "SpaceGrotesk-Bold.ttf", tmp)
+        inter = b64_font(
+            ROOT / "brand" / "fonts" / "Inter-Variable.ttf", tmp,
+            instance="wght=400 opsz=14",
+        )
 
     lockups = {
         "cream": b64_svg(ROOT / "brand" / "logo" / "cnd-lockup-cream.svg"),
         "navy": b64_svg(ROOT / "brand" / "logo" / "cnd-lockup-navy.svg"),
     }
     mark_b64 = b64_svg(ROOT / "brand" / "logo" / "cnd-mark.svg")
+    hexagons_b64 = b64_svg(ROOT / "brand" / "logo" / "cnd-hexagons-solid.svg")
 
     year_spec = next(
         v["2"]["year"] for v in geometry["frames"].values() if v.get("2")
@@ -246,13 +266,111 @@ def main() -> int:
         parts.append(footer(overlay, on_light))
         return page(page_label, "".join(parts))
 
-    def page(label: str, inner: str) -> str:
+    def bulletin_page(
+        ground_name: str, eyebrow: str, headline: str, body: str,
+        decor: str, at: str, page_label: str,
+    ) -> str:
+        """The announcement layout: lockup, eyebrow, sentence-case headline,
+        body, one corner-bleeding device, and air below."""
+        grounds = {
+            "sand": color["sand"], "bone": color["bone"],
+            "navy": color["navy"], "red": color["red"],
+        }
+        ground = grounds[ground_name]
+        dark = ground_name in ("navy", "red")
+        on_red = ground_name == "red"
+        ink = color["white"] if dark else color["navy"]
+        M = 86
+        head_size = 104
+        head_lead = round(head_size * 0.95, 2)
+        eyebrow_base = 196
+        head_first = eyebrow_base + 96
+        head_lines = headline.split("|")
+        body_first = head_first + (len(head_lines) - 1) * head_lead + 78
+        body_size = 30
+
+        parts = [f'<div class="ground" style="background:{ground}"></div>']
+
+        if decor == "shape":
+            # The mark's own silhouette, scaled large and bled off an edge.
+            side = 470
+            vx, vy, vw, vh = (float(n) for n in tokens["shape"]["viewBox"].split())
+            scale = side / vw
+            spot = {
+                "top-right": (1080 - 40, -20),
+                "top-left": (M + 40, -30),
+                "bottom-left": (M + 20, 1080 + 40),
+                "bottom-right": (1080 - 40, 1080 + 40),
+            }[at]
+            tx = spot[0] - side / 2
+            ty = spot[1] - vh * scale / 2
+            fill_hex = color["white"] if dark else color["slate"]
+            parts.append(
+                f'<svg class="decor" viewBox="0 0 1080 1080" width="1080" '
+                f'height="1080" style="left:0;top:0">'
+                f'<path d="{tokens["shape"]["path"]}" fill="{fill_hex}" '
+                f'fill-opacity="{0.16 if dark else 1}" '
+                f'transform="translate({tx:.2f} {ty:.2f}) scale({scale:.5f}) '
+                f'translate({-vx} {-vy})"/></svg>'
+            )
+        elif decor == "hexagons":
+            w = 620
+            h = round(w * 270 / 321, 2)
+            spot = {
+                "top-right": (1080 - w * 0.4, -h * 0.34),
+                "top-left": (-w * 0.52, -h * 0.34),
+                "bottom-left": (-w * 0.48, 1080 - h * 0.62),
+                "bottom-right": (1080 - w * 0.52, 1080 - h * 0.62),
+            }[at]
+            parts.append(
+                f'<img class="decor" src="data:image/svg+xml;base64,{hexagons_b64}" '
+                f'style="left:{spot[0]:.2f}px;top:{spot[1]:.2f}px;'
+                f'width:{w}px;height:{h}px" alt="">'
+            )
+
+        if not on_red:
+            parts.append(
+                f'<img class="mark" src="data:image/svg+xml;base64,{mark_b64}" '
+                f'style="left:{M}px;top:56px;width:54px;height:53px" alt="">'
+            )
+        parts.append(
+            f'<img class="lockup" src="data:image/svg+xml;base64,'
+            f'{lockups["cream"] if dark else lockups["navy"]}" '
+            f'style="left:{M if on_red else M + 68}px;top:58px;'
+            f'width:132px;height:78px" alt="Cloud Native Denmark">'
+        )
+        parts.append(
+            f'<div class="t" style="left:{M}px;'
+            f'top:{top_for(eyebrow_base, 26)}px;font-size:26px;'
+            f'letter-spacing:0.18em;'
+            f'color:{color["white"] if dark else color["red"]}">'
+            f'{esc(eyebrow.upper())}</div>'
+        )
+        parts.append(
+            f'<div class="t display" style="left:{M}px;'
+            f'top:{top_for(head_first, head_size)}px;font-size:{head_size}px;'
+            f'color:{ink};line-height:{round(head_lead / head_size, 4)}">'
+            + "<br>".join(esc(l.strip()) for l in head_lines)
+            + "</div>"
+        )
+        parts.append(
+            f'<div class="t body" style="left:{M}px;'
+            f'top:{top_for(body_first, body_size)}px;font-size:{body_size}px;'
+            f'color:{color["white"] if dark else color["ink-muted"]};'
+            f'line-height:1.5">'
+            + "<br>".join(esc(l.strip()) for l in body.split("|"))
+            + "</div>"
+        )
+        return page(page_label, "".join(parts), square=True)
+
+    def page(label: str, inner: str, square: bool = False) -> str:
+        cls = "page square" if square else "page"
         return (
-            f'<div class="page" data-document-role="page" data-label="{esc(label)}">'
+            f'<div class="{cls}" data-document-role="page" data-label="{esc(label)}">'
             f"{inner}</div>"
         )
 
-    pages = [
+    portrait_pages = [
         statement_page(
             "speaker-highlights", "2", "Speaker|highlights", "Name Lastname",
             "Role, organization", "Highlight lorem|ipsum dolores|lorem ipsum",
@@ -293,7 +411,33 @@ def main() -> int:
         ),
     ]
 
-    html = f"""<!doctype html>
+    square_pages = [
+        bulletin_page(
+            "sand", "Track 02 · announced", "Platform|engineering.",
+            "12 sessions on building golden paths, managing drift,|"
+            "and paying down the platform debt you've accumulated.",
+            "shape", "top-right", "Bulletin — sand, track",
+        ),
+        bulletin_page(
+            "bone", "CFP · open now", "Talk to|your people.",
+            "40-minute talks, 90-minute workshops, and lightning|"
+            "rounds. Submit by 1 February.",
+            "hexagons", "top-left", "Bulletin — bone, CFP",
+        ),
+        bulletin_page(
+            "navy", "Tickets · on sale", "Blind bird|is open.",
+            "1.499 DKK until 18 November.|All profits go to charity.",
+            "hexagons", "bottom-left", "Bulletin — navy, tickets",
+        ),
+        bulletin_page(
+            "red", "Early bird ends", "07|days left.",
+            "Blind bird pricing closes Sunday.|After that it is 1.999 DKK.",
+            "none", "top-right", "Bulletin — red, countdown",
+        ),
+    ]
+
+    def document(pages: list[str], height: int) -> str:
+        return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -309,19 +453,24 @@ def main() -> int:
     src: url(data:font/woff2;base64,{sg_bold}) format("woff2");
     font-weight: 700; font-style: normal;
   }}
+  @font-face {{
+    font-family: "Inter";
+    src: url(data:font/woff2;base64,{inter}) format("woff2");
+    font-weight: 400; font-style: normal;
+  }}
   * {{ box-sizing: border-box; }}
   body {{ margin: 0; background: #ddd; }}
   .page {{
     position: relative;
     width: {canvas_w}px;
-    height: {canvas_h}px;
+    height: {height}px;
     overflow: hidden;
     margin: 0 auto 40px;
     font-family: "Space Grotesk", sans-serif;
   }}
   .ground, .rule {{ position: absolute; left: 0; right: 0; }}
   .ground {{ top: 0; bottom: 0; }}
-  .window, .lockup, .mark {{ position: absolute; }}
+  .window, .lockup, .mark, .decor {{ position: absolute; }}
   .card {{ background: {color["white"]}; }}
   /* v1's content area is a photo slot — mid grey so it is obvious in Canva
      that something belongs here. */
@@ -336,7 +485,8 @@ def main() -> int:
     margin: 0;
   }}
   .tab-label {{ color: {color["white"]}; white-space: normal; }}
-  .display {{ font-weight: 700; letter-spacing: -0.01em; }}
+  .display {{ font-weight: 700; letter-spacing: -0.015em; }}
+  .body {{ font-family: "Inter", sans-serif; letter-spacing: 0; font-weight: 400; }}
   /* The outline device: fill matches the ground, stroke is red. Not a red
      glyph — this is how the designer built it, and it is why it separates
      correctly for print. */
@@ -346,10 +496,7 @@ def main() -> int:
     font-weight: 500;
   }}
 
-  /* One PDF page per template, at exactly 1080x1350 css px. Declared in
-   * inches (1080/96 x 1350/96) because a px @page size left Chrome's
-   * printable area a hair short and spilled a blank page after each. */
-  @page {{ size: 11.25in 14.0625in; margin: 0; }}
+  @page {{ size: 11.25in {height / 96}in; margin: 0; }}
   @media print {{
     body {{ background: none; }}
     .page {{ margin: 0; break-after: page; }}
@@ -363,29 +510,31 @@ def main() -> int:
 </html>
 """
 
-    target = OUT / "cnd-templates.html"
-    target.write_text(html)
-    print(f"wrote {target.relative_to(ROOT)}  ({target.stat().st_size // 1024} KB)")
+    chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    written = []
+    for name, pages, height in (
+        ("cnd-templates-4x5", portrait_pages, canvas_h),
+        ("cnd-templates-square", square_pages, canvas_w),
+    ):
+        html_path = OUT / f"{name}.html"
+        html_path.write_text(document(pages, height))
+        pdf_path = OUT / f"{name}.pdf"
+        subprocess.run(
+            [
+                chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+                "--virtual-time-budget=8000", f"--print-to-pdf={pdf_path}",
+                f"file://{html_path}",
+            ],
+            check=True, capture_output=True,
+        )
+        written.append((name, len(pages), html_path, pdf_path))
 
-    # PDF is the route that needs no hosting: Canva's UI imports PDF directly
-    # and keeps text as text, so the templates arrive editable from a drag and
-    # drop. The HTML stays for import-design-from-url if that is ever wanted.
-    pdf = OUT / "cnd-templates.pdf"
-    chrome = (
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-    )
-    subprocess.run(
-        [
-            chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-            "--virtual-time-budget=8000", f"--print-to-pdf={pdf}",
-            f"file://{target}",
-        ],
-        check=True, capture_output=True,
-    )
-    print(f"wrote {pdf.relative_to(ROOT)}  ({pdf.stat().st_size // 1024} KB, {len(pages)} pages)")
-    print("\nDrag the PDF into Canva — Uploads, or File > Import. Text stays")
-    print("editable. Set the CND 2026 brand fonts first if Space Grotesk is")
-    print("not already uploaded there.")
+    for name, count, html_path, pdf_path in written:
+        print(f"{name}: {count} pages")
+        print(f"  {html_path.relative_to(ROOT)}  ({html_path.stat().st_size // 1024} KB)")
+        print(f"  {pdf_path.relative_to(ROOT)}  ({pdf_path.stat().st_size // 1024} KB)")
+    print("\nHTML is the one that imports as separate layers — use that.")
+    print("Canva > Uploads, or File > Import.")
     return 0
 
 

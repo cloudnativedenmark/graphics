@@ -22,7 +22,8 @@
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
  *   --eyebrow / --headline / --body   bulletin only; "|" splits lines
- *   --shape rose|peach|slate|navy|red|white   bulletin corner accent
+ *   --decor shape|hexagons|none   bulletin corner device
+ *   --shape rose|peach|slate|navy|red|white   colour, when decor=shape
  *   --at top-right|top-left|bottom-left      where it bleeds
  *   --texture 1        bulletin only; faint tiled shape outline
  *   --ground navy|sand|red  poster only
@@ -735,16 +736,38 @@ function renderBulletin(opts, geometry, tokens) {
       )
       .join("");
 
-  // Corner accent: the mark's own silhouette, scaled large and bled off an
-  // edge. Not a new organic blob — the reference used one, but the brand
-  // already has a shape and it is this.
+  // Corner accent. Two devices, both hers:
+  //   shape     the mark's own silhouette, scaled large and bled off an edge
+  //   hexagons  her 4-hexagon cluster, as on the roll-ups and beachflag
+  // The cluster uses the ground-baked twin, because the stock artwork is a
+  // darkening overlay that disappears on navy and red.
+  const decor = (opts.decor ?? "shape").toLowerCase();
   const shapeName = (opts.shape ?? (dark ? "white" : "rose")).toLowerCase();
   const shapeColor =
     { rose: color.rose, peach: color.peach, slate: color.slate,
       navy: color.navy, red: color.red, white: color.white }[shapeName] ?? null;
   const at = (opts.at ?? "top-right").toLowerCase();
   let corner = "";
-  if (shapeColor) {
+  if (decor === "hexagons") {
+    const w = Number(opts.shapeSize ?? 620);
+    const h = +(w * 270 / 321).toFixed(2); // the cluster's own aspect
+    // Positioned to bleed rather than intrude. The headline runs to roughly
+    // x 830 at the default size, so a top-right cluster that starts before
+    // that collides with it — which is what the first pass did.
+    const spot =
+      at === "top-left"
+        ? { x: -w * 0.52, y: -h * 0.34 }
+        : at === "bottom-left"
+          ? { x: -w * 0.48, y: canvasH - h * 0.62 }
+          : at === "bottom-right"
+            ? { x: canvasW - w * 0.52, y: canvasH - h * 0.62 }
+            : { x: canvasW - w * 0.4, y: -h * 0.34 };
+    corner =
+      `<image xlink:href="${assetURL(
+        join(ROOT, "brand", "logo", "cnd-hexagons-solid.svg"),
+      )}" x="${spot.x.toFixed(2)}" y="${spot.y.toFixed(2)}" ` +
+      `width="${w}" height="${h}" opacity="${dark ? 0.9 : 1}"/>`;
+  } else if (decor !== "none" && shapeColor) {
     const side = Number(opts.shapeSize ?? 470);
     const box =
       at === "top-left"
