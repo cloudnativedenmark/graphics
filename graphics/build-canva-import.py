@@ -412,6 +412,7 @@ def main() -> int:
         dark: bool, media: Path | None, is_logo: bool,
         second: Path | None = None, align: str = "xMidYMid",
         align2: str = "xMidYMid", on_red: bool = False,
+        canvas_h: int = 1080,
     ) -> str:
         """The scatter, with an optional photo or logo in the largest cell.
 
@@ -424,7 +425,13 @@ def main() -> int:
             [color["white"]] * 3 if on_red
             else [color["rose"], color["peach"], color["slate"]]
         )
-        layout = PAIR_SPOTS if second else HEX_SPOTS
+        # The spot lists are laid out against the 1080-tall square; on the
+        # taller 4:5 surface their vertical positions scale with the canvas.
+        cy_scale = canvas_h / 1080
+        layout = [
+            (w, cx, cy * cy_scale)
+            for (w, cx, cy) in (PAIR_SPOTS if second else HEX_SPOTS)
+        ]
         media_count = 2 if second else (1 if media else 0)
         defs, body = [], []
         for i, (w, cx, cy) in enumerate(layout):
@@ -474,11 +481,13 @@ def main() -> int:
             )
         inner = (f"<defs>{''.join(defs)}</defs>" if defs else "") + "".join(body)
         return (
-            f'<svg class="decor" viewBox="0 0 1080 1080" width="1080" height="1080" '
+            f'<svg class="decor" viewBox="0 0 1080 {canvas_h}" width="1080" height="{canvas_h}" '
             f'style="left:0;top:0">{inner}</svg>'
         )
 
-    def sponsors_svg(logos: list[Path], per_row: int, top: float) -> str:
+    def sponsors_svg(
+        logos: list[Path], per_row: int, top: float, canvas_h: int = 1080,
+    ) -> str:
         """A honeycomb row of logos, each in a white hexagon."""
         # Same lattice the renderer uses: alternate rows shift half a pitch
         # right and step down 0.8 of a cell. Staggering columns downward
@@ -489,7 +498,7 @@ def main() -> int:
         stack = 1 + (rows - 1) * ROW_STEP
         cell_h = min(
             ((1080 - 86 * 2 - gap * per_row) / per_row) * (1090.11 / 1005.874),
-            (1080 - top - 60) / stack,
+            (canvas_h - top - 60) / stack,
         )
         cell_w = round(cell_h * 1005.874 / 1090.11)
         draw_w = round(cell_w * 0.94)
@@ -514,7 +523,7 @@ def main() -> int:
                 f'preserveAspectRatio="xMidYMid meet"/>'
             )
         return (
-            f'<svg class="decor" viewBox="0 0 1080 1080" width="1080" height="1080" '
+            f'<svg class="decor" viewBox="0 0 1080 {canvas_h}" width="1080" height="{canvas_h}" '
             f'style="left:0;top:0">{"".join(body)}</svg>'
         )
 
@@ -524,7 +533,7 @@ def main() -> int:
         portrait: Path | None = None, logo: Path | None = None,
         sponsor_logos: list[Path] | None = None, head_size: int | None = None,
         portrait2: Path | None = None, align: str = "xMidYMid",
-        align2: str = "xMidYMid", per_row: int = 4,
+        align2: str = "xMidYMid", per_row: int = 4, canvas_h: int = 1080,
     ) -> str:
         """The announcement layout: lockup, eyebrow, sentence-case headline,
         body, one corner-bleeding device, and air below."""
@@ -597,7 +606,7 @@ def main() -> int:
                 hexfield_svg(
                     dark, portrait or logo, logo is not None,
                     second=portrait2, align=align, align2=align2,
-                    on_red=on_red,
+                    on_red=on_red, canvas_h=canvas_h,
                 )
             )
         elif decor == "sponsors":
@@ -605,7 +614,10 @@ def main() -> int:
             # head_first put the honeycomb 125px high, into the descenders.
             head_bottom = head_bottom_line
             parts.append(
-                sponsors_svg(sponsor_logos or [], per_row, head_bottom + 118)
+                sponsors_svg(
+                    sponsor_logos or [], per_row, head_bottom + 118,
+                    canvas_h=canvas_h,
+                )
             )
         elif decor == "shape":
             # The mark's own silhouette, scaled large and bled off an edge.
@@ -622,8 +634,8 @@ def main() -> int:
             ty = spot[1] - vh * scale / 2
             fill_hex = color["white"] if dark else color["slate"]
             parts.append(
-                f'<svg class="decor" viewBox="0 0 1080 1080" width="1080" '
-                f'height="1080" style="left:0;top:0">'
+                f'<svg class="decor" viewBox="0 0 1080 {canvas_h}" width="1080" '
+                f'height="{canvas_h}" style="left:0;top:0">'
                 f'<path d="{tokens["shape"]["path"]}" fill="{fill_hex}" '
                 f'fill-opacity="{0.16 if dark else 1}" '
                 f'transform="translate({tx:.2f} {ty:.2f}) scale({scale:.5f}) '
@@ -683,13 +695,13 @@ def main() -> int:
             + "<br>".join(esc(l.strip()) for l in body.split("|"))
             + "</div>"
         )
-        return page(page_label, "".join(parts), square=True)
+        return page(page_label, "".join(parts), height=canvas_h)
 
-    def page(label: str, inner: str, square: bool = False) -> str:
-        cls = "page square" if square else "page"
+    def page(label: str, inner: str, height: int | None = None) -> str:
+        style = f' style="height:{height}px"' if height else ""
         return (
-            f'<div class="{cls}" data-document-role="page" data-label="{esc(label)}">'
-            f"{inner}</div>"
+            f'<div class="page" data-document-role="page" '
+            f'data-label="{esc(label)}"{style}>{inner}</div>'
         )
 
     portrait_pages = [
@@ -764,71 +776,82 @@ def main() -> int:
     announcements = json.loads(
         (ROOT / "content" / "2026-announcements.json").read_text()
     )
-    keynote_pages: list[str] = []
-    sponsor_pages: list[str] = []
+    # Every real category in both surfaces: square for the grid, 4:5 for the
+    # feed. Built from the same content the renderer uses.
+    SURFACES = (("", canvas_w), ("-4x5", canvas_h))
+    docs: list[tuple[str, list[str], int]] = []
 
-    for k in announcements["keynotes"]:
-        keynote_pages.append(
-            bulletin_page(
-                k.get("ground", "navy"), k["eyebrow"], k["headline"], k["body"],
-                "hexfield", "top-right", k["slug"],
-                portrait=ROOT / k["portrait"] if k.get("portrait") else None,
-                portrait2=ROOT / k["portrait2"] if k.get("portrait2") else None,
-                align=k.get("align", "xMidYMid"),
-                align2=k.get("align2", "xMidYMid"),
+    for suffix, height in SURFACES:
+        keynotes: list[str] = []
+        for k in announcements["keynotes"]:
+            keynotes.append(
+                bulletin_page(
+                    k.get("ground", "navy"), k["eyebrow"], k["headline"], k["body"],
+                    "hexfield", "top-right", k["slug"],
+                    portrait=ROOT / k["portrait"] if k.get("portrait") else None,
+                    portrait2=ROOT / k["portrait2"] if k.get("portrait2") else None,
+                    align=k.get("align", "xMidYMid"),
+                    align2=k.get("align2", "xMidYMid"),
+                    canvas_h=height,
+                )
             )
-        )
-    general_pages: list[str] = []
-    for g in announcements.get("general", []):
-        if g.get("surfaces") and "square" not in g["surfaces"]:
-            continue
-        general_pages.append(
-            bulletin_page(
-                g.get("ground", "navy"), g["eyebrow"], g["headline"], g["body"],
-                g.get("decor", "hexfield"), "top-right", g["slug"],
-            )
-        )
+        docs.append((f"cnd-keynotes{suffix}", keynotes, height))
 
-    countdown_pages: list[str] = []
-    for c in announcements.get("countdowns", []):
-        figure = f"0{c['days']}" if c["days"] < 10 else str(c["days"])
-        unit = "day" if c["days"] == 1 else "days"
-        countdown_pages.append(
-            bulletin_page(
-                c.get("ground", "navy"), c["eyebrow"],
-                f"^{figure}|{unit} to go.", c["body"],
-                "hexfield", "top-right", f"countdown-{c['days']:02d}",
+        countdowns: list[str] = []
+        for c in announcements.get("countdowns", []):
+            figure = f"0{c['days']}" if c["days"] < 10 else str(c["days"])
+            unit = "day" if c["days"] == 1 else "days"
+            countdowns.append(
+                bulletin_page(
+                    c.get("ground", "navy"), c["eyebrow"],
+                    f"^{figure}|{unit} to go.", c["body"],
+                    "hexfield", "top-right", f"countdown-{c['days']:02d}",
+                    canvas_h=height,
+                )
             )
-        )
+        docs.append((f"cnd-countdowns{suffix}", countdowns, height))
 
-    # Every sponsor gets its own graphic, then each multi-sponsor tier gets a
-    # honeycomb. A tier of one is skipped — that is just its single.
-    tier_of = {t["tier"]: t for t in announcements["tiers"]}
-    for sp in announcements["sponsors"]:
-        tier = tier_of.get(sp["tier"], {})
-        sponsor_pages.append(
-            bulletin_page(
-                tier.get("ground", "navy"), f"{sp['tier']} sponsor",
-                f"Thank you,|{sp['name']}.",
-                f"{sp['tier']} sponsor of|Cloud Native Denmark 2026.",
-                "hexfield", "top-right", f"sponsor-{sp['slug']}",
-                logo=ROOT / sp["logo"],
+        tier_of = {t["tier"]: t for t in announcements["tiers"]}
+        sponsors: list[str] = []
+        for sp in announcements["sponsors"]:
+            tier = tier_of.get(sp["tier"], {})
+            sponsors.append(
+                bulletin_page(
+                    tier.get("ground", "navy"), f"{sp['tier']} sponsor",
+                    f"Thank you,|{sp['name']}.",
+                    f"{sp['tier']} sponsor of|Cloud Native Denmark 2026.",
+                    "hexfield", "top-right", f"sponsor-{sp['slug']}",
+                    logo=ROOT / sp["logo"], canvas_h=height,
+                )
             )
-        )
-    for t in announcements["tiers"]:
-        logos = [s for s in announcements["sponsors"] if s["tier"] == t["tier"]]
-        if len(logos) < 2:
-            continue
-        plural = "sponsors"
-        sponsor_pages.append(
-            bulletin_page(
-                t.get("ground", "navy"), f"{t['tier']} {plural} · 2026",
-                f"Thank you,|{t['tier'].lower()} {plural}.", "",
-                "sponsors", "top-right", f"tier-{t['tier'].lower()}",
-                sponsor_logos=[ROOT / s["logo"] for s in logos],
-                per_row=t.get("perRow", 4),
+        for t in announcements["tiers"]:
+            logos = [x for x in announcements["sponsors"] if x["tier"] == t["tier"]]
+            if len(logos) < 2:
+                continue
+            sponsors.append(
+                bulletin_page(
+                    t.get("ground", "navy"), f"{t['tier']} sponsors · 2026",
+                    f"Thank you,|{t['tier'].lower()} sponsors.", "",
+                    "sponsors", "top-right", f"tier-{t['tier'].lower()}",
+                    sponsor_logos=[ROOT / x["logo"] for x in logos],
+                    per_row=t.get("perRow", 4), canvas_h=height,
+                )
             )
-        )
+        docs.append((f"cnd-sponsors{suffix}", sponsors, height))
+
+        wanted = "square" if suffix == "" else "post"
+        general: list[str] = []
+        for g in announcements.get("general", []):
+            if g.get("surfaces") and wanted not in g["surfaces"]:
+                continue
+            general.append(
+                bulletin_page(
+                    g.get("ground", "navy"), g["eyebrow"], g["headline"], g["body"],
+                    g.get("decor", "hexfield"), "top-right", g["slug"],
+                    canvas_h=height,
+                )
+            )
+        docs.append((f"cnd-announcements{suffix}", general, height))
 
     def document(pages: list[str], height: int) -> str:
         return f"""<!doctype html>
@@ -906,14 +929,11 @@ def main() -> int:
 
     chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     written = []
-    for name, pages, height in (
+    for name, pages, height in [
         ("cnd-templates-4x5", portrait_pages, canvas_h),
         ("cnd-templates-square", square_pages, canvas_w),
-        ("cnd-keynotes", keynote_pages, canvas_w),
-        ("cnd-sponsors", sponsor_pages, canvas_w),
-        ("cnd-countdowns", countdown_pages, canvas_w),
-        ("cnd-announcements", general_pages, canvas_w),
-    ):
+        *docs,
+    ]:
         if not pages:
             continue
         html_path = OUT / f"{name}.html"
