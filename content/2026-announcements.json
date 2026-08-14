@@ -182,5 +182,18 @@
       "eyebrow": "Tomorrow",
       "body": "Doors at 08:30, registration in the foyer.|Bring a laptop and reuse your mug."
     }
+  ],
+  "general": [
+    {
+      "slug": "schedule-live",
+      "eyebrow": "Schedule · live",
+      "headline": "The schedule|is live.",
+      "body": "Two days, four tracks, and every session|at cloudnativedenmark.dk.",
+      "ground": "navy",
+      "surfaces": [
+        "square",
+        "post"
+      ]
+    }
   ]
 }

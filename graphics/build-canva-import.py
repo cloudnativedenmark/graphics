@@ -546,7 +546,7 @@ def main() -> int:
 
         # Same column budget the renderer uses: hexfield puts a portrait
         # hexagon at x 647, so display type has 560px before it collides.
-        column_w = 560 if decor in ("hexfield",) else (
+        column_w = 530 if decor in ("hexfield",) else (
             1080 - M * 2 if decor == "none" else 800
         )
         metrics = geometry["metrics"]
@@ -778,6 +778,17 @@ def main() -> int:
                 align2=k.get("align2", "xMidYMid"),
             )
         )
+    general_pages: list[str] = []
+    for g in announcements.get("general", []):
+        if g.get("surfaces") and "square" not in g["surfaces"]:
+            continue
+        general_pages.append(
+            bulletin_page(
+                g.get("ground", "navy"), g["eyebrow"], g["headline"], g["body"],
+                g.get("decor", "hexfield"), "top-right", g["slug"],
+            )
+        )
+
     countdown_pages: list[str] = []
     for c in announcements.get("countdowns", []):
         figure = f"0{c['days']}" if c["days"] < 10 else str(c["days"])
@@ -901,6 +912,7 @@ def main() -> int:
         ("cnd-keynotes", keynote_pages, canvas_w),
         ("cnd-sponsors", sponsor_pages, canvas_w),
         ("cnd-countdowns", countdown_pages, canvas_w),
+        ("cnd-announcements", general_pages, canvas_w),
     ):
         if not pages:
             continue

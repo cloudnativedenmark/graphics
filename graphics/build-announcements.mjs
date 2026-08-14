@@ -29,9 +29,11 @@ const flag = (name, fallback) => {
   return i === -1 ? fallback : argv[i + 1];
 };
 const scale = flag("scale", "1");
+// Both surfaces by default: square for the grid, 4:5 for the feed. Items that
+// only make sense in one declare `surfaces` in the content file.
 const surfaces = argv.includes("--surface")
   ? [flag("surface", "square")]
-  : ["square"];
+  : ["square", "post"];
 
 const content = JSON.parse(
   readFileSync(join(ROOT, "content", "2026-announcements.json"), "utf8"),
@@ -72,6 +74,31 @@ for (const surface of surfaces) {
     if (k.align) args.push("--align", k.align);
     if (k.align2) args.push("--align2", k.align2);
     render(args, k.slug);
+  }
+
+  // General announcements can ask for specific surfaces, since a schedule
+  // reveal wants both the square and the 4:5 feed version.
+  const general = (content.general ?? []).filter(
+    (g) => !g.surfaces || g.surfaces.includes(surface),
+  );
+  if (general.length) {
+    console.log(`\nannouncements (${surface})`);
+    for (const g of general) {
+      render(
+        [
+          "bulletin",
+          "--ground", g.ground ?? "navy",
+          "--decor", g.decor ?? "hexfield",
+          "--eyebrow", g.eyebrow,
+          "--headline", g.headline,
+          "--body", g.body,
+          "--surface", surface,
+          "--scale", scale,
+          "--out", join(OUT, `${g.slug}${suffix}.png`),
+        ],
+        g.slug,
+      );
+    }
   }
 
   console.log(`\ncountdowns (${surface})`);

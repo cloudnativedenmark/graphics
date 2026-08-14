@@ -804,7 +804,7 @@ function renderBulletin(opts, geometry, tokens) {
   // into the photo.
   const columnW =
     decorName === "hexfield"
-      ? 560
+      ? 530 // the field's leftmost hexagon edge is 647; 560 left only 12px
       : decorName === "none"
         ? canvasW - M * 2
         : 800;
@@ -1059,7 +1059,14 @@ function hexField(geometry, tokens, canvasW, canvasH, opts, dark) {
 
   const media = opts.portrait ?? opts.logo;
   const second = opts.portrait2;
-  const layout = second ? pairSpots : spots;
+  // The spot lists are laid out against the 1080-tall square. On the taller
+  // 4:5 surface their vertical positions scale with the canvas, otherwise the
+  // field bunches in the middle and leaves a dead third at the bottom.
+  const cyScale = canvasH / 1080;
+  const layout = (second ? pairSpots : spots).map((sp) => ({
+    ...sp,
+    cy: +(sp.cy * cyScale).toFixed(2),
+  }));
   const mediaCount = second ? 2 : media ? 1 : 0;
   const parts = [];
   const defs = [];
