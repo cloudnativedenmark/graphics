@@ -22,7 +22,11 @@
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
  *   --eyebrow / --headline / --body   bulletin only; "|" splits lines
- *   --decor shape|hexagons|none   bulletin corner device
+ *   --decor shape|hexagons|hexfield|none   bulletin corner device
+ *   --portrait FILE    with decor=hexfield, puts a speaker in the big hexagon
+ *   --logo FILE        with decor=hexfield, puts a sponsor logo in it
+ *   --logos a.svg,b.svg   sponsors template; one hexagon per logo
+ *   --perRow N         sponsors template; hexagons per row, default 4
  *   --shape rose|peach|slate|navy|red|white   colour, when decor=shape
  *   --at top-right|top-left|bottom-left      where it bleeds
  *   --texture 1        bulletin only; faint tiled shape outline
@@ -79,11 +83,12 @@ const DEFAULT_CATEGORY = {
   "linkedin-cover": null,
   poster: null,
   bulletin: null,
+  sponsors: null,
 };
 
 // Templates that are a whole document rather than a content layer composed
 // into _social-frame.svg. A cover has no tab, card window or footer band.
-const SELF_CONTAINED = new Set(["linkedin-cover", "poster", "bulletin"]);
+const SELF_CONTAINED = new Set(["linkedin-cover", "poster", "bulletin", "sponsors"]);
 
 // ---------------------------------------------------------------------------
 
@@ -214,6 +219,24 @@ function deriveSquare(overlay, content) {
   };
 }
 
+/**
+ * Map the single hexagon's viewBox onto a box of a given width, keeping its
+ * aspect. Used for both the scatter and the photo/logo masks, so a hexagon is
+ * always her hexagon rather than a redrawn one.
+ */
+function hexTransform(viewBox, { w, cx, cy }) {
+  const [vx, vy, vw, vh] = viewBox.split(/\s+/).map(Number);
+  const scale = w / vw;
+  const h = vh * scale;
+  return {
+    transform: `translate(${(cx - w / 2).toFixed(2)} ${(cy - h / 2).toFixed(2)}) scale(${scale.toFixed(5)}) translate(${-vx} ${-vy})`,
+    w,
+    h,
+    x: cx - w / 2,
+    y: cy - h / 2,
+  };
+}
+
 /** Portrait frame box, derived from the card window by token ratios. */
 function portraitBox(card, pr) {
   const side = Math.round(card.h * pr.sideOfCardHeight);
@@ -250,6 +273,7 @@ function main() {
   if (opts.template === "linkedin-cover") return renderCover(opts, geometry, tokens);
   if (opts.template === "poster") return renderPoster(opts, geometry, tokens);
   if (opts.template === "bulletin") return renderBulletin(opts, geometry, tokens);
+  if (opts.template === "sponsors") return renderSponsors(opts, geometry, tokens);
 
   const variant = String(opts.variant);
   if (!["1", "2", "3"].includes(variant)) {
@@ -715,16 +739,17 @@ function renderBulletin(opts, geometry, tokens) {
     (opts.surface ?? "square").toLowerCase() === "post" ? geometry.canvas.h : 1080;
 
   const M = 86; // same left margin as the footer lockup, so the grid agrees
-  const headlineSize = Number(opts.size ?? 104);
+  const headlineSize = Number(opts.size ?? 132);
   const headlineLead = +(headlineSize * 0.95).toFixed(2);
-  const bodySize = 30;
+  const bodySize = 34;
+  const eyebrowSize = 30;
 
   const headLines = (opts.headline ?? "Platform|engineering.").split("|");
   const bodyLines = (opts.body ?? "Two short lines of|supporting detail.").split("|");
 
-  const eyebrowBase = 196;
-  const headFirst = eyebrowBase + 96;
-  const bodyFirst = headFirst + (headLines.length - 1) * headlineLead + 78;
+  const eyebrowBase = 200;
+  const headFirst = eyebrowBase + 112;
+  const bodyFirst = headFirst + (headLines.length - 1) * headlineLead + 84;
 
   const tspans = (lines, x, first, lead) =>
     lines
@@ -767,6 +792,8 @@ function renderBulletin(opts, geometry, tokens) {
         join(ROOT, "brand", "logo", "cnd-hexagons-solid.svg"),
       )}" x="${spot.x.toFixed(2)}" y="${spot.y.toFixed(2)}" ` +
       `width="${w}" height="${h}" opacity="${dark ? 0.9 : 1}"/>`;
+  } else if (decor === "hexfield") {
+    corner = hexField(geometry, tokens, canvasW, canvasH, opts, dark);
   } else if (decor !== "none" && shapeColor) {
     const side = Number(opts.shapeSize ?? 470);
     const box =
@@ -822,7 +849,7 @@ function renderBulletin(opts, geometry, tokens) {
     textX: M,
     eyebrow: escapeXML((opts.eyebrow ?? "Track 02 · announced").toUpperCase()),
     eyebrowY: eyebrowBase,
-    eyebrowSize: 26,
+    eyebrowSize,
     eyebrowTracking: "0.18em",
     eyebrowColor: dark ? color.white : color.red,
 
@@ -830,7 +857,7 @@ function renderBulletin(opts, geometry, tokens) {
     headlineSize,
     headlineColor: ink,
 
-    body: tspans(bodyLines, M, bodyFirst, bodySize * 1.5),
+    body: tspans(bodyLines, M, bodyFirst, bodySize * 1.45),
     bodySize,
     bodyColor: dark
       ? color.white
@@ -845,6 +872,224 @@ function renderBulletin(opts, geometry, tokens) {
     slug: `bulletin-${groundName}`,
     out: opts.out ?? join(ROOT, "graphics", "out", `bulletin-${groundName}.png`),
     label: `bulletin, ${groundName}, ${canvasW}x${canvasH}`,
+  });
+}
+
+
+/**
+ * A scatter of her hexagons, optionally with a photo or a logo inside one.
+ *
+ * The arrangement is fixed rather than random: the text block runs to about
+ * x 700 at the current display size, so every hexagon is placed clear of it,
+ * and several bleed off an edge so the field reads as a crop of something
+ * larger rather than a tidy motif dropped in a corner.
+ *
+ * With --portrait the largest hexagon becomes the photo — the speaker sits in
+ * one of the hexagons rather than beside them. With --logo it becomes a white
+ * hexagon holding a contained logo, since a logo must never be cropped.
+ */
+function hexField(geometry, tokens, canvasW, canvasH, opts, dark) {
+  const color = tokens.color;
+  const hex = geometry.hexagon;
+  const fills = [color.rose, color.peach, color.slate];
+
+  // width, centre x, centre y — the big one first, so it can take the photo.
+  // Kept clear of the text: at 132px the headline runs to about x 620, so the
+  // photo hexagon starts past that. The first pass had it at cx 800 with
+  // w 470, whose left edge landed at 565 and clipped the descender of the
+  // headline's last word.
+  const spots = [
+    { w: 430, cx: 862, cy: 372 },
+    { w: 214, cx: 1064, cy: 656 },
+    { w: 286, cx: 792, cy: 790 },
+    { w: 156, cx: 1020, cy: 216 },
+    { w: 200, cx: 966, cy: 1010 },
+    { w: 132, cx: 660, cy: 986 },
+    { w: 108, cx: 604, cy: 690 },
+  ];
+
+  const media = opts.portrait ?? opts.logo;
+  const parts = [];
+  const defs = [];
+
+  spots.forEach((spot, i) => {
+    const box = hexTransform(hex.viewBox, spot);
+    if (i === 0 && media) {
+      const id = `hexmask${i}`;
+      defs.push(
+        `<clipPath id="${id}"><path d="${hex.path}" transform="${box.transform}"/></clipPath>`,
+      );
+      if (opts.logo) {
+        // White hexagon, logo contained inside with padding. Contained, never
+        // cropped — a clipped sponsor logo is worse than no logo.
+        const pad = box.w * 0.22;
+        parts.push(
+          `<path d="${hex.path}" transform="${box.transform}" fill="${color.white}"/>` +
+            `<image xlink:href="${assetURL(resolve(opts.logo))}" ` +
+            `x="${(box.x + pad).toFixed(2)}" y="${(box.y + pad).toFixed(2)}" ` +
+            `width="${(box.w - pad * 2).toFixed(2)}" height="${(box.h - pad * 2).toFixed(2)}" ` +
+            `preserveAspectRatio="xMidYMid meet"/>`,
+        );
+      } else {
+        parts.push(
+          `<g clip-path="url(#${id})"><image xlink:href="${assetURL(
+            resolve(opts.portrait),
+          )}" x="${box.x.toFixed(2)}" y="${box.y.toFixed(2)}" ` +
+            `width="${box.w.toFixed(2)}" height="${box.h.toFixed(2)}" ` +
+            `preserveAspectRatio="xMidYMid slice"/></g>`,
+        );
+      }
+      return;
+    }
+    const fill = fills[(i - (media ? 1 : 0)) % fills.length];
+    parts.push(
+      `<path d="${hex.path}" transform="${box.transform}" fill="${fill}" ` +
+        `fill-opacity="${dark ? 0.92 : 1}"/>`,
+    );
+  });
+
+  return (defs.length ? `<defs>${defs.join("")}</defs>` : "") + parts.join("");
+}
+
+
+/**
+ * A tier of sponsors, each logo inside one of her hexagons.
+ *
+ * Logos are *contained* with padding, never clipped — a cropped sponsor logo
+ * is worse than no logo, and every hexagon carries a white ground so logos of
+ * any colour sit legibly on navy, sand or red.
+ *
+ * The row is a honeycomb: alternate hexagons step down half a cell, which is
+ * how her cluster interlocks, rather than sitting in a plain line.
+ */
+function renderSponsors(opts, geometry, tokens) {
+  const color = tokens.color;
+  const grounds = {
+    sand: color.sand, bone: color.bone, navy: color.navy, red: color.red,
+  };
+  const groundName = (opts.ground ?? "navy").toLowerCase();
+  const ground = grounds[groundName];
+  if (!ground) {
+    console.error(`--ground must be sand, bone, navy or red (got ${groundName})`);
+    process.exit(2);
+  }
+  const dark = groundName === "navy" || groundName === "red";
+  const onRed = groundName === "red";
+  const ink = dark ? color.white : color.navy;
+  const hex = geometry.hexagon;
+  const canvasW = geometry.canvas.w;
+  const canvasH =
+    (opts.surface ?? "square").toLowerCase() === "post" ? geometry.canvas.h : 1080;
+
+  const logos = (opts.logos ?? "")
+    .split(",")
+    .map((l) => l.trim())
+    .filter(Boolean);
+  if (logos.length === 0) {
+    console.error("--logos needs at least one file, comma separated");
+    process.exit(2);
+  }
+
+  const M = 86;
+  const headSize = Number(opts.size ?? 132);
+  const headLead = +(headSize * 0.95).toFixed(2);
+  const headLines = (opts.headline ?? "Thank you,|gold sponsors.").split("|");
+
+  const eyebrowBase = 200;
+  const headFirst = eyebrowBase + 112;
+  const headBottom = headFirst + (headLines.length - 1) * headLead;
+
+  // Fit the honeycomb to the space left below the headline.
+  const perRow = Math.min(logos.length, Number(opts.perRow ?? 4));
+  const gap = 20;
+  const cellW = Math.min(
+    Math.round((canvasW - M * 2 - gap * (perRow - 1)) / perRow),
+    Math.round((canvasH - headBottom - 200) / 1.35),
+  );
+  const cellH = (cellW * 1090.11) / 1005.874;
+  const rows = Math.ceil(logos.length / perRow);
+  const fieldTop = headBottom + 118;
+
+  const defs = [];
+  const cells = [];
+  logos.forEach((logoPath, i) => {
+    const row = Math.floor(i / perRow);
+    const col = i % perRow;
+    const inRow = Math.min(perRow, logos.length - row * perRow);
+    const rowW = inRow * cellW + (inRow - 1) * gap;
+    const x0 = (canvasW - rowW) / 2;
+    const cx = x0 + col * (cellW + gap) + cellW / 2;
+    const cy =
+      fieldTop + row * (cellH * 0.84) + cellH / 2 + (col % 2 ? cellH * 0.24 : 0);
+    const box = hexTransform(hex.viewBox, { w: cellW, cx, cy });
+    const pad = cellW * 0.2;
+    cells.push(
+      `<path d="${hex.path}" transform="${box.transform}" fill="${color.white}"/>` +
+        `<image xlink:href="${assetURL(resolve(logoPath))}" ` +
+        `x="${(box.x + pad).toFixed(2)}" y="${(box.y + pad).toFixed(2)}" ` +
+        `width="${(box.w - pad * 2).toFixed(2)}" ` +
+        `height="${(box.h - pad * 2).toFixed(2)}" ` +
+        `preserveAspectRatio="xMidYMid meet"/>`,
+    );
+  });
+
+  const tspans = (lines, x, first, lead) =>
+    lines
+      .map(
+        (l, i) =>
+          `<tspan x="${x}" y="${+(first + i * lead).toFixed(2)}">${escapeXML(
+            l.trim(),
+          )}</tspan>`,
+      )
+      .join("");
+
+  const svg = fill(stripLeadComment(load(join(TEMPLATES, "bulletin.svg"))), {
+    canvasW,
+    canvasH,
+    ground,
+    shapePath: tokens.shape.path,
+    textureTransform: shapeTransform(tokens.shape.viewBox, { side: 84, cx: 48, cy: 48 }),
+    textureColor: dark ? color.white : color.navy,
+    texture: "",
+    corner: (defs.length ? `<defs>${defs.join("")}</defs>` : "") + cells.join(""),
+
+    mark: onRed ? "" : assetURL(join(ROOT, "brand", "logo", "cnd-mark.svg")),
+    markX: M,
+    markY: 56,
+    markW: onRed ? 0 : 54,
+    markH: onRed ? 0 : 53,
+    wordmark: assetURL(
+      join(ROOT, "brand", "logo", dark ? "cnd-lockup-cream.svg" : "cnd-lockup-navy.svg"),
+    ),
+    wordmarkX: onRed ? M : M + 68,
+    wordmarkY: 58,
+    wordmarkW: 132,
+    wordmarkH: 78,
+
+    textX: M,
+    eyebrow: escapeXML((opts.eyebrow ?? "Sponsors · 2026").toUpperCase()),
+    eyebrowY: eyebrowBase,
+    eyebrowSize: 30,
+    eyebrowTracking: "0.18em",
+    eyebrowColor: dark ? color.white : color.red,
+
+    headline: tspans(headLines, M, headFirst, headLead),
+    headlineSize: headSize,
+    headlineColor: ink,
+
+    body: "",
+    bodySize: 34,
+    bodyColor: ink,
+  });
+
+  rasterise(svg, {
+    canvasW,
+    canvasH,
+    scale: opts.scale,
+    keepHtml: opts["keep-html"],
+    slug: `sponsors-${groundName}`,
+    out: opts.out ?? join(ROOT, "graphics", "out", `sponsors-${groundName}.png`),
+    label: `sponsors, ${groundName}, ${logos.length} logo(s)`,
   });
 }
 
