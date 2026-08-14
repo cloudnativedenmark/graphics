@@ -74,41 +74,49 @@ for (const surface of surfaces) {
     render(args, k.slug);
   }
 
-  console.log(`\nsponsor tiers (${surface})`);
-  for (const t of content.sponsorTiers) {
-    if (t.single) {
-      // A single sponsor gets the keynote layout with a logo in the hexagon,
-      // which gives them the whole graphic rather than one cell of a row.
-      render(
-        [
-          "bulletin",
-          "--ground", t.ground ?? "navy",
-          "--decor", "hexfield",
-          "--logo", join(ROOT, t.single),
-          "--eyebrow", t.eyebrow,
-          "--headline", t.headline,
-          "--body", t.body ?? "",
-          "--surface", surface,
-          "--scale", scale,
-          "--out", join(OUT, `sponsors-${t.slug}${suffix}.png`),
-        ],
-        t.slug,
-      );
+  console.log(`\nsponsors — singles (${surface})`);
+  for (const sp of content.sponsors) {
+    const tier = content.tiers.find((t) => t.tier === sp.tier) ?? {};
+    render(
+      [
+        "bulletin",
+        "--ground", tier.ground ?? "navy",
+        "--decor", "hexfield",
+        "--logo", join(ROOT, sp.logo),
+        "--eyebrow", `${sp.tier} sponsor`,
+        "--headline", `Thank you,|${sp.name}.`,
+        "--body", `${sp.tier} sponsor of|Cloud Native Denmark 2026.`,
+        "--surface", surface,
+        "--scale", scale,
+        "--out", join(OUT, `sponsor-${sp.slug}${suffix}.png`),
+      ],
+      sp.slug,
+    );
+  }
+
+  console.log(`\nsponsors — tiers (${surface})`);
+  for (const t of content.tiers) {
+    const logos = content.sponsors.filter((s) => s.tier === t.tier);
+    if (logos.length === 0) continue;
+    const plural = logos.length === 1 ? "sponsor" : "sponsors";
+    if (logos.length === 1) {
+      // A tier of one is just that sponsor's single, so skip the honeycomb.
+      console.log(`  (skipped ${t.tier}: one sponsor, covered by its single)`);
       continue;
     }
     render(
       [
         "sponsors",
         "--ground", t.ground ?? "navy",
-        "--logos", t.logos.map((l) => join(ROOT, l)).join(","),
+        "--logos", logos.map((s) => join(ROOT, s.logo)).join(","),
         "--perRow", String(t.perRow ?? 4),
-        "--eyebrow", t.eyebrow,
-        "--headline", t.headline,
+        "--eyebrow", `${t.tier} ${plural} · 2026`,
+        "--headline", `Thank you,|${t.tier.toLowerCase()} ${plural}.`,
         "--surface", surface,
         "--scale", scale,
-        "--out", join(OUT, `sponsors-${t.slug}${suffix}.png`),
+        "--out", join(OUT, `tier-${t.tier.toLowerCase()}${suffix}.png`),
       ],
-      t.slug,
+      t.tier,
     );
   }
 }

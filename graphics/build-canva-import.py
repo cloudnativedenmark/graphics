@@ -40,6 +40,7 @@ then hand the URL to import-design-from-url.
 from __future__ import annotations
 
 import base64
+import io
 import sys
 import json
 import subprocess
@@ -88,16 +89,71 @@ def b64_svg(path: Path) -> str:
     return base64.b64encode(path.read_bytes()).decode()
 
 
+# Photos are inlined, so they must be sized for their slot rather than shipped
+# at source resolution. The largest hexagon is 430px wide, so 900px covers a 2x
+# export with room to spare. Skipping this put 2048px headshots in the file and
+# took it to 17MB, which is not something to hand to an importer.
+MAX_PHOTO_PX = 900
+
+
 def b64_image(path: Path) -> str:
-    """Inline a raster or vector image as a data URI.
+    """Inline an image as a data URI, downscaling rasters to their slot.
 
     Everything ships inside the one HTML file, so an import needs no sibling
-    assets and no hosting.
+    assets and no hosting. Vector stays vector; rasters are resampled and
+    re-encoded.
     """
-    mime = "image/svg+xml" if path.suffix.lower() == ".svg" else "image/jpeg"
-    if path.suffix.lower() == ".png":
+    if path.suffix.lower() == ".svg":
+        return (
+            "data:image/svg+xml;base64,"
+            + base64.b64encode(path.read_bytes()).decode()
+        )
+
+    from PIL import Image
+
+    img = Image.open(path)
+    if max(img.size) > MAX_PHOTO_PX:
+        scale = MAX_PHOTO_PX / max(img.size)
+        img = img.resize(
+            (round(img.width * scale), round(img.height * scale)),
+            Image.LANCZOS,
+        )
+    buf = io.BytesIO()
+    if img.mode in ("RGBA", "LA", "P"):
+        # Keep transparency for logos that rely on it.
+        img.convert("RGBA").save(buf, "PNG", optimize=True)
         mime = "image/png"
-    return f"data:{mime};base64,{base64.b64encode(path.read_bytes()).decode()}"
+    else:
+        img.convert("RGB").save(buf, "JPEG", quality=86, optimize=True)
+        mime = "image/jpeg"
+    return f"data:{mime};base64,{base64.b64encode(buf.getvalue()).decode()}"
+
+
+def text_width(metrics: dict, face: str, text: str, size: float,
+               tracking: float = 0.0) -> float:
+    """Width of a line in px, from the extracted advance widths."""
+    table = metrics.get(face)
+    if not table:
+        return len(text) * size * 0.55
+    advances = table["advances"]
+    em = sum(advances.get(ch, 550) for ch in text)
+    return em / 1000 * size + tracking * size * max(0, len(text) - 1)
+
+
+def fit_size(metrics: dict, face: str, lines: list[str], start: float,
+             max_width: float, tracking: float) -> float:
+    """Largest size at or below `start` whose longest line fits.
+
+    Mirrors fitSize in render.mjs. Without it the HTML pages would collide
+    where the PNGs do not, because only the renderer was measuring text.
+    """
+    size = start
+    while size > 24:
+        widest = max(text_width(metrics, face, l, size, tracking) for l in lines)
+        if widest <= max_width:
+            break
+        size -= 2
+    return size
 
 
 def top_for(baseline: float, size: float) -> float:
@@ -293,18 +349,45 @@ def main() -> int:
             ),
         }
 
-    # Same arrangement the renderer uses, so the HTML and the PNG agree.
+    # Same arrangements the renderer uses, so the HTML and the PNG agree.
     HEX_SPOTS = [
         (430, 862, 372), (214, 1064, 656), (286, 792, 790), (156, 1020, 216),
         (200, 966, 1010), (132, 660, 986), (108, 604, 690),
     ]
+    PAIR_SPOTS = [
+        (340, 790, 340), (340, 930, 616), (196, 620, 616), (150, 1046, 300),
+        (236, 790, 892), (124, 606, 900),
+    ]
 
-    def hexfield_svg(dark: bool, media: Path | None, is_logo: bool) -> str:
-        """The scatter, with an optional photo or logo in the largest cell."""
+    def hexfield_svg(
+        dark: bool, media: Path | None, is_logo: bool,
+        second: Path | None = None, align: str = "xMidYMid",
+        align2: str = "xMidYMid",
+    ) -> str:
+        """The scatter, with an optional photo or logo in the largest cell.
+
+        With a second portrait it switches to the matched interlocking pair,
+        the same as --portrait2 does in the renderer.
+        """
         fills = [color["rose"], color["peach"], color["slate"]]
+        layout = PAIR_SPOTS if second else HEX_SPOTS
+        media_count = 2 if second else (1 if media else 0)
         defs, body = [], []
-        for i, (w, cx, cy) in enumerate(HEX_SPOTS):
+        for i, (w, cx, cy) in enumerate(layout):
             box = hex_box(w, cx, cy)
+            if i == 1 and second is not None:
+                defs.append(
+                    f'<clipPath id="hexclip2"><path d="{hexagon["path"]}" '
+                    f'transform="{box["transform"]}"/></clipPath>'
+                )
+                body.append(
+                    f'<g clip-path="url(#hexclip2)">'
+                    f'<image href="{b64_image(second)}" '
+                    f'x="{box["x"]:.2f}" y="{box["y"]:.2f}" '
+                    f'width="{box["w"]:.2f}" height="{box["h"]:.2f}" '
+                    f'preserveAspectRatio="{align2} slice"/></g>'
+                )
+                continue
             if i == 0 and media is not None:
                 if is_logo:
                     pad = box["w"] * 0.22
@@ -327,10 +410,10 @@ def main() -> int:
                         f'<image href="{b64_image(media)}" '
                         f'x="{box["x"]:.2f}" y="{box["y"]:.2f}" '
                         f'width="{box["w"]:.2f}" height="{box["h"]:.2f}" '
-                        f'preserveAspectRatio="xMidYMid slice"/></g>'
+                        f'preserveAspectRatio="{align} slice"/></g>'
                     )
                 continue
-            fill = fills[(i - (1 if media is not None else 0)) % len(fills)]
+            fill = fills[max(0, i - media_count) % len(fills)]
             body.append(
                 f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
                 f'fill="{fill}" fill-opacity="{0.92 if dark else 1}"/>'
@@ -386,6 +469,8 @@ def main() -> int:
         decor: str, at: str, page_label: str,
         portrait: Path | None = None, logo: Path | None = None,
         sponsor_logos: list[Path] | None = None, head_size: int | None = None,
+        portrait2: Path | None = None, align: str = "xMidYMid",
+        align2: str = "xMidYMid", per_row: int = 4,
     ) -> str:
         """The announcement layout: lockup, eyebrow, sentence-case headline,
         body, one corner-bleeding device, and air below."""
@@ -398,26 +483,43 @@ def main() -> int:
         on_red = ground_name == "red"
         ink = color["white"] if dark else color["navy"]
         M = 86
-        head_size = head_size or 132
+        head_lines_pre = [l.strip() for l in headline.split("|")]
+        # Same column budget the renderer uses: hexfield puts a portrait
+        # hexagon at x 647, so display type has 560px before it collides.
+        column_w = 560 if decor in ("hexfield",) else (
+            1080 - M * 2 if decor == "none" else 800
+        )
+        head_size = head_size or fit_size(
+            geometry["metrics"], "SpaceGrotesk-Bold", head_lines_pre, 132,
+            column_w, -0.015,
+        )
+        body_lines_pre = [l.strip() for l in body.split("|")] if body else [""]
+        fitted_body = fit_size(
+            geometry["metrics"], "Inter-Regular", body_lines_pre, 34,
+            column_w, 0.0,
+        )
         head_lead = round(head_size * 0.95, 2)
         eyebrow_base = 200
         head_first = eyebrow_base + 112
         head_lines = headline.split("|")
         body_first = head_first + (len(head_lines) - 1) * head_lead + 84
-        body_size = 34
+        body_size = fitted_body
 
         parts = [f'<div class="ground" style="background:{ground}"></div>']
 
         if decor == "hexfield":
             parts.append(
-                hexfield_svg(dark, portrait or logo, logo is not None)
+                hexfield_svg(
+                    dark, portrait or logo, logo is not None,
+                    second=portrait2, align=align, align2=align2,
+                )
             )
         elif decor == "sponsors":
             # Below the *last* headline baseline, not the first — using
             # head_first put the honeycomb 125px high, into the descenders.
             head_bottom = head_first + (len(head_lines) - 1) * head_lead
             parts.append(
-                sponsors_svg(sponsor_logos or [], 4, head_bottom + 118)
+                sponsors_svg(sponsor_logos or [], per_row, head_bottom + 118)
             )
         elif decor == "shape":
             # The mark's own silhouette, scaled large and bled off an edge.
@@ -562,36 +664,56 @@ def main() -> int:
             "Blind bird pricing closes Sunday.|After that it is 1.999 DKK.",
             "none", "top-right", "Bulletin — red, countdown",
         ),
-        bulletin_page(
-            "sand", "Keynote · day one", "Joseph|Sandoval.",
-            "Your Agent Has No Idea|Where It’s Running.",
-            "hexfield", "top-right", "Keynote — sand, portrait in hexagon",
-            portrait=ROOT / "demo" / "joseph-sandoval.jpg", head_size=112,
-        ),
-        bulletin_page(
-            "navy", "Keynote · day one",
-            "Your agent|has no idea|where it’s|running.",
-            "Joseph Sandoval.|Day one, main hall.",
-            "hexfield", "top-right", "Keynote — navy, talk title lead",
-            portrait=ROOT / "demo" / "joseph-sandoval.jpg", head_size=96,
-        ),
-        bulletin_page(
-            "navy", "Gold sponsor", "Akamai|Cloud.",
-            "Managed Kubernetes, distributed|worldwide. Booth 4.",
-            "hexfield", "top-right", "Sponsor — single, logo in hexagon",
-            logo=ROOT / "demo" / "logos" / "akamai.svg",
-        ),
-        bulletin_page(
-            "navy", "Sponsors · 2026", "Thank you,|gold sponsors.", "",
-            "sponsors", "top-right", "Sponsors — gold tier honeycomb",
-            sponsor_logos=[
-                ROOT / "demo" / "logos" / "akamai.svg",
-                ROOT / "demo" / "logos" / "aws-logo.svg",
-                ROOT / "demo" / "logos" / "dash0.svg",
-                ROOT / "demo" / "logos" / "kubernetes-icon-color.svg",
-            ],
-        ),
     ]
+
+    # The real 2026 line-up, straight from the same content file the renderer
+    # uses, so an import matches graphics/out/announcements/ exactly rather
+    # than carrying stale demo pages.
+    announcements = json.loads(
+        (ROOT / "content" / "2026-announcements.json").read_text()
+    )
+    keynote_pages: list[str] = []
+    sponsor_pages: list[str] = []
+
+    for k in announcements["keynotes"]:
+        keynote_pages.append(
+            bulletin_page(
+                k.get("ground", "navy"), k["eyebrow"], k["headline"], k["body"],
+                "hexfield", "top-right", k["slug"],
+                portrait=ROOT / k["portrait"] if k.get("portrait") else None,
+                portrait2=ROOT / k["portrait2"] if k.get("portrait2") else None,
+                align=k.get("align", "xMidYMid"),
+                align2=k.get("align2", "xMidYMid"),
+            )
+        )
+    # Every sponsor gets its own graphic, then each multi-sponsor tier gets a
+    # honeycomb. A tier of one is skipped — that is just its single.
+    tier_of = {t["tier"]: t for t in announcements["tiers"]}
+    for sp in announcements["sponsors"]:
+        tier = tier_of.get(sp["tier"], {})
+        sponsor_pages.append(
+            bulletin_page(
+                tier.get("ground", "navy"), f"{sp['tier']} sponsor",
+                f"Thank you,|{sp['name']}.",
+                f"{sp['tier']} sponsor of|Cloud Native Denmark 2026.",
+                "hexfield", "top-right", f"sponsor-{sp['slug']}",
+                logo=ROOT / sp["logo"],
+            )
+        )
+    for t in announcements["tiers"]:
+        logos = [s for s in announcements["sponsors"] if s["tier"] == t["tier"]]
+        if len(logos) < 2:
+            continue
+        plural = "sponsors"
+        sponsor_pages.append(
+            bulletin_page(
+                t.get("ground", "navy"), f"{t['tier']} {plural} · 2026",
+                f"Thank you,|{t['tier'].lower()} {plural}.", "",
+                "sponsors", "top-right", f"tier-{t['tier'].lower()}",
+                sponsor_logos=[ROOT / s["logo"] for s in logos],
+                per_row=t.get("perRow", 4),
+            )
+        )
 
     def document(pages: list[str], height: int) -> str:
         return f"""<!doctype html>
@@ -672,7 +794,11 @@ def main() -> int:
     for name, pages, height in (
         ("cnd-templates-4x5", portrait_pages, canvas_h),
         ("cnd-templates-square", square_pages, canvas_w),
+        ("cnd-keynotes", keynote_pages, canvas_w),
+        ("cnd-sponsors", sponsor_pages, canvas_w),
     ):
+        if not pages:
+            continue
         html_path = OUT / f"{name}.html"
         html_path.write_text(document(pages, height))
         pdf_path = OUT / f"{name}.pdf"

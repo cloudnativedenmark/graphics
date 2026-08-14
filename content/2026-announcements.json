@@ -1,6 +1,5 @@
 {
-  "$comment": "Content for the 2026 announcement graphics. Edit this, then run: node graphics/build-announcements.mjs. Headlines take the punchy part of the talk title; the full title, speakers and slot go in the body. '|' is a line break, and the renderer shrinks display type to fit, so a longer name will not break the layout.",
-
+  "$comment": "Content for the 2026 announcement graphics. Edit this, then run `node graphics/build-announcements.mjs` for PNGs and `.venv/bin/python graphics/build-canva-import.py` for the Canva HTML. Headlines take the punchy part of a talk title; the full title, speakers and slot go in the body. '|' is a line break, and display type shrinks to fit, so a longer name will not break the layout. Every sponsor in `sponsors` gets its own graphic, and `tiers` groups them.",
   "keynotes": [
     {
       "slug": "d1-whose-code",
@@ -47,43 +46,89 @@
       "portrait": "demo/sponsors/../speakers/gabriele.png"
     }
   ],
-
-  "sponsorTiers": [
+  "sponsors": [
     {
-      "slug": "platinum",
-      "eyebrow": "Platinum sponsor",
-      "headline": "Thank you,|ScanNet.",
-      "ground": "navy",
-      "single": "demo/sponsors/scannet.png",
-      "body": "Platinum sponsor of Cloud Native Denmark 2026."
+      "slug": "scannet",
+      "name": "ScanNet",
+      "tier": "Platinum",
+      "logo": "demo/sponsors/scannet.png"
     },
     {
-      "slug": "gold",
-      "eyebrow": "Gold sponsors · 2026",
-      "headline": "Thank you,|gold sponsors.",
-      "ground": "navy",
-      "perRow": 4,
-      "logos": [
-        "demo/sponsors/aws.svg",
-        "demo/sponsors/exoscale.svg",
-        "demo/sponsors/netic.png",
-        "demo/sponsors/suse.svg"
-      ]
+      "slug": "aws",
+      "name": "AWS",
+      "tier": "Gold",
+      "logo": "demo/sponsors/aws.svg"
     },
     {
-      "slug": "bronze",
-      "eyebrow": "Bronze sponsors · 2026",
-      "headline": "Thank you,|bronze sponsors.",
+      "slug": "exoscale",
+      "name": "Exoscale",
+      "tier": "Gold",
+      "logo": "demo/sponsors/exoscale.svg"
+    },
+    {
+      "slug": "netic",
+      "name": "Netic",
+      "tier": "Gold",
+      "logo": "demo/sponsors/netic.png"
+    },
+    {
+      "slug": "suse",
+      "name": "SUSE",
+      "tier": "Gold",
+      "logo": "demo/sponsors/suse.svg"
+    },
+    {
+      "slug": "chainguard",
+      "name": "Chainguard",
+      "tier": "Bronze",
+      "logo": "demo/sponsors/chainguard.svg"
+    },
+    {
+      "slug": "dash0",
+      "name": "Dash0",
+      "tier": "Bronze",
+      "logo": "demo/sponsors/dash0.svg"
+    },
+    {
+      "slug": "edb",
+      "name": "EDB",
+      "tier": "Bronze",
+      "logo": "demo/sponsors/edb.svg"
+    },
+    {
+      "slug": "everpure",
+      "name": "Everpure",
+      "tier": "Bronze",
+      "logo": "demo/sponsors/everpure.svg"
+    },
+    {
+      "slug": "systematic",
+      "name": "Systematic",
+      "tier": "Bronze",
+      "logo": "demo/sponsors/systematic.svg"
+    },
+    {
+      "slug": "tigera",
+      "name": "Tigera",
+      "tier": "Bronze",
+      "logo": "demo/sponsors/tigera.svg"
+    }
+  ],
+  "tiers": [
+    {
+      "tier": "Platinum",
+      "ground": "navy",
+      "perRow": 1
+    },
+    {
+      "tier": "Gold",
+      "ground": "navy",
+      "perRow": 4
+    },
+    {
+      "tier": "Bronze",
       "ground": "sand",
-      "perRow": 3,
-      "logos": [
-        "demo/sponsors/chainguard.svg",
-        "demo/sponsors/dash0.svg",
-        "demo/sponsors/edb.svg",
-        "demo/sponsors/everpure.svg",
-        "demo/sponsors/systematic.svg",
-        "demo/sponsors/tigera.svg"
-      ]
+      "perRow": 3
     }
   ]
 }
