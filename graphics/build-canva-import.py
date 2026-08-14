@@ -85,7 +85,39 @@ def b64_font(path: Path, tmp: Path, instance: str | None = None) -> str:
     return base64.b64encode(dst.read_bytes()).decode()
 
 
+def svg_as_png_uri(path: Path, width: int = 700) -> str:
+    """Rasterise an SVG and return it as a PNG data URI.
+
+    Canva's importer does not handle `data:image/svg+xml` inside an <image>.
+    When it hits one it drops the *entire* enclosing <svg> — so a sponsor page
+    lost its hexagons and its logo together and Canva substituted a stock
+    background. The only sponsor pages that survived the first import were the
+    two whose logos happened to be PNG.
+
+    So every SVG that ends up in an <img> or <image> is rasterised here. The
+    renderer still uses the vector originals; this is a Canva-only concession.
+    """
+    with tempfile.TemporaryDirectory() as td:
+        out = Path(td) / "asset.png"
+        subprocess.run(
+            ["rsvg-convert", "-w", str(width), str(path), "-o", str(out)],
+            check=True, capture_output=True,
+        )
+        return (
+            "data:image/png;base64,"
+            + base64.b64encode(out.read_bytes()).decode()
+        )
+
+
+def image_uri(path: Path, width: int = 700) -> str:
+    """Data URI for any asset, always in a raster format Canva accepts."""
+    if path.suffix.lower() == ".svg":
+        return svg_as_png_uri(path, width)
+    return b64_image(path)
+
+
 def b64_svg(path: Path) -> str:
+    """Kept for callers that need the raw SVG; prefer svg_as_png_uri."""
     return base64.b64encode(path.read_bytes()).decode()
 
 
@@ -200,11 +232,13 @@ def main() -> int:
         )
 
     lockups = {
-        "cream": b64_svg(ROOT / "brand" / "logo" / "cnd-lockup-cream.svg"),
-        "navy": b64_svg(ROOT / "brand" / "logo" / "cnd-lockup-navy.svg"),
+        "cream": svg_as_png_uri(ROOT / "brand" / "logo" / "cnd-lockup-cream.svg", 600),
+        "navy": svg_as_png_uri(ROOT / "brand" / "logo" / "cnd-lockup-navy.svg", 600),
     }
-    mark_b64 = b64_svg(ROOT / "brand" / "logo" / "cnd-mark.svg")
-    hexagons_b64 = b64_svg(ROOT / "brand" / "logo" / "cnd-hexagons-solid.svg")
+    mark_uri = svg_as_png_uri(ROOT / "brand" / "logo" / "cnd-mark.svg", 300)
+    hexagons_uri = svg_as_png_uri(
+        ROOT / "brand" / "logo" / "cnd-hexagons-solid.svg", 1300
+    )
 
     year_spec = next(
         v["2"]["year"] for v in geometry["frames"].values() if v.get("2")
@@ -216,11 +250,11 @@ def main() -> int:
         run = year_spec["runs"][0]
         size = run["size_px"]
         return (
-            f'<img class="lockup" src="data:image/svg+xml;base64,'
+            f'<img class="lockup" src="'
             f'{lockups["navy"] if on_light else lockups["cream"]}" '
             f'style="left:{lock["x"]}px;top:{lock["y"]}px;'
             f'width:{lock["w"]}px;height:{lock["h"]}px" alt="Cloud Native Denmark">'
-            f'<img class="mark" src="data:image/svg+xml;base64,{mark_b64}" '
+            f'<img class="mark" src="{mark_uri}" '
             f'style="left:{mark["x"]}px;top:{mark["y"]}px;'
             f'width:{mark["w"]}px;height:{mark["h"]}px" alt="">'
             f'<div class="t year" style="left:{year_spec["x"]}px;'
@@ -402,7 +436,7 @@ def main() -> int:
                 )
                 body.append(
                     f'<g clip-path="url(#hexclip2)">'
-                    f'<image href="{b64_image(second)}" '
+                    f'<image href="{image_uri(second)}" '
                     f'x="{box["x"]:.2f}" y="{box["y"]:.2f}" '
                     f'width="{box["w"]:.2f}" height="{box["h"]:.2f}" '
                     f'preserveAspectRatio="{align2} slice"/></g>'
@@ -414,7 +448,7 @@ def main() -> int:
                     body.append(
                         f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
                         f'fill="{color["white"]}"/>'
-                        f'<image href="{b64_image(media)}" '
+                        f'<image href="{image_uri(media)}" '
                         f'x="{box["x"] + pad:.2f}" y="{box["y"] + pad:.2f}" '
                         f'width="{box["w"] - pad * 2:.2f}" '
                         f'height="{box["h"] - pad * 2:.2f}" '
@@ -427,7 +461,7 @@ def main() -> int:
                     )
                     body.append(
                         f'<g clip-path="url(#hexclip)">'
-                        f'<image href="{b64_image(media)}" '
+                        f'<image href="{image_uri(media)}" '
                         f'x="{box["x"]:.2f}" y="{box["y"]:.2f}" '
                         f'width="{box["w"]:.2f}" height="{box["h"]:.2f}" '
                         f'preserveAspectRatio="{align} slice"/></g>'
@@ -473,7 +507,7 @@ def main() -> int:
             body.append(
                 f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
                 f'fill="{color["white"]}"/>'
-                f'<image href="{b64_image(logo)}" '
+                f'<image href="{image_uri(logo)}" '
                 f'x="{box["x"] + pad:.2f}" y="{box["y"] + pad:.2f}" '
                 f'width="{box["w"] - pad * 2:.2f}" '
                 f'height="{box["h"] - pad * 2:.2f}" '
@@ -605,7 +639,7 @@ def main() -> int:
                 "bottom-right": (1080 - w * 0.52, 1080 - h * 0.62),
             }[at]
             parts.append(
-                f'<img class="decor" src="data:image/svg+xml;base64,{hexagons_b64}" '
+                f'<img class="decor" src="{hexagons_uri}" '
                 f'style="left:{spot[0]:.2f}px;top:{spot[1]:.2f}px;'
                 f'width:{w}px;height:{h}px" alt="">'
             )
@@ -613,15 +647,14 @@ def main() -> int:
         wordmark = {"x": M, "y": 58, "w": 150, "h": 89}
         mk = mark_for(wordmark)
         parts.append(
-            f'<img class="lockup" src="data:image/svg+xml;base64,'
-            f'{lockups["cream"] if dark else lockups["navy"]}" '
+            f'<img class="lockup" src="{lockups["cream"] if dark else lockups["navy"]}" '
             f'style="left:{wordmark["x"]}px;top:{wordmark["y"]}px;'
             f'width:{wordmark["w"]}px;height:{wordmark["h"]}px" '
             f'alt="Cloud Native Denmark">'
         )
         if not on_red:
             parts.append(
-                f'<img class="mark" src="data:image/svg+xml;base64,{mark_b64}" '
+                f'<img class="mark" src="{mark_uri}" '
                 f'style="left:{mk["x"]:.2f}px;top:{mk["y"]:.2f}px;'
                 f'width:{mk["w"]:.2f}px;height:{mk["h"]:.2f}px" alt="">'
             )
