@@ -21,6 +21,10 @@
  *   --label TEXT      override the tab label
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
+ *   --eyebrow / --headline / --body   bulletin only; "|" splits lines
+ *   --shape rose|peach|slate|navy|red|white   bulletin corner accent
+ *   --at top-right|top-left|bottom-left      where it bleeds
+ *   --texture 1        bulletin only; faint tiled shape outline
  *   --ground navy|sand|red  poster only
  *   --lines "A|B|*C"   poster only; "*" makes a line the red outline
  *   --meta TEXT        poster only; the small red line above the stack
@@ -73,11 +77,12 @@ const DEFAULT_CATEGORY = {
   clean: null,
   "linkedin-cover": null,
   poster: null,
+  bulletin: null,
 };
 
 // Templates that are a whole document rather than a content layer composed
 // into _social-frame.svg. A cover has no tab, card window or footer band.
-const SELF_CONTAINED = new Set(["linkedin-cover", "poster"]);
+const SELF_CONTAINED = new Set(["linkedin-cover", "poster", "bulletin"]);
 
 // ---------------------------------------------------------------------------
 
@@ -243,6 +248,7 @@ function main() {
 
   if (opts.template === "linkedin-cover") return renderCover(opts, geometry, tokens);
   if (opts.template === "poster") return renderPoster(opts, geometry, tokens);
+  if (opts.template === "bulletin") return renderBulletin(opts, geometry, tokens);
 
   const variant = String(opts.variant);
   if (!["1", "2", "3"].includes(variant)) {
@@ -678,6 +684,144 @@ function renderPoster(opts, geometry, tokens) {
     slug: `poster-${groundName}`,
     out: opts.out ?? join(ROOT, "graphics", "out", `poster-${groundName}.png`),
     label: `poster, ${groundName}, ${square ? "square" : "4:5"}`,
+  });
+}
+
+
+/**
+ * The announcement layout. Square by default, since that is the shape it was
+ * asked for; --surface post gives 1080x1350.
+ *
+ * Content sits in the top 45% and the rest is left empty on purpose — the air
+ * is the layout, not an accident, so nothing here tries to fill it.
+ */
+function renderBulletin(opts, geometry, tokens) {
+  const color = tokens.color;
+  const grounds = {
+    sand: color.sand, bone: color.bone, navy: color.navy, red: color.red,
+  };
+  const groundName = (opts.ground ?? "sand").toLowerCase();
+  const ground = grounds[groundName];
+  if (!ground) {
+    console.error(`--ground must be sand, bone, navy or red (got ${groundName})`);
+    process.exit(2);
+  }
+  const dark = groundName === "navy" || groundName === "red";
+  const onRed = groundName === "red";
+  const ink = dark ? color.white : color.navy;
+  const canvasW = geometry.canvas.w;
+  const canvasH =
+    (opts.surface ?? "square").toLowerCase() === "post" ? geometry.canvas.h : 1080;
+
+  const M = 86; // same left margin as the footer lockup, so the grid agrees
+  const headlineSize = Number(opts.size ?? 104);
+  const headlineLead = +(headlineSize * 0.95).toFixed(2);
+  const bodySize = 30;
+
+  const headLines = (opts.headline ?? "Platform|engineering.").split("|");
+  const bodyLines = (opts.body ?? "Two short lines of|supporting detail.").split("|");
+
+  const eyebrowBase = 196;
+  const headFirst = eyebrowBase + 96;
+  const bodyFirst = headFirst + (headLines.length - 1) * headlineLead + 78;
+
+  const tspans = (lines, x, first, lead) =>
+    lines
+      .map(
+        (l, i) =>
+          `<tspan x="${x}" y="${+(first + i * lead).toFixed(2)}">${escapeXML(
+            l.trim(),
+          )}</tspan>`,
+      )
+      .join("");
+
+  // Corner accent: the mark's own silhouette, scaled large and bled off an
+  // edge. Not a new organic blob — the reference used one, but the brand
+  // already has a shape and it is this.
+  const shapeName = (opts.shape ?? (dark ? "white" : "rose")).toLowerCase();
+  const shapeColor =
+    { rose: color.rose, peach: color.peach, slate: color.slate,
+      navy: color.navy, red: color.red, white: color.white }[shapeName] ?? null;
+  const at = (opts.at ?? "top-right").toLowerCase();
+  let corner = "";
+  if (shapeColor) {
+    const side = Number(opts.shapeSize ?? 470);
+    const box =
+      at === "top-left"
+        ? { cx: M + 40, cy: -30 }
+        : at === "bottom-left"
+          ? { cx: M + 20, cy: canvasH + 40 }
+          : { cx: canvasW - 40, cy: -20 };
+    const opacity = dark ? 0.16 : 1;
+    corner =
+      `<path d="${tokens.shape.path}" fill="${shapeColor}" ` +
+      `fill-opacity="${opacity}" transform="${shapeTransform(
+        tokens.shape.viewBox,
+        { side, cx: box.cx, cy: box.cy },
+      )}"/>`;
+  }
+
+  // Optional faint tiled outline of the same shape, as in the third reference.
+  const texture = opts.texture
+    ? `<rect width="${canvasW}" height="${canvasH}" fill="url(#texture)" ` +
+      `opacity="${dark ? 0.1 : 0.06}"/>`
+    : "";
+
+  const svg = fill(stripLeadComment(load(join(TEMPLATES, "bulletin.svg"))), {
+    canvasW,
+    canvasH,
+    ground,
+    shapePath: tokens.shape.path,
+    textureTransform: shapeTransform(tokens.shape.viewBox, {
+      side: 84, cx: 48, cy: 48,
+    }),
+    textureColor: dark ? color.white : color.navy,
+    texture,
+    corner,
+
+    // The flag mark is red with a white cross, so on a red ground it collapses
+    // to a white plus. Her package has no red-ground mark treatment and
+    // inventing a knockout is a decision for her, so red uses the wordmark
+    // alone and the wordmark moves to the margin.
+    mark: onRed ? "" : assetURL(join(ROOT, "brand", "logo", "cnd-mark.svg")),
+    markX: M,
+    markY: 56,
+    markW: onRed ? 0 : 54,
+    markH: onRed ? 0 : 53,
+    wordmark: assetURL(
+      join(ROOT, "brand", "logo", dark ? "cnd-lockup-cream.svg" : "cnd-lockup-navy.svg"),
+    ),
+    wordmarkX: onRed ? M : M + 68,
+    wordmarkY: 58,
+    wordmarkW: 132,
+    wordmarkH: 78,
+
+    textX: M,
+    eyebrow: escapeXML((opts.eyebrow ?? "Track 02 · announced").toUpperCase()),
+    eyebrowY: eyebrowBase,
+    eyebrowSize: 26,
+    eyebrowTracking: "0.18em",
+    eyebrowColor: dark ? color.white : color.red,
+
+    headline: tspans(headLines, M, headFirst, headlineLead),
+    headlineSize,
+    headlineColor: ink,
+
+    body: tspans(bodyLines, M, bodyFirst, bodySize * 1.5),
+    bodySize,
+    bodyColor: dark
+      ? color.white
+      : color["ink-muted"],
+  });
+
+  rasterise(svg, {
+    canvasW,
+    canvasH,
+    scale: opts.scale,
+    keepHtml: opts["keep-html"],
+    slug: `bulletin-${groundName}`,
+    out: opts.out ?? join(ROOT, "graphics", "out", `bulletin-${groundName}.png`),
+    label: `bulletin, ${groundName}, ${canvasW}x${canvasH}`,
   });
 }
 

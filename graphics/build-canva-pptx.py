@@ -115,6 +115,25 @@ def svg_to_png(svg: str, out: Path, width: int) -> None:
         tmp.unlink(missing_ok=True)
 
 
+def crop_to_ink(png: Path) -> tuple[int, int, int, int]:
+    """Crop a transparent PNG to its ink and return the box, in image pixels.
+
+    Picture layers must be cropped to what they actually draw. A tab rendered
+    on a full-canvas transparent PNG sits on top of the whole slide and
+    intercepts every click, so the shapes beneath it cannot be selected — it
+    reads as though the card and tab are welded into the background, which is
+    exactly the symptom this fixes.
+    """
+    from PIL import Image
+
+    img = Image.open(png).convert("RGBA")
+    box = img.getbbox()
+    if box is None:
+        return (0, 0, img.width, img.height)
+    img.crop(box).save(png)
+    return box
+
+
 def add_rect(slide, x, y, w, h, fill_hex, shape=MSO_SHAPE.RECTANGLE, name=None,
              radius_px=None):
     box = slide.shapes.add_shape(shape, px(x), px(y), px(w), px(h))
@@ -201,14 +220,21 @@ def main() -> int:
             if not spec:
                 continue
             out = art / f"tab-{category}-v{variant}.png"
+            scale = 2
             svg_to_png(
                 f'<svg xmlns="http://www.w3.org/2000/svg" '
                 f'viewBox="0 0 {canvas_w} {canvas_h}" '
                 f'width="{canvas_w}" height="{canvas_h}">'
                 f'<path d="{spec["tab"]["path"]}" fill="{color["red"]}"/></svg>',
-                out, canvas_w * 2,
+                out, canvas_w * scale,
             )
-            tab_png[(category, variant)] = out
+            x0, y0, x1, y1 = crop_to_ink(out)
+            # Back to canvas pixels, so the picture is placed exactly where the
+            # tab was drawn rather than as a full-bleed overlay.
+            tab_png[(category, variant)] = (
+                out,
+                x0 / scale, y0 / scale, (x1 - x0) / scale, (y1 - y0) / scale,
+            )
 
     logo_png = {}
     for name in ("cnd-lockup-cream", "cnd-lockup-navy", "cnd-mark"):
@@ -245,9 +271,10 @@ def main() -> int:
                      color["white"], shape=MSO_SHAPE.ROUNDED_RECTANGLE,
                      name="White card", radius_px=box["r"])
 
-        if tab := tab_png.get((category, variant)):
+        if entry := tab_png.get((category, variant)):
+            tab_file, tx, ty, tw, th = entry
             slide.shapes.add_picture(
-                str(tab), 0, 0, px(canvas_w), px(canvas_h)
+                str(tab_file), px(tx), px(ty), px(tw), px(th)
             ).name = "Red tab"
 
         tab_spec = geometry["frames"].get(category, {}).get(variant)
@@ -255,12 +282,16 @@ def main() -> int:
             lab = tab_spec["label"]
             run = lab["runs"][0]
             words = label.split()
+            # Centred on the tab's own box, not the slide, so this text layer
+            # does not stretch across the canvas and block clicks either.
+            label_w = 560
             add_text(
-                slide, x=0, baseline=lab["baseline"], size_px=run["size_px"],
+                slide, x=round(lab["x"] + lab["w"] / 2 - label_w / 2),
+                baseline=lab["baseline"], size_px=run["size_px"],
                 color_hex=color["white"],
                 text=f"{' '.join(words[:-1])}|{words[-1]}" if len(words) > 1 else label,
                 name="Tab label", leading_px=lab["leading_derived_px"],
-                width_px=canvas_w, align=PP_ALIGN.CENTER,
+                width_px=label_w, align=PP_ALIGN.CENTER,
             )
 
         keys = list(content)

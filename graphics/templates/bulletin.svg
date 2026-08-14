@@ -1,0 +1,60 @@
+<!--
+  Bulletin — the announcement layout: small lockup top-left, wide-tracked
+  eyebrow, a big sentence-case headline with a terminal period, two lines of
+  body, one corner-bleeding shape, and a lot of deliberate air below.
+
+  Two things here depart from her social templates, both on purpose because
+  they are what the layout is:
+
+    sentence case   Her social copy is uppercase throughout. This layout's
+                    whole voice is the lowercase headline with a full stop,
+                    which is also how the lockup ends — "DENMARK." — so the
+                    device is hers even if the case is not.
+    tighter tracking  -0.015em rather than +0.02em. Her +0.02em is right at
+                    40-49px and goes slack at 100px+; her deck display is
+                    tight for the same reason.
+
+  Everything else is hers: palette, Space Grotesk, the real lockup and mark,
+  and the corner shape is the mark's own silhouette rather than a new blob.
+
+  Slots
+    eyebrow    wide-tracked label, e.g. "TRACK 02 · ANNOUNCED"
+    headline   two lines, "|" separated, sentence case, ends in a period
+    body       two lines, "|" separated
+    ground     sand, bone, navy or red
+    shape      corner accent colour; omit for none
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{canvasW}}" height="{{canvasH}}" viewBox="0 0 {{canvasW}} {{canvasH}}">
+  <defs>
+    <clipPath id="bleed">
+      <rect width="{{canvasW}}" height="{{canvasH}}"/>
+    </clipPath>
+    <pattern id="texture" width="96" height="96" patternUnits="userSpaceOnUse">
+      <path d="{{shapePath}}" transform="{{textureTransform}}"
+            fill="none" stroke="{{textureColor}}" stroke-width="6"/>
+    </pattern>
+  </defs>
+
+  <rect width="{{canvasW}}" height="{{canvasH}}" fill="{{ground}}"/>
+  {{texture}}
+
+  <g clip-path="url(#bleed)">{{corner}}</g>
+
+  <image xlink:href="{{mark}}" x="{{markX}}" y="{{markY}}"
+         width="{{markW}}" height="{{markH}}"/>
+  <image xlink:href="{{wordmark}}" x="{{wordmarkX}}" y="{{wordmarkY}}"
+         width="{{wordmarkW}}" height="{{wordmarkH}}"/>
+
+  <text x="{{textX}}" y="{{eyebrowY}}"
+        font-family="Space Grotesk" font-weight="500"
+        font-size="{{eyebrowSize}}" letter-spacing="{{eyebrowTracking}}"
+        fill="{{eyebrowColor}}">{{eyebrow}}</text>
+
+  <text font-family="Space Grotesk" font-weight="700"
+        font-size="{{headlineSize}}" letter-spacing="-0.015em"
+        fill="{{headlineColor}}">{{headline}}</text>
+
+  <text font-family="Inter" font-weight="400"
+        font-size="{{bodySize}}" fill="{{bodyColor}}">{{body}}</text>
+</svg>
