@@ -88,6 +88,18 @@ def b64_svg(path: Path) -> str:
     return base64.b64encode(path.read_bytes()).decode()
 
 
+def b64_image(path: Path) -> str:
+    """Inline a raster or vector image as a data URI.
+
+    Everything ships inside the one HTML file, so an import needs no sibling
+    assets and no hosting.
+    """
+    mime = "image/svg+xml" if path.suffix.lower() == ".svg" else "image/jpeg"
+    if path.suffix.lower() == ".png":
+        mime = "image/png"
+    return f"data:{mime};base64,{base64.b64encode(path.read_bytes()).decode()}"
+
+
 def top_for(baseline: float, size: float) -> float:
     """CSS top edge of a line-height:1 text box whose baseline is `baseline`."""
     return round(baseline - BASELINE_EM * size, 2)
@@ -266,9 +278,108 @@ def main() -> int:
         parts.append(footer(overlay, on_light))
         return page(page_label, "".join(parts))
 
+    hexagon = geometry["hexagon"]
+
+    def hex_box(w: float, cx: float, cy: float) -> dict:
+        """Place the extracted hexagon in a box of a given width."""
+        vx, vy, vw, vh = (float(n) for n in hexagon["viewBox"].split())
+        scale = w / vw
+        h = vh * scale
+        return {
+            "w": w, "h": h, "x": cx - w / 2, "y": cy - h / 2,
+            "transform": (
+                f"translate({cx - w / 2:.2f} {cy - h / 2:.2f}) "
+                f"scale({scale:.5f}) translate({-vx} {-vy})"
+            ),
+        }
+
+    # Same arrangement the renderer uses, so the HTML and the PNG agree.
+    HEX_SPOTS = [
+        (430, 862, 372), (214, 1064, 656), (286, 792, 790), (156, 1020, 216),
+        (200, 966, 1010), (132, 660, 986), (108, 604, 690),
+    ]
+
+    def hexfield_svg(dark: bool, media: Path | None, is_logo: bool) -> str:
+        """The scatter, with an optional photo or logo in the largest cell."""
+        fills = [color["rose"], color["peach"], color["slate"]]
+        defs, body = [], []
+        for i, (w, cx, cy) in enumerate(HEX_SPOTS):
+            box = hex_box(w, cx, cy)
+            if i == 0 and media is not None:
+                if is_logo:
+                    pad = box["w"] * 0.22
+                    body.append(
+                        f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
+                        f'fill="{color["white"]}"/>'
+                        f'<image href="{b64_image(media)}" '
+                        f'x="{box["x"] + pad:.2f}" y="{box["y"] + pad:.2f}" '
+                        f'width="{box["w"] - pad * 2:.2f}" '
+                        f'height="{box["h"] - pad * 2:.2f}" '
+                        f'preserveAspectRatio="xMidYMid meet"/>'
+                    )
+                else:
+                    defs.append(
+                        f'<clipPath id="hexclip"><path d="{hexagon["path"]}" '
+                        f'transform="{box["transform"]}"/></clipPath>'
+                    )
+                    body.append(
+                        f'<g clip-path="url(#hexclip)">'
+                        f'<image href="{b64_image(media)}" '
+                        f'x="{box["x"]:.2f}" y="{box["y"]:.2f}" '
+                        f'width="{box["w"]:.2f}" height="{box["h"]:.2f}" '
+                        f'preserveAspectRatio="xMidYMid slice"/></g>'
+                    )
+                continue
+            fill = fills[(i - (1 if media is not None else 0)) % len(fills)]
+            body.append(
+                f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
+                f'fill="{fill}" fill-opacity="{0.92 if dark else 1}"/>'
+            )
+        inner = (f"<defs>{''.join(defs)}</defs>" if defs else "") + "".join(body)
+        return (
+            f'<svg class="decor" viewBox="0 0 1080 1080" width="1080" height="1080" '
+            f'style="left:0;top:0">{inner}</svg>'
+        )
+
+    def sponsors_svg(logos: list[Path], per_row: int, top: float) -> str:
+        """A honeycomb row of logos, each in a white hexagon."""
+        gap = 20
+        cell_w = min(
+            round((1080 - 86 * 2 - gap * (per_row - 1)) / per_row),
+            round((1080 - top - 200) / 1.35),
+        )
+        cell_h = cell_w * 1090.11 / 1005.874
+        body = []
+        for i, logo in enumerate(logos):
+            row, col = divmod(i, per_row)
+            in_row = min(per_row, len(logos) - row * per_row)
+            row_w = in_row * cell_w + (in_row - 1) * gap
+            x0 = (1080 - row_w) / 2
+            cx = x0 + col * (cell_w + gap) + cell_w / 2
+            cy = top + row * (cell_h * 0.84) + cell_h / 2 + (
+                cell_h * 0.24 if col % 2 else 0
+            )
+            box = hex_box(cell_w, cx, cy)
+            pad = cell_w * 0.2
+            body.append(
+                f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
+                f'fill="{color["white"]}"/>'
+                f'<image href="{b64_image(logo)}" '
+                f'x="{box["x"] + pad:.2f}" y="{box["y"] + pad:.2f}" '
+                f'width="{box["w"] - pad * 2:.2f}" '
+                f'height="{box["h"] - pad * 2:.2f}" '
+                f'preserveAspectRatio="xMidYMid meet"/>'
+            )
+        return (
+            f'<svg class="decor" viewBox="0 0 1080 1080" width="1080" height="1080" '
+            f'style="left:0;top:0">{"".join(body)}</svg>'
+        )
+
     def bulletin_page(
         ground_name: str, eyebrow: str, headline: str, body: str,
         decor: str, at: str, page_label: str,
+        portrait: Path | None = None, logo: Path | None = None,
+        sponsor_logos: list[Path] | None = None, head_size: int | None = None,
     ) -> str:
         """The announcement layout: lockup, eyebrow, sentence-case headline,
         body, one corner-bleeding device, and air below."""
@@ -281,17 +392,28 @@ def main() -> int:
         on_red = ground_name == "red"
         ink = color["white"] if dark else color["navy"]
         M = 86
-        head_size = 104
+        head_size = head_size or 132
         head_lead = round(head_size * 0.95, 2)
-        eyebrow_base = 196
-        head_first = eyebrow_base + 96
+        eyebrow_base = 200
+        head_first = eyebrow_base + 112
         head_lines = headline.split("|")
-        body_first = head_first + (len(head_lines) - 1) * head_lead + 78
-        body_size = 30
+        body_first = head_first + (len(head_lines) - 1) * head_lead + 84
+        body_size = 34
 
         parts = [f'<div class="ground" style="background:{ground}"></div>']
 
-        if decor == "shape":
+        if decor == "hexfield":
+            parts.append(
+                hexfield_svg(dark, portrait or logo, logo is not None)
+            )
+        elif decor == "sponsors":
+            # Below the *last* headline baseline, not the first — using
+            # head_first put the honeycomb 125px high, into the descenders.
+            head_bottom = head_first + (len(head_lines) - 1) * head_lead
+            parts.append(
+                sponsors_svg(sponsor_logos or [], 4, head_bottom + 118)
+            )
+        elif decor == "shape":
             # The mark's own silhouette, scaled large and bled off an edge.
             side = 470
             vx, vy, vw, vh = (float(n) for n in tokens["shape"]["viewBox"].split())
@@ -341,7 +463,7 @@ def main() -> int:
         )
         parts.append(
             f'<div class="t" style="left:{M}px;'
-            f'top:{top_for(eyebrow_base, 26)}px;font-size:26px;'
+            f'top:{top_for(eyebrow_base, 30)}px;font-size:30px;'
             f'letter-spacing:0.18em;'
             f'color:{color["white"] if dark else color["red"]}">'
             f'{esc(eyebrow.upper())}</div>'
@@ -433,6 +555,35 @@ def main() -> int:
             "red", "Early bird ends", "07|days left.",
             "Blind bird pricing closes Sunday.|After that it is 1.999 DKK.",
             "none", "top-right", "Bulletin — red, countdown",
+        ),
+        bulletin_page(
+            "sand", "Keynote · day one", "Joseph|Sandoval.",
+            "Your Agent Has No Idea|Where It’s Running.",
+            "hexfield", "top-right", "Keynote — sand, portrait in hexagon",
+            portrait=ROOT / "demo" / "joseph-sandoval.jpg", head_size=112,
+        ),
+        bulletin_page(
+            "navy", "Keynote · day one",
+            "Your agent|has no idea|where it’s|running.",
+            "Joseph Sandoval.|Day one, main hall.",
+            "hexfield", "top-right", "Keynote — navy, talk title lead",
+            portrait=ROOT / "demo" / "joseph-sandoval.jpg", head_size=96,
+        ),
+        bulletin_page(
+            "navy", "Gold sponsor", "Akamai|Cloud.",
+            "Managed Kubernetes, distributed|worldwide. Booth 4.",
+            "hexfield", "top-right", "Sponsor — single, logo in hexagon",
+            logo=ROOT / "demo" / "logos" / "akamai.svg",
+        ),
+        bulletin_page(
+            "navy", "Sponsors · 2026", "Thank you,|gold sponsors.", "",
+            "sponsors", "top-right", "Sponsors — gold tier honeycomb",
+            sponsor_logos=[
+                ROOT / "demo" / "logos" / "akamai.svg",
+                ROOT / "demo" / "logos" / "aws-logo.svg",
+                ROOT / "demo" / "logos" / "dash0.svg",
+                ROOT / "demo" / "logos" / "kubernetes-icon-color.svg",
+            ],
         ),
     ]
 
