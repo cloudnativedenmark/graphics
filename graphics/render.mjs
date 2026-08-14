@@ -220,6 +220,43 @@ function deriveSquare(overlay, content) {
 }
 
 /**
+ * Width of a line, in px, from the extracted font metrics.
+ *
+ * Advances are 1/1000 em. Tracking applies between glyphs, so it is counted
+ * (n - 1) times. Unknown characters fall back to a mid-width advance rather
+ * than being dropped, so a stray glyph makes a line read slightly wide — the
+ * safe direction when this is used to prevent collisions.
+ */
+function textWidth(metrics, face, text, sizePx, trackingEm = 0) {
+  const table = metrics[face];
+  if (!table) return text.length * sizePx * 0.55;
+  const { advances } = table;
+  let em = 0;
+  for (const ch of text) em += advances[ch] ?? 550;
+  return (em / 1000) * sizePx + trackingEm * sizePx * Math.max(0, text.length - 1);
+}
+
+/**
+ * Largest size at or below `startPx` whose longest line fits `maxWidth`.
+ *
+ * Copy for these layouts is written by hand and varies wildly in length — a
+ * speaker's name might be "Ana Ruiz" or "Allan Højgaard Jensen" — so the type
+ * has to yield rather than the layout breaking. Steps down in 2px increments
+ * because a fractional display size looks arbitrary in the output.
+ */
+function fitSize(metrics, face, lines, startPx, maxWidth, trackingEm) {
+  let size = startPx;
+  while (size > 24) {
+    const widest = Math.max(
+      ...lines.map((l) => textWidth(metrics, face, l, size, trackingEm)),
+    );
+    if (widest <= maxWidth) break;
+    size -= 2;
+  }
+  return size;
+}
+
+/**
  * Map the single hexagon's viewBox onto a box of a given width, keeping its
  * aspect. Used for both the scatter and the photo/logo masks, so a hexagon is
  * always her hexagon rather than a redrawn one.
@@ -739,13 +776,37 @@ function renderBulletin(opts, geometry, tokens) {
     (opts.surface ?? "square").toLowerCase() === "post" ? geometry.canvas.h : 1080;
 
   const M = 86; // same left margin as the footer lockup, so the grid agrees
-  const headlineSize = Number(opts.size ?? 132);
+  const decorName = (opts.decor ?? "shape").toLowerCase();
+
+  // How much width the copy actually has, which depends on what the decor
+  // occupies. hexfield puts a portrait hexagon at x 647, so text must stop
+  // well before it — this is the measurement that stops a long name running
+  // into the photo.
+  const columnW =
+    decorName === "hexfield"
+      ? 560
+      : decorName === "none"
+        ? canvasW - M * 2
+        : 800;
+
+  const metrics = geometry.metrics;
+  const headLinesRaw = (opts.headline ?? "Platform|engineering.")
+    .split("|")
+    .map((l) => l.trim());
+  const headlineSize = opts.size
+    ? Number(opts.size)
+    : fitSize(metrics, "SpaceGrotesk-Bold", headLinesRaw, 132, columnW, -0.015);
   const headlineLead = +(headlineSize * 0.95).toFixed(2);
-  const bodySize = 34;
+  const bodyLinesRaw = (opts.body ?? "Two short lines of|supporting detail.")
+    .split("|")
+    .map((l) => l.trim());
+  const bodySize = fitSize(
+    metrics, "Inter-Regular", bodyLinesRaw, 34, columnW, 0,
+  );
   const eyebrowSize = 30;
 
-  const headLines = (opts.headline ?? "Platform|engineering.").split("|");
-  const bodyLines = (opts.body ?? "Two short lines of|supporting detail.").split("|");
+  const headLines = headLinesRaw;
+  const bodyLines = bodyLinesRaw;
 
   const eyebrowBase = 200;
   const headFirst = eyebrowBase + 112;
@@ -766,7 +827,7 @@ function renderBulletin(opts, geometry, tokens) {
   //   hexagons  her 4-hexagon cluster, as on the roll-ups and beachflag
   // The cluster uses the ground-baked twin, because the stock artwork is a
   // darkening overlay that disappears on navy and red.
-  const decor = (opts.decor ?? "shape").toLowerCase();
+  const decor = decorName;
   const shapeName = (opts.shape ?? (dark ? "white" : "rose")).toLowerCase();
   const shapeColor =
     { rose: color.rose, peach: color.peach, slate: color.slate,
@@ -991,9 +1052,16 @@ function renderSponsors(opts, geometry, tokens) {
   }
 
   const M = 86;
-  const headSize = Number(opts.size ?? 132);
+  const headLines = (opts.headline ?? "Thank you,|gold sponsors.")
+    .split("|")
+    .map((l) => l.trim());
+  const headSize = opts.size
+    ? Number(opts.size)
+    : fitSize(
+        geometry.metrics, "SpaceGrotesk-Bold", headLines, 132,
+        canvasW - M * 2, -0.015,
+      );
   const headLead = +(headSize * 0.95).toFixed(2);
-  const headLines = (opts.headline ?? "Thank you,|gold sponsors.").split("|");
 
   const eyebrowBase = 200;
   const headFirst = eyebrowBase + 112;

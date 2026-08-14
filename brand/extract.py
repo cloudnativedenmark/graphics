@@ -268,6 +268,46 @@ def bake_over_ground(src: Path, dst: Path, ground_hex: str) -> None:
     )
 
 
+def extract_metrics() -> dict:
+    """Per-character advance widths, so layout code can measure text.
+
+    Without this, nothing downstream knows how wide a line is, and the only
+    options are guessing a size or letting long copy collide with artwork —
+    which is exactly what happened when a speaker's name overran into the
+    portrait hexagon. Advances are in 1/1000 em, so:
+
+        width_px = sum(advances) / 1000 * size_px
+                 + tracking_em * size_px * (len(text) - 1)
+    """
+    from fontTools.ttLib import TTFont
+
+    faces = {
+        "SpaceGrotesk-Medium": "SpaceGrotesk-Medium.ttf",
+        "SpaceGrotesk-Bold": "SpaceGrotesk-Bold.ttf",
+        "Inter-Regular": "Inter-Variable.ttf",
+    }
+    chars = [chr(c) for c in range(32, 127)] + list("–—’‘“”·°×…")
+    out: dict[str, dict] = {}
+    for name, filename in faces.items():
+        font = TTFont(BRAND / "fonts" / filename)
+        upm = font["head"].unitsPerEm
+        cmap = font.getBestCmap()
+        hmtx = font["hmtx"]
+        advances = {}
+        for ch in chars:
+            glyph = cmap.get(ord(ch))
+            if glyph is None:
+                continue
+            advances[ch] = round(hmtx[glyph][0] * 1000 / upm, 1)
+        out[name] = {
+            "unitsPerEm": 1000,
+            "capHeight": round(font["OS/2"].sCapHeight * 1000 / upm, 1),
+            "advances": advances,
+        }
+        print(f"    metrics: {name}  {len(advances)} glyphs")
+    return out
+
+
 def extract_single_hexagon(cluster: Path, dst: Path) -> dict:
     """Pull one hexagon out of her 4-hexagon cluster, tightened to its own box.
 
@@ -818,6 +858,9 @@ def main() -> None:
         REF_DIR.mkdir(parents=True, exist_ok=True)
         shutil.copy2(cover_ref, REF_DIR / cover_ref.name)
 
+    print("extracting font metrics ...")
+    metrics = extract_metrics()
+
     print("extracting a single hexagon ...")
     hexagon = extract_single_hexagon(
         LOGO_DIR / "cnd-hexagons-solid.svg", LOGO_DIR / "cnd-hexagon.svg"
@@ -843,6 +886,7 @@ def main() -> None:
             "logos": "PSD embedded smart objects",
         },
         "canvas": {"w": doc_w, "h": doc_h},
+        "metrics": metrics,
         "hexagon": hexagon,
         "frames": frames,
         "content": content,
