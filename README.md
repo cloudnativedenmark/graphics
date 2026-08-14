@@ -57,7 +57,8 @@ node graphics/build-announcements.mjs --scale 2    # retina
 node graphics/build-announcements.mjs --surface post  # 4:5 only
 ```
 
-30 square and 27 4:5 files in `graphics/out/announcements/`.
+54 files in `graphics/out/announcements/` — 27 of each surface: 6 keynotes,
+7 countdowns, 11 sponsor singles, 2 tier honeycombs and 1 general announcement.
 
 To add a keynote, append to `keynotes` in the content file:
 
@@ -189,6 +190,40 @@ not something to fix by hand in Canva every time.
 The existing Canva kit is **KCD Denmark 2024**, from before the rename. Make a
 new one for 2026 with the nine colours in
 [`brand/tokens.json`](brand/tokens.json), and leave the old one alone.
+
+---
+
+## Using this with Claude Code
+
+There is nothing to install. The skill lives in the repo at
+[`.claude/skills/cnd-graphics/`](.claude/skills/cnd-graphics/), and Claude Code
+discovers project-scoped skills automatically from the working directory.
+
+```bash
+git clone git@github.com:cloudnativedenmark/graphics.git
+cd graphics
+claude
+```
+
+Then just ask:
+
+> Make a keynote announcement for Paula Kennedy, "How Do You Explore When the
+> Map Keeps Changing?", day two.
+
+> Move Chainguard up to the gold tier and rebuild the sponsor graphics.
+
+> Build the Canva import files for the countdowns.
+
+The skill carries the routing and the brand invariants, so it picks the right
+template and won't quietly invent a colour or re-typeset the lockup. Type
+`/cnd-graphics` to invoke it explicitly.
+
+**Work inside the repo.** The skill and the content file use relative paths, so
+running Claude from elsewhere won't find the assets — and don't copy the skill
+to `~/.claude/skills/` for the same reason.
+
+Everything works without Claude too; the commands in this README are the whole
+interface.
 
 ---
 
