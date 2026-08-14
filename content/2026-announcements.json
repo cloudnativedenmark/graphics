@@ -130,5 +130,49 @@
       "ground": "sand",
       "perRow": 3
     }
+  ],
+  "countdowns": [
+    {
+      "days": 90,
+      "ground": "navy",
+      "eyebrow": "Blind bird · on sale",
+      "body": "Blind bird pricing, 1.499 DKK.|All profits go to charity."
+    },
+    {
+      "days": 60,
+      "ground": "navy",
+      "eyebrow": "Tickets · standard",
+      "body": "Standard tickets from 1.999 DKK.|Scandic Copenhagen, 19–20 November."
+    },
+    {
+      "days": 30,
+      "ground": "sand",
+      "eyebrow": "Schedule · live",
+      "body": "Two days, four tracks, one community.|The full schedule is out."
+    },
+    {
+      "days": 14,
+      "ground": "sand",
+      "eyebrow": "Two weeks out",
+      "body": "Time to book the train.|19–20 November, Copenhagen."
+    },
+    {
+      "days": 7,
+      "ground": "red",
+      "eyebrow": "One week out",
+      "body": "Late bird closes this weekend.|Doors at 08:30 on the 19th."
+    },
+    {
+      "days": 3,
+      "ground": "red",
+      "eyebrow": "Nearly there",
+      "body": "Final headcount goes to the venue.|See you at Scandic Copenhagen."
+    },
+    {
+      "days": 1,
+      "ground": "red",
+      "eyebrow": "Tomorrow",
+      "body": "Doors at 08:30, registration in the foyer.|Bring a laptop and reuse your mug."
+    }
   ]
 }

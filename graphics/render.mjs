@@ -21,7 +21,9 @@
  *   --label TEXT      override the tab label
  *   --scale N         device pixel ratio, e.g. 2 for retina export
  *   --frame           frame only, content window transparent
- *   --eyebrow / --headline / --body   bulletin only; "|" splits lines
+ *   --eyebrow / --headline / --body   bulletin only; "|" splits lines.
+ *                     Prefix a headline line with "^" to set it as the figure,
+ *                     much larger than the rest — for countdowns.
  *   --decor shape|hexagons|hexfield|none   bulletin corner device
  *   --portrait FILE    with decor=hexfield, puts a speaker in the big hexagon
  *   --logo FILE        with decor=hexfield, puts a sponsor logo in it
@@ -271,6 +273,24 @@ function hexTransform(viewBox, { w, cx, cy }) {
     h,
     x: cx - w / 2,
     y: cy - h / 2,
+  };
+}
+
+/**
+ * Place the flag mark against a wordmark box, using her measured arrangement.
+ *
+ * The mark sits to the *upper right* of the wordmark, overlapping the "CLOUD
+ * NATIVE" lines — it does not lead the lockup. Ratios are taken from the
+ * measured footer, where the wordmark is 271x160 at (86, 1111) and the mark is
+ * 114x112 at (311, 1081), so any wordmark size reproduces her lockup rather
+ * than an approximation of it.
+ */
+function markFor({ x, y, w, h }) {
+  return {
+    x: +(x + 0.8303 * w).toFixed(2),
+    y: +(y - 0.1875 * h).toFixed(2),
+    w: +(0.4207 * w).toFixed(2),
+    h: +(0.7 * h).toFixed(2),
   };
 }
 
@@ -790,13 +810,44 @@ function renderBulletin(opts, geometry, tokens) {
         : 800;
 
   const metrics = geometry.metrics;
-  const headLinesRaw = (opts.headline ?? "Platform|engineering.")
+
+  // A "^" prefix marks a line as the figure — the countdown number — and sets
+  // it much larger than the rest. Countdowns need the number to dominate and
+  // the label to sit under it, which a single uniform size cannot do.
+  const FIGURE_RATIO = 1.95;
+  // Wordmark first, mark to its upper right — her arrangement.
+  const wordmark = { x: M, y: 58, w: 150, h: 89 };
+  const mark = markFor(wordmark);
+
+  const rawLines = (opts.headline ?? "Platform|engineering.")
     .split("|")
     .map((l) => l.trim());
+  const isFigure = rawLines.map((l) => l.startsWith("^"));
+  const headLinesRaw = rawLines.map((l) => l.replace(/^\^/, ""));
+
+  // Fit the ordinary lines and the figure separately, then take whichever
+  // constraint is tighter — a wide figure must shrink the whole block, not
+  // just itself, or the two stop looking like one unit.
+  const plainLines = headLinesRaw.filter((_, i) => !isFigure[i]);
+  const figureLines = headLinesRaw.filter((_, i) => isFigure[i]);
+  const fitPlain = plainLines.length
+    ? fitSize(metrics, "SpaceGrotesk-Bold", plainLines, 132, columnW, -0.015)
+    : 132;
+  const fitFigure = figureLines.length
+    ? fitSize(
+        metrics, "SpaceGrotesk-Bold", figureLines,
+        132 * FIGURE_RATIO, columnW, -0.02,
+      ) / FIGURE_RATIO
+    : 132;
   const headlineSize = opts.size
     ? Number(opts.size)
-    : fitSize(metrics, "SpaceGrotesk-Bold", headLinesRaw, 132, columnW, -0.015);
+    : Math.min(fitPlain, fitFigure);
   const headlineLead = +(headlineSize * 0.95).toFixed(2);
+  const sizeOf = (i) =>
+    +(headlineSize * (isFigure[i] ? FIGURE_RATIO : 1)).toFixed(2);
+  // A figure's label belongs close under it, not a full line away — 0.95 of a
+  // 257px figure left them reading as two separate statements.
+  const leadOf = (i) => +(sizeOf(i) * (isFigure[i] ? 0.72 : 0.95)).toFixed(2);
   const bodyLinesRaw = (opts.body ?? "Two short lines of|supporting detail.")
     .split("|")
     .map((l) => l.trim());
@@ -805,12 +856,23 @@ function renderBulletin(opts, geometry, tokens) {
   );
   const eyebrowSize = 30;
 
-  const headLines = headLinesRaw;
   const bodyLines = bodyLinesRaw;
 
   const eyebrowBase = 200;
-  const headFirst = eyebrowBase + 112;
-  const bodyFirst = headFirst + (headLines.length - 1) * headlineLead + 84;
+  // A figure is nearly twice the body size, so its cap reaches far above the
+  // baseline and would otherwise strike through the eyebrow. Push the block
+  // down by the extra cap height.
+  const headFirst =
+    eyebrowBase + 112 + (isFigure[0] ? 0.7 * (headlineSize * FIGURE_RATIO - headlineSize) : 0);
+  // Each line advances by its own leading, so a mixed-size block stacks
+  // correctly instead of assuming one uniform step.
+  const headBaselines = headLinesRaw.map((_, i) =>
+    headLinesRaw
+      .slice(0, i)
+      .reduce((y, _l, j) => y + leadOf(j), headFirst),
+  );
+  const headEnd = headBaselines[headBaselines.length - 1];
+  const bodyFirst = headEnd + 84;
 
   const tspans = (lines, x, first, lead) =>
     lines
@@ -895,17 +957,17 @@ function renderBulletin(opts, geometry, tokens) {
     // inventing a knockout is a decision for her, so red uses the wordmark
     // alone and the wordmark moves to the margin.
     mark: onRed ? "" : assetURL(join(ROOT, "brand", "logo", "cnd-mark.svg")),
-    markX: M,
-    markY: 56,
-    markW: onRed ? 0 : 54,
-    markH: onRed ? 0 : 53,
+    markX: mark.x,
+    markY: mark.y,
+    markW: onRed ? 0 : mark.w,
+    markH: onRed ? 0 : mark.h,
     wordmark: assetURL(
       join(ROOT, "brand", "logo", dark ? "cnd-lockup-cream.svg" : "cnd-lockup-navy.svg"),
     ),
-    wordmarkX: onRed ? M : M + 68,
-    wordmarkY: 58,
-    wordmarkW: 132,
-    wordmarkH: 78,
+    wordmarkX: wordmark.x,
+    wordmarkY: wordmark.y,
+    wordmarkW: wordmark.w,
+    wordmarkH: wordmark.h,
 
     textX: M,
     eyebrow: escapeXML((opts.eyebrow ?? "Track 02 · announced").toUpperCase()),
@@ -914,7 +976,15 @@ function renderBulletin(opts, geometry, tokens) {
     eyebrowTracking: "0.18em",
     eyebrowColor: dark ? color.white : color.red,
 
-    headline: tspans(headLines, M, headFirst, headlineLead),
+    headline: headLinesRaw
+      .map(
+        (line, i) =>
+          `<tspan x="${M}" y="${headBaselines[i].toFixed(2)}" ` +
+          `font-size="${sizeOf(i)}"` +
+          (isFigure[i] ? ' letter-spacing="-0.02em"' : "") +
+          `>${escapeXML(line)}</tspan>`,
+      )
+      .join(""),
     headlineSize,
     headlineColor: ink,
 
@@ -952,7 +1022,13 @@ function renderBulletin(opts, geometry, tokens) {
 function hexField(geometry, tokens, canvasW, canvasH, opts, dark) {
   const color = tokens.color;
   const hex = geometry.hexagon;
-  const fills = [color.rose, color.peach, color.slate];
+  // On red the rose and peach accents sit too close to the ground and go
+  // muddy, so the field tints with white instead — the same move her hexagon
+  // overlay makes on sand, inverted.
+  const onRedGround = (opts.ground ?? "").toLowerCase() === "red";
+  const fills = onRedGround
+    ? [color.white, color.white, color.white]
+    : [color.rose, color.peach, color.slate];
 
   // Two-speaker keynotes need a matched pair rather than one big hexagon and a
   // scattering. These interlock the way her cluster does: the second sits half
@@ -1034,7 +1110,7 @@ function hexField(geometry, tokens, canvasW, canvasH, opts, dark) {
     const fill = fills[Math.max(0, i - mediaCount) % fills.length];
     parts.push(
       `<path d="${hex.path}" transform="${box.transform}" fill="${fill}" ` +
-        `fill-opacity="${dark ? 0.92 : 1}"/>`,
+        `fill-opacity="${onRedGround ? 0.16 : dark ? 0.92 : 1}"/>`,
     );
   });
 
@@ -1081,6 +1157,9 @@ function renderSponsors(opts, geometry, tokens) {
   }
 
   const M = 86;
+  const wordmark = { x: M, y: 58, w: 150, h: 89 };
+  const mark = markFor(wordmark);
+
   const headLines = (opts.headline ?? "Thank you,|gold sponsors.")
     .split("|")
     .map((l) => l.trim());
@@ -1093,6 +1172,10 @@ function renderSponsors(opts, geometry, tokens) {
   const headLead = +(headSize * 0.95).toFixed(2);
 
   const eyebrowBase = 200;
+  // A figure is nearly twice the body size, so its cap reaches far above the
+  // baseline and would otherwise strike through the eyebrow. Push the block
+  // down by the extra cap height.
+  // No figure lines in a sponsor tier, so the plain offset applies.
   const headFirst = eyebrowBase + 112;
   const headBottom = headFirst + (headLines.length - 1) * headLead;
 
@@ -1167,17 +1250,17 @@ function renderSponsors(opts, geometry, tokens) {
     corner: (defs.length ? `<defs>${defs.join("")}</defs>` : "") + cells.join(""),
 
     mark: onRed ? "" : assetURL(join(ROOT, "brand", "logo", "cnd-mark.svg")),
-    markX: M,
-    markY: 56,
-    markW: onRed ? 0 : 54,
-    markH: onRed ? 0 : 53,
+    markX: mark.x,
+    markY: mark.y,
+    markW: onRed ? 0 : mark.w,
+    markH: onRed ? 0 : mark.h,
     wordmark: assetURL(
       join(ROOT, "brand", "logo", dark ? "cnd-lockup-cream.svg" : "cnd-lockup-navy.svg"),
     ),
-    wordmarkX: onRed ? M : M + 68,
-    wordmarkY: 58,
-    wordmarkW: 132,
-    wordmarkH: 78,
+    wordmarkX: wordmark.x,
+    wordmarkY: wordmark.y,
+    wordmarkW: wordmark.w,
+    wordmarkH: wordmark.h,
 
     textX: M,
     eyebrow: escapeXML((opts.eyebrow ?? "Sponsors · 2026").toUpperCase()),

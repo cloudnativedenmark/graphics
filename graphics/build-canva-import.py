@@ -156,6 +156,21 @@ def fit_size(metrics: dict, face: str, lines: list[str], start: float,
     return size
 
 
+def mark_for(box: dict) -> dict:
+    """Place the flag mark against a wordmark box, per her measured lockup.
+
+    The mark sits to the *upper right* of the wordmark, overlapping the "CLOUD
+    NATIVE" lines — it does not lead the lockup. Ratios come from the measured
+    footer: wordmark 271x160 at (86, 1111), mark 114x112 at (311, 1081).
+    """
+    return {
+        "x": box["x"] + 0.8303 * box["w"],
+        "y": box["y"] - 0.1875 * box["h"],
+        "w": 0.4207 * box["w"],
+        "h": 0.7 * box["h"],
+    }
+
+
 def top_for(baseline: float, size: float) -> float:
     """CSS top edge of a line-height:1 text box whose baseline is `baseline`."""
     return round(baseline - BASELINE_EM * size, 2)
@@ -362,14 +377,19 @@ def main() -> int:
     def hexfield_svg(
         dark: bool, media: Path | None, is_logo: bool,
         second: Path | None = None, align: str = "xMidYMid",
-        align2: str = "xMidYMid",
+        align2: str = "xMidYMid", on_red: bool = False,
     ) -> str:
         """The scatter, with an optional photo or logo in the largest cell.
 
         With a second portrait it switches to the matched interlocking pair,
         the same as --portrait2 does in the renderer.
         """
-        fills = [color["rose"], color["peach"], color["slate"]]
+        # On red the rose and peach accents sit too close to the ground and go
+        # muddy, so the field tints with white instead.
+        fills = (
+            [color["white"]] * 3 if on_red
+            else [color["rose"], color["peach"], color["slate"]]
+        )
         layout = PAIR_SPOTS if second else HEX_SPOTS
         media_count = 2 if second else (1 if media else 0)
         defs, body = [], []
@@ -416,7 +436,7 @@ def main() -> int:
             fill = fills[max(0, i - media_count) % len(fills)]
             body.append(
                 f'<path d="{hexagon["path"]}" transform="{box["transform"]}" '
-                f'fill="{fill}" fill-opacity="{0.92 if dark else 1}"/>'
+                f'fill="{fill}" fill-opacity="{0.16 if on_red else (0.92 if dark else 1)}"/>'
             )
         inner = (f"<defs>{''.join(defs)}</defs>" if defs else "") + "".join(body)
         return (
@@ -483,16 +503,37 @@ def main() -> int:
         on_red = ground_name == "red"
         ink = color["white"] if dark else color["navy"]
         M = 86
-        head_lines_pre = [l.strip() for l in headline.split("|")]
+        # "^" marks a countdown figure, set far larger than its label — same
+        # convention and ratio the renderer uses.
+        FIGURE_RATIO = 1.95
+        raw_lines = [l.strip() for l in headline.split("|")]
+        is_figure = [l.startswith("^") for l in raw_lines]
+        head_lines_pre = [l.lstrip("^") for l in raw_lines]
+
         # Same column budget the renderer uses: hexfield puts a portrait
         # hexagon at x 647, so display type has 560px before it collides.
         column_w = 560 if decor in ("hexfield",) else (
             1080 - M * 2 if decor == "none" else 800
         )
-        head_size = head_size or fit_size(
-            geometry["metrics"], "SpaceGrotesk-Bold", head_lines_pre, 132,
-            column_w, -0.015,
-        )
+        metrics = geometry["metrics"]
+        plain = [t for t, f in zip(head_lines_pre, is_figure) if not f]
+        figs = [t for t, f in zip(head_lines_pre, is_figure) if f]
+        fit_plain = fit_size(
+            metrics, "SpaceGrotesk-Bold", plain, 132, column_w, -0.015,
+        ) if plain else 132
+        fit_fig = (
+            fit_size(
+                metrics, "SpaceGrotesk-Bold", figs, 132 * FIGURE_RATIO,
+                column_w, -0.02,
+            ) / FIGURE_RATIO
+        ) if figs else 132
+        head_size = head_size or min(fit_plain, fit_fig)
+
+        def size_of(i: int) -> float:
+            return head_size * (FIGURE_RATIO if is_figure[i] else 1)
+
+        def lead_of(i: int) -> float:
+            return size_of(i) * (0.72 if is_figure[i] else 0.95)
         body_lines_pre = [l.strip() for l in body.split("|")] if body else [""]
         fitted_body = fit_size(
             geometry["metrics"], "Inter-Regular", body_lines_pre, 34,
@@ -500,9 +541,19 @@ def main() -> int:
         )
         head_lead = round(head_size * 0.95, 2)
         eyebrow_base = 200
-        head_first = eyebrow_base + 112
-        head_lines = headline.split("|")
-        body_first = head_first + (len(head_lines) - 1) * head_lead + 84
+        # A figure's cap reaches far above its baseline and would strike through
+        # the eyebrow, so push the block down by the extra cap height.
+        head_first = eyebrow_base + 112 + (
+            0.7 * (head_size * FIGURE_RATIO - head_size) if is_figure[0] else 0
+        )
+        head_lines = head_lines_pre
+        baselines = []
+        y = head_first
+        for i in range(len(head_lines)):
+            baselines.append(y)
+            y += lead_of(i)
+        head_bottom_line = baselines[-1]
+        body_first = head_bottom_line + 84
         body_size = fitted_body
 
         parts = [f'<div class="ground" style="background:{ground}"></div>']
@@ -512,12 +563,13 @@ def main() -> int:
                 hexfield_svg(
                     dark, portrait or logo, logo is not None,
                     second=portrait2, align=align, align2=align2,
+                    on_red=on_red,
                 )
             )
         elif decor == "sponsors":
             # Below the *last* headline baseline, not the first — using
             # head_first put the honeycomb 125px high, into the descenders.
-            head_bottom = head_first + (len(head_lines) - 1) * head_lead
+            head_bottom = head_bottom_line
             parts.append(
                 sponsors_svg(sponsor_logos or [], per_row, head_bottom + 118)
             )
@@ -558,17 +610,21 @@ def main() -> int:
                 f'width:{w}px;height:{h}px" alt="">'
             )
 
-        if not on_red:
-            parts.append(
-                f'<img class="mark" src="data:image/svg+xml;base64,{mark_b64}" '
-                f'style="left:{M}px;top:56px;width:54px;height:53px" alt="">'
-            )
+        wordmark = {"x": M, "y": 58, "w": 150, "h": 89}
+        mk = mark_for(wordmark)
         parts.append(
             f'<img class="lockup" src="data:image/svg+xml;base64,'
             f'{lockups["cream"] if dark else lockups["navy"]}" '
-            f'style="left:{M if on_red else M + 68}px;top:58px;'
-            f'width:132px;height:78px" alt="Cloud Native Denmark">'
+            f'style="left:{wordmark["x"]}px;top:{wordmark["y"]}px;'
+            f'width:{wordmark["w"]}px;height:{wordmark["h"]}px" '
+            f'alt="Cloud Native Denmark">'
         )
+        if not on_red:
+            parts.append(
+                f'<img class="mark" src="data:image/svg+xml;base64,{mark_b64}" '
+                f'style="left:{mk["x"]:.2f}px;top:{mk["y"]:.2f}px;'
+                f'width:{mk["w"]:.2f}px;height:{mk["h"]:.2f}px" alt="">'
+            )
         parts.append(
             f'<div class="t" style="left:{M}px;'
             f'top:{top_for(eyebrow_base, 30)}px;font-size:30px;'
@@ -576,13 +632,16 @@ def main() -> int:
             f'color:{color["white"] if dark else color["red"]}">'
             f'{esc(eyebrow.upper())}</div>'
         )
-        parts.append(
-            f'<div class="t display" style="left:{M}px;'
-            f'top:{top_for(head_first, head_size)}px;font-size:{head_size}px;'
-            f'color:{ink};line-height:{round(head_lead / head_size, 4)}">'
-            + "<br>".join(esc(l.strip()) for l in head_lines)
-            + "</div>"
-        )
+        # One absolutely-positioned line per baseline, because the sizes differ
+        # and a single block cannot carry two leadings.
+        for i, line in enumerate(head_lines):
+            parts.append(
+                f'<div class="t display" style="left:{M}px;'
+                f'top:{top_for(baselines[i], size_of(i)):.2f}px;'
+                f'font-size:{size_of(i):.2f}px;color:{ink};'
+                + (f"letter-spacing:-0.02em;" if is_figure[i] else "")
+                + f'">{esc(line)}</div>'
+            )
         parts.append(
             f'<div class="t body" style="left:{M}px;'
             f'top:{top_for(body_first, body_size)}px;font-size:{body_size}px;'
@@ -686,6 +745,18 @@ def main() -> int:
                 align2=k.get("align2", "xMidYMid"),
             )
         )
+    countdown_pages: list[str] = []
+    for c in announcements.get("countdowns", []):
+        figure = f"0{c['days']}" if c["days"] < 10 else str(c["days"])
+        unit = "day" if c["days"] == 1 else "days"
+        countdown_pages.append(
+            bulletin_page(
+                c.get("ground", "navy"), c["eyebrow"],
+                f"^{figure}|{unit} to go.", c["body"],
+                "hexfield", "top-right", f"countdown-{c['days']:02d}",
+            )
+        )
+
     # Every sponsor gets its own graphic, then each multi-sponsor tier gets a
     # honeycomb. A tier of one is skipped — that is just its single.
     tier_of = {t["tier"]: t for t in announcements["tiers"]}
@@ -796,6 +867,7 @@ def main() -> int:
         ("cnd-templates-square", square_pages, canvas_w),
         ("cnd-keynotes", keynote_pages, canvas_w),
         ("cnd-sponsors", sponsor_pages, canvas_w),
+        ("cnd-countdowns", countdown_pages, canvas_w),
     ):
         if not pages:
             continue

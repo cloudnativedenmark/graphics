@@ -74,6 +74,28 @@ for (const surface of surfaces) {
     render(args, k.slug);
   }
 
+  console.log(`\ncountdowns (${surface})`);
+  for (const c of content.countdowns ?? []) {
+    // Single digits are zero-padded, which is what makes a countdown read as a
+    // countdown rather than as a number that happens to be small.
+    const figure = c.days < 10 ? `0${c.days}` : String(c.days);
+    const unit = c.days === 1 ? "day" : "days";
+    render(
+      [
+        "bulletin",
+        "--ground", c.ground ?? "navy",
+        "--decor", "hexfield",
+        "--eyebrow", c.eyebrow,
+        "--headline", `^${figure}|${unit} to go.`,
+        "--body", c.body,
+        "--surface", surface,
+        "--scale", scale,
+        "--out", join(OUT, `countdown-${String(c.days).padStart(2, "0")}${suffix}.png`),
+      ],
+      `countdown ${c.days}`,
+    );
+  }
+
   console.log(`\nsponsors — singles (${surface})`);
   for (const sp of content.sponsors) {
     const tier = content.tiers.find((t) => t.tier === sp.tier) ?? {};
