@@ -124,7 +124,7 @@ Set with `data-layout`. Eleven, all implemented.
 | `section` | Centred eyebrow, huge display with a terminal period, short red underline. The divider between acts. | `.eyebrow`, `.display`, `.rule` |
 | `split` | Two columns: prose stack left, white card right. | `.slide-title`, `.cols` → `.stack` / `.card` |
 | `stat` | Giant figure beside a heading, body and marked list. | `.slide-title`, `.cols` → `.figure` + `.figure-caption` / `.col-heading` + `.body` + `.marked` |
-| `speaker` | 620px circular portrait left, badge + talk + name + role right. Two speakers get `.pair`. | `.cols` → `.portrait` or `.pair`, `.badge`, `.talk`, `.who`, `.what` |
+| `speaker` | 620px hexagon portrait left, badge + talk + name + role right. Two speakers get `.pair`. | `.cols` → `.portrait` or `.pair`, `.badge`, `.talk`, `.who`, `.what` |
 | `rate` | Display headline left, QR right. Follows each session intro. | `.eyebrow`, `.display`, `.body`, `.qr` |
 | `logistics` | Eyebrow, display, and either body or a `.kv` list. The workhorse. | `.eyebrow`, `.display`, `.body`, `.kv` |
 | `table` | Title plus a table or a sponsor tier wall. | `.slide-title`, `.wrap` > `table.cnd`, or `.tier` |
@@ -150,9 +150,11 @@ Set with `data-layout`. Eleven, all implemented.
   platinum → gold → bronze. Tiles are a **fixed size**, and logos are
   `object-fit: contain` against a definite height, so they are never cropped and
   never blow the row open.
-- **`.portrait` / `.pair`** — one circle, or two staggered 396px circles ringed
-  in the ground colour, mirroring how the announcement graphics handle a
-  two-speaker talk.
+- **`.portrait` / `.pair`** — one hexagon, or two set corner to corner for a
+  two-speaker talk. Portraits are clipped into the brand shape with
+  `--cnd-shape-mask`, the same silhouette the logo uses and the same crop
+  cloudnativedenmark.dk applies to its own team photos. The mask is a data URI
+  because an external SVG mask is blocked over `file://`.
 
 ---
 

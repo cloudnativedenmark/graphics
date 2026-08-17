@@ -84,6 +84,10 @@
   --cnd-lead-display: 0.92;
   --cnd-lead-tab: 1.12;
   --cnd-lead-body: 1.65;
+
+  /* The logo silhouette as a mask, for clipping portraits into the shape —
+   * which is how cloudnativedenmark.dk crops its own team photos. */
+  --cnd-shape-mask: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%224.49 4.49 221.15 214.59%22%3E%3Cpath d=%22M225.407 135.107L206.4 52.547a14.838 14.838 0 0 0-7.958-9.9l-76.935-36.73a14.825 14.825 0 0 0-12.771 0L31.808 42.669a14.838 14.838 0 0 0-7.961 9.895L4.873 135.129a14.668 14.668 0 0 0 1.995 11.185c.261.4.538.788.838 1.162l53.246 66.205a14.98 14.98 0 0 0 11.499 5.487l85.387-.02a14.986 14.986 0 0 0 11.5-5.48l53.227-66.211a14.72 14.72 0 0 0 2.842-12.347z%22 fill=%22%23000%22/%3E%3C/svg%3E");
 }
 
 /* Reset shared by every rendered surface. Renders are fixed-size canvases,

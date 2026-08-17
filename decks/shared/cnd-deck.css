@@ -464,13 +464,21 @@
   font-size: 21px;
   line-height: 1.22;
 }
+/* Portraits are clipped into the brand hexagon, which is how
+ * cloudnativedenmark.dk crops its own team photos — its <image> tags carry this
+ * shape's exact viewBox. The mask comes from brand/tokens.css, so the
+ * silhouette is the one the logo and graphics use rather than a lookalike
+ * polygon, and it scales with the element because mask-size is relative.
+ * aspect-ratio matches the shape, so the hexagon is never stretched. */
 .person img,
 .person .avatar {
   width: 100%;
-  aspect-ratio: 1;
-  border-radius: 50%;
+  aspect-ratio: 221.15 / 214.59;
   object-fit: cover;
   background: color-mix(in srgb, var(--cnd-slate) 30%, var(--cnd-bone));
+  mask-image: var(--cnd-shape-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
 }
 .person .who {
   font-family: var(--cnd-font-display);
@@ -498,16 +506,19 @@
 }
 .slide[data-layout="speaker"] .portrait {
   width: 620px;
-  height: 620px;
-  border-radius: 50%;
+  height: 602px; /* 620 / 1.0306, the shape's own ratio */
   object-fit: cover;
   background: color-mix(in srgb, var(--cnd-sand) 22%, transparent);
+  mask-image: var(--cnd-shape-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
 }
 /* Two-speaker talks get a matched, staggered pair inside the same 620px column
  * the single portrait occupies, mirroring how the announcement graphics handle
- * `portrait2`. The ring is the ground colour, so the overlap reads as two
- * distinct circles rather than one clipped shape — every speaker slide is navy,
- * which is what the ring assumes. */
+ * `portrait2`. They sit corner to corner rather than overlapping: the mask clips
+ * the whole box, border included, so the navy ring that used to separate two
+ * overlapping circles cannot survive it — and two overlapping hexagons read as
+ * one clipped blob. Hexagons tile, so adjacency is the natural answer. */
 .slide[data-layout="speaker"] .pair {
   position: relative;
   width: 620px;
@@ -516,8 +527,8 @@
 
 .slide[data-layout="speaker"] .pair .portrait {
   position: absolute;
-  width: 396px;
-  height: 396px;
+  width: 340px;
+  height: 330px;
 }
 
 .slide[data-layout="speaker"] .pair .portrait:first-child {
@@ -528,7 +539,6 @@
 .slide[data-layout="speaker"] .pair .portrait:last-child {
   right: 0;
   bottom: 0;
-  border: 10px solid var(--cnd-navy);
 }
 
 .slide[data-layout="speaker"] .talk {
