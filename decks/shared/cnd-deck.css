@@ -439,6 +439,31 @@
   justify-items: start;
   gap: 16px;
 }
+
+/* The nine-strong organizing team does not fit the grid at full size, and a
+ * wider grid does not help: the avatar is 100% of its column, so more columns
+ * means bigger circles, not more room. Compact caps the avatar independently of
+ * the column and steps the type down, which is what lets two rows of five clear
+ * the footer rule. */
+.people[data-size="compact"] {
+  top: 288px;
+  gap: 44px 36px;
+}
+.people[data-size="compact"] .avatar,
+.people[data-size="compact"] img {
+  max-width: 156px;
+}
+/* Two lines are reserved for the name whether or not it needs them, so the
+ * roles align across a row. Without it, "Mert Gungor" sits a line higher than
+ * "Per Hedegaard Christiansen" and the row reads as ragged. */
+.people[data-size="compact"] .who {
+  font-size: 27px;
+  min-height: 2.2em;
+}
+.people[data-size="compact"] .what {
+  font-size: 21px;
+  line-height: 1.22;
+}
 .person img,
 .person .avatar {
   width: 100%;
