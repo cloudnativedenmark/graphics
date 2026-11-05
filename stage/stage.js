@@ -862,7 +862,9 @@
     const stings = (cfg.walkon ?? []).map((src) => Object.assign(new Audio(src), { preload: "auto" }));
     let sting = stings[0] ?? null;
     // The voice of god: "Please welcome to the stage…", one clip per talk,
-    // `delay` seconds into the walk-on, with the theme ducked under it.
+    // `delay` seconds into the walk-on, with the theme ducked under it. It
+    // has its own switch (`vog` in the show state), independent of the
+    // music: with the music off the voice plays on its own.
     const VO = { delay: 1.2, duck: 0.3, volume: 1, ...cfg.announce };
     const voices = new Map(
       Object.values(SHOW.talks)
@@ -871,6 +873,7 @@
     );
     let voice = null;
     let voiceTimer = null;
+    let vogOn = true;
     function stopVoice(seconds) {
       clearTimeout(voiceTimer);
       const v = voice;
@@ -1004,22 +1007,23 @@
           // and a reload replays the same one.
           if (stings.length) sting = stings[talkIndex % stings.length];
           stopVoice(0.3);
-          if (enabled && sting) {
-            clearInterval(timers.get(sting));
-            sting.currentTime = 0;
-            sting.volume = VOL;
-            sting.play().catch(() => {});
-            voice = voices.get(cue.talk) ?? null;
-            const v = voice, st = sting;
-            if (v) {
-              voiceTimer = setTimeout(() => {
-                v.currentTime = 0;
-                v.volume = VO.volume;
-                v.onended = () => st === sting && !st.paused && fade(st, VOL, 1.2);
-                v.play().catch(() => {});
-                fade(st, VOL * VO.duck, 0.35);
-              }, VO.delay * 1000);
-            }
+          const st = enabled ? sting : null;
+          if (st) {
+            clearInterval(timers.get(st));
+            st.currentTime = 0;
+            st.volume = VOL;
+            st.play().catch(() => {});
+          }
+          voice = vogOn ? voices.get(cue.talk) ?? null : null;
+          const v = voice;
+          if (v) {
+            voiceTimer = setTimeout(() => {
+              v.currentTime = 0;
+              v.volume = VO.volume;
+              v.onended = () => st && st === sting && !st.paused && fade(st, VOL, 1.2);
+              play(v);
+              if (st) fade(st, VOL * VO.duck, 0.35);
+            }, VO.delay * 1000);
           }
           return;
         }
@@ -1043,6 +1047,17 @@
       get on() {
         return enabled;
       },
+      /** The voice-of-god switch. Off mid-announcement fades the voice out
+       *  and brings the theme back up under nobody. */
+      vog(on) {
+        if (on === vogOn) return;
+        vogOn = on;
+        if (!on && voice && (!voice.paused || voiceTimer)) {
+          const st = sting;
+          stopVoice(0.5);
+          if (enabled && st && !st.paused) fade(st, VOL, 1.2);
+        }
+      },
       /** Rehearsal: jump the bed to `s` seconds before the end of its track,
        *  to hear the handover without waiting 4 minutes. */
       skipToEnd(s = 10) {
@@ -1054,6 +1069,7 @@
         const name = (a) => (a.src ? decodeURIComponent(a.src.split("/").pop()) : null);
         return {
           enabled,
+          vog: vogOn,
           blocked,
           set: current,
           lastEvent,
@@ -1101,6 +1117,7 @@
     i: 0,
     panic: false,
     music: false,
+    vog: true,
     guides: params.has("guides"),
     countdownTo: null,
     mountedCue: null,
@@ -1111,10 +1128,10 @@
     const steps = stepsFor(state.day);
     hud.innerHTML =
       `<ol>${steps.map((s, i) => `<li${i === state.i ? " data-current" : ""}>${esc(describe(s))}</li>`).join("")}</ol>` +
-      `<div>${esc(dayLabel(state.day))}${state.panic ? " · <b>PANIC STILL</b>" : ""} · music ${state.music ? "on" : "off"}` +
+      `<div>${esc(dayLabel(state.day))}${state.panic ? " · <b>PANIC STILL</b>" : ""} · music ${state.music ? "on" : "off"} · voice of god ${state.vog === false ? "off" : "on"}` +
       `${FOLLOW ? " · following the show server" : ""}` +
       `${AUDIO ? "" : " · <b>no sound in this window</b> (sound plays in the ?output window; add ?audio to rehearse with sound here)"}<br>` +
-      `<kbd>→</kbd> next &nbsp;<kbd>←</kbd> back &nbsp;<kbd>1</kbd><kbd>2</kbd> day &nbsp;<kbd>b</kbd> still &nbsp;<kbd>m</kbd> music &nbsp;<kbd>g</kbd> guides &nbsp;<kbd>f</kbd> fullscreen</div>`;
+      `<kbd>→</kbd> next &nbsp;<kbd>←</kbd> back &nbsp;<kbd>1</kbd><kbd>2</kbd> day &nbsp;<kbd>b</kbd> still &nbsp;<kbd>m</kbd> music &nbsp;<kbd>v</kbd> voice of god &nbsp;<kbd>g</kbd> guides &nbsp;<kbd>f</kbd> fullscreen</div>`;
   }
 
   function mount(scene, stepState) {
@@ -1175,6 +1192,7 @@
     // `silent`: a walk-on replayed only to glide into a live talk after a
     // reload. The room is mid-talk; it must not hear the walk-on theme again.
     music.set(state.music && !silent);
+    music.vog(state.vog !== false);
     const talkIndex = cuesFor(state.day, ROOM).slice(0, step.c).filter((c) => c.scene === "talk").length;
     music.cue(state.panic ? "panic" : `${state.day}:${state.i}`, state.panic ? null : step.cue, step.state, talkIndex);
     if (state.panic) {
@@ -1230,6 +1248,7 @@
     else if (cmd.cmd === "day" && SHOW.days[cmd.day]) Object.assign(next, { day: cmd.day, i: 0, panic: false });
     else if (cmd.cmd === "panic") next.panic = !state.panic;
     else if (cmd.cmd === "music") next.music = !state.music;
+    else if (cmd.cmd === "vog") next.vog = state.vog === false;
     else if (cmd.cmd === "guides") next.guides = !state.guides;
     else if (cmd.cmd === "countdown") {
       if (cmd.minutes != null) next.countdownTo = Date.now() + cmd.minutes * 60000;
@@ -1297,6 +1316,7 @@
     else if (k === "1" || k === "2") send({ cmd: "day", day: k });
     else if (k === "b") send({ cmd: "panic" });
     else if (k === "m") send({ cmd: "music" });
+    else if (k === "v") send({ cmd: "vog" });
     else if (k === "g") send({ cmd: "guides" });
     else if (k === "f") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
     else return;

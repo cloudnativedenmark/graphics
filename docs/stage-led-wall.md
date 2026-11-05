@@ -146,7 +146,7 @@ All generated with ElevenLabs Music, instrumental, loudness-matched:
 | calm | 08:00 breakfast, breaks, sponsor wall | `walkin.wav` (2:46), then lo-fi Rhodes, Scandinavian acoustic and downtempo marimba (`calm-1…3`, 3:00 each); quieter (−18 LUFS) |
 | preshow | the last 30 minutes before the show, and the countdown | "The November Beat" (3:00) first, then funky house, nu-disco, melodic house (4:30 each), disco house, indie electronic and nu-funk (`preshow-5…7`, 4:00 each); crossfading, and the list starts over at the end (−15.5 LUFS) |
 | walk-on | every talk's walk-on | eight 20 s themes (`walkon-1…8`: piano, guitar and marimba, bells, electric piano, strings, brass, Nordic electronic, glockenspiel), taken in turn so neighbouring talks differ (−16 LUFS) |
-| announcement | the hosts' walk-ons only | a voice of god over the walk-on theme, "Please welcome to the stage… your hosts…". The hosts introduce everyone else themselves |
+| voice of god | every main-stage walk-on | "Please welcome to the stage… from Adobe… Joseph Sandoval!" over the walk-on theme, one clip per talk, the hosts' included. Switchable from the control page |
 
 A cue picks its set by scene (`music.scenes` in `content/2026-stage.json`), or
 by its own `"music"`. Moving between cues on the same set keeps the track
@@ -155,13 +155,21 @@ and the talk goes live by itself after `walkonSeconds` (20). Next goes live
 sooner. The control page's Next button counts the 20 seconds down. Nothing
 plays during a talk.
 
-**Announcements.** The welcome and the morning wrap-up carry a voice-over:
-`assets/audio/announce/<talk slug>.mp3`, generated with ElevenLabs (voice
-Brian). The words are in `content/2026-stage.json` → `announce`, with names
-spelled for the voice ("Hoy-gore" for Højgaard). The build picks up any talk
-with a clip. The clip starts 1.2 s into the theme, the theme drops to 30%
-under it and comes back after it (`music.announce`). Next, going live or panic
-stops it.
+**Voice of god.** Every main-stage walk-on, speakers and hosts, carries a
+voice-over: `assets/audio/announce/<talk slug>.mp3`, generated with
+ElevenLabs (voice Brian), 4–11 s each. The words are in
+`content/2026-stage.json` → `announce`, with names spelled for the voice
+("Hoy-gore" for Højgaard, "Er-yeling" for Öjeling). Listen to them all before
+the show, and regenerate any name that comes out wrong. The build picks up
+any talk with a clip. The clip starts 1.2 s into the theme, the theme drops to
+30% under it and comes back after it (`music.announce`). Next, going live or
+panic stops it.
+
+**Voice of god** on the control page (or `v`) switches the announcements on
+and off for the whole show, for when the hosts would rather introduce a
+speaker themselves. It starts on. Off mid-announcement fades the voice and
+brings the theme back up. It is independent of Music: with the music off and
+the voice on, the voice plays on its own.
 
 Only the wall window (`?output`) makes sound. The preview and the control page
 never do, so a second window can't keep playing after the wall has moved on.

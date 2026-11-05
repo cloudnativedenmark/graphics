@@ -7,7 +7,7 @@
  *   node stage/serve.mjs --local    this machine only
  *   PORT=4040 STAGE_KEY=… node stage/serve.mjs
  *
- * It holds the show state — day, cue, panic, music, guides — for each room
+ * It holds the show state — day, cue, panic, music, voice of god, guides — for each room
  * (the main-stage wall and the breakout screen, each with its own operator)
  * and pushes every change to that room's pages over Server-Sent Events. The wall window and the
  * control page are both just followers, so a reloaded or crashed wall window
@@ -84,7 +84,7 @@ function stepCounts(stage, room) {
 // the schedule slips. null means "use the cue's own `at` time".
 // autoLiveAt: when the current walk-on goes live by itself (see walkonSeconds
 // in the stage file), so the control page can count it down.
-const fresh = () => ({ day: "1", i: 0, panic: false, music: false, guides: false, countdownTo: null, autoLiveAt: null, rev: 0 });
+const fresh = () => ({ day: "1", i: 0, panic: false, music: false, vog: true, guides: false, countdownTo: null, autoLiveAt: null, rev: 0 });
 const states = Object.fromEntries(ROOMS.map((r) => [r, fresh()]));
 const clients = new Map(ROOMS.map((r) => [r, new Set()]));
 
@@ -153,6 +153,7 @@ function command(body) {
       break;
     case "panic": state.panic = !state.panic; break;
     case "music": state.music = !state.music; break;
+    case "vog": state.vog = !state.vog; break;
     case "guides": state.guides = !state.guides; break;
     case "countdown": {
       // Start: `minutes` from now. Nudge: `add` minutes to the running target.

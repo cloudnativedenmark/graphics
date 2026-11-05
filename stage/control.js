@@ -59,6 +59,7 @@
   $("prev").onclick = () => send({ cmd: "prev" });
   $("panic").onclick = () => send({ cmd: "panic" });
   $("music").onclick = () => send({ cmd: "music" });
+  $("vog").onclick = () => send({ cmd: "vog" });
   $("guides").onclick = () => send({ cmd: "guides" });
   $("days").onclick = (e) => {
     const day = e.target.closest("[data-day]")?.dataset.day;
@@ -105,6 +106,7 @@
     else if (k === "ArrowLeft" || k === "PageUp") send({ cmd: "prev" });
     else if (k === "b") send({ cmd: "panic" });
     else if (k === "m") send({ cmd: "music" });
+    else if (k === "v") send({ cmd: "vog" });
     else return;
     e.preventDefault();
   });
@@ -135,6 +137,8 @@
     $("music").setAttribute("aria-pressed", state.music);
     // Sound comes out of the wall window (?output) only, never this page.
     $("music").textContent = `Music ${state.music ? "on" : "off"} · plays from the wall`;
+    $("vog").setAttribute("aria-pressed", state.vog !== false);
+    $("vog").textContent = `Voice of god ${state.vog !== false ? "on" : "off"}`;
     $("guides").setAttribute("aria-pressed", state.guides);
     document.querySelectorAll("[data-day]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.day === state.day));
 
