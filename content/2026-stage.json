@@ -57,7 +57,7 @@
     "talk-collector-stories": "Please welcome to the stage... from IKEA, and an OpenTelemetry maintainer... Yohanna Er-yeling!",
     "talk-agent-substrate": "Please welcome to the stage... Cloud Developer Advocate... Abdel Sgee-war!",
     "talk-platforms-asked": "Please welcome to the stage... from the LEGO Group... Jacob Av-lund!",
-    "talk-kyverno-victoriametrics": "Please welcome to the stage... Diana To-day-a... and from Nirmata... Cortney Nickerson!",
+    "talk-kyverno-victoriametrics": "Please welcome to the stage... Diana To-day-a... and from Akamai... Cortney Nickerson!",
     "talk-sovereign-agentic-coding": "Please welcome to the stage... from Neurospace... Rasmus Stine-ikka!",
     "talk-postgres-observability": "Please welcome to the stage... Gabriele Ross-ee-nee!",
     "d1-whose-code": "Please welcome to the stage... from Dynatrace... Adriana Vee-lella... and from Altinity... Josh Lee!",
@@ -93,6 +93,10 @@
   },
   "roles": {
     "$comment": "Speaker job titles, keyed by portrait-order within a talk. Empty string hides the line rather than printing a placeholder on the wall.",
+    "talk-kyverno-victoriametrics": [
+      "",
+      "Principal Product Marketing Manager, Akamai"
+    ],
     "d1-whose-code": [
       "Principal Developer Advocate, Dynatrace",
       "Developer Advocate, Altinity"

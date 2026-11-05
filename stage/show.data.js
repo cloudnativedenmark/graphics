@@ -599,7 +599,7 @@ window.SHOW = {
         },
         {
           "name": "Cortney Nickerson",
-          "role": "Head of Community at Nirmata",
+          "role": "Principal Product Marketing Manager, Akamai",
           "portrait": "../assets/speakers/cortney_nickerson.jpg",
           "align": null
         }
