@@ -1044,16 +1044,20 @@
   position: relative;
 }
 
-/* Charity partner photo: one large hexagon on the right. */
-.hyf-photo {
-  position: absolute;
+/* A round logo fills more of its hexagon than a wordmark does. */
+.hexlogo.round img,
+.charity .hexlogo.round img {
+  inset: 15% 10%;
+  width: 80%;
+  height: 70%;
+}
+
+/* Charity partner: the logo on one large hexagon on the right. */
+.hyf-big {
   right: 110px;
   top: 150px;
-  width: 700px;
+  width: 688px;
   height: 780px;
-  object-fit: cover;
-  object-position: right center;
-  clip-path: url(#cnd-hex);
 }
 
 /* ── layout: table ───────────────────────────────────────────────────── */
@@ -1160,3 +1164,31 @@ table.cnd tbody tr[data-live] td {
 .cheese-cam .lens { fill: var(--cnd-navy); }
 .cheese-cam .glass { fill: var(--cnd-peach); }
 .cheese-cam .flash { fill: var(--cnd-white); }
+
+/* Kim's photo gallery QR, beside the camera. */
+.photos-qr {
+  position: absolute;
+  left: 450px;
+  top: 690px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.photos-qr .qr {
+  width: 268px;
+  height: 260px;
+}
+.photos-qr .qr svg {
+  width: 168px;
+  height: 168px;
+  margin-top: 14px;
+}
+.photos-qr p {
+  font-family: var(--cnd-font-display);
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-rose);
+  line-height: 1.2;
+}

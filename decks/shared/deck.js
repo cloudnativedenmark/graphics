@@ -438,6 +438,12 @@
     } else if (t && slide.dataset.layout === "rate") {
       rateSlide(slide, t);
     }
+    // The photographers' gallery, the same code the wall shows in the breaks.
+    const photosQr = slide.querySelector('.qr[data-qr="photos"]');
+    if (photosQr && SHOW?.photos) {
+      const n = SHOW.photos.n + 4;
+      photosQr.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="The photos"><path d="${SHOW.photos.d}"/>${SHOW.photos.mark ?? ""}</svg>`;
+    }
     if (slide.dataset.source === "sponsors") sponsorSlide(slide);
     else if (slide.dataset.source === "community") communitySlide(slide);
     else if (slide.dataset.source === "afterparty") partySlide(slide);
