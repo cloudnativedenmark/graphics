@@ -2,144 +2,242 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Day 1 Opening · Cloud Native Denmark 2026</title>
+<title>Day 1 Morning · Cloud Native Denmark 2026</title>
 <link rel="stylesheet" href="../../brand/tokens.css">
 <link rel="stylesheet" href="../shared/cnd-deck.css">
 <!--
-  Day 1 Opening Remarks — Cloud Native Denmark 2026, edition N° 04.
+  Day 1 Morning — the opening block on the main stage, 09:00 to the coffee
+  break. Follows the day-one run of show in content/2026-stage.json: hosts'
+  welcome, housekeeping, HackYourFuture, the opening keynote, two lightning
+  talks, the morning wrap-up.
 
-  Structure follows the 2025 deck, minus the speakers' own slides: last year's
-  file ran to 119 slides and 160MB because every talk was pasted in. This deck
-  carries only the organiser-owned slides plus one intro/rate pair per session.
-  Speaker decks stay separate files and get wired in on the day.
+  Talk, organizer and sponsor slides are filled from stage/show.data.js by
+  data-talk / data-source, the same data the LED wall shows. Fix a title or a
+  role in content/, run `node stage/build.mjs`, and both pick it up.
 
-  Anything still unknown for 2026 is marked TODO in a comment next to it, so a
-  search for "TODO" is the pre-flight checklist.
+  Anything still unknown is marked TODO, so a search for "TODO" is the
+  pre-flight checklist.
 
-  Present: open in Chrome, press f. Export: press p, or
-    "Google Chrome" --headless --print-to-pdf=day1-opening.pdf \
-      --no-pdf-header-footer decks/day1-opening/index.html
+  Present: decks/start.sh day1-morning, then f. Export: press p, or
+    "Google Chrome" --headless --print-to-pdf=day1-morning.pdf \
+      --no-pdf-header-footer decks/day1-morning/index.html
 -->
 </head>
-<body class="deck" data-deck-title="Day 1 Opening">
+<body class="deck" data-deck-title="Day 1 Morning">
 
-<!-- 01 ─ title ------------------------------------------------------- -->
-<!-- The cover carries the lockup at full size in the layout itself, so it opts
-     out of the injected footer chrome. -->
-<section class="slide" data-layout="title" data-chrome="none">
-  <div class="field"></div>
+<!-- cover: on screen while people sit down and the hosts walk on -->
+<section class="slide" data-layout="title">
   <div class="pad">
-    <p class="eyebrow">Edition N° 04 — Scandic Copenhagen</p>
-    <h1 class="display">Cloud<br>Native<br>Denmark.</h1>
-    <div class="title-meta">
-      <p class="when">19–20 Nov 2026</p>
-      <div class="divider"></div>
-      <p class="blurb">Organized by practitioners for practitioners. The largest
-      Nordic cloud community event.</p>
+    <div class="lockup" style="--w: 760px">
+      <img class="wordmark" src="../../brand/logo/cnd-lockup-cream.svg" alt="Cloud Native Denmark">
+      <img class="mark" src="../../brand/logo/cnd-mark.svg" alt="">
     </div>
+    <p class="eyebrow">Edition N° 04 · Scandic Copenhagen</p>
+    <p class="when">19–20 Nov 2026</p>
   </div>
 </section>
 
-<!-- 02 ─ welcome ----------------------------------------------------- -->
-<section class="slide" data-layout="section" data-ground="navy">
+<!-- welcome ----------------------------------------------------------- -->
+<section class="slide" data-layout="section">
   <div class="pad">
-    <p class="eyebrow">01 — Welcome</p>
+    <p class="eyebrow">Welcome</p>
     <h2 class="display">Day one.</h2>
-    <div class="rule"></div>
   </div>
 </section>
 
-<!-- 03 ─ who we are -------------------------------------------------- -->
-<section class="slide" data-layout="split">
-  <div class="pad"><h2 class="slide-title">Cloud Native Nordics</h2></div>
+<!-- The hosts are the welcome talk's speakers in content/2026-stage.json,
+     with their roles from the organizers list. -->
+<section class="slide" data-layout="people" data-source="hosts">
+  <div class="pad">
+    <p class="eyebrow">Your hosts for two days</p>
+    <h2 class="heading">Hello, we’re your hosts</h2>
+  </div>
+  <div class="people" data-size="hosts"></div>
+</section>
+
+<!-- Facts from content/2026-social-media-plan.md; map from
+     shared/denmark.js. -->
+<section class="slide" data-layout="split" data-field="none">
+  <div class="pad">
+    <p class="eyebrow">What we are</p>
+    <h2 class="heading">Cloud Native Denmark</h2>
+  </div>
   <div class="cols">
     <div class="stack">
-      <p class="lead">We are a volunteer community running cloud native events
-      across the Nordics, and Cloud Native Denmark is our biggest one.</p>
-      <p class="body">Three Danish cities, one organizing group. Everything is
-      run by practitioners who do this work for a living.</p>
+      <p class="lead">By practitioners, for practitioners. Three cities, one
+      conference.</p>
+      <dl class="kv">
+        <dt>Edition</dt><dd>N° 04</dd>
+        <dt>Sessions</dt><dd>32, two tracks</dd>
+        <dt>Speakers</dt><dd>35</dd>
+        <dt>Profit</dt><dd>All to charity</dd>
+      </dl>
     </div>
-    <div class="card">
-      <h3 class="card-heading">From KCD to CND</h3>
-      <p class="body">We started as Kubernetes Community Days Denmark. As the
-      programme grew past Kubernetes into platforms, reliability and the whole
-      cloud native stack, the name grew with it.</p>
+  </div>
+  <div class="geomap" data-map="denmark"></div>
+</section>
+
+<!-- Kim Yen Nguyen's 2025 photos, already selected in assets/photos/2025
+     (README-note.txt: credit her, and no frames with identifiable children).
+     Copy says last year, so nobody reads them as this venue. -->
+<section class="slide" data-layout="gallery">
+  <div class="pad">
+    <p class="eyebrow">Edition N° 03 · Savværket</p>
+    <h2 class="display">Last year,<br>Aarhus.</h2>
+    <p class="credit">Photos: Kim Yen Nguyen</p>
+  </div>
+  <img class="photo" src="../../assets/photos/2025/full-room.jpg" alt="" style="left:754px;top:128px">
+  <img class="photo" src="../../assets/photos/2025/hallway-track.jpg" alt="" style="left:1050px;top:128px">
+  <img class="photo" src="../../assets/photos/2025/lanyards.jpg" alt="" style="left:1346px;top:128px">
+  <img class="photo" src="../../assets/photos/2025/organizers-on-stage.jpg" alt="" style="left:902px;top:380px">
+  <img class="photo" src="../../assets/photos/2025/group-photo.jpg" alt="" style="left:1198px;top:380px">
+  <img class="photo" src="../../assets/photos/2025/workshop-room.jpg" alt="" style="left:1494px;top:380px">
+  <img class="photo" src="../../assets/photos/2025/never-stop-developing.jpg" alt="" style="left:754px;top:632px">
+  <img class="photo" src="../../assets/photos/2025/chaos-as-a-service.jpg" alt="" style="left:1050px;top:632px">
+  <img class="photo" src="../../assets/photos/2025/after-party-bar.jpg" alt="" style="left:1346px;top:632px">
+</section>
+
+<!-- The twelve Cloud Native Nordics communities, pinned with the CNN mark
+     (assets/partners, from cloud-native-nordics-logo-white-version.ai).
+     Member counts as given by the organizers, October 2026; Umeå had no
+     count, so the total is a floor. -->
+<section class="slide" data-layout="split" data-field="none">
+  <div class="pad">
+    <p class="eyebrow">Who we are</p>
+    <h2 class="heading">Cloud Native<br>Nordics</h2>
+  </div>
+  <div class="cols">
+    <div class="stack" style="width: 620px">
+      <p class="lead">Twelve cities, one community.</p>
+      <dl class="kv">
+        <dt>Countries</dt><dd>4</dd>
+        <dt>Members</dt><dd>6,450+</dd>
+      </dl>
     </div>
+  </div>
+  <img class="cnn-logo" src="../../assets/partners/cloud-native-nordics.svg" alt="Cloud Native Nordics">
+  <div class="geomap" data-map="nordics" data-pin="../../assets/partners/cloud-native-nordics-mark.svg"></div>
+</section>
+
+<!-- local communities -------------------------------------------------- -->
+<!-- TODO 2026: each city's meetup link or next date under its sign. -->
+<section class="slide" data-layout="cities">
+  <div class="pad">
+    <p class="eyebrow">Your local communities</p>
+    <h2 class="heading">Meet us all year</h2>
+  </div>
+  <div class="signs">
+    <div class="city"><div class="citysign"><div class="face">Aalborg</div></div>
+      <p class="body">TODO — meetup link</p></div>
+    <div class="city"><div class="citysign"><div class="face">Aarhus</div></div>
+      <p class="body">TODO — meetup link</p></div>
+    <div class="city"><div class="citysign"><div class="face">København</div></div>
+      <p class="body">TODO — meetup link</p></div>
   </div>
 </section>
 
-<!-- 04 ─ charity ----------------------------------------------------- -->
+<!-- charity ------------------------------------------------------------ -->
 <section class="slide" data-layout="stat">
-  <div class="pad"><h2 class="slide-title">All profits go to charity</h2></div>
+  <div class="pad">
+    <p class="eyebrow">Where the money goes</p>
+    <h2 class="heading">All profits go to charity</h2>
+  </div>
   <div class="cols">
-    <div>
-      <!-- TODO 2026: update once this year's donation total is confirmed -->
+    <div class="charity">
+      <div class="hexlogo"><img src="../../assets/partners/coding-pirates.png" alt="Coding Pirates"></div>
+      <!-- TODO 2026: confirm the total donated to Coding Pirates -->
       <p class="figure">840K</p>
-      <p class="figure-caption">DKK donated to date</p>
+      <p class="figure-caption">DKK donated to Coding Pirates</p>
     </div>
-    <div>
-      <h3 class="col-heading">Why we do it this way</h3>
-      <p class="body">Nobody here takes a salary from this conference. Across
-      the first three editions we have donated over 840,000 DKK, and 2026 is the
-      year we pass one million.</p>
+    <div class="charity">
+      <div class="hexlogo"><img src="../../assets/partners/hyf-denmark.png" alt="Hack Your Future Denmark"></div>
+      <h3 class="col-heading">This year: Hack Your Future</h3>
       <ul class="marked">
-        <li>100% practitioner-led programme</li>
-        <li>Profit-for-charity governance</li>
-        <li>Community-driven sourcing</li>
+        <li>Every krone of profit is donated</li>
+        <li>2026 goal: pass one million</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- 05 ─ three cities ------------------------------------------------ -->
-<section class="slide" data-layout="logistics" data-ground="navy">
-  <div class="accent" data-at="top-right" style="--accent-color: var(--cnd-rose)"></div>
+<!-- Charity partner 2026. Facts from content/2026-social-media-plan.md §9.
+     No logo: the one hackyourfuture.dk ships is broken (see
+     assets/partners/README-note.txt). TODO 2026: ask them for a clean SVG
+     and put it on a white hexagon here. The classroom photo is 1500×500, so
+     it is cropped from the right, where the people are. -->
+<section class="slide" data-layout="logistics" data-field="none">
+  <div class="pad" style="right: 820px">
+    <p class="eyebrow">Our charity partner 2026</p>
+    <h2 class="display">Hack Your<br>Future.</h2>
+    <p class="body">A free coding programme, taught by volunteers, for refugees
+    and others shut out of the Danish job market.</p>
+    <p class="credit">Previous editions supported Coding Pirates</p>
+  </div>
+  <img class="hyf-photo" src="../../assets/partners/hyf-classroom.jpg" alt="">
+</section>
+
+<!-- the team, from content/2026-stage.json → organizers -->
+<section class="slide" data-layout="people" data-source="organizers">
   <div class="pad">
-    <p class="eyebrow">One community, three cities</p>
-    <h2 class="display">Aalborg.<br>Aarhus.<br>Copenhagen.</h2>
-    <p class="body" style="max-width: 1100px">Meetups run all year in all three.
-    If you want to keep this going between conferences, that is where it
-    happens — and we are always looking for people to help.</p>
+    <p class="eyebrow">The people who made this</p>
+    <h2 class="heading">Your organizers</h2>
+  </div>
+  <div class="people"></div>
+</section>
+
+<!-- Every speaker on the programme, from content/2026-announcements.json. -->
+<section class="slide" data-layout="people" data-source="speakers">
+  <div class="pad">
+    <p class="eyebrow">Two days, two tracks, one workshop room</p>
+    <h2 class="heading">Your speakers</h2>
+  </div>
+  <div class="people" data-size="all"></div>
+</section>
+
+<!-- the sponsors, from content/2026-announcements.json -->
+<section class="slide" data-layout="sponsors" data-source="sponsors">
+  <div class="pad">
+    <p class="eyebrow">Who makes it possible</p>
+    <h2 class="heading">Thank you, sponsors</h2>
   </div>
 </section>
 
-<!-- 06 ─ organizers -------------------------------------------------- -->
-<!-- The 2026 organizing team, from cloudnativedenmark.dk/team.
-     Portraits are the team page's own, in assets/organizers/. -->
-<section class="slide" data-layout="people">
-  <div class="pad"><h2 class="slide-title">Your organizers</h2></div>
-  <div class="people" data-size="compact" style="--per-row: 5">
-    <div class="person"><img src="../../assets/organizers/organizer-jinhong-brejnholt.jpg" alt="">
-      <span class="who">Jinhong Brejnholt</span><span class="what">Chief Cloud Architect, Saxo Bank A/S</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-kasper-nissen.jpg" alt="">
-      <span class="who">Kasper Borg Nissen</span><span class="what">Developer Relations, Dash0</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-per-christiansen.jpg" alt="">
-      <span class="who">Per Hedegaard Christiansen</span><span class="what">Chief Container Platform Engineer, Saxo Bank A/S</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-mert-gungor.jpg" alt="">
-      <span class="who">Mert Gungor</span><span class="what">Software Engineer, Corti</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-thor-lange.jpg" alt="">
-      <span class="who">Thor Anker Kvisgård Lange</span><span class="what">Team Lead Platform Development, Netic</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-allan.jpg" alt="">
-      <span class="who">Allan Højgaard Jensen</span><span class="what">Platform Development Specialist, Netic</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-soren.jpg" alt="">
-      <span class="who">Søren Boss Jacobsen</span><span class="what">Regional Sales Manager, EDB</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-mads.jpg" alt="">
-      <span class="who">Mads Høgstedt Danquah</span><span class="what">Lead Engineer, the LEGO Group</span></div>
-    <div class="person"><img src="../../assets/organizers/organizer-alek.jpg" alt="">
-      <span class="who">Aleksander Nowak</span><span class="what">Senior Platform Engineer, wawa fertility</span></div>
-  </div>
-</section>
-
-<!-- 07 ─ practicalities --------------------------------------------- -->
-<section class="slide" data-layout="section" data-ground="red">
+<!-- housekeeping ------------------------------------------------------- -->
+<section class="slide" data-layout="section">
   <div class="pad">
-    <p class="eyebrow">02 — Practicalities</p>
+    <p class="eyebrow">Practicalities</p>
     <h2 class="display">Housekeeping.</h2>
-    <div class="rule" style="background: var(--cnd-navy)"></div>
   </div>
 </section>
 
-<!-- 08 ─ wifi -------------------------------------------------------- -->
+<!-- TODO 2026: confirm the code of conduct URL and the reporting email and
+     phone number, and who is on the incident team this year. -->
+<section class="slide" data-layout="logistics">
+  <div class="pad">
+    <p class="eyebrow">Code of conduct</p>
+    <h2 class="display">Be kind.</h2>
+    <dl class="kv">
+      <dt>Read it</dt><dd>TODO — code of conduct URL</dd>
+      <dt>Report</dt><dd>Any organizer, in person</dd>
+      <dt>Email</dt><dd>TODO — reporting address</dd>
+      <dt>Phone</dt><dd>TODO — incident phone</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- Conference floor map, rasterised at 2x from
+     cloud-native-denmark-2026-conference-map.svg. A PNG rather than the SVG
+     because the map carries its own colours and sponsor logos, which the
+     token lint would (rightly) reject in a deck source file. -->
+<section class="slide" data-layout="map" data-field="none">
+  <div class="pad">
+    <p class="eyebrow">Finding your way</p>
+    <h2 class="heading">The venue</h2>
+    <p class="body">Lost? Ask anyone in a CND <span style="white-space: nowrap">t-shirt</span>.</p>
+  </div>
+  <div class="plan"><img src="img/venue-map.png" alt="Floor plan of the conference floor at Scandic Copenhagen: Main stage, Breakout and Workshop rooms, sponsor booths 1–12, registration by the entrance"></div>
+</section>
+
 <section class="slide" data-layout="logistics">
   <div class="pad">
     <p class="eyebrow">Get online</p>
@@ -152,160 +250,164 @@
   </div>
 </section>
 
-<!-- 09 ─ the rooms --------------------------------------------------- -->
+<!-- From Sessionize (sessionize.com/api/v2/vblbzolg/view/All), room
+     "Workshop". Titles shortened; times are the start of each 90 minutes. -->
 <section class="slide" data-layout="split">
-  <div class="pad"><h2 class="slide-title">Finding your way</h2></div>
-  <div class="cols">
-    <div class="stack">
-      <p class="lead">Keynotes are in the main hall. Breakouts and workshops run
-      in the rooms off the networking area.</p>
-      <!-- TODO 2026: replace with the venue's own floor plan once Scandic
-           confirms room names and numbers -->
-      <p class="body">TODO — add floor plan image and room names.</p>
-    </div>
-    <div class="card">
-      <h3 class="card-heading">If you get lost</h3>
-      <p class="body">Any organizer in a CND t-shirt can point you the right
-      way. There is no such thing as a stupid question about a floor plan.</p>
-    </div>
+  <div class="pad">
+    <p class="eyebrow">Hands on · Workshop room</p>
+    <h2 class="heading">Workshops</h2>
   </div>
-</section>
-
-<!-- 10 ─ workshops --------------------------------------------------- -->
-<section class="slide" data-layout="split">
-  <div class="pad"><h2 class="slide-title">Workshops</h2></div>
   <div class="cols">
     <div class="card">
       <h3 class="card-heading">Today</h3>
-      <!-- TODO 2026: fill in from the final schedule -->
-      <p class="body">TODO — today's workshops, rooms and times.</p>
+      <dl class="sched">
+        <dt>10:25</dt><dd><div class="faces"><img src="../../assets/speakers/gabriele_bartolini.png" alt=""></div><div>PostgreSQL on Kubernetes with CloudNativePG<span>Gabriele Bartolini</span></div></dd>
+        <dt>14:00</dt><dd><div class="faces"><img src="../../assets/speakers/imma_valls.jpg" alt=""><img src="../../assets/speakers/arthur_picerna.jpg" alt=""></div><div>Getting started with OpenTelemetry instrumentation<span>Imma Valls &amp; Arthur Picerna</span></div></dd>
+      </dl>
     </div>
     <div class="card">
       <h3 class="card-heading">Tomorrow</h3>
-      <p class="body">TODO — tomorrow's workshops, rooms and times.</p>
+      <dl class="sched">
+        <dt>10:25</dt><dd><div class="faces"><img src="../../assets/speakers/lars_kruse.jpg" alt=""></div><div>What is… Regenerative Software Development<span>Lars Kruse</span></div></dd>
+        <dt>14:00</dt><dd><div class="faces"><img src="../../assets/speakers/riccardo_capraro.jpg" alt=""></div><div>Building Platforms with Crossplane<span>Riccardo Capraro</span></div></dd>
+      </dl>
     </div>
   </div>
 </section>
 
-<!-- 11 ─ sharing is caring ------------------------------------------- -->
-<section class="slide" data-layout="logistics" data-ground="navy">
-  <div class="accent" data-at="bottom-left" style="--accent-color: var(--cnd-peach)"></div>
+<!-- Kim Yen Nguyen (photo) and Sebastian Krog Knudsen (video); portraits
+     in assets/crew/. -->
+<section class="slide" data-layout="logistics" data-field="quiet">
+  <div class="pad" style="right: 900px">
+    <p class="eyebrow">Photo and video</p>
+    <h2 class="display">Say<br>cheese.</h2>
+    <p class="body">Rather not be in the photos or the video? Just tell Kim or
+    Sebastian.</p>
+    <svg class="cheese-cam" viewBox="0 0 240 180" aria-hidden="true">
+      <path class="body-shape" d="M88 16h64c8 0 13 4 16 11l6 13h40c14 0 24 10 24 24v92c0 14-10 24-24 24H26c-14 0-24-10-24-24V64c0-14 10-24 24-24h40l6-13c3-7 8-11 16-11z"/>
+      <path class="lens" transform="translate(120 106) scale(0.36) translate(-115.07 -111.79)" d="M225.407 135.107L206.4 52.547a14.838 14.838 0 0 0-7.958-9.9l-76.935-36.73a14.825 14.825 0 0 0-12.771 0L31.808 42.669a14.838 14.838 0 0 0-7.961 9.895L4.873 135.129a14.668 14.668 0 0 0 1.995 11.185c.261.4.538.788.838 1.162l53.246 66.205a14.98 14.98 0 0 0 11.499 5.487l85.387-.02a14.986 14.986 0 0 0 11.5-5.48l53.227-66.211a14.72 14.72 0 0 0 2.842-12.347z"/>
+      <path class="glass" transform="translate(120 106) scale(0.22) translate(-115.07 -111.79)" d="M225.407 135.107L206.4 52.547a14.838 14.838 0 0 0-7.958-9.9l-76.935-36.73a14.825 14.825 0 0 0-12.771 0L31.808 42.669a14.838 14.838 0 0 0-7.961 9.895L4.873 135.129a14.668 14.668 0 0 0 1.995 11.185c.261.4.538.788.838 1.162l53.246 66.205a14.98 14.98 0 0 0 11.499 5.487l85.387-.02a14.986 14.986 0 0 0 11.5-5.48l53.227-66.211a14.72 14.72 0 0 0 2.842-12.347z"/>
+      <circle class="flash" cx="204" cy="66" r="9"/>
+    </svg>
+  </div>
+  <div class="people crew">
+    <div class="person"><img src="../../assets/crew/kim-yen-nguyen.jpg" alt="">
+      <span class="who">Kim Yen Nguyen</span><span class="what">Photographer</span></div>
+    <div class="person"><img src="../../assets/crew/sebastian-krog-knudsen.jpg" alt="" style="object-position: 40% center">
+      <span class="who">Sebastian Krog Knudsen</span><span class="what">Videographer</span></div>
+  </div>
+</section>
+
+<!-- Three winners are drawn on day two (day2-afternoon, social draw). -->
+<section class="slide" data-layout="logistics">
   <div class="pad">
     <p class="eyebrow">Sharing is caring</p>
     <h2 class="display">Post it.</h2>
     <dl class="kv">
-      <dt>Hashtag</dt><dd>#CND26</dd>
-      <dt>Also</dt><dd>#CloudNativeDenmark · #CloudNativeNordics</dd>
-      <dt>Tag us</dt><dd>@cloudnativedenmark.dk</dd>
+      <dt>Hashtags</dt><dd>#CNDenmark · #CloudNativeDenmark</dd>
+      <dt>Win</dt><dd>Three best posts win, drawn on day two</dd>
     </dl>
   </div>
 </section>
 
-<!-- 12 ─ swag -------------------------------------------------------- -->
-<section class="slide" data-layout="logistics" data-ground="sand">
+<section class="slide" data-layout="logistics">
   <div class="pad">
-    <p class="eyebrow">Visit the sponsor booths</p>
-    <h2 class="display">Swag &amp; stickers.</h2>
-    <p class="body" style="max-width: 1200px">Our sponsors pay for this
-    conference, which is what lets every krone of profit go to charity. Go and
-    talk to them — they are practitioners too, and they brought stickers.</p>
+    <p class="eyebrow">One small ask</p>
+    <h2 class="display">Rate the<br>sessions.</h2>
+    <p class="body">Scan the QR after each talk. Ten seconds.</p>
   </div>
 </section>
 
-<!-- 13 ─ afterparty -------------------------------------------------- -->
-<section class="slide" data-layout="logistics" data-ground="red">
-  <div class="pad">
-    <p class="eyebrow">When the talks stop</p>
-    <h2 class="display">Afterparty,<br>18:00.</h2>
-    <p class="body" style="color: var(--cnd-white); max-width: 1100px">Food,
-    drinks and the conversations that are the actual reason to come to a
-    conference in person.</p>
-  </div>
-</section>
-
-<!-- 14 ─ reminders --------------------------------------------------- -->
-<section class="slide" data-layout="split">
-  <div class="pad"><h2 class="slide-title">Two small asks</h2></div>
-  <div class="cols">
-    <div class="card">
-      <h3 class="card-heading">Rate the sessions</h3>
-      <p class="body">Use the QR code we show after each talk. Speaker feedback
-      is how the programme gets better every year, and it takes ten seconds.</p>
-    </div>
-    <div class="card">
-      <h3 class="card-heading">Reuse your coffee mug</h3>
-      <p class="body">There are hundreds of us and one dishwasher. Hang on to
-      the mug you already have.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 15 ─ let's go ---------------------------------------------------- -->
-<section class="slide" data-layout="section" data-ground="navy">
+<section class="slide" data-layout="section">
   <div class="pad">
     <p class="eyebrow">Enough from us</p>
-    <h2 class="display">Let's get<br>started.</h2>
-    <div class="rule"></div>
+    <h2 class="display">Let’s get<br>started.</h2>
   </div>
 </section>
 
-<!-- 16 ─ speaker intro ----------------------------------------------- -->
-<!-- TODO 2026: one intro + rate pair per session. Copy this pair and the next,
-     fill in the name, role, talk title and headshot. -->
-<!-- The three day-one keynotes, from content/2026-announcements.json.
-     Which keynote opens and which closes is provisional until the final
-     schedule lands; reorder these sections, do not retype them. Each still
-     needs its rate-this-session pair. -->
-<section class="slide" data-layout="speaker" data-ground="navy">
-  <div class="cols">
-    <img class="portrait" src="../../assets/speakers/joseph-sandoval.jpg" alt="">
-    <div>
-      <span class="badge">Keynote</span>
-      <p class="talk" style="font-size: 86px">Your Agent Has No Idea Where It’s Running</p>
-      <p class="who">Joseph Sandoval</p>
-      <p class="what">Principal Product Manager, Developer Platforms, Adobe</p>
-    </div>
-  </div>
-</section>
+<!-- the morning block, in run-of-show order ---------------------------- -->
+<!-- One intro per talk and a rate slide after each. data-talk is the slug in
+     content/2026-stage.json; reorder sections, do not retype them. -->
 
-<section class="slide" data-layout="speaker" data-ground="navy">
-  <div class="cols">
-    <div class="pair"><img class="portrait" src="../../assets/speakers/adriana.jpg" alt=""><img class="portrait" src="../../assets/speakers/josh.jpg" alt=""></div>
-    <div>
-      <span class="badge">Keynote</span>
-      <p class="talk" style="font-size: 86px">Whose Code is it Anyways?</p>
-      <p class="who">Adriana Villela &amp; Josh Lee</p>
-      <p class="what">Principal Developer Advocate, Dynatrace · Developer Advocate, Altinity</p>
-    </div>
-  </div>
-</section>
+<section class="slide" data-layout="speaker" data-talk="d1-hackyourfuture"></section>
 
-<section class="slide" data-layout="speaker" data-ground="navy">
-  <div class="cols">
-    <img class="portrait" src="../../assets/speakers/michael_cote.png" alt="">
-    <div>
-      <span class="badge">Keynote</span>
-      <p class="talk" style="font-size: 74px">What goblins and druids can teach us about enterprise AI</p>
-      <p class="who">Michael Coté</p>
-      <p class="what">cote.io</p>
-    </div>
-  </div>
-</section>
-
-<!-- 17 ─ rate this session ------------------------------------------- -->
-<section class="slide" data-layout="rate" data-ground="navy">
+<section class="slide" data-layout="speaker" data-talk="d1-agent-no-idea"></section>
+<section class="slide" data-layout="rate" data-talk="d1-agent-no-idea">
   <div class="pad">
     <div>
       <p class="eyebrow">Ten seconds, please</p>
-      <h2 class="display" style="font-size: 120px">Rate this session.</h2>
-      <p class="body" style="max-width: 800px">TODO — session title</p>
+      <h2 class="display">Rate this session.</h2>
+      <p class="body"></p>
     </div>
-    <!-- TODO 2026: drop the session's QR image in as
-         <img src="img/qr-session-01.png" alt="Rate this session"> -->
-    <div class="qr">QR</div>
+    <div class="qr"></div>
   </div>
 </section>
 
+<section class="slide" data-layout="section">
+  <div class="pad">
+    <p class="eyebrow">Five minutes each</p>
+    <h2 class="display">Lightning<br>talks.</h2>
+  </div>
+</section>
+
+<section class="slide" data-layout="speaker" data-talk="talk-sterile-patch"></section>
+<section class="slide" data-layout="rate" data-talk="talk-sterile-patch">
+  <div class="pad">
+    <div>
+      <p class="eyebrow">Ten seconds, please</p>
+      <h2 class="display">Rate this session.</h2>
+      <p class="body"></p>
+    </div>
+    <div class="qr"></div>
+  </div>
+</section>
+
+<section class="slide" data-layout="speaker" data-talk="talk-collector-stories"></section>
+<section class="slide" data-layout="rate" data-talk="talk-collector-stories">
+  <div class="pad">
+    <div>
+      <p class="eyebrow">Ten seconds, please</p>
+      <h2 class="display">Rate this session.</h2>
+      <p class="body"></p>
+    </div>
+    <div class="qr"></div>
+  </div>
+</section>
+
+<!-- morning wrap-up ---------------------------------------------------- -->
+<section class="slide" data-layout="section">
+  <div class="pad">
+    <p class="eyebrow">Morning wrap-up</p>
+    <h2 class="display">That’s the<br>morning.</h2>
+  </div>
+</section>
+
+<!-- The stamp card is graphics/build-stamp-card.mjs. The draw is in
+     day2-afternoon ("Sponsor booth visits"). TODO 2026: the prizes. -->
+<section class="slide" data-layout="logistics">
+  <div class="pad">
+    <p class="eyebrow">Visit the sponsor booths</p>
+    <h2 class="display">Collect<br>the stamps.</h2>
+    <dl class="kv">
+      <dt>Collect</dt><dd>A stamp from every booth on your card</dd>
+      <dt>Hand in</dt><dd>The full card at the registration desk</dd>
+      <dt>Win</dt><dd>Cool prizes, drawn on day two</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- TODO 2026: the time matches the wall's break cue in
+     content/2026-stage.json, which is also still provisional. -->
+<section class="slide" data-layout="logistics">
+  <div class="pad">
+    <p class="eyebrow">Coffee break</p>
+    <h2 class="display">Back at<br>10:45.</h2>
+  </div>
+</section>
+
+<script src="../../stage/show.data.js"></script>
+<script src="../shared/denmark.js"></script>
+<script src="../shared/nordics.js"></script>
 <script src="../shared/deck.js"></script>
 </body>
 </html>

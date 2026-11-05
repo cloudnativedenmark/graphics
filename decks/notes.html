@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Speaker notes · Cloud Native Denmark 2026</title>
+<link rel="stylesheet" href="../brand/tokens.css">
+<!--
+  Speaker-notes follower for the remarks decks. Open it next to a deck in the
+  same browser (./start.sh does both):
+
+    notes.html?deck=day1-morning
+
+  It follows the deck's position through localStorage, and the arrow keys,
+  space, Home and End here move the deck, so you can drive from the laptop
+  screen while the deck sits fullscreen on the projector. T restarts the
+  timer.
+-->
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--cnd-navy);
+    color: var(--cnd-white);
+    font: 400 22px/1.5 var(--cnd-font-body);
+    padding: 32px 44px;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    padding-bottom: 18px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--cnd-slate);
+  }
+  .pos, .clock, footer {
+    font-family: var(--cnd-font-display);
+    letter-spacing: var(--cnd-track-eyebrow);
+    text-transform: uppercase;
+  }
+  .pos { color: var(--cnd-red); font-weight: 700; font-size: 18px; }
+  h1 { margin: 0; font: 600 20px var(--cnd-font-display); flex: 1; }
+  .clock { font-size: 18px; color: var(--cnd-sand); font-variant-numeric: tabular-nums; }
+  .clock span { color: var(--cnd-slate); margin-left: 14px; }
+  .label {
+    margin: 0 0 20px;
+    font: 700 34px/1.2 var(--cnd-font-display);
+    letter-spacing: var(--cnd-track-display);
+  }
+  .note {
+    background: color-mix(in srgb, var(--cnd-white) 6%, var(--cnd-navy));
+    border-left: 4px solid var(--cnd-red);
+    border-radius: 0 14px 14px 0;
+    padding: 24px 28px;
+    white-space: pre-wrap;
+    font-size: 26px;
+  }
+  .note.empty { border-left-color: var(--cnd-slate); color: var(--cnd-slate); font-style: italic; }
+  .next { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--cnd-slate); color: var(--cnd-slate); font-size: 19px; }
+  .next b { color: var(--cnd-white); font-weight: 600; }
+  .waiting { color: var(--cnd-peach); }
+  footer { margin-top: 36px; color: var(--cnd-slate); font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <span class="pos" id="pos">– / –</span>
+  <h1 id="title">Speaker notes</h1>
+  <span class="clock"><b id="now">--:--</b><span id="elapsed">0:00</span></span>
+</header>
+<p class="label" id="label">Waiting for the deck…</p>
+<div class="note empty" id="note">Open the deck in this browser and move to any slide.</div>
+<p class="next" id="next"></p>
+<footer id="foot"></footer>
+
+<script>
+(() => {
+  const deck = (new URLSearchParams(location.search).get("deck") || "day1-morning")
+    .replace(/[^A-Za-z0-9._-]/g, "");
+  const STATE_KEY = `cnd-deck:${deck}`;
+  const COMMAND_KEY = `${STATE_KEY}:go`;
+  const $ = (id) => document.getElementById(id);
+  let state = null;
+  let started = Date.now();
+
+  $("foot").textContent =
+    `Follows ${deck}/ in this browser · ← → space Home End move the deck · T restarts the timer`;
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(STATE_KEY)); } catch { return null; }
+  }
+
+  function paint() {
+    const s = read();
+    if (!s || (state && s.at === state.at)) return;
+    state = s;
+    document.title = `${s.index + 1}/${s.count} notes · ${s.title}`;
+    $("title").textContent = `${s.title} · speaker notes`;
+    $("pos").textContent = `${String(s.index + 1).padStart(2, "0")} / ${s.count}`;
+    $("label").textContent = s.label || "Slide";
+    const note = (s.note || "").trim();
+    $("note").textContent = note || "No note for this slide.";
+    $("note").className = note ? "note" : "note empty";
+    $("next").innerHTML = "";
+    if (s.next) {
+      $("next").append("Next: ");
+      const b = document.createElement("b");
+      b.textContent = s.next;
+      $("next").append(b);
+    } else {
+      $("next").textContent = "Last slide.";
+    }
+  }
+
+  function tick() {
+    const d = new Date();
+    $("now").textContent = d.toLocaleTimeString("da-DK", { hour: "2-digit", minute: "2-digit" });
+    const sec = Math.floor((Date.now() - started) / 1000);
+    $("elapsed").textContent = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
+  }
+
+  function go(to) {
+    if (!state) return;
+    to = Math.max(0, Math.min(state.count - 1, to));
+    try { localStorage.setItem(COMMAND_KEY, JSON.stringify({ to, at: Date.now() })); } catch {}
+  }
+
+  addEventListener("keydown", (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || !state) return;
+    switch (e.key) {
+      case "ArrowRight": case "PageDown": case " ": e.preventDefault(); go(state.index + 1); break;
+      case "ArrowLeft": case "PageUp": e.preventDefault(); go(state.index - 1); break;
+      case "Home": go(0); break;
+      case "End": go(state.count - 1); break;
+      case "t": case "T": started = Date.now(); tick(); break;
+    }
+  });
+
+  addEventListener("storage", (e) => { if (e.key === STATE_KEY) paint(); });
+  paint();
+  tick();
+  setInterval(paint, 250);
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>

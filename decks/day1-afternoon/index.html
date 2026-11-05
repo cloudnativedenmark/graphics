@@ -2,105 +2,107 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Day 1 Closing · Cloud Native Denmark 2026</title>
+<title>Day 1 Afternoon · Cloud Native Denmark 2026</title>
 <link rel="stylesheet" href="../../brand/tokens.css">
 <link rel="stylesheet" href="../shared/cnd-deck.css">
 <!--
-  Day 1 Closing Remarks — Cloud Native Denmark 2026.
+  Day 1 Afternoon — the main stage after the breakouts, through to the end
+  of day one. Follows content/2026-stage.json: the two afternoon keynotes,
+  then closing remarks and the afterparty.
 
-  The 2025 deck for this slot was mostly lightning talks and a panel, bracketed
-  by housekeeping. Same shape here. Search TODO for the pre-flight checklist.
+  Talk slides are filled from stage/show.data.js by data-talk. Search TODO
+  for the pre-flight checklist.
+
+  Export:
+    "Google Chrome" --headless --print-to-pdf=day1-afternoon.pdf \
+      --no-pdf-header-footer decks/day1-afternoon/index.html
 -->
 </head>
-<body class="deck" data-deck-title="Day 1 Closing">
+<body class="deck" data-deck-title="Day 1 Afternoon">
 
-<section class="slide" data-layout="section" data-ground="navy">
+<section class="slide" data-layout="section">
   <div class="pad">
-    <p class="eyebrow">Closing — Day one</p>
-    <h2 class="display">Almost<br>there.</h2>
-    <div class="rule"></div>
+    <p class="eyebrow">Day one · Afternoon</p>
+    <h2 class="display">Welcome<br>back.</h2>
   </div>
 </section>
 
-<!-- hashtags — repeated from the opening deck on purpose: people arrive late -->
-<section class="slide" data-layout="logistics" data-ground="navy">
-  <div class="accent" data-at="bottom-left" style="--accent-color: var(--cnd-peach)"></div>
+<section class="slide" data-layout="logistics">
   <div class="pad">
     <p class="eyebrow">Sharing is caring</p>
     <h2 class="display">Post it.</h2>
     <dl class="kv">
-      <dt>Hashtag</dt><dd>#CND26</dd>
-      <dt>Also</dt><dd>#CloudNativeDenmark · #CloudNativeNordics</dd>
-      <dt>Tag us</dt><dd>@cloudnativedenmark.dk</dd>
+      <dt>Hashtags</dt><dd>#CNDenmark · #CloudNativeDenmark</dd>
+      <dt>Win</dt><dd>Three best posts win, drawn on day two</dd>
     </dl>
   </div>
 </section>
 
-<!-- TODO 2026: one intro + rate pair per lightning talk. Duplicate this pair. -->
-<section class="slide" data-layout="speaker" data-ground="navy">
-  <div class="cols">
-    <div class="avatar portrait"></div>
-    <div>
-      <span class="badge">Lightning talk</span>
-      <p class="talk">TODO — talk title</p>
-      <p class="who">TODO — speaker name</p>
-      <p class="what">TODO — role, organization</p>
-    </div>
-  </div>
-</section>
+<!-- the afternoon keynotes, in run-of-show order. TODO 2026: the slots are
+     provisional in content/2026-stage.json too. -->
 
-<section class="slide" data-layout="rate" data-ground="navy">
+<section class="slide" data-layout="speaker" data-talk="d1-whose-code"></section>
+<section class="slide" data-layout="rate" data-talk="d1-whose-code">
   <div class="pad">
     <div>
       <p class="eyebrow">Ten seconds, please</p>
-      <h2 class="display" style="font-size: 120px">Rate this session.</h2>
-      <p class="body" style="max-width: 800px">TODO — session title</p>
+      <h2 class="display">Rate this session.</h2>
+      <p class="body"></p>
     </div>
-    <div class="qr">QR</div>
+    <!-- TODO 2026: <img src="img/qr-d1-whose-code.png" alt="Rate this session"> -->
+    <div class="qr"></div>
   </div>
 </section>
 
-<!-- TODO 2026: confirm the panel topic and panellists -->
-<section class="slide" data-layout="speaker" data-ground="navy">
-  <div class="cols">
-    <div class="avatar portrait"></div>
+<section class="slide" data-layout="speaker" data-talk="d1-goblins-druids"></section>
+<section class="slide" data-layout="rate" data-talk="d1-goblins-druids">
+  <div class="pad">
     <div>
-      <span class="badge">Panel</span>
-      <p class="talk">TODO — panel topic</p>
-      <p class="who">TODO — panellists</p>
-      <p class="what">Moderated by TODO</p>
+      <p class="eyebrow">Ten seconds, please</p>
+      <h2 class="display">Rate this session.</h2>
+      <p class="body"></p>
     </div>
+    <!-- TODO 2026: <img src="img/qr-d1-goblins-druids.png" alt="Rate this session"> -->
+    <div class="qr"></div>
   </div>
 </section>
 
-<section class="slide" data-layout="logistics" data-ground="sand">
+<!-- closing ------------------------------------------------------------ -->
+<section class="slide" data-layout="section">
+  <div class="pad">
+    <p class="eyebrow">Closing · Day one</p>
+    <h2 class="display">That’s<br>day one.</h2>
+  </div>
+</section>
+
+<section class="slide" data-layout="logistics">
   <div class="pad">
     <p class="eyebrow">Visit the sponsor booths</p>
-    <h2 class="display">Swag &amp; stickers.</h2>
-    <p class="body" style="max-width: 1200px">Still time before the party. Our
-    sponsors are the reason every krone of profit goes to charity — go and say
-    thank you.</p>
+    <h2 class="display">Swag &amp;<br>stickers.</h2>
+    <p class="body">Still time before the party.</p>
   </div>
 </section>
 
-<section class="slide" data-layout="logistics" data-ground="red">
+<!-- Upwind is the afterparty sponsor (content/2026-announcements.json, tier
+     "Afterparty"); its tile is filled from the show data. -->
+<section class="slide" data-layout="logistics" data-field="quiet" data-source="afterparty">
   <div class="pad">
     <p class="eyebrow">Right now</p>
     <h2 class="display">Afterparty,<br>18:00.</h2>
-    <p class="body" style="color: var(--cnd-white); max-width: 1100px">Food,
-    drinks, and the conversations that are the actual reason to be here.</p>
+    <p class="body">Food, drinks, good company.</p>
   </div>
 </section>
 
+<!-- Same words as the wall's end-of-day message cue. -->
 <section class="slide" data-layout="section">
   <div class="pad">
-    <p class="eyebrow">One last thing</p>
-    <h2 class="display">Don't party<br>too late.</h2>
-    <div class="rule"></div>
-    <p class="body" style="margin-top: 40px">Day two starts at 09:00.</p>
+    <p class="eyebrow">That’s day one</p>
+    <h2 class="display">See you<br>tomorrow.</h2>
+    <p class="body">Doors open 08:00 · Scandic Copenhagen</p>
   </div>
 </section>
 
+<script src="../../stage/show.data.js"></script>
 <script src="../shared/deck.js"></script>
 </body>
 </html>

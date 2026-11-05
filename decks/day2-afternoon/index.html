@@ -2,77 +2,65 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Day 2 Closing · Cloud Native Denmark 2026</title>
+<title>Day 2 Afternoon · Cloud Native Denmark 2026</title>
 <link rel="stylesheet" href="../../brand/tokens.css">
 <link rel="stylesheet" href="../shared/cnd-deck.css">
 <!--
-  Day 2 Closing Remarks — Cloud Native Denmark 2026.
+  Day 2 Afternoon — the closing keynote, the raffles and the goodbye.
+  Follows content/2026-stage.json.
 
-  This is the deck that ends the conference, and the 2025 version had a clear
-  arc: final keynotes, then the raffles, then rate-the-event, then next year's
-  early bird, then thank yous, then "see you in 2027". Kept that order — it
-  builds instead of trailing off.
+  The winners table is filled live. Search TODO for the checklist.
 
-  The raffle slides are filled in live during the closing session. Search TODO.
+  Export:
+    "Google Chrome" --headless --print-to-pdf=day2-afternoon.pdf \
+      --no-pdf-header-footer decks/day2-afternoon/index.html
 -->
 </head>
-<body class="deck" data-deck-title="Day 2 Closing">
+<body class="deck" data-deck-title="Day 2 Afternoon">
 
-<section class="slide" data-layout="section" data-ground="navy">
+<section class="slide" data-layout="section">
   <div class="pad">
-    <p class="eyebrow">Closing — Day two</p>
+    <p class="eyebrow">Day two · Afternoon</p>
     <h2 class="display">Last<br>stretch.</h2>
-    <div class="rule"></div>
   </div>
 </section>
 
-<!-- TODO 2026: one intro + rate pair per closing keynote -->
-<section class="slide" data-layout="speaker" data-ground="navy">
-  <div class="cols">
-    <img class="portrait" src="../../assets/speakers/gabriele.png" alt="">
-    <div>
-      <span class="badge">Keynote</span>
-      <p class="talk" style="font-size: 62px">Beyond the DBaaS Trap: Achieving Data Sovereignty With Kubernetes and CloudNativePG</p>
-      <p class="who">Gabriele Bartolini</p>
-      <p class="what">TODO — role, organization</p>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-layout="rate" data-ground="navy">
+<section class="slide" data-layout="speaker" data-talk="d2-dbaas-trap"></section>
+<section class="slide" data-layout="rate" data-talk="d2-dbaas-trap">
   <div class="pad">
     <div>
       <p class="eyebrow">Ten seconds, please</p>
-      <h2 class="display" style="font-size: 120px">Rate this session.</h2>
-      <p class="body" style="max-width: 800px">TODO — session title</p>
+      <h2 class="display">Rate this session.</h2>
+      <p class="body"></p>
     </div>
-    <div class="qr">QR</div>
+    <!-- TODO 2026: <img src="img/qr-d2-dbaas-trap.png" alt="Rate this session"> -->
+    <div class="qr"></div>
   </div>
 </section>
 
-<!-- raffles ------------------------------------------------------------- -->
-<section class="slide" data-layout="section" data-ground="red">
+<!-- raffles ------------------------------------------------------------ -->
+<section class="slide" data-layout="section">
   <div class="pad">
-    <p class="eyebrow">04 — Prizes</p>
+    <p class="eyebrow">Prizes</p>
     <h2 class="display">Raffles.</h2>
-    <div class="rule" style="background: var(--cnd-navy)"></div>
   </div>
 </section>
 
 <section class="slide" data-layout="logistics">
   <div class="pad">
-    <p class="eyebrow">The dots-collecting challenge</p>
+    <p class="eyebrow">The stamp challenge</p>
     <h2 class="display">Sponsor<br>booth visits.</h2>
-    <p class="body" style="max-width: 1200px">Everyone who collected a dot from
-    every booth is in the draw. This is the one where standing in the hall
-    talking to people pays off literally.</p>
+    <p class="body">Every full stamp card handed in is in the draw.</p>
   </div>
 </section>
 
 <!-- TODO 2026: fill in live. Emails were partially masked last year —
      keep doing that. -->
 <section class="slide" data-layout="table">
-  <div class="pad"><h2 class="slide-title">2027 ticket winners</h2></div>
+  <div class="pad">
+    <p class="eyebrow">See you next year</p>
+    <h2 class="heading">2027 ticket winners</h2>
+  </div>
   <div class="wrap">
     <table class="cnd">
       <thead><tr><th>Winner</th><th>Email</th><th>Prize</th></tr></thead>
@@ -87,33 +75,34 @@
   </div>
 </section>
 
-<section class="slide" data-layout="logistics" data-ground="navy">
-  <div class="accent" data-at="top-right" style="--accent-color: var(--cnd-peach)"></div>
+<!-- Three winners, as announced on day one. TODO 2026: the prizes. -->
+<section class="slide" data-layout="logistics">
   <div class="pad">
-    <p class="eyebrow">Three to give away</p>
+    <p class="eyebrow">Sharing was caring</p>
     <h2 class="display">Social<br>draw.</h2>
-    <p class="body" style="max-width: 1100px">Everyone who posted with #CND26 is
-    in. TODO — draw live.</p>
+    <p class="body">Three winners from the best posts with #CNDenmark or
+    #CloudNativeDenmark.</p>
   </div>
 </section>
 
-<!-- rate the event ------------------------------------------------------ -->
-<section class="slide" data-layout="rate" data-ground="navy">
+<section class="slide" data-layout="rate">
   <div class="pad">
     <div>
       <p class="eyebrow">The last ask, we promise</p>
-      <h2 class="display" style="font-size: 110px">Rate the<br>conference.</h2>
-      <p class="body" style="max-width: 800px">Not a session — the whole event.
-      It shapes what we do differently in 2027.</p>
+      <h2 class="display">Rate the<br>conference.</h2>
+      <p class="body">The whole event, not a session.</p>
     </div>
     <!-- TODO 2026: event feedback QR -->
-    <div class="qr">QR</div>
+    <div class="qr"></div>
   </div>
 </section>
 
-<!-- next year ----------------------------------------------------------- -->
-<section class="slide" data-layout="stat" data-ground="sand">
-  <div class="pad"><h2 class="slide-title">Early blind bird</h2></div>
+<!-- next year ---------------------------------------------------------- -->
+<section class="slide" data-layout="stat">
+  <div class="pad">
+    <p class="eyebrow">2027 is on sale</p>
+    <h2 class="heading">Early blind bird</h2>
+  </div>
   <div class="cols">
     <div>
       <!-- TODO 2026: confirm next year's early price -->
@@ -122,9 +111,6 @@
     </div>
     <div>
       <h3 class="col-heading">On sale now</h3>
-      <p class="body">Cheapest ticket we will ever sell for 2027, and you do not
-      yet know the programme — that is the deal. It has sold out early every
-      year so far.</p>
       <ul class="marked">
         <li>Same practitioner-led programme</li>
         <li>All profits still go to charity</li>
@@ -134,28 +120,18 @@
   </div>
 </section>
 
-<!-- thank yous ---------------------------------------------------------- -->
-<!-- TODO 2026: the full volunteer and organizer list. Everyone gets named. -->
-<section class="slide" data-layout="people">
-  <div class="pad"><h2 class="slide-title">Thank you, everyone</h2></div>
-  <div class="people" style="--per-row: 6">
-    <div class="person"><div class="avatar"></div>
-      <span class="who">TODO</span><span class="what">Organizer</span></div>
-    <div class="person"><div class="avatar"></div>
-      <span class="who">TODO</span><span class="what">Organizer</span></div>
-    <div class="person"><div class="avatar"></div>
-      <span class="who">TODO</span><span class="what">Volunteer</span></div>
-    <div class="person"><div class="avatar"></div>
-      <span class="who">TODO</span><span class="what">Volunteer</span></div>
-    <div class="person"><div class="avatar"></div>
-      <span class="who">TODO</span><span class="what">Volunteer</span></div>
-    <div class="person"><div class="avatar"></div>
-      <span class="who">TODO</span><span class="what">Volunteer</span></div>
+<!-- thank yous --------------------------------------------------------- -->
+<!-- The organizers come from content/2026-stage.json.
+     TODO 2026: a second slide naming every volunteer. -->
+<section class="slide" data-layout="people" data-source="organizers">
+  <div class="pad">
+    <p class="eyebrow">And every volunteer</p>
+    <h2 class="heading">Thank you, everyone</h2>
   </div>
+  <div class="people"></div>
 </section>
 
 <section class="slide" data-layout="quote">
-  <div class="accent" data-at="top-right" style="--accent-color: var(--cnd-rose)"></div>
   <div class="pad">
     <p class="quote-mark">&ldquo;</p>
     <blockquote class="quote">We aren't just building clusters; we are building a
@@ -164,16 +140,16 @@
   </div>
 </section>
 
-<!-- Closing slide: no chrome, mirroring the cover. -->
-<section class="slide" data-layout="section" data-ground="navy" data-chrome="none">
+<!-- Same words as the wall's last message cue. -->
+<section class="slide" data-layout="section">
   <div class="pad">
     <p class="eyebrow">Same time next year</p>
     <h2 class="display">See you<br>in 2027.</h2>
-    <div class="rule"></div>
-    <p class="body" style="margin-top: 40px">cloudnativedenmark.dk</p>
+    <p class="body">cloudnativedenmark.dk</p>
   </div>
 </section>
 
+<script src="../../stage/show.data.js"></script>
 <script src="../shared/deck.js"></script>
 </body>
 </html>
