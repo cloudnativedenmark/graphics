@@ -147,12 +147,12 @@ scale, the layouts, the field, do/don't. Read it before editing a slide.
 
 ```bash
 node stage/build.mjs           # content → stage/show.data.js
-decks/start.sh                 # serves on :8026, opens day1-morning and its notes
-decks/start.sh day2-afternoon  # any of the four
+decks/start.sh                 # serves on :8026, opens all four decks and their notes
+decks/start.sh day2-afternoon  # just one, or name several
 ```
 
-`start.sh` opens two windows: the deck (press `f` on the projector) and
-`decks/notes.html?deck=…`, the speaker-notes follower. The notes window shows
+For each deck, `start.sh` opens two windows: the deck (press `f` on the
+projector) and `decks/notes.html?deck=…`, the speaker-notes follower. The notes window shows
 the current slide's note, the next slide, the time and a timer (`T` restarts
 it), and its arrow keys move the deck, so you can drive from the laptop screen.
 Notes are an `<aside class="notes">` inside a slide; talk and rate slides
