@@ -265,13 +265,15 @@ server.listen(PORT, LOCAL ? "127.0.0.1" : "0.0.0.0", () => {
   const c = process.stdout.isTTY && !process.env.NO_COLOR
     ? (code) => (s) => `\x1b[${code}m${s}\x1b[0m`
     : () => (s) => s;
-  const [bold, dim, rose, cyan, green, yellow] = [c(1), c(2), c(31), c(36), c(32), c(33)];
+  const [bold, dim, rose, cyan, yellow] = [c(1), c(2), c(31), c(36), c(33)];
   const url = (path) => cyan(`http://${path}`);
   console.log(`
   ${bold("CND stage")} ${dim(`· port ${PORT}${LOCAL ? " · this machine only" : ""}`)}
 
-  ${green("Control panel")}  ${url(`localhost:${PORT}/stage/control.html?key=${KEY}`)}
-  ${rose("Main stage   ")}  ${url(`localhost:${PORT}/stage/index.html?output`)}
-  ${yellow("Breakout     ")}  ${url(`localhost:${PORT}/stage/index.html?output&room=breakout`)}
+  ${rose("Main stage")}  ${dim("control")}  ${url(`localhost:${PORT}/stage/control.html?key=${KEY}`)}
+              ${dim("screen ")}  ${url(`localhost:${PORT}/stage/index.html?output`)}
+
+  ${yellow("Breakout  ")}  ${dim("control")}  ${url(`localhost:${PORT}/stage/control.html?key=${KEY}&room=breakout`)}
+              ${dim("screen ")}  ${url(`localhost:${PORT}/stage/index.html?output&room=breakout`)}
 `);
 });
