@@ -499,7 +499,7 @@
     return `<div class="confetti">${html}</div>`;
   }
 
-  /* A wine glass, a beer and a soda, drawn in curves (the wall has no
+  /* A wine glass, a beer, a burger and a soda, drawn in curves (the wall has no
    * straight lines), leaning in to clink. */
   const DRINKS =
     `<svg class="drink wine" viewBox="0 0 200 400" aria-hidden="true">` +
@@ -512,6 +512,14 @@
     `<path class="liquid" d="M40 120 Q120 132 200 120 Q206 240 192 352 Q188 368 168 370 L72 370 Q52 368 48 352 Q34 240 40 120 Z"/>` +
     `<path class="foam" d="M22 82 Q20 40 60 44 Q80 14 120 30 Q160 10 186 40 Q226 38 218 84 Q210 118 180 110 Q150 132 120 116 Q90 134 62 112 Q26 122 22 82 Z"/>` +
     `<circle class="bubble" cx="90" cy="250" r="9"/><circle class="bubble" cx="140" cy="300" r="7"/><circle class="bubble" cx="120" cy="200" r="6"/>` +
+    `</svg>` +
+    `<svg class="drink food" viewBox="0 0 340 300" aria-hidden="true">` +
+    `<path class="bun" d="M30 130 Q30 30 170 30 Q310 30 310 130 Q310 146 290 146 L50 146 Q30 146 30 130 Z"/>` +
+    `<circle class="seed" cx="110" cy="80" r="7"/><circle class="seed" cx="170" cy="60" r="7"/><circle class="seed" cx="230" cy="84" r="7"/><circle class="seed" cx="150" cy="104" r="6"/>` +
+    `<path class="lettuce" d="M20 156 Q50 140 80 158 Q110 140 140 158 Q170 140 200 158 Q230 140 260 158 Q290 140 320 156 Q324 176 300 174 L40 174 Q16 176 20 156 Z"/>` +
+    `<path class="cheese" d="M36 172 L304 172 Q300 186 270 196 Q250 214 236 196 L60 196 Q40 190 36 172 Z"/>` +
+    `<path class="patty" d="M28 200 Q28 186 50 186 L290 186 Q312 186 312 200 Q312 236 290 236 L50 236 Q28 236 28 200 Z"/>` +
+    `<path class="bun" d="M34 246 Q34 238 50 238 L290 238 Q306 238 306 246 Q306 290 250 290 L90 290 Q34 290 34 246 Z"/>` +
     `</svg>` +
     `<svg class="drink soda" viewBox="0 0 180 400" aria-hidden="true">` +
     `<path class="can" d="M30 70 Q30 44 60 40 L120 40 Q150 44 150 70 L156 340 Q156 372 120 376 L60 376 Q24 372 24 340 Z"/>` +

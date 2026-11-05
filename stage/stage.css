@@ -454,23 +454,24 @@ body {
 
 .drinks {
   position: absolute;
-  left: 1290px;
+  left: 1230px;
   top: 300px;
-  width: 1116px;
+  width: 1236px;
   height: 640px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 40px;
+  gap: 32px;
 }
 .drink {
-  height: 520px;
+  height: 480px;
   overflow: visible;
   transform-origin: 50% 100%;
 }
 .drink.wine { animation: clink-left 3.2s ease-in-out infinite; }
-.drink.beer { height: 560px; animation: bob 3.2s ease-in-out infinite; }
+.drink.beer { height: 520px; animation: bob 3.2s ease-in-out infinite; }
 .drink.soda { animation: clink-right 3.2s ease-in-out infinite; }
+.drink.food { height: 330px; animation: bob 3.2s ease-in-out 0.4s infinite; }
 
 .drink .glass,
 .drink .handle {
@@ -485,6 +486,11 @@ body {
 .drink.beer .liquid { fill: var(--cnd-peach); }
 .drink.beer .foam   { fill: var(--cnd-white); }
 .drink.beer .bubble { fill: color-mix(in srgb, var(--cnd-white) 70%, transparent); }
+.drink.food .bun     { fill: var(--cnd-peach); }
+.drink.food .seed    { fill: var(--cnd-sand); }
+.drink.food .lettuce { fill: color-mix(in srgb, var(--cnd-sand) 70%, var(--cnd-slate)); }
+.drink.food .cheese  { fill: var(--cnd-sand); }
+.drink.food .patty   { fill: var(--cnd-rose); }
 .drink.soda .can    { fill: var(--cnd-sand); }
 .drink.soda .stripe { fill: var(--cnd-rose); }
 .drink.soda .top    { fill: var(--cnd-slate); }
