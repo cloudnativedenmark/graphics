@@ -1427,7 +1427,23 @@ window.SHOW = {
           "$note": "16:50"
         },
         {
-          "scene": "message",
+          "scene": "afterparty",
+          "$note": "End of day one: the afterparty, alternating with see-you-tomorrow. The party set plays.",
+          "music": "preshow",
+          "loop": [
+            "afterparty",
+            "message"
+          ],
+          "every": [
+            45,
+            15
+          ],
+          "party": {
+            "eyebrow": "That's day one",
+            "headline": "Party time.",
+            "when": "Afterparty · 18:00",
+            "body": "Food, wine, beer, sodas and good company."
+          },
           "eyebrow": "That's day one",
           "headline": "See you tomorrow.",
           "body": "Doors open 08:00 · Scandic Copenhagen"
@@ -2422,6 +2438,11 @@ window.SHOW = {
         "../assets/audio/calm-2-acoustic.mp3",
         "../assets/audio/calm-3-marimba.mp3"
       ],
+      "break": [
+        "../assets/audio/calm-1-lofi-rhodes.mp3",
+        "../assets/audio/calm-2-acoustic.mp3",
+        "../assets/audio/calm-3-marimba.mp3"
+      ],
       "preshow": [
         "../assets/audio/preshow-4-november-beat.mp3",
         "../assets/audio/preshow-1-funky-house.mp3",
@@ -2435,7 +2456,7 @@ window.SHOW = {
     "scenes": {
       "walkin": "calm",
       "countdown": "preshow",
-      "break": "calm",
+      "break": "break",
       "sponsors": "calm"
     },
     "walkon": [
