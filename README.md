@@ -46,6 +46,7 @@ You need **Node** and **Chrome**. That's all for making graphics.
 ```bash
 node graphics/build-announcements.mjs          # everything for 2026
 node graphics/build-announcements.mjs --scale 2 # retina
+node graphics/build-stamp-card.mjs             # A6 sponsor booth stamp card, PDF for print
 ```
 
 54 files in `graphics/out/` (gitignored — regenerate, don't commit): 27 per
@@ -137,26 +138,59 @@ the old one alone.
 
 ## The decks
 
-Four remarks decks at 1920×1080: `decks/day1-opening`, `day1-closing`,
-`day2-opening`, `day2-closing`.
+Four remarks decks at 1920×1080, one per main-stage block:
+`decks/day1-morning`, `day1-afternoon`, `day2-morning`, `day2-afternoon`.
+They run on the projectors either side of the LED wall and wear its look.
 
 **[`decks/DESIGN-SYSTEM.md`](decks/DESIGN-SYSTEM.md) is the spec** — grid, type
-scale, the eleven layouts, chrome, components, do/don't. Read it before editing a
-slide.
-
-Open `index.html` in Chrome and press `f`. Arrows or space to move, `p` to print.
+scale, the layouts, the field, do/don't. Read it before editing a slide.
 
 ```bash
-"$CHROME_BIN" --headless --print-to-pdf=day1-opening.pdf \
-  --no-pdf-header-footer decks/day1-opening/index.html
+node stage/build.mjs           # content → stage/show.data.js
+decks/start.sh                 # serves on :8026, opens day1-morning and its notes
+decks/start.sh day2-afternoon  # any of the four
 ```
 
-Speaker and sponsor slides are generated from the same content file as the
-graphics. Everything still unknown is marked `TODO`, so the pre-flight is:
+`start.sh` opens two windows: the deck (press `f` on the projector) and
+`decks/notes.html?deck=…`, the speaker-notes follower. The notes window shows
+the current slide's note, the next slide, the time and a timer (`T` restarts
+it), and its arrow keys move the deck, so you can drive from the laptop screen.
+Notes are an `<aside class="notes">` inside a slide; talk and rate slides
+write their own from the show data when they have none.
+
+Arrows, space or a clicker to move, `p` to print. To export:
+
+```bash
+"$CHROME_BIN" --headless --print-to-pdf=day1-morning.pdf \
+  --no-pdf-header-footer decks/day1-morning/index.html
+```
+
+Talk, organizer and sponsor slides are filled from `stage/show.data.js`, the
+same data the wall shows, so run the build after editing `content/`.
+Everything still unknown is marked `TODO`, so the pre-flight is:
 
 ```bash
 grep -rn TODO decks/
 ```
+
+---
+
+## The stage wall
+
+The LED wall behind the main stage, 3696×1176 as the AV vendor gave it.
+[`docs/stage-led-wall.md`](docs/stage-led-wall.md) has the rules and
+scenes.
+
+```bash
+node stage/serve.mjs    # show server: prints the wall URL and the control URL
+node stage/render.mjs   # stills of every cue → graphics/out/stage/
+```
+
+The control page runs on any machine on the same network, and the server
+prints its URL with the key.
+
+The run of show is `content/2026-stage.json`. Talk titles, names and portraits
+come from the announcements file by slug.
 
 ---
 

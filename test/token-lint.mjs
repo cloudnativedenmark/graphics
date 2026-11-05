@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-const SCAN_DIRS = ["graphics", "decks"];
+const SCAN_DIRS = ["graphics", "decks", "stage"];
 const SCAN_EXT = new Set([".svg", ".mjs", ".css", ".html", ".js"]);
 const SKIP_DIRS = new Set(["out", "node_modules", ".git"]);
 

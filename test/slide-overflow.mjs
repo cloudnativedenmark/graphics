@@ -46,8 +46,8 @@ const CHROME = findChrome();
 
 const STAGE_W = 1920;
 const STAGE_H = 1080;
-// A couple of px of slack: subpixel text metrics and the deliberate
-// corner-bleeding accents both legitimately touch the edge.
+// A couple of px of slack: subpixel text metrics and the field's
+// cells legitimately touch the edge.
 const SLACK = 2;
 
 /**
@@ -79,8 +79,8 @@ const PROBE = `
         left: stage.left - r.left,
         top: stage.top - r.top,
       };
-      // Accents bleed off the edge on purpose.
-      if (el.classList.contains('accent')) return;
+      // The honeycomb field bleeds off the edges on purpose.
+      if (el.closest('.field')) return;
       const max = Math.max(over.right, over.bottom, over.left, over.top);
       if (max > (worst?.amount ?? -Infinity)) {
         worst = {

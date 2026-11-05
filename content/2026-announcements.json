@@ -3,55 +3,392 @@
   "keynotes": [
     {
       "slug": "d1-agent-no-idea",
-      "eyebrow": "Keynote · day one",
+      "eyebrow": "Keynote",
       "headline": "Your agent|has no idea|where it’s|running.",
-      "body": "Joseph Sandoval.|Day one, main hall.",
+      "body": "Your Agent Has No Idea Where It’s Running||Joseph Sandoval",
       "ground": "sand",
       "portrait": "assets/speakers/joseph-sandoval.jpg"
     },
     {
       "slug": "d1-whose-code",
-      "eyebrow": "Keynote · day one",
+      "eyebrow": "Keynote",
       "headline": "Whose code|is it anyways?",
-      "body": "Adriana Villela & Josh Lee.|Day one, main hall.",
+      "body": "Whose Code is it Anyways?||Adriana Villela & Josh Lee",
       "ground": "navy",
       "portrait": "assets/speakers/adriana.jpg",
       "portrait2": "assets/speakers/josh.jpg"
     },
     {
       "slug": "d1-goblins-druids",
-      "eyebrow": "Keynote · day one",
+      "eyebrow": "Keynote",
       "headline": "What goblins|and druids teach|us about|enterprise AI.",
-      "body": "Michael Coté.|Day one, main hall.",
+      "body": "What goblins and druids can teach us about|enterprise AI||Michael Coté",
       "ground": "sand",
       "portrait": "assets/speakers/michael_cote.png",
       "align": "xMidYMin"
     },
     {
       "slug": "d2-developers-nightmare",
-      "eyebrow": "Keynote · day two",
+      "eyebrow": "Keynote",
       "headline": "The developer's|nightmare.",
-      "body": "Surviving compliance checklists and still|shipping fast. Thomas Vitale &|Alexandra Hou Aldershaab. Day two.",
+      "body": "The Developer’s Nightmare: How To Survive|Compliance Checklists (and Still Ship Fast)||Thomas Vitale & Alexandra Hou Aldershaab",
       "ground": "navy",
       "portrait": "assets/speakers/thomas_vitale.jpg",
       "portrait2": "assets/speakers/alexandra.png"
     },
     {
       "slug": "d2-map-keeps-changing",
-      "eyebrow": "Keynote · day two",
+      "eyebrow": "Keynote",
       "headline": "How do you|explore when the|map keeps|changing?",
-      "body": "Paula Kennedy.|Day two, main hall.",
+      "body": "How Do You Explore When the Map Keeps|Changing?||Paula Kennedy",
       "ground": "sand",
       "portrait": "assets/speakers/paula_kennedy.jpg",
       "align": "xMinYMid"
     },
     {
       "slug": "d2-dbaas-trap",
-      "eyebrow": "Keynote · day two",
+      "eyebrow": "Keynote",
       "headline": "Beyond the|DBaaS trap.",
-      "body": "Data sovereignty with Kubernetes and|CloudNativePG. Gabriele Bartolini.|Day two, main hall.",
+      "body": "Beyond the DBaaS Trap: Achieving Data|Sovereignty With Kubernetes and|CloudNativePG||Gabriele Bartolini",
       "ground": "navy",
       "portrait": "assets/speakers/gabriele.png"
+    }
+  ],
+  "sessions": [
+    {
+      "slug": "talk-lazy-developer",
+      "eyebrow": "Session",
+      "headline": "The lazy|developer's guide|to observing|your own code.",
+      "body": "The lazy developer’s guide to observing your|own code||Adriana Villela & Diana Todea",
+      "ground": "sand",
+      "portrait": "assets/speakers/adriana_villela.jpg",
+      "portrait2": "assets/speakers/diana_todea.jpg"
+    },
+    {
+      "slug": "talk-manual-otel",
+      "eyebrow": "Session",
+      "headline": "Auto-instrumentation|is quietly|draining your|budget.",
+      "body": "How manual OTel instrumentation saves more|than just money||Juliano Costa",
+      "ground": "navy",
+      "portrait": "assets/speakers/juliano_costa.jpg"
+    },
+    {
+      "slug": "talk-data-swamp",
+      "eyebrow": "Session",
+      "headline": "Beyond the|data swamp.",
+      "body": "Beyond the Data Swamp: Building Your|Semantic Observability Mesh||Graziano Casto & Josh Lee",
+      "ground": "sand",
+      "portrait": "assets/speakers/graziano_casto.jpg",
+      "portrait2": "assets/speakers/josh_lee.jpg"
+    },
+    {
+      "slug": "talk-collector-stories",
+      "eyebrow": "Lightning talk",
+      "headline": "How teams|actually run|the Collector.",
+      "body": "OpenTelemetry Collector in Production: Real-|World User Stories||Johanna Öjeling",
+      "ground": "navy",
+      "portrait": "assets/speakers/johanna_ojeling.jpg"
+    },
+    {
+      "slug": "talk-platforms-asked",
+      "eyebrow": "Session",
+      "headline": "What if your|customers can't|opt out?",
+      "body": "Building platforms for teams that asked for|them — and teams that didn’t||Jacob Avlund",
+      "ground": "sand",
+      "portrait": "assets/speakers/jacob_avlund.jpg"
+    },
+    {
+      "slug": "talk-platforms-matter-ai",
+      "eyebrow": "Session",
+      "headline": "Your platform|matters more|than ever|with AI.",
+      "body": "Your platforms matter more than ever with AI||Jessica Andersson",
+      "ground": "navy",
+      "portrait": "assets/speakers/jessica_andersson.jpg"
+    },
+    {
+      "slug": "talk-pdb-trust",
+      "eyebrow": "Session",
+      "headline": "Do you trust|your PDBs?|You shouldn't.",
+      "body": "Do You Trust Your PodDisruptionBudgets? You|Shouldn’t!||Kārlis Akots Gribulis",
+      "ground": "red",
+      "portrait": "assets/speakers/karlis_akots_gribulis.png"
+    },
+    {
+      "slug": "talk-cadence-uber",
+      "eyebrow": "Session",
+      "headline": "Durable execution|at Uber scale.",
+      "body": "Durable Execution at Uber Scale:|Orchestrating Multi-Region Resilience with|Cadence||Seva Kaloshin",
+      "ground": "sand",
+      "portrait": "assets/speakers/seva_kaloshin.jpg"
+    },
+    {
+      "slug": "talk-agent-substrate",
+      "eyebrow": "Session",
+      "headline": "Kubernetes was|built for services,|not for millions|of agents.",
+      "body": "Scaling the Agentic Web with Agent Substrate||Abdel Sghiouar",
+      "ground": "navy",
+      "portrait": "assets/speakers/abdel_sghiouar.png"
+    },
+    {
+      "slug": "talk-observability-matrix",
+      "eyebrow": "Session",
+      "headline": "Observability|in the Matrix.",
+      "body": "Observability in the Matrix: Choosing the|Right AI Agent to Escape the Chaos||Henrik Rexed",
+      "ground": "sand",
+      "portrait": "assets/speakers/henrik_rexed.jpg"
+    },
+    {
+      "slug": "talk-two-standards",
+      "eyebrow": "Session",
+      "headline": "Two standards|walk into|an agent.",
+      "body": "Two Standards Walk Into an Agent: Runtime|Agent Control with OpenTelemetry and|OpenFeature||Simon Schrottner",
+      "ground": "red",
+      "portrait": "assets/speakers/simon_schrottner.jpg"
+    },
+    {
+      "slug": "talk-ai-side-effects",
+      "eyebrow": "Session",
+      "headline": "The AI side|effects we're not|talking about.",
+      "body": "The AI side effects we’re not talking about||Marcus Noble",
+      "ground": "red",
+      "portrait": "assets/speakers/marcus_noble.jpg"
+    },
+    {
+      "slug": "talk-us-independent",
+      "eyebrow": "Session",
+      "headline": "We built the|US-independent|fallback. Here's|the bill.",
+      "body": "Building a US-Independent Fallback|Environment: Successes, Failures, and the|Hidden Traps||Thomas Ornell",
+      "ground": "navy",
+      "portrait": "assets/speakers/thomas_ornell.jpg"
+    },
+    {
+      "slug": "talk-sovereign-boring",
+      "eyebrow": "Session",
+      "headline": "Make sovereign|cloud boring.",
+      "body": "Make Sovereign Cloud Boring: One Binary to|Run Kubernetes Anywhere||Steffen Karlsson & Nicklas Frahm",
+      "ground": "sand",
+      "portrait": "assets/speakers/steffen_karlsson.png",
+      "portrait2": "assets/speakers/nicklas_frahm.png"
+    },
+    {
+      "slug": "talk-sovereign-agentic-coding",
+      "eyebrow": "Session",
+      "headline": "Agentic coding,|entirely on|your laptop.",
+      "body": "Digital Sovereign Agentic Coding||Rasmus Steiniche",
+      "ground": "navy",
+      "portrait": "assets/speakers/rasmus_steiniche.png"
+    },
+    {
+      "slug": "talk-root-of-trust",
+      "eyebrow": "Session",
+      "headline": "“Just add|the CA cert.”",
+      "body": "Trust Me, I’m Internal: Building a Custom|Root of Trust for Kubernetes Workloads||Jakub Krzywda & Cristian Klein",
+      "ground": "navy",
+      "portrait": "assets/speakers/jakub_krzywda.png",
+      "portrait2": "assets/speakers/cristian_klein.jpg"
+    },
+    {
+      "slug": "talk-kyverno-victoriametrics",
+      "eyebrow": "Session",
+      "headline": "Which policy|rejected my|workload?",
+      "body": "Observing Kubernetes Policies with Kyverno|and VictoriaMetrics||Diana Todea & Cortney Nickerson",
+      "ground": "navy",
+      "portrait": "assets/speakers/diana_todea.jpg",
+      "portrait2": "assets/speakers/cortney_nickerson.jpg"
+    },
+    {
+      "slug": "talk-postgres-observability",
+      "eyebrow": "Session",
+      "headline": "The database|is the black box|at the bottom|of every trace.",
+      "body": "Unified Observability for PostgreSQL on|Kubernetes: Logs, Traces, and Metrics under|One Roof||Gabriele Rossini",
+      "ground": "sand",
+      "portrait": "assets/speakers/gabriele_rossini.jpg"
+    },
+    {
+      "slug": "ws-cloudnativepg",
+      "eyebrow": "Workshop",
+      "headline": "PostgreSQL on|Kubernetes,|hands on.",
+      "body": "PostgreSQL on Kubernetes: A Hands-On|Introduction to CloudNativePG||Gabriele Bartolini",
+      "ground": "navy",
+      "portrait": "assets/speakers/gabriele_bartolini.png"
+    },
+    {
+      "slug": "ws-otel-playbook",
+      "eyebrow": "Workshop",
+      "headline": "Instrument an app|from scratch.",
+      "body": "Getting started with OpenTelemetry|instrumentation: A practical playbook||Imma Valls",
+      "ground": "sand",
+      "portrait": "assets/speakers/imma_valls.jpg"
+    },
+    {
+      "slug": "ws-crossplane",
+      "eyebrow": "Workshop",
+      "headline": "Zero to your first|internal developer|platform.",
+      "body": "Building Platforms with Crossplane: A Hands-|On Introduction||Riccardo Capraro",
+      "ground": "navy",
+      "portrait": "assets/speakers/riccardo_capraro.jpg"
+    },
+    {
+      "slug": "ws-regenerative",
+      "eyebrow": "Workshop",
+      "headline": "What is...|regenerative software|development?",
+      "body": "What is… Regenerative Software Development||Lars Kruse",
+      "ground": "sand",
+      "portrait": "assets/speakers/lars_kruse.jpg"
+    },
+    {
+      "slug": "talk-no-ssh-bare-metal",
+      "eyebrow": "Session",
+      "headline": "No SSH.|No golden image.|No snowflakes.",
+      "body": "No SSH, No Golden Image, No Snowflakes:|Provisioning Bare Metal from a Single|Kubernetes Cluster||Karsten Nielsen",
+      "ground": "navy",
+      "portrait": "assets/speakers/karsten_nielsen.png"
+    },
+    {
+      "slug": "talk-crossplane-should-not",
+      "eyebrow": "Session",
+      "headline": "We bent Crossplane|until it broke.",
+      "body": "How we used Crossplane for the things we|should not have||Liene Luksika",
+      "ground": "red",
+      "portrait": "assets/speakers/liene_luksika.jpg"
+    },
+    {
+      "slug": "talk-my-cloud-home",
+      "eyebrow": "Session",
+      "headline": "It's my cloud.",
+      "body": "It’s my Cloud! Building On-Demand Kubernetes|Platforms at Home||Thomas Schuetz",
+      "ground": "red",
+      "portrait": "assets/speakers/thomas_schuetz.jpg"
+    },
+    {
+      "slug": "talk-sterile-patch",
+      "eyebrow": "Lightning talk",
+      "headline": "A sterile patch|is not a|dirty fork.",
+      "body": "A sterile patch is not a dirty fork||Johan Thomsen",
+      "ground": "sand",
+      "portrait": "assets/speakers/johan_thomsen.jpg"
+    }
+  ],
+  "moments": [
+    {
+      "slug": "moment-full-room",
+      "label": "CND/2025",
+      "name": "The main hall, day two",
+      "role": "",
+      "highlight": "YOU HAD TO|BE IN THE ROOM",
+      "photo": "assets/photos/2025/full-room.jpg",
+      "footer": "sand",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
+    },
+    {
+      "slug": "moment-lanyards",
+      "label": "CND/2025",
+      "name": "08:00, before the doors",
+      "role": "",
+      "highlight": "THE CALM|BEFORE DOORS",
+      "photo": "assets/photos/2025/lanyards.jpg",
+      "footer": "navy",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
+    },
+    {
+      "slug": "moment-rain",
+      "label": "CND/2025",
+      "name": "Arrivals, day one",
+      "role": "",
+      "highlight": "IT RAINED.|NOBODY CARED.",
+      "photo": "assets/photos/2025/arriving-in-the-rain.jpg",
+      "footer": "sand",
+      "band": 240,
+      "scrim": 0.7,
+      "tab": false
+    },
+    {
+      "slug": "moment-group",
+      "label": "CND/2025",
+      "name": "Between two sessions",
+      "role": "",
+      "highlight": "CAME FOR THE TALKS.|STAYED FOR|THESE PEOPLE.",
+      "photo": "assets/photos/2025/group-photo.jpg",
+      "footer": "navy",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
+    },
+    {
+      "slug": "moment-hallway",
+      "label": "CND/2025",
+      "name": "The hallway track",
+      "role": "",
+      "highlight": "THE BEST TALK|ISN'T ALWAYS|ON STAGE",
+      "photo": "assets/photos/2025/hallway-track.jpg",
+      "footer": "sand",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
+    },
+    {
+      "slug": "moment-after-party",
+      "label": "CND/2025",
+      "name": "After the closing keynote",
+      "role": "",
+      "highlight": "NOBODY LEFT|AT FIVE",
+      "photo": "assets/photos/2025/after-party-bar.jpg",
+      "footer": "navy",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
+    },
+    {
+      "slug": "moment-never-stop",
+      "label": "CND/2025",
+      "name": "Overheard on a hoodie",
+      "role": "",
+      "highlight": "NEVER STOP|DEVELOPING",
+      "photo": "assets/photos/2025/never-stop-developing.jpg",
+      "footer": "sand",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
+    },
+    {
+      "slug": "moment-chaos",
+      "label": "CND/2025",
+      "name": "Main stage, day one",
+      "role": "",
+      "highlight": "TALKS YOU QUOTE|FOR MONTHS",
+      "photo": "assets/photos/2025/chaos-as-a-service.jpg",
+      "footer": "navy",
+      "band": 240,
+      "scrim": 0.85,
+      "tab": false
+    },
+    {
+      "slug": "moment-organizers",
+      "label": "CND/2025",
+      "name": "The crew, closing remarks",
+      "role": "",
+      "highlight": "RUN BY PEOPLE|WHO DO IT|FOR FREE",
+      "photo": "assets/photos/2025/organizers-on-stage.jpg",
+      "footer": "sand",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
+    },
+    {
+      "slug": "moment-workshop",
+      "label": "CND/2025",
+      "name": "The workshop room",
+      "role": "",
+      "highlight": "NO RECORDING|REPLACES THIS",
+      "photo": "assets/photos/2025/workshop-room.jpg",
+      "footer": "navy",
+      "band": 240,
+      "scrim": 0.5,
+      "tab": false
     }
   ],
   "sponsors": [
@@ -59,7 +396,7 @@
       "slug": "scannet",
       "name": "ScanNet",
       "tier": "Platinum",
-      "logo": "assets/sponsors/scannet.png"
+      "logo": "assets/sponsors/scannet.svg"
     },
     {
       "slug": "aws",
@@ -77,7 +414,7 @@
       "slug": "netic",
       "name": "Netic",
       "tier": "Gold",
-      "logo": "assets/sponsors/netic.png"
+      "logo": "assets/sponsors/netic.svg"
     },
     {
       "slug": "suse",
@@ -120,6 +457,72 @@
       "name": "Tigera",
       "tier": "Bronze",
       "logo": "assets/sponsors/tigera.svg"
+    },
+    {
+      "slug": "ardan-labs",
+      "name": "Ardan Labs",
+      "tier": "Community",
+      "logo": "assets/sponsors/ardan-labs.svg"
+    },
+    {
+      "slug": "bankdata",
+      "name": "Bankdata",
+      "tier": "Community",
+      "logo": "assets/sponsors/bankdata.svg"
+    },
+    {
+      "slug": "deranged",
+      "name": "deranged",
+      "tier": "Community",
+      "logo": "assets/sponsors/deranged.svg"
+    },
+    {
+      "slug": "jysk",
+      "name": "JYSK",
+      "tier": "Community",
+      "logo": "assets/sponsors/jysk.svg"
+    },
+    {
+      "slug": "kamstrup",
+      "name": "Kamstrup",
+      "tier": "Community",
+      "logo": "assets/sponsors/kamstrup.svg"
+    },
+    {
+      "slug": "lego",
+      "name": "LEGO",
+      "tier": "Community",
+      "logo": "assets/sponsors/lego.svg"
+    },
+    {
+      "slug": "mft",
+      "name": "MFT Energy",
+      "tier": "Community",
+      "logo": "assets/sponsors/mft.svg"
+    },
+    {
+      "slug": "onlinecity",
+      "name": "OnlineCity.io",
+      "tier": "Community",
+      "logo": "assets/sponsors/onlinecity.svg"
+    },
+    {
+      "slug": "sysdig",
+      "name": "Sysdig",
+      "tier": "Community",
+      "logo": "assets/sponsors/sysdig.svg"
+    },
+    {
+      "slug": "zeronorth",
+      "name": "ZeroNorth",
+      "tier": "Community",
+      "logo": "assets/sponsors/zeronorth.png"
+    },
+    {
+      "slug": "upwind",
+      "name": "Upwind",
+      "tier": "Afterparty",
+      "logo": "assets/sponsors/upwind.svg"
     }
   ],
   "tiers": [
@@ -137,14 +540,36 @@
       "tier": "Bronze",
       "ground": "sand",
       "perRow": 3
+    },
+    {
+      "tier": "Community",
+      "ground": "sand",
+      "perRow": 5
+    },
+    {
+      "tier": "Afterparty",
+      "ground": "navy",
+      "perRow": 1
+    }
+  ],
+  "partners": [
+    {
+      "slug": "cncf",
+      "name": "Cloud Native Computing Foundation",
+      "logo": "assets/partners/cncf.svg"
+    },
+    {
+      "slug": "hackyourfuture",
+      "name": "HackYourFuture Denmark",
+      "logo": "assets/partners/hyf-logo-round.svg"
     }
   ],
   "countdowns": [
     {
       "days": 90,
       "ground": "navy",
-      "eyebrow": "Blind bird · on sale",
-      "body": "Blind bird pricing, 1.499 DKK.|All profits go to charity."
+      "eyebrow": "Blind bird · sold out",
+      "body": "All 100 blind bird seats are gone.|Standard, 1.999 DKK, until 17 November."
     },
     {
       "days": 60,
@@ -194,6 +619,58 @@
         "square",
         "post"
       ]
+    },
+    {
+      "slug": "partner-hyf-profits",
+      "eyebrow": "Charity partner · 2026",
+      "headline": "Every profit|goes here.",
+      "body": "Hack Your Future Denmark.|All 2026 profits donated.|hackyourfuture.dk",
+      "ground": "sand",
+      "decor": "hexfield",
+      "surfaces": [
+        "square",
+        "post"
+      ],
+      "logo": "assets/partners/hyf-mark.png"
+    },
+    {
+      "slug": "partner-hyf-million",
+      "eyebrow": "Charity · three editions",
+      "headline": "^840.000|DKK donated.",
+      "body": "Cloud Native Denmark gives its profits away.|In 2026 we want to pass a million.",
+      "ground": "navy",
+      "decor": "hexfield",
+      "surfaces": [
+        "square",
+        "post"
+      ],
+      "logo": "assets/partners/hyf-mark.png"
+    },
+    {
+      "slug": "partner-hyf-volunteers",
+      "eyebrow": "Charity partner · 2026",
+      "headline": "34 weeks.|Taught entirely|by volunteers.",
+      "body": "Hack Your Future trains people the system|left out, and counts a job as the win.|Mentors who write code are welcome.",
+      "ground": "sand",
+      "decor": "hexfield",
+      "surfaces": [
+        "square",
+        "post"
+      ],
+      "logo": "assets/partners/hyf-mark.png"
+    },
+    {
+      "slug": "partner-hyf-stage",
+      "eyebrow": "Day one · 09:15",
+      "headline": "On the main stage,|right after|the welcome.",
+      "body": "Hack Your Future Denmark opens day one.|Every profit from 2026 goes to them.",
+      "ground": "red",
+      "decor": "hexfield",
+      "surfaces": [
+        "square",
+        "post"
+      ],
+      "logo": "assets/partners/hyf-mark.png"
     }
   ]
 }

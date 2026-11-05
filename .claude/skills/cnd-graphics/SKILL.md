@@ -30,7 +30,8 @@ If Chrome is not found, set `CHROME_BIN`.
 | Type-only, no card or tab | `render.mjs poster` |
 | Sponsor tier honeycomb | `render.mjs sponsors` |
 | LinkedIn page cover | `render.mjs linkedin-cover` |
-| Slides | edit the deck HTML in `decks/` |
+| Slides | edit the deck HTML in `decks/`; talk, team and sponsor slides fill from `stage/show.data.js` (`node stage/build.mjs`) |
+| LED wall behind the stage | edit `content/2026-stage.json`, run `node stage/render.mjs`; read `docs/stage-led-wall.md` |
 | Something to tweak in Canva | `graphics/build-canva-import.py` |
 
 **Prefer the content file over one-off commands** when the thing being made is
@@ -43,8 +44,11 @@ These are not preferences. Breaking them puts the brand out of step with print.
 
 1. **Palette is `brand/tokens.json`.** Nine colours. Never introduce another —
    the token lint fails on it, and should.
-2. **`sand` is the social ground; `bone` is the deck ground.** Not
-   interchangeable, and no check can catch the wrong one.
+2. **`sand` is the social ground; `navy` is the stage ground.** The decks
+   run on the projectors beside the LED wall, so they wear the wall's look:
+   navy, the honeycomb field, rose eyebrows, no straight lines. `bone` is
+   the brand book's paper deck and is no longer used on stage. No check can
+   catch the wrong ground.
 3. **Social copy is Space Grotesk Medium, uppercase, tracking 0.02em.** No Bold,
    no Inter. Verified against every text layer in her PSDs. Decks and the
    bulletin layouts use Bold display at tighter tracking — that is her deck's
