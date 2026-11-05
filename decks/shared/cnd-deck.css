@@ -647,35 +647,41 @@
   margin: 40px 0 0;
 }
 
-/* Meetup snapshots on the city galleries: a rounded photo with the host as
- * a small navy tag in its corner. Placed by hand per slide (left, top,
- * width, height inline), so each city's mosaic can be its own shape rather
- * than one template three times. */
-.snap {
+/* Colour cells for the meetup honeycombs, on the same grid and hexagon as
+ * .photo: a big figure or a short list. */
+.hexcell {
   position: absolute;
-  margin: 0;
-  border-radius: 22px;
-  overflow: hidden;
-}
-.snap img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.snap figcaption {
-  position: absolute;
-  left: 18px;
-  bottom: 18px;
-  padding: 8px 16px;
-  border-radius: 10px;
-  background: var(--cnd-navy);
-  color: var(--cnd-sand);
+  width: 282px;
+  height: 320px;
+  clip-path: url(#cnd-hex);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--cnd-navy);
   font-family: var(--cnd-font-display);
+}
+.hexcell.rose { background: var(--cnd-rose); }
+.hexcell.sand { background: var(--cnd-sand); }
+.hexcell b {
+  font-size: 150px;
+  font-weight: 700;
+  line-height: 0.9;
+}
+.hexcell span {
+  font-size: 24px;
   font-weight: 500;
-  font-size: 22px;
   letter-spacing: var(--cnd-track-eyebrow);
   text-transform: uppercase;
+}
+.hexcell i {
+  font-style: normal;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-top: 10px;
 }
 
 /* ── layout: speaker ─────────────────────────────────────────────────── */
