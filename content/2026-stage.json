@@ -272,7 +272,17 @@
           "$note": "16:50"
         },
         {
-          "scene": "message",
+          "scene": "afterparty",
+          "$note": "End of day one: the afterparty, alternating with see-you-tomorrow. The party set plays.",
+          "music": "preshow",
+          "loop": ["afterparty", "message"],
+          "every": [45, 15],
+          "party": {
+            "eyebrow": "That's day one",
+            "headline": "Party time.",
+            "when": "Afterparty · 18:00",
+            "body": "Wine, beer, sodas and good company."
+          },
           "eyebrow": "That's day one",
           "headline": "See you tomorrow.",
           "body": "Doors open 08:00 · Scandic Copenhagen"

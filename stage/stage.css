@@ -424,6 +424,93 @@ body {
 .room-breakout .talk[data-state="live"] .people,
 .room-breakout .talk[data-state="live"] .title { transform: none; }
 
+/* ── afterparty ───────────────────────────────────────────────────────── */
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.confetto {
+  position: absolute;
+  opacity: 0.85;
+  animation: confetto var(--fall, 12s) linear var(--delay, 0s) infinite;
+}
+.confetto.rose  { fill: var(--cnd-rose); }
+.confetto.peach { fill: var(--cnd-peach); }
+.confetto.sand  { fill: var(--cnd-sand); }
+.confetto.white { fill: var(--cnd-white); }
+
+/* Each piece falls the full height from wherever it was placed, swaying and
+ * turning, so the fall never shows a gap at the top. */
+@keyframes confetto {
+  0%   { transform: translate(0, -1300px) rotate(0deg); }
+  25%  { transform: translate(var(--sway), -650px) rotate(calc(var(--spin) * 0.25)); }
+  50%  { transform: translate(0, 0) rotate(calc(var(--spin) * 0.5)); }
+  75%  { transform: translate(calc(var(--sway) * -1), 650px) rotate(calc(var(--spin) * 0.75)); }
+  100% { transform: translate(0, 1300px) rotate(var(--spin)); }
+}
+
+.drinks {
+  position: absolute;
+  left: 1290px;
+  top: 300px;
+  width: 1116px;
+  height: 640px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 40px;
+}
+.drink {
+  height: 520px;
+  overflow: visible;
+  transform-origin: 50% 100%;
+}
+.drink.wine { animation: clink-left 3.2s ease-in-out infinite; }
+.drink.beer { height: 560px; animation: bob 3.2s ease-in-out infinite; }
+.drink.soda { animation: clink-right 3.2s ease-in-out infinite; }
+
+.drink .glass,
+.drink .handle {
+  stroke: color-mix(in srgb, var(--cnd-sand) 70%, transparent);
+  stroke-width: 6px;
+  stroke-linejoin: round;
+}
+.drink.wine .glass  { fill: color-mix(in srgb, var(--cnd-sand) 14%, transparent); }
+.drink.wine .liquid { fill: var(--cnd-rose); }
+.drink.beer .glass,
+.drink.beer .handle { fill: color-mix(in srgb, var(--cnd-sand) 14%, transparent); }
+.drink.beer .liquid { fill: var(--cnd-peach); }
+.drink.beer .foam   { fill: var(--cnd-white); }
+.drink.beer .bubble { fill: color-mix(in srgb, var(--cnd-white) 70%, transparent); }
+.drink.soda .can    { fill: var(--cnd-sand); }
+.drink.soda .stripe { fill: var(--cnd-rose); }
+.drink.soda .top    { fill: var(--cnd-slate); }
+.drink.soda .straw  { fill: var(--cnd-peach); }
+
+/* Cheers: the outer two lean in and back, the beer lifts. */
+@keyframes clink-left {
+  0%, 60%, 100% { transform: rotate(-6deg); }
+  75%           { transform: rotate(9deg) translateX(20px); }
+}
+@keyframes clink-right {
+  0%, 60%, 100% { transform: rotate(6deg); }
+  75%           { transform: rotate(-9deg) translateX(-20px); }
+}
+@keyframes bob {
+  0%, 60%, 100% { transform: translateY(0); }
+  75%           { transform: translateY(-24px); }
+}
+
+.party-host {
+  margin-top: 56px;
+}
+.party-host .hexlogo {
+  position: relative;
+}
+
 /* ── still mode (renders) ─────────────────────────────────────────────── */
 /* Stills jump straight to the end state: no transitions, no entrance, and
  * breathing frozen at full strength so the PNG shows the intended density. */

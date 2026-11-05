@@ -145,7 +145,7 @@ All generated with ElevenLabs Music, instrumental, loudness-matched:
 | Set | When | Files |
 |---|---|---|
 | calm | 08:00 breakfast, breaks, sponsor wall | `walkin.wav` (2:46), then lo-fi Rhodes, Scandinavian acoustic and downtempo marimba (`calm-1…3`, 3:00 each); quieter (−18 LUFS) |
-| preshow | the last 30 minutes before the show, and the countdown | "The November Beat" (3:00) first, then funky house, nu-disco, melodic house (4:30 each), disco house, indie electronic and nu-funk (`preshow-5…7`, 4:00 each); crossfading, and the list starts over at the end (−15.5 LUFS) |
+| preshow | the last 30 minutes before the show, the countdown, and the day-one afterparty | "The November Beat" (3:00) first, then funky house, nu-disco, melodic house (4:30 each), disco house, indie electronic and nu-funk (`preshow-5…7`, 4:00 each); crossfading, and the list starts over at the end (−15.5 LUFS) |
 | walk-on | every talk's walk-on | eight 20 s themes (`walkon-1…8`: piano, guitar and marimba, bells, electric piano, strings, brass, Nordic electronic, glockenspiel), taken in turn so neighbouring talks differ (−16 LUFS) |
 | voice of god | every main-stage walk-on | "Please welcome to the stage… from Saxo Bank… Johan Thomsen!" over the walk-on theme, one clip per talk, the hosts' included. Switchable from the control page |
 
