@@ -1,0 +1,646 @@
+{
+  "$comment": "Run of show for the LED wall behind the main stage. Talk titles, names and portraits come from content/2026-announcements.json by slug; this file adds only what the wall needs on top: job titles, the day, and the order of cues. Edit it, then run `node stage/build.mjs` (stage/render.mjs does that for you). Times and the order of the `days` cues follow the final schedule in content/2026-schedule.json (node stage/sync-schedule.mjs); `breakout` per day is the breakout screen's own run of show.",
+  "wall": {
+    "$comment": "3696×1176 confirmed by the AV vendor. The cabinet size is ASSUMED: both sides divide by 168, so 22 × 7 cabinets of 168×168 px. Every layout is positioned against this canvas.",
+    "width": 3696,
+    "height": 1176,
+    "cabinet": 168
+  },
+  "music": {
+    "$comment": "Music by scene. `sets` are playlists that crossfade track to track and loop; `scenes` picks a set per scene, and a cue's own `music` (a set name, or false) overrides it. `walkon` is a list of short themes; each walk-on plays the next one in turn, so consecutive talks never repeat, over a quick fade of whatever was playing. Nothing plays during a talk. In most venues this goes to the sound desk rather than out of the wall laptop — agree with the AV vendor which.",
+    "volume": 0.8,
+    "crossfade": 4,
+    "announce": { "delay": 1.2, "duck": 0.3 },
+    "$announce": "Each walk-on's announcement starts `delay` seconds into the theme; the theme drops to `duck` of its volume under the voice and comes back after it.",
+    "sets": {
+      "calm": [
+        "assets/audio/walkin.wav",
+        "assets/audio/calm-1-lofi-rhodes.mp3",
+        "assets/audio/calm-2-acoustic.mp3",
+        "assets/audio/calm-3-marimba.mp3"
+      ],
+      "preshow": [
+        "assets/audio/preshow-4-november-beat.mp3",
+        "assets/audio/preshow-1-funky-house.mp3",
+        "assets/audio/preshow-2-nu-disco.mp3",
+        "assets/audio/preshow-3-melodic-house.mp3",
+        "assets/audio/preshow-5-disco-house.mp3",
+        "assets/audio/preshow-6-indie-electronic.mp3",
+        "assets/audio/preshow-7-nu-funk.mp3"
+      ]
+    },
+    "scenes": {
+      "walkin": "calm",
+      "countdown": "preshow",
+      "break": "calm",
+      "sponsors": "calm"
+    },
+    "walkon": [
+      "assets/audio/walkon-1-piano.mp3",
+      "assets/audio/walkon-2-guitar-marimba.mp3",
+      "assets/audio/walkon-3-bells.mp3",
+      "assets/audio/walkon-4-electric-piano.mp3",
+      "assets/audio/walkon-5-strings.mp3",
+      "assets/audio/walkon-6-brass.mp3",
+      "assets/audio/walkon-7-nordic.mp3",
+      "assets/audio/walkon-8-glockenspiel.mp3"
+    ]
+  },
+  "$ticker": "Walk-in and break scenes have no sponsor row by default: the sponsor wall is part of their loop instead. A cue's `ticker` (a list of tiers, e.g. [\"Platinum\", \"Gold\"]) brings the row back: six white hexagons across the bottom, the logos changing in groups every 7 s.",
+  "announce": {
+    "$comment": "The voice of god on the hosts' walk-ons, where nobody else is there to introduce them; the hosts introduce every speaker themselves. ElevenLabs voice \"Brian\" (nPczCjzI2devNBz1zQrb), eleven_multilingual_v2, stability 0.4, style 0.45, speed 0.92; trimmed and normalised to -15 LUFS into assets/audio/announce/<slug>.mp3. The build picks a clip up by slug. These are the words as sent, names spelled for the voice. Any talk can have one: add its words here and a clip at that path.",
+    "d1-welcome": "Please welcome to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
+    "d1-morning-wrapup": "Please welcome back to the stage... your hosts... Kasper Borg Nissen... Jin-hong Brine-holt... and Allan Hoy-gore Jensen!"
+  },
+  "organizers": {
+    "$comment": "The team slide in the walk-in and pre-show loops. From cloudnativedenmark.dk/team; the site's \"Role @ Company\" is written \"Role, Company\" here.",
+    "people": [
+      { "name": "Jinhong Brejnholt", "role": "Senior Director, Software Engineering, Unity · Founder, Bitecloud", "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg" },
+      { "name": "Kasper Borg Nissen", "role": "Director, Developer Relations, Dash0", "portrait": "assets/organizers/organizer-kasper-nissen.jpg" },
+      { "name": "Per Hedegaard Christiansen", "role": "Chief Container Platform Engineer, Saxo Bank", "portrait": "assets/organizers/organizer-per-christiansen.jpg" },
+      { "name": "Mert Gungor", "role": "Software Engineer, Corti", "portrait": "assets/organizers/organizer-mert-gungor.jpg" },
+      { "name": "Thor Anker Kvisgård Lange", "role": "Team Lead Platform Development, Netic", "portrait": "assets/organizers/organizer-thor-lange.jpg" },
+      { "name": "Allan Højgaard Jensen", "role": "Platform Development Specialist, Netic", "portrait": "assets/organizers/organizer-allan.jpg" },
+      { "name": "Søren Boss Jacobsen", "role": "Regional Sales Manager, EDB", "portrait": "assets/organizers/organizer-soren.jpg" },
+      { "name": "Mads Høgstedt Danquah", "role": "Lead Engineer, the LEGO Group", "portrait": "assets/organizers/organizer-mads.jpg" },
+      { "name": "Aleksander Nowak", "role": "Senior Platform Engineer, wawa fertility", "portrait": "assets/organizers/organizer-alek.jpg" },
+      { "name": "Robert Jensen", "role": "Consulting Field Solutions Architect, EverPure", "portrait": "assets/organizers/organizer-robert-jensen.jpg" }
+    ]
+  },
+  "roles": {
+    "$comment": "Speaker job titles, keyed by portrait-order within a talk. Empty string hides the line rather than printing a placeholder on the wall.",
+    "d1-agent-no-idea": [
+      "Principal Product Manager, Developer Platforms, Adobe"
+    ],
+    "d1-whose-code": [
+      "Principal Developer Advocate, Dynatrace",
+      "Developer Advocate, Altinity"
+    ],
+    "d1-goblins-druids": [
+      "cote.io"
+    ],
+    "d2-developers-nightmare": [
+      "TODO role, organization",
+      "TODO role, organization"
+    ],
+    "d2-map-keeps-changing": [
+      "TODO role, organization"
+    ],
+    "d2-dbaas-trap": [
+      "TODO role, organization"
+    ],
+    "talk-collector-stories": [
+      "Engineering Leader, IKEA · OpenTelemetry Maintainer"
+    ],
+    "talk-sterile-patch": [
+      "TODO role, organization"
+    ]
+  },
+  "days": {
+    "1": {
+      "label": "Day one",
+      "cues": [
+        {
+          "scene": "walkin",
+          "$note": "08:00 registration and breakfast, calm music",
+          "loop": ["walkin", "sponsors", "team"],
+          "every": 30
+        },
+        {
+          "scene": "walkin",
+          "music": "preshow",
+          "$note": "08:30 pre-show: the energetic set for the last 30 minutes",
+          "loop": ["walkin", "sponsors", "team", "social"],
+          "every": 30
+        },
+        {
+          "scene": "countdown",
+          "at": "09:00",
+          "title": "Opening keynotes",
+          "next": ["d1-welcome", "d1-hackyourfuture", "d1-agent-no-idea"],
+          "minutes": 5,
+          "loop": ["countdown", "sponsors", "social"],
+          "every": [40, 10, 10],
+          "holdLast": 60
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-welcome",
+          "$note": "09:00"
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-hackyourfuture",
+          "$note": "09:15"
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-agent-no-idea",
+          "$note": "09:25"
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-sterile-patch",
+          "$note": "09:50"
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-collector-stories",
+          "$note": "09:55"
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-morning-wrapup",
+          "$note": "10:00"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "10:25",
+          "$note": "10:05–10:25",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-agent-substrate",
+          "$note": "10:25"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "11:20",
+          "$note": "11:00–11:20",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-platforms-asked",
+          "$note": "11:20"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "12:15",
+          "$note": "11:55–12:15",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-kyverno-victoriametrics",
+          "$note": "12:15"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Lunch",
+          "until": "14:00",
+          "$note": "12:50–14:00",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-sovereign-agentic-coding",
+          "$note": "14:00"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "14:55",
+          "$note": "14:35–14:55",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-postgres-observability",
+          "$note": "14:55"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "16:00",
+          "$note": "15:30–16:00",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-whose-code",
+          "$note": "16:00"
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-goblins-druids",
+          "$note": "16:25"
+        },
+        {
+          "scene": "talk",
+          "talk": "sz-1306361",
+          "$note": "16:50"
+        },
+        {
+          "scene": "message",
+          "eyebrow": "That's day one",
+          "headline": "See you tomorrow.",
+          "body": "Doors open 08:00 · Scandic Copenhagen"
+        }
+      ],
+      "breakout": [
+        {
+          "scene": "walkin",
+          "$note": "Until the first session: keynotes are on the main stage",
+          "loop": ["walkin", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "10:25",
+          "$note": "until 10:25",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-lazy-developer",
+          "$note": "10:25–11:00"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "11:20",
+          "$note": "11:00–11:20",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-pdb-trust",
+          "$note": "11:20–11:55"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "12:15",
+          "$note": "11:55–12:15",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-us-independent",
+          "$note": "12:15–12:50"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Lunch",
+          "until": "14:00",
+          "$note": "12:50–14:00",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-no-ssh-bare-metal",
+          "$note": "14:00–14:35"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "14:55",
+          "$note": "14:35–14:55",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-crossplane-should-not",
+          "$note": "14:55–15:30"
+        },
+        {
+          "scene": "message",
+          "eyebrow": "That's it in this room",
+          "headline": "See you tomorrow.",
+          "body": "Closing remarks on the main stage"
+        }
+      ]
+    },
+    "2": {
+      "label": "Day two",
+      "cues": [
+        {
+          "scene": "walkin",
+          "$note": "08:00 registration and breakfast, calm music",
+          "loop": ["walkin", "sponsors", "team"],
+          "every": 30
+        },
+        {
+          "scene": "walkin",
+          "music": "preshow",
+          "$note": "08:30 pre-show: the energetic set for the last 30 minutes",
+          "loop": ["walkin", "sponsors", "team", "social"],
+          "every": 30
+        },
+        {
+          "scene": "countdown",
+          "at": "09:00",
+          "title": "Day two keynotes",
+          "next": ["sz-1306364", "d2-developers-nightmare", "sz-1371596"],
+          "minutes": 5,
+          "loop": ["countdown", "sponsors", "social"],
+          "every": [40, 10, 10],
+          "holdLast": 60
+        },
+        {
+          "scene": "talk",
+          "talk": "sz-1306364",
+          "$note": "09:00"
+        },
+        {
+          "scene": "talk",
+          "talk": "d2-developers-nightmare",
+          "$note": "09:10"
+        },
+        {
+          "scene": "talk",
+          "talk": "sz-1371596",
+          "$note": "09:35"
+        },
+        {
+          "scene": "pitch",
+          "sponsor": "AWS",
+          "minutes": 2,
+          "$note": "09:50 gold sponsor pitches, two minutes each"
+        },
+        {
+          "scene": "pitch",
+          "sponsor": "Exoscale",
+          "minutes": 2
+        },
+        {
+          "scene": "pitch",
+          "sponsor": "Netic",
+          "minutes": 2
+        },
+        {
+          "scene": "pitch",
+          "sponsor": "SUSE",
+          "minutes": 2
+        },
+        {
+          "scene": "talk",
+          "talk": "sz-1306365",
+          "$note": "10:00"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "10:25",
+          "$note": "10:05–10:25",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-root-of-trust",
+          "$note": "10:25"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "11:20",
+          "$note": "11:00–11:20",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-platforms-matter-ai",
+          "$note": "11:20"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "12:15",
+          "$note": "11:55–12:15",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-observability-matrix",
+          "$note": "12:15"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Lunch",
+          "until": "14:00",
+          "$note": "12:50–14:00",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-cadence-uber",
+          "$note": "14:00"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "14:55",
+          "$note": "14:35–14:55",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-ai-side-effects",
+          "$note": "14:55"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "15:50",
+          "$note": "15:30–15:50",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d2-map-keeps-changing",
+          "$note": "15:50"
+        },
+        {
+          "scene": "talk",
+          "talk": "d2-dbaas-trap",
+          "$note": "16:15"
+        },
+        {
+          "scene": "talk",
+          "talk": "sz-1306366",
+          "$note": "16:40"
+        },
+        {
+          "scene": "message",
+          "eyebrow": "Thank you",
+          "headline": "Cloud Native Denmark.",
+          "body": "See you in 2027."
+        }
+      ],
+      "breakout": [
+        {
+          "scene": "walkin",
+          "$note": "Until the first session: keynotes are on the main stage",
+          "loop": ["walkin", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "10:25",
+          "$note": "until 10:25",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-two-standards",
+          "$note": "10:25–11:00"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "11:20",
+          "$note": "11:00–11:20",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-data-swamp",
+          "$note": "11:20–11:55"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "12:15",
+          "$note": "11:55–12:15",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-sovereign-boring",
+          "$note": "12:15–12:50"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Lunch",
+          "until": "14:00",
+          "$note": "12:50–14:00",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-manual-otel",
+          "$note": "14:00–14:35"
+        },
+        {
+          "scene": "break",
+          "eyebrow": "Coffee break",
+          "until": "14:55",
+          "$note": "14:35–14:55",
+          "loop": ["break", "feedback", "sponsors", "photos"],
+          "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "talk-my-cloud-home",
+          "$note": "14:55–15:30"
+        },
+        {
+          "scene": "message",
+          "eyebrow": "Thank you",
+          "headline": "See you in 2027.",
+          "body": "Closing remarks on the main stage"
+        }
+      ]
+    }
+  },
+  "talks": {
+    "$comment": "Stage items that are not in content/2026-announcements.json: remarks, the charity partner, wrap-ups. Same shape the build produces for announcement talks. `kind` is the eyebrow.",
+    "d1-welcome": {
+      "kind": "Welcome",
+      "title": "Welcome to Cloud Native Denmark",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg"
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-allan.jpg"
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-kasper-nissen.jpg"
+        }
+      ]
+    },
+    "d1-hackyourfuture": {
+      "kind": "Keynote",
+      "title": "HackYourFuture",
+      "speakers": [
+        {
+          "name": "Helena Birkholm",
+          "role": "Managing Director, HackYourFuture Denmark",
+          "portrait": "assets/speakers/helena_birkholm.jpg"
+        }
+      ]
+    },
+    "d1-morning-wrapup": {
+      "kind": "Wrap-up",
+      "title": "Morning keynote wrap-up",
+      "schedule": "Morning keynote wrap-up! Day one",
+      "speakers": [
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-kasper-nissen.jpg"
+        },
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg"
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-allan.jpg"
+        }
+      ]
+    }
+  },
+  "qr": {
+    "$comment": "QR codes on the wall and the breakout screen are drawn from content/2026-qr.json, which stage/import-qr.py reads out of QR PNGs. The feedback codes are Sessionize's export (organizer dashboard → Session Feedback → download QR codes), keyed by session id; the feedback scene shows the one for the talk the room just had. `photos` is the photographers' Picdrop gallery, in the break loops; the build encodes the link itself (stage/qr.mjs).",
+    "photos": "https://www.picdrop.com/kim-yennguyen/PtE1CyXcQm"
+  },
+  "social": {
+    "$comment": "The `social` scene, in the pre-show and countdown loops. The prize line matches the decks.",
+    "hashtags": ["#CNDenmark", "#CloudNativeDenmark"],
+    "prize": "Three best posts win, drawn on day two."
+  },
+  "walkonSeconds": 20,
+  "$walkonSeconds": "A talk goes live by itself this long after its walk-on, in time with the sting. Next still goes live straight away; set 0 to always wait for Next.",
+  "clearBeforeWalkon": true,
+  "$clearBeforeWalkon": "Every talk starts on a clear wall: the faint field only, no text, no music. The next press brings the walk-on and its music. So a talk is three presses: clear, walk-on, live (live also comes by itself after walkonSeconds).",
+  "$countdown": "A countdown cue starts at `minutes` (default 5) the moment it comes up on the wall, and counts down. The control page can restart or nudge it. `at` is only the fallback for renders.",
+  "$loop": "A cue's `loop` alternates between these scenes (hexagon wave between them) while its music carries on. `every` is the seconds per scene: one number for all, or a list with one per scene ([40, 10, 10]: 40 s countdown, 10 s sponsors, 10 s hashtags, every minute). `holdLast` keeps a countdown on its first scene for its final seconds. The phase comes from the clock, so the wall and the control preview switch together."
+}
