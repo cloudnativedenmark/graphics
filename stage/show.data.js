@@ -29,28 +29,24 @@ window.SHOW = {
     }
   },
   "talks": {
-    "d1-agent-no-idea": {
-      "slug": "d1-agent-no-idea",
+    "d1-reinvention": {
+      "slug": "d1-reinvention",
       "kind": "Keynote",
-      "title": "Your Agent Has No Idea Where It’s Running",
+      "title": "The Reinvention of Software Engineering",
       "speakers": [
         {
-          "name": "Joseph Sandoval",
-          "role": "Principal Product Manager, Developer Platforms, Adobe",
-          "portrait": "../assets/speakers/joseph-sandoval.jpg",
+          "name": "Hannah Foxwell",
+          "role": "Co-founder of BIMP and creator of AI for the rest of us.",
+          "portrait": "../assets/speakers/hannah_foxwell.jpg",
           "align": null
         }
       ],
-      "id": "1269650",
+      "id": "1380632",
       "day": "1",
       "room": "Main stage",
       "start": "09:25",
       "end": "09:50",
-      "feedback": {
-        "n": 29,
-        "d": "M0 0h7v1h-7zM8 0h2v1h-2zM13 0h3v1h-3zM17 0h2v1h-2zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM10 1h1v1h-1zM12 1h2v1h-2zM16 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM9 2h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM12 3h1v1h-1zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM14 4h1v1h-1zM16 4h5v1h-5zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM9 5h2v1h-2zM12 5h2v1h-2zM15 5h3v1h-3zM19 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM12 7h1v1h-1zM15 7h4v1h-4zM0 8h1v1h-1zM2 8h2v1h-2zM5 8h3v1h-3zM9 8h1v1h-1zM11 8h3v1h-3zM15 8h1v1h-1zM17 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM27 8h2v1h-2zM0 9h2v1h-2zM3 9h3v1h-3zM9 9h1v1h-1zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM0 10h9v1h-9zM11 10h3v1h-3zM16 10h3v1h-3zM21 10h1v1h-1zM26 10h2v1h-2zM0 11h1v1h-1zM2 11h1v1h-1zM4 11h2v1h-2zM8 11h1v1h-1zM11 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM22 11h2v1h-2zM28 11h1v1h-1zM0 12h3v1h-3zM5 12h2v1h-2zM9 12h2v1h-2zM19 12h1v1h-1zM25 12h2v1h-2zM3 13h1v1h-1zM7 13h3v1h-3zM19 13h1v1h-1zM22 13h1v1h-1zM26 13h3v1h-3zM1 14h1v1h-1zM3 14h4v1h-4zM9 14h3v1h-3zM19 14h2v1h-2zM22 14h2v1h-2zM26 14h3v1h-3zM0 15h1v1h-1zM3 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM11 15h1v1h-1zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM1 16h2v1h-2zM4 16h5v1h-5zM18 16h1v1h-1zM20 16h2v1h-2zM23 16h3v1h-3zM27 16h1v1h-1zM1 17h1v1h-1zM3 17h1v1h-1zM5 17h1v1h-1zM9 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM25 17h3v1h-3zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h3v1h-3zM8 18h1v1h-1zM10 18h7v1h-7zM18 18h1v1h-1zM21 18h1v1h-1zM26 18h1v1h-1zM4 19h1v1h-1zM7 19h1v1h-1zM9 19h6v1h-6zM17 19h3v1h-3zM21 19h1v1h-1zM26 19h1v1h-1zM1 20h4v1h-4zM6 20h5v1h-5zM12 20h3v1h-3zM16 20h3v1h-3zM20 20h7v1h-7zM8 21h2v1h-2zM11 21h1v1h-1zM15 21h2v1h-2zM18 21h1v1h-1zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM8 22h1v1h-1zM14 22h2v1h-2zM17 22h4v1h-4zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM10 23h2v1h-2zM13 23h3v1h-3zM18 23h3v1h-3zM24 23h2v1h-2zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM9 24h1v1h-1zM11 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM13 25h1v1h-1zM19 25h1v1h-1zM21 25h1v1h-1zM23 25h3v1h-3zM27 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h3v1h-3zM14 26h1v1h-1zM17 26h4v1h-4zM23 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM10 27h1v1h-1zM14 27h2v1h-2zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h2v1h-2zM12 28h3v1h-3zM17 28h7v1h-7zM25 28h1v1h-1zM27 28h1v1h-1z"
-      },
-      "announce": "../assets/audio/announce/d1-agent-no-idea.mp3"
+      "announce": "../assets/audio/announce/d1-reinvention.mp3"
     },
     "d1-whose-code": {
       "slug": "d1-whose-code",
@@ -214,7 +210,7 @@ window.SHOW = {
       "speakers": [
         {
           "name": "Juliano Costa",
-          "role": "CNCF Ambassador | Developer Advocate at Datadog",
+          "role": "CNCF Ambassador | Principal Developer Relations Engineer at Dash0",
           "portrait": "../assets/speakers/juliano_costa.jpg",
           "align": null
         }
@@ -236,7 +232,7 @@ window.SHOW = {
       "speakers": [
         {
           "name": "Graziano Casto",
-          "role": "Developer Relations Engineer @ Akamas | Tech Lead @ CNCF TAG DevEx | Kubernetes v1.35 Comms Lead",
+          "role": "Developer Advocate @ Akuity | Co-Chair @ CNCF TAG DevEx ",
           "portrait": "../assets/speakers/graziano_casto.jpg",
           "align": null
         },
@@ -1217,7 +1213,7 @@ window.SHOW = {
           "next": [
             "d1-welcome",
             "d1-hackyourfuture",
-            "d1-agent-no-idea"
+            "d1-reinvention"
           ],
           "minutes": 5,
           "loop": [
@@ -1244,7 +1240,7 @@ window.SHOW = {
         },
         {
           "scene": "talk",
-          "talk": "d1-agent-no-idea",
+          "talk": "d1-reinvention",
           "$note": "09:25"
         },
         {
@@ -1872,12 +1868,12 @@ window.SHOW = {
       "talk": "d1-hackyourfuture"
     },
     {
-      "id": "1269650",
+      "id": "1380632",
       "day": "1",
       "room": "Main stage",
       "start": "09:25",
       "end": "09:50",
-      "talk": "d1-agent-no-idea"
+      "talk": "d1-reinvention"
     },
     {
       "id": "1267517",

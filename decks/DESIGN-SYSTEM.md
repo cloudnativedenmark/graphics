@@ -152,7 +152,7 @@ the wall therefore show the same title, names, job titles and photos. Fix
 them in `content/`, never in a deck.
 
 ```html
-<section class="slide" data-layout="speaker" data-talk="d1-agent-no-idea"></section>
+<section class="slide" data-layout="speaker" data-talk="d1-reinvention"></section>
 ```
 
 A slug missing from the data logs a warning and leaves the slide empty.

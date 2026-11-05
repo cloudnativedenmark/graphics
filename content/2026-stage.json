@@ -52,7 +52,7 @@
     "d1-welcome": "Please welcome to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
     "d1-morning-wrapup": "Please welcome back to the stage... your hosts... Kasper Borg Nissen... Jin-hong Brine-holt... and Allan Hoy-gore Jensen!",
     "d1-hackyourfuture": "Please welcome to the stage... the Managing Director of HackYourFuture Denmark... Helena Beerk-holm!",
-    "d1-agent-no-idea": "Please welcome to the stage... from Adobe... Joseph Sandoval!",
+    "d1-reinvention": "Please welcome to the stage... co-founder of BIMP, and the creator of AI for the rest of us... Hannah Foxwell!",
     "talk-sterile-patch": "Please welcome to the stage... from Saxo Bank... Yo-han Tom-sen!",
     "talk-collector-stories": "Please welcome to the stage... from IKEA, and an OpenTelemetry maintainer... Yohanna Er-yeling!",
     "talk-agent-substrate": "Please welcome to the stage... Cloud Developer Advocate... Abdel Sgee-war!",
@@ -93,9 +93,6 @@
   },
   "roles": {
     "$comment": "Speaker job titles, keyed by portrait-order within a talk. Empty string hides the line rather than printing a placeholder on the wall.",
-    "d1-agent-no-idea": [
-      "Principal Product Manager, Developer Platforms, Adobe"
-    ],
     "d1-whose-code": [
       "Principal Developer Advocate, Dynatrace",
       "Developer Advocate, Altinity"
@@ -141,7 +138,7 @@
           "scene": "countdown",
           "at": "09:00",
           "title": "Opening keynotes",
-          "next": ["d1-welcome", "d1-hackyourfuture", "d1-agent-no-idea"],
+          "next": ["d1-welcome", "d1-hackyourfuture", "d1-reinvention"],
           "minutes": 5,
           "loop": ["countdown", "sponsors", "social"],
           "every": [40, 10, 10],
@@ -159,7 +156,7 @@
         },
         {
           "scene": "talk",
-          "talk": "d1-agent-no-idea",
+          "talk": "d1-reinvention",
           "$note": "09:25"
         },
         {

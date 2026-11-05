@@ -2,12 +2,12 @@
   "$comment": "Content for the 2026 announcement graphics. Edit this, then run `node graphics/build-announcements.mjs` for PNGs and `.venv/bin/python graphics/build-canva-import.py` for the Canva HTML. Headlines take the punchy part of a talk title; the full title, speakers and slot go in the body. '|' is a line break, and display type shrinks to fit, so a longer name will not break the layout. Every sponsor in `sponsors` gets its own graphic, and `tiers` groups them.",
   "keynotes": [
     {
-      "slug": "d1-agent-no-idea",
+      "slug": "d1-reinvention",
       "eyebrow": "Keynote",
-      "headline": "Your agent|has no idea|where it’s|running.",
-      "body": "Your Agent Has No Idea Where It’s Running||Joseph Sandoval",
+      "headline": "The|reinvention|of software|engineering.",
+      "body": "The Reinvention of Software Engineering||Hannah Foxwell",
       "ground": "sand",
-      "portrait": "assets/speakers/joseph-sandoval.jpg"
+      "portrait": "assets/speakers/hannah_foxwell.jpg"
     },
     {
       "slug": "d1-whose-code",

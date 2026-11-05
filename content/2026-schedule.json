@@ -59,8 +59,8 @@
       ]
     },
     {
-      "id": "1269650",
-      "title": "Your Agent Has No Idea Where It's Running",
+      "id": "1380632",
+      "title": "The Reinvention of Software Engineering",
       "room": "Main stage",
       "day": "1",
       "start": "09:25",
@@ -68,9 +68,9 @@
       "service": false,
       "speakers": [
         {
-          "name": "Joseph Sandoval",
-          "tagLine": "Adobe Inc, Principal Product Mgr, Developer Platforms",
-          "portrait": "assets/speakers/joseph_sandoval.jpg"
+          "name": "Hannah Foxwell",
+          "tagLine": "Co-founder of BIMP and creator of AI for the rest of us.",
+          "portrait": "assets/speakers/hannah_foxwell.jpg"
         }
       ]
     },
@@ -655,7 +655,7 @@
       "speakers": [
         {
           "name": "Graziano Casto",
-          "tagLine": "Developer Relations Engineer @ Akamas | Tech Lead @ CNCF TAG DevEx | Kubernetes v1.35 Comms Lead",
+          "tagLine": "Developer Advocate @ Akuity | Co-Chair @ CNCF TAG DevEx ",
           "portrait": "assets/speakers/graziano_casto.jpg"
         },
         {
@@ -749,7 +749,7 @@
       "speakers": [
         {
           "name": "Juliano Costa",
-          "tagLine": "CNCF Ambassador | Developer Advocate at Datadog",
+          "tagLine": "CNCF Ambassador | Principal Developer Relations Engineer at Dash0",
           "portrait": "assets/speakers/juliano_costa.jpg"
         }
       ]
