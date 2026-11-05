@@ -1158,7 +1158,7 @@ window.SHOW = {
         },
         {
           "name": "ZeroNorth",
-          "logo": "../assets/sponsors/zeronorth.svg"
+          "logo": "../assets/sponsors/zeronorth.png"
         }
       ]
     },
