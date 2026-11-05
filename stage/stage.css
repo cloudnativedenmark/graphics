@@ -353,6 +353,11 @@ body {
   position: absolute;
   fill: var(--cnd-navy);
 }
+.hexlogo.qr .code .qr-star {
+  fill: var(--cnd-white);
+  stroke: var(--cnd-white);
+  stroke-width: 0.12;
+}
 .qr-zone      { position: absolute; left: 2685px; top: 178px; }
 .pitch-logo   { position: absolute; left: 315px;  top: 208px; }
 

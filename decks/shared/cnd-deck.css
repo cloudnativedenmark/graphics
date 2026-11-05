@@ -740,6 +740,11 @@
 .qr svg {
   fill: var(--cnd-navy);
 }
+.qr svg .qr-star {
+  fill: var(--cnd-white);
+  stroke: var(--cnd-white);
+  stroke-width: 0.12;
+}
 
 /* ── layout: map ─────────────────────────────────────────────────────── */
 /* Venue floor plan. Words in a narrow left column, the plan as large as the

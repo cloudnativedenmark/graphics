@@ -228,7 +228,7 @@
     const qr = slide.querySelector(".qr");
     if (qr && t.feedback) {
       const n = t.feedback.n + 4;
-      qr.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="Rate this session"><path d="${t.feedback.d}"/></svg>`;
+      qr.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="Rate this session"><path d="${t.feedback.d}"/>${t.feedback.mark ?? ""}</svg>`;
     }
   }
 

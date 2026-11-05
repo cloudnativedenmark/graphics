@@ -148,7 +148,37 @@ function qrPath(code) {
   code.rows.forEach((row, y) => {
     for (const m of row.matchAll(/1+/g)) d += `M${m.index} ${y}h${m[0].length}v1h-${m[0].length}z`;
   });
-  return { n: code.rows.length, d };
+  const q = { n: code.rows.length, d };
+  if (code.logo) q.mark = sessionizeMark(code.logo);
+  return q;
+}
+
+/* The Sessionize mark their feedback codes carry in the middle: a tile
+ * with one big rounded corner and a tilted star cut out of it, redrawn in
+ * module units so it scales with the code. The tile class takes the code's
+ * colour; .qr-star is white (cnd-deck.css, stage.css). */
+function sessionizeMark([r0, c0, r1, c1]) {
+  const S = 4.8;
+  const x = (c0 + c1 + 1) / 2 - S / 2;
+  const y = (r0 + r1 + 1) / 2 - S / 2;
+  const r = 0.55;
+  const R = 2.1;
+  const f = (v) => +v.toFixed(3);
+  const tile =
+    `M${f(x + r)} ${f(y)}H${f(x + S - R)}A${R} ${R} 0 0 1 ${f(x + S)} ${f(y + R)}` +
+    `V${f(y + S - r)}A${r} ${r} 0 0 1 ${f(x + S - r)} ${f(y + S)}H${f(x + r)}` +
+    `A${r} ${r} 0 0 1 ${f(x)} ${f(y + S - r)}V${f(y + r)}A${r} ${r} 0 0 1 ${f(x + r)} ${f(y)}Z`;
+  const cx = x + S * 0.44;
+  const cy = y + S * 0.55;
+  const outer = S * 0.39;
+  const inner = outer * 0.45;
+  const turn = (15 * Math.PI) / 180;
+  const pts = Array.from({ length: 10 }, (_, i) => {
+    const a = turn - Math.PI / 2 + (i * Math.PI) / 5;
+    const rad = i % 2 ? inner : outer;
+    return `${f(cx + rad * Math.cos(a))} ${f(cy + rad * Math.sin(a))}`;
+  });
+  return `<path d="${tile}"/><path class="qr-star" stroke-linejoin="round" d="M${pts.join("L")}Z"/>`;
 }
 for (const t of Object.values(talks)) {
   const q = qrPath(qrCodes[t.id]);

@@ -337,7 +337,7 @@
       `<div class="hexlogo qr" style="width:${w.toFixed(1)}px;height:${h}px;${style}">` +
       `<svg viewBox="${HEX_VB.x} ${HEX_VB.y} ${HEX_VB.w} ${HEX_VB.h}"><path d="${HEX_D}"/></svg>` +
       `<svg class="code" viewBox="-2 -2 ${q.n + 4} ${q.n + 4}" style="left:${((w - side) / 2).toFixed(1)}px;top:${((h - side) / 2).toFixed(1)}px;width:${side.toFixed(1)}px;height:${side.toFixed(1)}px">` +
-      `<path d="${q.d}"/></svg></div>`
+      `<path d="${q.d}"/>${q.mark ?? ""}</svg></div>`
     );
   }
 
