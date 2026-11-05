@@ -1,0 +1,521 @@
+/* Cloud Native Denmark — LED wall behind the main stage.
+ *
+ * Canvas: 3696×1176, as the AV vendor gave it (cabinets assumed 168 px, so
+ * 22 × 7). Every position below is a real wall pixel; change them together
+ * if the size changes again.
+ *
+ * The one rule this file is organised around: the speaker stands in front of
+ * the middle third. Nothing there may pull the eye while someone is talking,
+ * so content lives in the left third (0–1232) and the right third
+ * (2464–3696), and the centre carries only a faint hexagon drift.
+ *
+ * No straight dividers anywhere. Zones fade into each other through the
+ * hexagon field, and every scene change is a hexagon wave (stage.js).
+ *
+ * Colours come from brand/tokens.css only — the token lint fails on anything
+ * else, and should.
+ */
+
+/* ── page ─────────────────────────────────────────────────────────────── */
+
+html,
+body {
+  margin: 0;
+  background: #000;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Preview: the wall is scaled to the window width with the HUD beneath it.
+ * Output (?output): the wall sits 1:1 at the top-left, which is what an LED
+ * processor maps from — scaling there would put wall pixels between panels. */
+.wall {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3696px;
+  height: 1176px;
+  overflow: hidden;
+  background: var(--cnd-navy);
+  color: var(--cnd-white);
+  font-family: var(--cnd-font-body);
+  transform-origin: 0 0;
+  transform: scale(var(--fit, 1));
+}
+
+/* ── type ─────────────────────────────────────────────────────────────── */
+/* The deck's display treatment, not the social one: Bold, uppercase, tight.
+ * This is stage furniture, the same family as the remarks decks on the
+ * projectors either side. */
+
+.eyebrow {
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 40px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  /* Rose, not the brand red the decks use: full red on an LED wall is harsh
+   * at this size, and the eyebrow is the least important line on it. */
+  color: var(--cnd-rose);
+  margin: 0 0 26px;
+}
+
+.display {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 184px;
+  line-height: 0.948;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.name {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 66px;
+  line-height: 1.02;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.role {
+  font-size: 40px;
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--cnd-sand) 78%, transparent);
+  margin: 6px 0 0;
+}
+
+.body {
+  font-size: 52px;
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--cnd-sand) 82%, transparent);
+  margin: 0;
+}
+
+/* ── layers ───────────────────────────────────────────────────────────── */
+
+.field,
+.scenes,
+.wipe,
+.guides {
+  position: absolute;
+  inset: 0;
+}
+
+.field svg,
+.wipe svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Field cells: opacity is the only thing the scene changes, set per cell by
+ * stage.js from a density map. The long transition, delayed by distance from
+ * the centre, is what makes the field scatter outward as a talk goes live. */
+.cell {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: var(--o, 0);
+  transform: translate(var(--dx, 0px), 0) scale(var(--s, 1));
+  transition:
+    opacity 2.4s cubic-bezier(0.65, 0, 0.35, 1) var(--d, 0s),
+    transform 2.4s cubic-bezier(0.65, 0, 0.35, 1) var(--d, 0s);
+}
+
+/* Breathing lives on an inner group so it never fights the transition above.
+ * Periods of 14–26 s: slow enough that nobody watching a talk notices it. */
+.cell path {
+  animation: breathe var(--breathe, 18s) ease-in-out var(--phase, 0s) infinite alternate;
+}
+
+@keyframes breathe {
+  from { opacity: 1; }
+  to   { opacity: 0.45; }
+}
+
+/* A handful of faint hexagons that cross the centre over minutes. The only
+ * motion behind a speaker. */
+.drifter {
+  animation: drift var(--drift, 240s) linear var(--phase, 0s) infinite;
+}
+
+@keyframes drift {
+  from { transform: translateX(-600px); }
+  to   { transform: translateX(4296px); }
+}
+
+.wipe .wc {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0) rotate(-30deg);
+  transition: transform 0.8s cubic-bezier(0.45, 0, 0.25, 1) var(--d, 0s);
+}
+
+.wipe[data-covered] .wc {
+  transform: scale(1.16) rotate(0deg);
+}
+
+/* ── scenes ───────────────────────────────────────────────────────────── */
+
+.scene {
+  position: absolute;
+  inset: 0;
+}
+
+.box {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The two content zones, inset from the wall edges. */
+.zone-left  { left: 130px;  top: 120px; width: 1040px; height: 840px; justify-content: center; }
+.zone-right { left: 2526px; top: 120px; width: 1040px; height: 840px; justify-content: center; }
+
+/* Entrance, after the wipe reveals the scene: a short rise, staggered. */
+.scene .rise {
+  animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(0.25s + var(--i, 0) * 0.12s);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Lockup: the wordmark artwork, with the mark placed to its upper right by
+ * the designer's measured ratios (see markFor in graphics/render.mjs). */
+.lockup {
+  position: absolute;
+}
+.lockup img {
+  position: absolute;
+  display: block;
+}
+
+/* Portraits in the brand shape, same mask as the decks and the website. */
+.portrait {
+  position: absolute;
+  object-fit: cover;
+  background: color-mix(in srgb, var(--cnd-sand) 18%, transparent);
+  mask-image: var(--cnd-shape-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+
+/* ── talk: walk-on → live ─────────────────────────────────────────────── */
+/*
+ * Walk-on: the speaker is still walking up, so the wall can have the moment —
+ * portrait, title, name and job title at full size across the middle.
+ *
+ * Live: the speaker is at the lectern. The same three groups glide out to the
+ * thirds — portrait with name and job title to the left, talk title to the
+ * right — and the centre empties. Pure transforms, so it is one smooth move
+ * rather than a reflow, and the line breaks stay the ones set at walk-on.
+ *
+ * Walk-on boxes:
+ *   portraits  768×720 @  620, 150
+ *   title     1700×480 @ 1532, 150  (text bottom-aligned, sits on the names)
+ *   people     900×250 @ 1532, 666  (narrow, so a long job title wraps)
+ */
+
+.talk .portraits { left: 620px;  top: 150px; width: 768px;  height: 720px; }
+.talk .title     { left: 1532px; top: 150px; width: 1700px; height: 480px; justify-content: flex-end; }
+.talk .people    { left: 1532px; top: 666px; width: 900px;  height: 250px; justify-content: flex-start; gap: 22px; }
+
+.talk .portraits,
+.talk .title,
+.talk .people {
+  position: absolute;
+  transform-origin: 0 0;
+  transition: transform 2.2s cubic-bezier(0.7, 0, 0.25, 1);
+}
+
+.talk .title .display {
+  font-size: 124px;
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+/* Live targets are measured per talk in stage.js (planLive), because a
+ * two-line title and a four-line one need different scales to sit centred
+ * in the right third. */
+.talk[data-state="live"] .portraits,
+.talk[data-state="live"] .people,
+.talk[data-state="live"] .title {
+  transform: translate(calc(var(--tx) * 1px), calc(var(--ty) * 1px)) scale(var(--ts));
+}
+.talk[data-state="live"] .people { transition-delay: 0.12s; }
+.talk[data-state="live"] .title  { transition-delay: 0.24s; }
+
+/* Softer type once live: the wall is now background to a person. */
+.talk .title,
+.talk .people {
+  transition-property: transform, opacity;
+}
+.talk[data-state="live"] .title,
+.talk[data-state="live"] .people {
+  opacity: 0.92;
+}
+
+/* ── countdown ────────────────────────────────────────────────────────── */
+
+/* The brand's outline-numeral device: ground-coloured fill, red stroke. */
+.clock {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 330px;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--cnd-navy);
+  /* The outline-numeral device in rose rather than red, for the same reason. */
+  -webkit-text-stroke: 6px var(--cnd-rose);
+  margin: 0;
+}
+
+.up-next {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.up-next .talk-line {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 58px;
+  line-height: 1.02;
+  text-transform: uppercase;
+  margin: 0;
+}
+.up-next .who {
+  font-size: 38px;
+  color: color-mix(in srgb, var(--cnd-sand) 78%, transparent);
+  margin: 8px 0 0;
+}
+
+/* Break: what's next here, large, and what starts with it in the other
+ * rooms, smaller, so the room can choose before it moves. */
+.up-next.rooms { gap: 46px; }
+.rooms .eyebrow { font-size: 32px; margin-bottom: 12px; }
+.rooms .talk-line { font-size: 44px; }
+.rooms .who { font-size: 30px; }
+.rooms .lead .talk-line { font-size: 64px; }
+.rooms .lead .who { font-size: 40px; }
+
+/* ── sponsor row ──────────────────────────────────────────────────────── */
+/* Walk-in and breaks only — never while someone is talking. A fixed row of
+ * white hexagons that stays put while the logos inside change in groups, so
+ * the row reads as part of the wall rather than something scrolling past.
+ * Logos are contained on white, never cropped. */
+
+.sponsor-row {
+  position: absolute;
+  left: 0;
+  top: 990px;
+  width: 3696px;
+  height: 150px;
+}
+.sponsor-row .slot img {
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.5, 0, 0.2, 1);
+}
+.sponsor-row .slot img.out {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.hexlogo {
+  position: relative;
+  flex: none;
+}
+.hexlogo svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: var(--cnd-white);
+}
+.hexlogo img {
+  position: absolute;
+  inset: 24% 16%;
+  width: 68%;
+  height: 52%;
+  object-fit: contain;
+}
+
+/* A QR code on a white hexagon (stage.js qrTile): navy modules, so it scans
+ * as dark-on-light. Centred in the right third; the pitch logo in the left. */
+.hexlogo.qr .code {
+  position: absolute;
+  fill: var(--cnd-navy);
+}
+.qr-zone      { position: absolute; left: 2685px; top: 178px; }
+.pitch-logo   { position: absolute; left: 315px;  top: 208px; }
+
+/* ── sponsors wall ────────────────────────────────────────────────────── */
+
+.tier-label {
+  position: absolute;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 36px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--cnd-sand) 78%, transparent);
+  margin: 0;
+}
+
+/* ── team ─────────────────────────────────────────────────────────────── */
+
+.org { position: absolute; text-align: center; }
+.org-name {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin: 24px 12px 0;
+}
+.org-role {
+  font-size: 26px;
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--cnd-sand) 78%, transparent);
+  margin: 6px 16px 0;
+  text-wrap: balance;
+}
+
+/* ── breakout room screen (?room=breakout) ───────────────────────────── */
+/* A 1920×1080 projector beside the speaker, not a wall behind them. Two
+ * columns across the whole frame; the wall's thirds don't apply. The size
+ * itself is set by stage.js from the show data. */
+
+.room-breakout .zone-left  { left: 110px;  top: 100px; width: 780px; height: 880px; }
+.room-breakout .zone-right { left: 1010px; top: 100px; width: 800px; height: 880px; }
+.room-breakout .display    { font-size: 150px; }
+.room-breakout .qr-zone    { left: 1105px; top: 220px; }
+.room-breakout .pitch-logo { left: 218px;  top: 220px; }
+
+.room-breakout .up-next.rooms { gap: 34px; }
+.room-breakout .rooms .eyebrow { font-size: 24px; margin-bottom: 8px; }
+.room-breakout .rooms .talk-line { font-size: 32px; }
+.room-breakout .rooms .who { font-size: 24px; }
+.room-breakout .rooms .lead .talk-line { font-size: 48px; }
+.room-breakout .rooms .lead .who { font-size: 30px; }
+
+/* "Thank you, sponsors." across the top, the tiers under it. */
+.room-breakout .sponsors-head { top: 90px; width: 1700px; height: 300px; justify-content: flex-start; }
+
+/* Talk: one card, portrait left and title right, at walk-on and live alike —
+ * when the talk starts the projector switches to the speaker's slides. */
+.room-breakout .talk .portraits { left: 110px; top: 190px; transform: scale(0.88); }
+.room-breakout .talk .title     { left: 900px; top: 110px; width: 910px; height: 560px; }
+.room-breakout .talk .people    { left: 900px; top: 720px; width: 910px; height: 260px; }
+.room-breakout .talk .title .display { font-size: 96px; }
+.room-breakout .talk[data-state="live"] .portraits { transform: scale(0.88); }
+.room-breakout .talk[data-state="live"] .people,
+.room-breakout .talk[data-state="live"] .title { transform: none; }
+
+/* ── still mode (renders) ─────────────────────────────────────────────── */
+/* Stills jump straight to the end state: no transitions, no entrance, and
+ * breathing frozen at full strength so the PNG shows the intended density. */
+
+.still *,
+.still *::before,
+.still *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ── guides (g) ───────────────────────────────────────────────────────── */
+/* For the vendor call and the rehearsal, never the show. Cabinet grid,
+ * the three zones, and the bottom band a lectern or monitors may hide. */
+
+.guides {
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, color-mix(in srgb, var(--cnd-slate) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(0deg, color-mix(in srgb, var(--cnd-slate) 45%, transparent) 1px, transparent 1px);
+  background-size: 168px 168px;
+}
+.guides .zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border: 3px dashed var(--cnd-red);
+  font-family: var(--cnd-font-display);
+  font-size: 28px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-red);
+  padding: 14px 18px;
+}
+.guides .occlusion {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 168px;
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--cnd-peach) 22%, transparent) 0 14px, transparent 14px 28px);
+  font-family: var(--cnd-font-display);
+  font-size: 28px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-peach);
+  padding: 14px 18px;
+}
+
+/* ── HUD (preview only) ───────────────────────────────────────────────── */
+
+.hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 16px 20px;
+  font: 14px/1.5 var(--cnd-font-body);
+  color: var(--cnd-sand);
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+.hud ol {
+  margin: 0;
+  padding-left: 22px;
+  columns: 2;
+  column-gap: 40px;
+  flex: 1;
+}
+.hud li[data-current] {
+  color: var(--cnd-red);
+  font-weight: 700;
+}
+.hud kbd {
+  font: inherit;
+  border: 1px solid color-mix(in srgb, var(--cnd-sand) 40%, transparent);
+  border-radius: 4px;
+  padding: 0 5px;
+}
+.output .hud {
+  display: none;
+}
+
+/* ── social: the hashtags ──────────────────────────────────────────────── */
+/* Display weight, but not uppercased: a hashtag is typed in mixed case.
+ * Sized so #CloudNativeDenmark (about 10.5 em wide) fits its zone outright:
+ * 96px in the wall's 1040px zone, 72px in the breakout's 800px. */
+.hashtags {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--cnd-white);
+  margin: 0;
+}
+.room-breakout .hashtags { font-size: 72px; }

@@ -1,0 +1,223 @@
+<!doctype html>
+<!--
+  Cloud Native Denmark — stage wall control.
+
+  Served by stage/serve.mjs, which prints this page's URL with its key. Open it
+  on the laptop feeding the wall or on any other machine on the same network
+  (a second laptop, an iPad). Every control here is a command to the server;
+  the wall and this page's preview follow the server, so what you see here is
+  what the wall shows.
+
+  Keys: → / space / PageDown next · ← / PageUp back · b still · m music
+  A presentation clicker works.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CND 2026 · Stage control</title>
+<link rel="stylesheet" href="../brand/tokens.css">
+<style>
+  html, body { overflow: auto; height: auto; }
+  body {
+    margin: 0;
+    background: var(--cnd-navy);
+    color: var(--cnd-sand);
+    font: 16px/1.4 var(--cnd-font-body);
+    padding: 16px 20px 28px;
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font: 700 20px/1 var(--cnd-font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--cnd-white);
+    margin: 0;
+  }
+  .status { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cnd-slate); }
+  .status[data-ok] .dot { background: var(--cnd-peach); }
+  .clock { margin-left: auto; font: 500 20px/1 var(--cnd-font-display); font-variant-numeric: tabular-nums; color: var(--cnd-white); }
+
+  .banner {
+    background: color-mix(in srgb, var(--cnd-red) 22%, var(--cnd-navy));
+    border: 1px solid var(--cnd-red);
+    color: var(--cnd-white);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+  }
+
+  .label {
+    font: 500 12px/1 var(--cnd-font-display);
+    letter-spacing: var(--cnd-track-eyebrow);
+    text-transform: uppercase;
+    color: var(--cnd-peach);
+    margin: 0 0 8px;
+  }
+
+  /* The live preview is the wall itself, following the server. */
+  .preview {
+    position: relative;
+    width: 100%;
+    /* The room's own shape: the wide wall, or the breakout's 16:9 (control.js). */
+    aspect-ratio: var(--aspect, 3696 / 1176);
+    max-width: var(--preview-max, none);
+    border-radius: 8px;
+    overflow: hidden;
+    outline: 1px solid color-mix(in srgb, var(--cnd-sand) 20%, transparent);
+    background: #000;
+  }
+  .preview iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 20px;
+    margin-top: 18px;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: color-mix(in srgb, var(--cnd-white) 5%, transparent);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .now .what { font: 700 30px/1.1 var(--cnd-font-display); text-transform: uppercase; color: var(--cnd-white); margin: 0; }
+  .now .more, .next .more { margin: 6px 0 0; color: color-mix(in srgb, var(--cnd-sand) 75%, transparent); }
+  .next { margin-top: 12px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 14px; align-items: center; }
+  .next .what { font: 700 20px/1.15 var(--cnd-font-display); text-transform: uppercase; color: var(--cnd-white); margin: 0; }
+  /* The next step as a still, so the operator sees it before pressing. */
+  .next .thumb { position: relative; aspect-ratio: var(--aspect, 3696 / 1176); border-radius: 6px; overflow: hidden; background: #000; }
+  .next .thumb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+
+  .go { display: grid; grid-template-columns: 1fr 2.4fr; gap: 12px; margin-top: 14px; }
+  button {
+    font: 700 18px/1 var(--cnd-font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: 0;
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: var(--cnd-white);
+    background: color-mix(in srgb, var(--cnd-white) 12%, transparent);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: 0.35; cursor: default; }
+  button.primary { background: var(--cnd-red); font-size: 30px; padding: 30px 18px; }
+  button[aria-pressed="true"] { background: var(--cnd-peach); color: var(--cnd-navy); }
+  button.danger[aria-pressed="true"] { background: var(--cnd-red); color: var(--cnd-white); }
+
+  .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .row button { flex: 1 1 auto; font-size: 15px; padding: 13px 14px; }
+
+  .countdown { margin-top: 12px; }
+  .countdown .row { margin-top: 0; }
+  .countdown .state { font-size: 14px; margin: 8px 0 0; color: color-mix(in srgb, var(--cnd-sand) 75%, transparent); }
+
+  .cues ol { list-style: none; margin: 0; padding: 0; max-height: 62vh; overflow: auto; }
+  .cues li button {
+    width: 100%;
+    text-align: left;
+    font: 500 16px/1.3 var(--cnd-font-body);
+    text-transform: none;
+    letter-spacing: 0;
+    background: transparent;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    gap: 12px;
+  }
+  .cues li button .n { font-variant-numeric: tabular-nums; color: var(--cnd-slate); min-width: 1.6em; }
+  .cues li[data-current] button { background: color-mix(in srgb, var(--cnd-red) 30%, transparent); color: var(--cnd-white); font-weight: 700; }
+  .cues li[data-next] button .n { color: var(--cnd-peach); }
+  .cues li[data-armed] button { outline: 2px solid var(--cnd-peach); }
+  .cues .hint { font-size: 13px; color: var(--cnd-slate); margin: 8px 0 0; }
+  .outputs { margin-top: 20px; }
+  .outputs p { margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
+  .outputs a { color: var(--cnd-peach); font: 700 17px/1.3 var(--cnd-font-display); text-transform: uppercase; letter-spacing: 0.03em; }
+  .outputs .dim { font-size: 14px; color: color-mix(in srgb, var(--cnd-sand) 70%, transparent); flex: 1 1 380px; }
+  kbd { font: 600 13px/1 var(--cnd-font-body); border: 1px solid color-mix(in srgb, var(--cnd-sand) 40%, transparent); border-radius: 4px; padding: 2px 5px; }
+</style>
+
+<header>
+  <h1 id="room">Stage wall</h1>
+  <div class="row" style="margin:0" id="days"></div>
+  <div class="status" id="status"><span class="dot"></span><span id="status-text">Connecting…</span></div>
+  <div class="clock" id="clock">--:--:--</div>
+</header>
+
+<div class="banner" id="banner" hidden></div>
+
+<p class="label">On the wall now</p>
+<div class="preview"><iframe id="live" title="Live wall preview"></iframe></div>
+
+<div class="grid">
+  <section>
+    <div class="card now">
+      <p class="label">Now</p>
+      <p class="what" id="now-what">—</p>
+      <p class="more" id="now-more"></p>
+    </div>
+
+    <div class="card next">
+      <div>
+        <p class="label">Next</p>
+        <p class="what" id="next-what">—</p>
+        <p class="more" id="next-more"></p>
+      </div>
+      <div class="thumb"><iframe id="next-thumb" title="Next cue"></iframe></div>
+    </div>
+
+    <div class="go">
+      <button id="prev">◀ Back</button>
+      <button id="next" class="primary">Next ▶</button>
+    </div>
+
+    <div class="row">
+      <button id="panic" class="danger" aria-pressed="false">Panic still</button>
+      <button id="music" aria-pressed="false">Music</button>
+      <button id="guides" aria-pressed="false">Guides</button>
+    </div>
+
+    <div class="card countdown">
+      <p class="label">Countdown</p>
+      <div class="row">
+        <button data-minutes="10">Start 10:00</button>
+        <button data-minutes="5">Start 5:00</button>
+        <button data-add="1">+1 min</button>
+        <button data-add="-1">−1 min</button>
+        <button data-clear>Clear</button>
+      </div>
+      <p class="state" id="countdown-state"></p>
+    </div>
+  </section>
+
+  <section class="card cues">
+    <p class="label">Run of show</p>
+    <ol id="cues"></ol>
+    <p class="hint">Tap a cue twice to jump to it.</p>
+  </section>
+</div>
+
+<footer class="card outputs">
+  <p class="label">Wall output</p>
+  <p>
+    <a id="output-link" href="index.html?output" target="cnd-wall">Open the wall output window ↗</a>
+    <span class="dim">Open it on the laptop connected to the LED wall, drag it onto the wall's screen, and press <kbd>f</kbd> for fullscreen. This is the only window that plays music. If the music doesn't start, click once inside it, or start Chrome with the command the server printed.</span>
+  </p>
+  <p>
+    <a href="index.html?preview" target="_blank">Silent preview ↗</a>
+    <span class="dim">The same picture with no sound, for a second screen or the AV desk.</span>
+  </p>
+</footer>
+
+<script src="show.data.js"></script>
+<script src="cues.js"></script>
+<script src="control.js"></script>
