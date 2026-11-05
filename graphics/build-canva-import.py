@@ -270,11 +270,21 @@ def main() -> int:
         v["2"]["year"] for v in geometry["frames"].values() if v.get("2")
     )
 
-    def footer(overlay: dict, on_light: bool) -> str:
+    def footer(overlay: dict, on_light: bool, year_shift: int = 0,
+               band_geom: tuple | None = None) -> str:
         lock = overlay["lockup"]
         mark = overlay["mark"]
         run = year_spec["runs"][0]
         size = run["size_px"]
+        year_x = year_spec["x"]
+        year_base = year_spec["baseline"] - year_shift
+        if band_geom:
+            k, old_band_y, band_y, shift = band_geom
+            size = round(size * k, 2)
+            # Right margin held at the left margin's value, so the year stays
+            # optically paired with the lockup as both shrink.
+            year_x = round(1080 - 87 - year_spec["w"] * k, 2)
+            year_base = round(band_y + (year_spec["baseline"] - shift - old_band_y) * k, 2)
         return (
             f'<img class="lockup" src="'
             f'{lockups["navy"] if on_light else lockups["cream"]}" '
@@ -283,8 +293,8 @@ def main() -> int:
             f'<img class="mark" src="{mark_uri}" '
             f'style="left:{mark["x"]}px;top:{mark["y"]}px;'
             f'width:{mark["w"]}px;height:{mark["h"]}px" alt="">'
-            f'<div class="t year" style="left:{year_spec["x"]}px;'
-            f'top:{top_for(year_spec["baseline"], size)}px;font-size:{size}px;'
+            f'<div class="t year" style="left:{year_x}px;'
+            f'top:{top_for(year_base, size)}px;font-size:{size}px;'
             f'--stroke-ground:{overlay["ground"]}">{tokens["event"]["year"]}</div>'
         )
 
@@ -317,12 +327,74 @@ def main() -> int:
             + "</div>"
         )
 
+    def derive_square(overlay: dict, content: dict) -> tuple[dict, dict, int]:
+        """Mirror of deriveSquare in render.mjs, so both builders agree.
+
+        The 4:5 surface loses 270px off the card; text baselines scale with the
+        card rather than shifting, which is why this is not a plain translate.
+        """
+        LOST = 270
+        card = overlay["content"]
+        square_card = {**card, "h": card["h"] - LOST}
+        ratio = square_card["h"] / card["h"]
+        shift = lambda b: ({**b, "y": b["y"] - LOST} if b else b)
+        out_overlay = {
+            **overlay, "size": [1080, 1080], "content": square_card,
+            "rule": shift(overlay.get("rule")), "band": shift(overlay.get("band")),
+            "lockup": shift(overlay["lockup"]), "mark": shift(overlay["mark"]),
+        }
+        out_content = {
+            k: {**v, "baseline": round(card["y"] + (v["baseline"] - card["y"]) * ratio, 2),
+                "leading_derived_px": (None if v.get("leading_derived_px") is None
+                                       else round(v["leading_derived_px"] * ratio, 2))}
+            for k, v in content.items()
+        }
+        return out_overlay, out_content, LOST
+
     def statement_page(
         category: str, variant: str, label_text: str, name: str, role: str,
-        highlight: str, page_label: str,
+        highlight: str, page_label: str, photo: Path | None = None,
+        square: bool = False, tab_on: bool = True, band: int | None = None,
+        footer_ground: str | None = None, scrim: float = 1.0,
     ) -> str:
         overlay = geometry["overlays"][category][variant]
         content = geometry["content"]["1" if variant == "1" else "2"]
+        canvas_h = 1350
+        year_shift = 0
+        band_geom = None
+        if square:
+            overlay, content, year_shift = derive_square(overlay, content)
+            canvas_h = 1080
+        # Same opt-in reframing the renderer does: give the photograph the
+        # height the band gives up, and move the footer artwork with it.
+        if band is not None:
+            band_y = canvas_h - band
+            rule_y = band_y - overlay["rule"]["h"]
+            # Her lockup, mark and year exactly fill her band with her own
+            # padding, so a shorter band has to carry smaller artwork. Same
+            # scaling the renderer does, and it has to match or the Canva page
+            # and the PNG disagree.
+            k = band / overlay["band"]["h"]
+            old_band_y = overlay["band"]["y"]
+            lx = overlay["lockup"]["x"]
+            scale_box = lambda b: {
+                **b,
+                "x": round(lx + (b["x"] - lx) * k, 2),
+                "y": round(band_y + (b["y"] - old_band_y) * k, 2),
+                "w": round(b["w"] * k, 2),
+                "h": round(b["h"] * k, 2),
+            }
+            overlay = {
+                **overlay,
+                "content": {**overlay["content"], "h": rule_y},
+                "rule": {**overlay["rule"], "y": rule_y},
+                "band": {"y": band_y, "h": band},
+                "lockup": scale_box(overlay["lockup"]),
+                "mark": scale_box(overlay["mark"]),
+            }
+            band_geom = (k, old_band_y, band_y, year_shift)
+        if footer_ground:
+            overlay = {**overlay, "ground": color[footer_ground]}
         box = overlay["content"]
         on_light = overlay["ground"].upper() == color["sand"].upper()
         keys = list(content)
@@ -330,9 +402,24 @@ def main() -> int:
 
         parts = [f'<div class="ground" style="background:{overlay["ground"]}"></div>']
         if variant == "1":
+            # With a real photograph the window carries it; the grey slot is
+            # only for the blank template pages, where it signals to whoever
+            # opens the design in Canva that something belongs here.
+            stops = ", ".join(
+                f"rgba(25,33,60,{round(o * scrim, 3)}) {int(p * 100)}%"
+                for o, p in ((0.15, 0.0), (0.55, 0.45), (0.92, 1.0))
+            )
+            inner = (
+                f'<img src="{image_uri(photo, 1400)}" style="width:100%;height:100%;'
+                f'object-fit:cover;display:block"/>'
+                f'<div style="position:absolute;inset:0;'
+                f'background:linear-gradient(to bottom, {stops})"></div>'
+                if photo
+                else ""
+            )
             parts.append(
                 f'<div class="window photo" style="left:{box["x"]}px;top:{box["y"]}px;'
-                f'width:{box["w"]}px;height:{box["h"]}px"></div>'
+                f'width:{box["w"]}px;height:{box["h"]}px;overflow:hidden">{inner}</div>'
             )
             rule = overlay.get("rule")
             if rule:
@@ -346,7 +433,8 @@ def main() -> int:
                 f'width:{box["w"]}px;height:{box["h"]}px;'
                 f'border-radius:{box["r"]}px"></div>'
             )
-        parts.append(tab(category, variant, label_text))
+        if tab_on:
+            parts.append(tab(category, variant, label_text))
 
         for spec, text, weight in (
             (name_s, name.upper(), 500),
@@ -371,8 +459,8 @@ def main() -> int:
             + "<br>".join(esc(l.strip().upper()) for l in highlight.split("|"))
             + "</div>"
         )
-        parts.append(footer(overlay, on_light))
-        return page(page_label, "".join(parts))
+        parts.append(footer(overlay, on_light, year_shift, band_geom))
+        return page(page_label, "".join(parts), canvas_h if canvas_h != 1350 else None)
 
     def poster_page(ground_name: str, lines: str, meta: str, page_label: str) -> str:
         overlay = geometry["overlays"]["clean"]["3" if ground_name == "sand" else "2"]
@@ -823,6 +911,45 @@ def main() -> int:
             )
         docs.append((f"cnd-keynotes{suffix}", keynotes, height))
 
+        # The 26 non-keynote sessions. Same page shape as a keynote, kept as
+        # its own document so somebody tweaking one talk does not have to
+        # import 32 pages to get at it.
+        sessions: list[str] = []
+        for t in announcements.get("sessions", []):
+            sessions.append(
+                bulletin_page(
+                    t.get("ground", "sand"), t["eyebrow"], t["headline"], t["body"],
+                    "hexfield", "top-right", t["slug"],
+                    portrait=ROOT / t["portrait"] if t.get("portrait") else None,
+                    portrait2=ROOT / t["portrait2"] if t.get("portrait2") else None,
+                    align=t.get("align", "xMidYMid"),
+                    align2=t.get("align2", "xMidYMid"),
+                    canvas_h=height,
+                )
+            )
+        if sessions:
+            docs.append((f"cnd-sessions{suffix}", sessions, height))
+
+        # "You had to be there" cards from last year's photography. Variant 1
+        # is the designer's photo layout, so the photograph arrives as a real
+        # picture layer somebody can swap in Canva.
+        moments: list[str] = []
+        for mo in announcements.get("moments", []):
+            moments.append(
+                statement_page(
+                    "speaker-highlights", "1", mo.get("label", "CND/2025"),
+                    mo["name"], mo.get("role", ""), mo["highlight"], mo["slug"],
+                    photo=ROOT / mo["photo"],
+                    square=(suffix == ""),
+                    tab_on=mo.get("tab", True),
+                    band=mo.get("band"),
+                    footer_ground=mo.get("footer"),
+                    scrim=mo.get("scrim", 1.0),
+                )
+            )
+        if moments:
+            docs.append((f"cnd-moments{suffix}", moments, height))
+
         countdowns: list[str] = []
         for c in announcements.get("countdowns", []):
             figure = f"0{c['days']}" if c["days"] < 10 else str(c["days"])
@@ -874,6 +1001,7 @@ def main() -> int:
                 bulletin_page(
                     g.get("ground", "navy"), g["eyebrow"], g["headline"], g["body"],
                     g.get("decor", "hexfield"), "top-right", g["slug"],
+                    logo=ROOT / g["logo"] if g.get("logo") else None,
                     canvas_h=height,
                 )
             )

@@ -32,9 +32,9 @@
     <!-- Scrim over full-bleed photos so display text stays legible. Only
          referenced by the v1 layout, where content runs edge to edge. -->
     <linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="{{navy}}" stop-opacity="0.15"/>
-      <stop offset="0.45" stop-color="{{navy}}" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="{{navy}}" stop-opacity="0.92"/>
+      <stop offset="0" stop-color="{{navy}}" stop-opacity="{{scrimTop}}"/>
+      <stop offset="0.45" stop-color="{{navy}}" stop-opacity="{{scrimMid}}"/>
+      <stop offset="1" stop-color="{{navy}}" stop-opacity="{{scrimBottom}}"/>
     </linearGradient>
 
     <!-- Speaker portraits and other tiles clip to the brand's own

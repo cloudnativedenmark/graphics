@@ -40,6 +40,19 @@
  *                     DERIVED rather than measured — see deriveSquare
  *   --portrait-shape circle|mark  portrait frame; circle is the designer's
  *                     own choice and the default
+ *   --no-tab          speaker-highlight only: omit the corner tab. For a
+ *                     photograph, where the tab lands on the subject.
+ *   --band N          speaker-highlight only: footer band height in px. The
+ *                     photo window grows to fill what the band gives up and
+ *                     the footer artwork moves up with it. Opt-in, so the
+ *                     measured defaults still guard the pixel diff.
+ *   --footer navy|sand  speaker-highlight only: footer band colour. Picks the
+ *                     matching ground-baked lockup, since DENMARK. and the
+ *                     year are outlines filled with the ground they sit on.
+ *   --scrim N         speaker-highlight v1 only: multiplier on the photo
+ *                     scrim, 0 to 1. Her gradient reaches 0.92 navy at the
+ *                     bottom edge, which is right under a low text block and
+ *                     too heavy when the photograph is the point.
  *   --theme light|dark  linkedin-cover only: sand ground or navy ground
  *   --out PATH        output PNG
  *   --keep-html       leave the intermediate HTML in place for debugging
@@ -87,6 +100,10 @@ const CHROME = findChrome();
 // under 1 dE), so the pixel-diff residual is text antialiasing, not glow.
 // If the diff regresses, suspect geometry or type before touching these.
 // Overridable via env so test/calibrate_glow.py can sweep them.
+// Her scrim, as extracted: a navy wash that deepens toward the bottom edge
+// where the v1 text block sits.
+const SCRIM_STOPS = [0.15, 0.55, 0.92];
+
 const TAB_GLOW_BLUR = Number(process.env.CND_TAB_GLOW_BLUR ?? 32);
 const TAB_GLOW_OPACITY = Number(process.env.CND_TAB_GLOW_OPACITY ?? 0.65);
 
@@ -125,7 +142,7 @@ function parseArgs(argv) {
     const key = rest[i];
     if (!key.startsWith("--")) continue;
     const name = key.slice(2);
-    if (name === "frame" || name === "keep-html") {
+    if (name === "frame" || name === "keep-html" || name === "no-tab") {
       opts[name] = true;
     } else {
       opts[name] = rest[++i];
@@ -383,6 +400,65 @@ function main() {
   }
   const color = tokens.color;
 
+  // --- optional reframing, for the photo-led cards -----------------------
+  // Opt-in only. Left alone, every number is still the one measured from her
+  // overlays, which is what lets the pixel diff compare like with like.
+  //
+  // A photograph wants more of the card than a portrait does: her v1 band is
+  // 30% of the square, which is right when the window holds a stage shot she
+  // art-directed and wrong when it holds a room that has to read at feed size.
+  let yearGroundOverride = null;
+  let bandScale = 1;
+  let bandTop = null;
+  const scrim = opts.scrim == null ? 1 : Number(opts.scrim);
+  if (!Number.isFinite(scrim) || scrim < 0 || scrim > 1) {
+    console.error(`--scrim must be between 0 and 1 (got ${opts.scrim})`);
+    process.exit(2);
+  }
+  if (opts.band != null) {
+    const bandH = Number(opts.band);
+    if (!Number.isFinite(bandH) || bandH < 140 || bandH > overlay.band.h) {
+      console.error(`--band must be between 140 and ${overlay.band.h} (got ${opts.band})`);
+      process.exit(2);
+    }
+    const bandY = canvasH - bandH;
+    const ruleY = bandY - overlay.rule.h;
+    const k = bandH / overlay.band.h;
+    const oldBandY = overlay.band.y;
+    // Vertical placement and artwork size both scale, so the footer keeps her
+    // proportions. Horizontally the left margin is held, not scaled, because
+    // 86px is the margin every other card in the system uses.
+    const scaleBox = (b) => ({
+      ...b,
+      x: +(overlay.lockup.x + (b.x - overlay.lockup.x) * k).toFixed(2),
+      y: +(bandY + (b.y - oldBandY) * k).toFixed(2),
+      w: +(b.w * k).toFixed(2),
+      h: +(b.h * k).toFixed(2),
+    });
+    overlay = {
+      ...overlay,
+      content: { ...overlay.content, h: ruleY },
+      rule: { ...overlay.rule, y: ruleY },
+      band: { y: bandY, h: bandH },
+      lockup: scaleBox(overlay.lockup),
+      mark: scaleBox(overlay.mark),
+    };
+    bandScale = k;
+    bandTop = { oldY: oldBandY, newY: bandY };
+  }
+  if (opts.footer) {
+    const footers = { navy: color.navy, sand: color.sand };
+    const name = opts.footer.toLowerCase();
+    if (!footers[name]) {
+      console.error(`--footer must be navy or sand (got ${name})`);
+      process.exit(2);
+    }
+    // Red is deliberately not offered: the year is a ground-coloured fill
+    // with a red stroke, so on a red band it disappears into itself.
+    overlay = { ...overlay, ground: footers[name] };
+    yearGroundOverride = footers[name];
+  }
+
   // --- content layer -----------------------------------------------------
   const box = overlay.content;
   const names = Object.keys(content);
@@ -465,7 +541,7 @@ function main() {
 
   // --- tab ---------------------------------------------------------------
   let tab = "";
-  if (frameSpec?.tab) {
+  if (frameSpec?.tab && !opts["no-tab"]) {
     const label = frameSpec.label;
     const run = label.runs[0];
     // The label is centred on its own ink box, which coincides with the
@@ -529,6 +605,9 @@ function main() {
     portraitCX: portraitBox(overlay.content, tokens.portrait).cx,
     portraitCY: portraitBox(overlay.content, tokens.portrait).cy,
     portraitR: portraitBox(overlay.content, tokens.portrait).side / 2,
+    scrimTop: SCRIM_STOPS[0] * scrim,
+    scrimMid: SCRIM_STOPS[1] * scrim,
+    scrimBottom: SCRIM_STOPS[2] * scrim,
     tabGlowBlur: TAB_GLOW_BLUR,
     tabGlowOpacity: TAB_GLOW_OPACITY,
     lockup: assetURL(
@@ -536,7 +615,11 @@ function main() {
         ROOT,
         "brand",
         "logo",
-        variant === "3" ? "cnd-lockup-navy.svg" : "cnd-lockup-cream.svg",
+        // The lockup artwork is baked for the ground it sits on, so it
+        // follows the footer colour when that is overridden.
+        (opts.footer?.toLowerCase() ?? (variant === "3" ? "sand" : "navy")) === "sand"
+          ? "cnd-lockup-navy.svg"
+          : "cnd-lockup-cream.svg",
       ),
     ),
     lockupX: place.lockup.x,
@@ -549,12 +632,18 @@ function main() {
     markW: place.mark.w,
     markH: place.mark.h,
     year: tokens.event.year,
-    yearX: yearSpec.x,
-    yearY: yearSpec.baseline - yearShift,
-    yearSize: yearSpec.runs[0].size_px,
+    // Right margin held at the left margin's value, so the year stays optically
+    // paired with the lockup as both shrink.
+    yearX: bandTop
+      ? +(canvasW - 87 - yearSpec.w * bandScale).toFixed(2)
+      : yearSpec.x,
+    yearY: bandTop
+      ? +(bandTop.newY + (yearSpec.baseline - yearShift - bandTop.oldY) * bandScale).toFixed(2)
+      : yearSpec.baseline - yearShift,
+    yearSize: +(yearSpec.runs[0].size_px * bandScale).toFixed(2),
     yearTracking: `${yearSpec.runs[0].tracking_em}em`,
     // Outline fill matches the ground it sits on, which differs per variant.
-    yearGround: overlay.ground,
+    yearGround: yearGroundOverride ?? overlay.ground,
     yearStroke: YEAR_STROKE,
   });
 

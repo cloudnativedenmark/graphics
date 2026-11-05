@@ -76,6 +76,32 @@ for (const surface of surfaces) {
     render(args, k.slug);
   }
 
+  // Sessions are the same card as a keynote — portrait in the big hexagon,
+  // punchy line from the title as the headline — so they render through the
+  // same path. Kept as a separate array because a keynote and a breakout are
+  // different things to a reader, and the eyebrow says which.
+  if (content.sessions?.length) {
+    console.log(`\nsessions (${surface})`);
+    for (const t of content.sessions) {
+      const args = [
+        "bulletin",
+        "--ground", t.ground ?? "sand",
+        "--decor", "hexfield",
+        "--eyebrow", t.eyebrow,
+        "--headline", t.headline,
+        "--body", t.body,
+        "--surface", surface,
+        "--scale", scale,
+        "--out", join(OUT, `${t.slug}${suffix}.png`),
+      ];
+      if (t.portrait) args.push("--portrait", join(ROOT, t.portrait));
+      if (t.portrait2) args.push("--portrait2", join(ROOT, t.portrait2));
+      if (t.align) args.push("--align", t.align);
+      if (t.align2) args.push("--align2", t.align2);
+      render(args, t.slug);
+    }
+  }
+
   // General announcements can ask for specific surfaces, since a schedule
   // reveal wants both the square and the 4:5 feed version.
   const general = (content.general ?? []).filter(
@@ -84,20 +110,50 @@ for (const surface of surfaces) {
   if (general.length) {
     console.log(`\nannouncements (${surface})`);
     for (const g of general) {
-      render(
-        [
-          "bulletin",
-          "--ground", g.ground ?? "navy",
-          "--decor", g.decor ?? "hexfield",
-          "--eyebrow", g.eyebrow,
-          "--headline", g.headline,
-          "--body", g.body,
-          "--surface", surface,
-          "--scale", scale,
-          "--out", join(OUT, `${g.slug}${suffix}.png`),
-        ],
-        g.slug,
-      );
+      const args = [
+        "bulletin",
+        "--ground", g.ground ?? "navy",
+        "--decor", g.decor ?? "hexfield",
+        "--eyebrow", g.eyebrow,
+        "--headline", g.headline,
+        "--body", g.body,
+        "--surface", surface,
+        "--scale", scale,
+        "--out", join(OUT, `${g.slug}${suffix}.png`),
+      ];
+      // A partner mark goes in the big hexagon, contained on white, the same
+      // way a sponsor logo does.
+      if (g.logo) args.push("--logo", join(ROOT, g.logo));
+      render(args, g.slug);
+    }
+  }
+
+  // "You had to be there" cards from last year's photography. These use the
+  // designer's own photo layout (speaker-highlight variant 1) rather than the
+  // bulletin: a room shot does not survive being cropped into a hexagon, and
+  // her variant 1 gives the photograph the whole content window.
+  if (content.moments?.length) {
+    console.log(`\nmoments (${surface})`);
+    for (const m of content.moments) {
+      const args = [
+        "speaker-highlight",
+        "--variant", "1",
+        "--label", m.label ?? "CND/2025",
+        "--name", m.name,
+        "--role", m.role ?? "",
+        "--highlight", m.highlight,
+        "--photo", join(ROOT, m.photo),
+        "--surface", surface,
+        "--scale", scale,
+        "--out", join(OUT, `${m.slug}${suffix}.png`),
+      ];
+      // The tab lands on the top-right of the subject, which is fine over a
+      // portrait she art-directed and not fine over a room.
+      if (m.tab === false) args.push("--no-tab");
+      if (m.band) args.push("--band", String(m.band));
+      if (m.footer) args.push("--footer", m.footer);
+      if (m.scrim != null) args.push("--scrim", String(m.scrim));
+      render(args, m.slug);
     }
   }
 
