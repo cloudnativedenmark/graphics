@@ -602,6 +602,14 @@
   font-size: 32px;
   text-align: center;
 }
+.city .body a {
+  color: inherit;
+  text-decoration: none;
+}
+.city .body small {
+  display: block;
+  font-size: 26px;
+}
 
 /* ── layout: gallery ─────────────────────────────────────────────────── */
 /* Words left, photos as a small honeycomb on the right: the wall's sponsor
