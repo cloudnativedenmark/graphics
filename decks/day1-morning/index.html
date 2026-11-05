@@ -135,25 +135,80 @@
   </div>
 </section>
 
-<!-- The cities' meetups, one honeycomb each after the signs, on the
-     gallery grid (282x320 cells, 296 apart, rows 252 apart, odd rows offset
-     by half a cell). Each city gets its own silhouette and its own mix of
+<!-- The cities' meetups, one honeycomb each after the signs. data-cells="small"
+     is the gallery grid at three quarters: 212x240 cells, 222 apart, rows
+     189 apart, odd rows offset 111. object-view-box zooms each photo in on
+     its subject. Each city gets its own silhouette and its own mix of
      photo and colour cells, so the three never read as one template.
      Photos are resized copies in img/meetups/. Aalborg and Copenhagen:
      TODO 2026, photos to come. -->
+<!-- Organizers from cloudnativenordics.com/groups/aalborg, November 2026.
+     Allan's company and portrait are from the CND team list; the page gives none for
+     Camilla, Niels or Simon, and no photo for Simon, so he gets his
+     initials. Full-size gallery cells: three over two. -->
+<section class="slide" data-layout="gallery" data-cells="large">
+  <div class="pad">
+    <p class="eyebrow">Cloud Native Aalborg</p>
+    <h2 class="display">The<br>team.</h2>
+  </div>
+  <figure class="org" style="left:860px;top:254px" data-name="above"><img src="img/organizers/aalborg-camilla-larsen.jpg" alt="">
+    <figcaption><b>Camilla Larsen</b></figcaption></figure>
+  <figure class="org" style="left:1156px;top:254px" data-name="above"><img src="img/organizers/aalborg-niels-wittrup-andersen.jpg" alt="">
+    <figcaption><b>Niels Wittrup Andersen</b></figcaption></figure>
+  <figure class="org" style="left:1452px;top:254px" data-name="above"><img src="../../assets/organizers/organizer-allan.jpg" alt="">
+    <figcaption><b>Allan Højgaard Jensen</b><span>Netic</span></figcaption></figure>
+  <figure class="org" style="left:1008px;top:506px" data-name="below"><img src="img/organizers/aalborg-christoffer-hollensen.jpg" alt="">
+    <figcaption><b>Christoffer Hollensen</b><span>Trifork</span></figcaption></figure>
+  <figure class="org" style="left:1304px;top:506px" data-name="below"><div class="initials">SB</div>
+    <figcaption><b>Simon Bengtsson</b></figcaption></figure>
+</section>
+
+<!-- Organizers from cloudnativenordics.com/groups/aarhus (portraits are the
+     group page's avatars), November 2026. Two interlocking rows on the
+     gallery grid at 240x272: 254 apart, rows 214 apart, offset 127. -->
 <section class="slide" data-layout="gallery">
+  <div class="pad">
+    <p class="eyebrow">Cloud Native Aarhus</p>
+    <h2 class="display">The<br>team.</h2>
+  </div>
+  <figure class="org" style="left:720px;top:330px" data-name="above"><img src="img/organizers/aarhus-kasper-borg-nissen.jpg" alt="">
+    <figcaption><b>Kasper Borg Nissen</b><span>Dash0</span></figcaption></figure>
+  <figure class="org" style="left:974px;top:330px" data-name="above"><img src="img/organizers/aarhus-rasmus-steiniche.jpg" alt="">
+    <figcaption><b>Rasmus Steiniche</b><span>Neurospace · lead</span></figcaption></figure>
+  <figure class="org" style="left:1228px;top:330px" data-name="above"><img src="img/organizers/aarhus-ophelia-zhang-dalsgaard.jpg" alt="">
+    <figcaption><b>Ophelia Zhang Dalsgaard</b><span>Danske Bank</span></figcaption></figure>
+  <figure class="org" style="left:1482px;top:330px" data-name="above"><img src="img/organizers/aarhus-henrik-hoegh.jpg" alt="">
+    <figcaption><b>Henrik Høegh</b><span>VELUX</span></figcaption></figure>
+  <figure class="org" style="left:847px;top:544px" data-name="below"><img src="img/organizers/aarhus-henrik-lovborg.jpg" alt="">
+    <figcaption><b>Henrik Løvborg</b><span>Red Hat</span></figcaption></figure>
+  <figure class="org" style="left:1101px;top:544px" data-name="below"><img src="img/organizers/aarhus-stefan-daugaard-poulsen.jpg" alt="">
+    <figcaption><b>Stefan Daugaard Poulsen</b><span>Norlys</span></figcaption></figure>
+  <figure class="org" style="left:1355px;top:544px" data-name="below"><img src="img/organizers/aarhus-ryan-gough.jpg" alt="">
+    <figcaption><b>Ryan Gough</b><span>JYSK</span></figcaption></figure>
+  <figure class="org" style="left:1609px;top:544px" data-name="below"><img src="img/organizers/aarhus-kasper-tygesen.jpg" alt="">
+    <figcaption><b>Kasper Tygesen</b><span>Lunar</span></figcaption></figure>
+</section>
+
+<section class="slide" data-layout="gallery" data-cells="small">
   <div class="pad">
     <p class="eyebrow">Cloud Native Aarhus</p>
     <h2 class="display">Aarhus.</h2>
   </div>
-  <img class="photo" src="img/meetups/aarhus-jysk-map.jpg" alt="A speaker in front of the Cloud Native Nordics map at JYSK" style="left:1016px;top:128px;object-position:62% 50%">
-  <img class="photo" src="img/meetups/aarhus-velux-panel.jpg" alt="Three organizers talking to the room at VELUX" style="left:1312px;top:128px;object-position:50% 40%">
-  <div class="hexcell rose" style="left:868px;top:380px"><b>4</b><span>meetups</span></div>
-  <img class="photo" src="img/meetups/aarhus-diylab.jpg" alt="A full room watching a live demo at the DIY Lab" style="left:1164px;top:380px">
-  <img class="photo" src="img/meetups/aarhus-trifork.jpg" alt="Two speakers presenting at Trifork by the harbour" style="left:1460px;top:380px;object-position:28% 50%">
-  <img class="photo" src="img/meetups/aarhus-trifork-mingle.jpg" alt="Attendees talking over drinks at Trifork" style="left:1016px;top:632px;object-position:30% 50%">
-  <div class="hexcell sand" style="left:1312px;top:632px"><span>Hosted by</span><i>DIY Lab<br>Trifork<br>VELUX<br>JYSK</i></div>
-  <img class="photo" src="img/meetups/aarhus-velux-room.jpg" alt="A packed room at VELUX" style="left:1608px;top:632px;object-position:45% 50%">
+  <img class="photo" src="img/meetups/aarhus-jysk-map.jpg" alt="The Cloud Native Nordics map on screen at JYSK" style="left:1144px;top:60px;object-view-box:inset(6% 22% 18% 20%)">
+  <img class="photo" src="img/meetups/aarhus-jysk-stage.jpg" alt="Two speakers setting up on stage at JYSK" style="left:1366px;top:60px;object-view-box:inset(52% 16% 6% 58%)">
+  <img class="photo" src="img/meetups/aarhus-diylab.jpg" alt="A full room watching a live demo at the DIY Lab" style="left:1033px;top:249px;object-view-box:inset(8% 12% 8% 12%)">
+  <img class="photo" src="img/meetups/aarhus-velux-panel.jpg" alt="Three organizers talking to the room at VELUX" style="left:1255px;top:249px;object-view-box:inset(28% 24% 0% 26%)">
+  <div class="hexcell rose" style="left:1477px;top:249px"><b>4</b><span>meetups</span></div>
+  <img class="photo" src="img/meetups/aarhus-trifork-intro.jpg" alt="The organizers opening the evening at Trifork" style="left:1699px;top:249px;object-view-box:inset(36% 48% 22% 18%)">
+  <img class="photo" src="img/meetups/aarhus-velux-speaker.jpg" alt="A speaker pointing at the slide at VELUX" style="left:700px;top:438px;object-view-box:inset(28% 46% 22% 12%)">
+  <div class="hexcell sand" style="left:922px;top:438px"><span>Hosted by</span><i>DIY Lab<br>Trifork<br>VELUX<br>JYSK</i></div>
+  <img class="photo" src="img/meetups/aarhus-trifork.jpg" alt="Two speakers by the harbour windows at Trifork" style="left:1144px;top:438px;object-view-box:inset(34% 56% 30% 14%)">
+  <img class="photo" src="img/meetups/aarhus-trifork-mingle.jpg" alt="Attendees talking over drinks at Trifork" style="left:1366px;top:438px;object-view-box:inset(20% 30% 8% 14%)">
+  <img class="photo" src="img/meetups/aarhus-diylab-demo.jpg" alt="A live demo on the big screen at the DIY Lab" style="left:1588px;top:438px;object-view-box:inset(14% 18% 26% 34%)">
+  <img class="photo" src="img/meetups/aarhus-velux-redhat.jpg" alt="A Red Hat talk at VELUX" style="left:1033px;top:627px;object-view-box:inset(26% 24% 14% 14%)">
+  <img class="photo" src="img/meetups/aarhus-velux-room.jpg" alt="A packed room at VELUX" style="left:1255px;top:627px;object-view-box:inset(24% 4% 6% 16%)">
+  <img class="photo" src="img/meetups/aarhus-velux-agenda.jpg" alt="The agenda on screen at VELUX" style="left:1477px;top:627px;object-view-box:inset(28% 10% 22% 34%)">
+  <img class="photo" src="img/meetups/aarhus-trifork-hall.jpg" alt="The Trifork hall, full" style="left:1144px;top:816px;object-view-box:inset(10% 10% 10% 10%)">
 </section>
 
 <!-- charity ------------------------------------------------------------ -->
