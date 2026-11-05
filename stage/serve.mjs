@@ -85,11 +85,13 @@ function stepCounts(stage, room) {
   return Object.fromEntries(Object.keys(stage.days).map((day) => [day, stepsOf(stage, day, room).length]));
 }
 
+// music starts on: the first cue is the walk-in, which should have its bed
+// playing as soon as the screen window gets its first key press (f).
 // countdownTo: epoch ms the countdown runs to, set from the control page when
 // the schedule slips. null means "use the cue's own `at` time".
 // autoLiveAt: when the current walk-on goes live by itself (see walkonSeconds
 // in the stage file), so the control page can count it down.
-const fresh = () => ({ day: "1", i: 0, panic: false, music: false, vog: true, guides: false, countdownTo: null, autoLiveAt: null, rev: 0 });
+const fresh = () => ({ day: "1", i: 0, panic: false, music: true, vog: true, guides: false, countdownTo: null, autoLiveAt: null, rev: 0 });
 const states = Object.fromEntries(ROOMS.map((r) => [r, fresh()]));
 const clients = new Map(ROOMS.map((r) => [r, new Set()]));
 
