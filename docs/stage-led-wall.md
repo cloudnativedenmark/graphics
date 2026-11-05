@@ -61,17 +61,23 @@ The laptop feeding the wall runs a small show server. It holds the current
 cue, and every page follows it:
 
 ```bash
-node stage/serve.mjs          # prints the two URLs below, with a key
+node stage/serve.mjs main       # main stage laptop: opens its control panel and screen
+node stage/serve.mjs breakout   # breakout laptop: the same for the breakout
+node stage/serve.mjs            # just prints both rooms' links
 ```
 
-- **Wall:** `http://localhost:4040/stage/index.html?output` on the wall
-  laptop, or the "Open the wall output window" link at the bottom of the
-  control page. Drag it onto the LED output and press `f`. The server prints the
-  Chrome command with `--autoplay-policy=no-user-gesture-required`, so the
-  music can start without anyone clicking on the wall.
-- **Control:** `http://<laptop-ip>:4040/stage/control.html?key=…` on any
-  machine on the same network (a second laptop or an iPad), or on the wall
-  laptop itself. It shows a live preview, Now and Next (with a still of the
+Each laptop runs its own server and opens its own room's pair. With `main`
+or `breakout` the two windows open in a Chrome of their own (profile
+`~/.cnd-stage-chrome`) started with `--autoplay-policy=no-user-gesture-required`,
+so the music starts without anyone clicking on the screen. Opened any other
+way, Chrome keeps the screen silent until someone presses a key in it, so
+press `f` there.
+
+- **Screen:** `http://localhost:4040/stage/index.html?output` (add
+  `&room=breakout` for the breakout). Drag it onto the LED output or the
+  projector and press `f`.
+- **Control:** `http://localhost:4040/stage/control.html?key=…` (add
+  `&room=breakout`). It shows a live preview, Now and Next (with a still of the
   next cue), large Next and Back buttons, panic still, music, guides, the
   countdown controls and the run of show. Tap a cue twice to jump to it.
   Switching day also takes two taps.
