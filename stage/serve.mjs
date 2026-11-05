@@ -52,7 +52,13 @@ const TYPES = {
   ".m4a": "audio/mp4",
 };
 
-execFileSync(process.execPath, [join(HERE, "build.mjs")], { stdio: "inherit" });
+try {
+  execFileSync(process.execPath, [join(HERE, "build.mjs")], { stdio: "pipe" });
+} catch (e) {
+  process.stderr.write(e.stdout ?? "");
+  process.stderr.write(e.stderr ?? "");
+  process.exit(1);
+}
 
 /** The stage file, re-read on every command so an edited run of show counts. */
 const readStage = () => JSON.parse(readFileSync(join(ROOT, "content", "2026-stage.json"), "utf8"));
@@ -257,33 +263,24 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, LOCAL ? "127.0.0.1" : "0.0.0.0", () => {
-  const hosts = LOCAL
-    ? ["localhost"]
-    : [
-        "localhost",
-        ...Object.values(networkInterfaces())
-          .flat()
-          .filter((a) => a && a.family === "IPv4" && !a.internal)
-          .map((a) => a.address),
-      ];
-  const chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  // The control page is the one other machines open, so it gets the network
+  // address; the two outputs run on this laptop.
+  // Prefer the Wi-Fi or Ethernet port (en0, en1, eth0) over VM and VPN bridges.
+  const ipv4 = Object.entries(networkInterfaces()).flatMap(([name, as]) =>
+    (as ?? []).filter((a) => a.family === "IPv4" && !a.internal).map((a) => ({ name, address: a.address })),
+  );
+  const lan = (ipv4.find((a) => /^(en|eth)\d/.test(a.name)) ?? ipv4[0])?.address;
+  const host = !LOCAL && lan ? lan : "localhost";
+  const c = process.stdout.isTTY && !process.env.NO_COLOR
+    ? (code) => (s) => `\x1b[${code}m${s}\x1b[0m`
+    : () => (s) => s;
+  const [bold, dim, rose, cyan, green, yellow] = [c(1), c(2), c(31), c(36), c(32), c(33)];
+  const url = (path) => cyan(`http://${path}`);
   console.log(`
-CND stage wall — server on port ${PORT}${LOCAL ? " (this machine only)" : ""}
+  ${bold("CND stage")} ${dim(`· port ${PORT}${LOCAL ? " · this machine only" : ""}`)}
 
-  Wall (this laptop): open this, drag the window onto the LED output, press f.
-  The autoplay flag lets the walk-in music start without a click on the wall.
-    "${chrome}" --new-window --autoplay-policy=no-user-gesture-required \\
-      "http://localhost:${PORT}/stage/index.html?output"
-
-  Control page (any machine on the same network):
-${hosts.map((h) => `    http://${h}:${PORT}/stage/control.html?key=${KEY}`).join("\n")}
-
-  Breakout room screen (1920×1080, its own operator): its output window
-    "${chrome}" --new-window --autoplay-policy=no-user-gesture-required \\
-      "http://localhost:${PORT}/stage/index.html?output&room=breakout"
-  and its control page:
-${hosts.map((h) => `    http://${h}:${PORT}/stage/control.html?key=${KEY}&room=breakout`).join("\n")}
-
-  Key: ${KEY}   (set STAGE_KEY to keep it the same between restarts)
+  ${green("Control panel")}  ${url(`${host}:${PORT}/stage/control.html?key=${KEY}`)}
+  ${rose("Main stage   ")}  ${url(`localhost:${PORT}/stage/index.html?output`)}
+  ${yellow("Breakout     ")}  ${url(`localhost:${PORT}/stage/index.html?output&room=breakout`)}
 `);
 });
