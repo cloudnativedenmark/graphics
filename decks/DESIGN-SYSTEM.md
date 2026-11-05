@@ -118,6 +118,7 @@ URL hash and the window title for the presenter.
 | `people` | Hexagon portraits with name and role. `data-source` fills it: `organizers` (two rows), `hosts` (the welcome talk's three, large: `data-size="hosts"`), `speakers` (everyone on the programme, names only: `data-size="all"`). | `.pad`, empty `.people` |
 | *maps* | `<div class="geomap" data-map="denmark">` or `"nordics"`, placed by CSS per map. Pins are the hexagon, or an image with `data-pin` (the Cloud Native Nordics mark). Outlines and pin label sides come from `shared/build-maps.py` (Natural Earth 1:10m). | `.geomap` |
 | `gallery` | Words left, photos in a hand-placed honeycomb right. Credit the photographer. | `.pad` > … + `.credit`, `img.photo` |
+| `gallery` (meetups) | The city galleries after the signs: words left, rounded `figure.snap` photos placed by hand with a host tag. Give each city its own arrangement. | `.pad`, `figure.snap` > `img` + optional `figcaption` |
 | `sponsors` | Tiered honeycomb of white hexagons. `data-source="sponsors"` fills it. | `.pad` |
 | `table` | Heading and a table; rows separated by tint, not rules. | `.pad`, `.wrap` > `table.cnd` |
 | `quote` | Quote mark, blockquote, rose attribution. | `.quote-mark`, `.quote`, `.attribution` |

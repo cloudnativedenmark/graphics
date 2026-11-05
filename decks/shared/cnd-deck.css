@@ -647,6 +647,37 @@
   margin: 40px 0 0;
 }
 
+/* Meetup snapshots on the city galleries: a rounded photo with the host as
+ * a small navy tag in its corner. Placed by hand per slide (left, top,
+ * width, height inline), so each city's mosaic can be its own shape rather
+ * than one template three times. */
+.snap {
+  position: absolute;
+  margin: 0;
+  border-radius: 22px;
+  overflow: hidden;
+}
+.snap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.snap figcaption {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: var(--cnd-navy);
+  color: var(--cnd-sand);
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+}
+
 /* ── layout: speaker ─────────────────────────────────────────────────── */
 /* The wall's walk-on at projector size: portraits left, eyebrow, title,
  * names and job titles right. deck.js fills it from `data-talk`, so the
