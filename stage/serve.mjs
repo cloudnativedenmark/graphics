@@ -25,7 +25,6 @@ import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
 import http from "node:http";
-import { networkInterfaces } from "node:os";
 import { dirname, extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -263,14 +262,6 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, LOCAL ? "127.0.0.1" : "0.0.0.0", () => {
-  // The control page is the one other machines open, so it gets the network
-  // address; the two outputs run on this laptop.
-  // Prefer the Wi-Fi or Ethernet port (en0, en1, eth0) over VM and VPN bridges.
-  const ipv4 = Object.entries(networkInterfaces()).flatMap(([name, as]) =>
-    (as ?? []).filter((a) => a.family === "IPv4" && !a.internal).map((a) => ({ name, address: a.address })),
-  );
-  const lan = (ipv4.find((a) => /^(en|eth)\d/.test(a.name)) ?? ipv4[0])?.address;
-  const host = !LOCAL && lan ? lan : "localhost";
   const c = process.stdout.isTTY && !process.env.NO_COLOR
     ? (code) => (s) => `\x1b[${code}m${s}\x1b[0m`
     : () => (s) => s;
@@ -279,7 +270,7 @@ server.listen(PORT, LOCAL ? "127.0.0.1" : "0.0.0.0", () => {
   console.log(`
   ${bold("CND stage")} ${dim(`· port ${PORT}${LOCAL ? " · this machine only" : ""}`)}
 
-  ${green("Control panel")}  ${url(`${host}:${PORT}/stage/control.html?key=${KEY}`)}
+  ${green("Control panel")}  ${url(`localhost:${PORT}/stage/control.html?key=${KEY}`)}
   ${rose("Main stage   ")}  ${url(`localhost:${PORT}/stage/index.html?output`)}
   ${yellow("Breakout     ")}  ${url(`localhost:${PORT}/stage/index.html?output&room=breakout`)}
 `);
