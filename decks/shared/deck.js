@@ -228,7 +228,7 @@
     const qr = slide.querySelector(".qr");
     if (qr && t.feedback) {
       const n = t.feedback.n + 4;
-      qr.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="Rate this session"><path d="${t.feedback.d}"/></svg>`;
+      qr.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="Rate this session"><path d="${t.feedback.d}"/>${t.feedback.mark ?? ""}</svg>`;
     }
   }
 
@@ -437,6 +437,12 @@
       speakerSlide(slide, t, slug);
     } else if (t && slide.dataset.layout === "rate") {
       rateSlide(slide, t);
+    }
+    // The photographers' gallery, the same code the wall shows in the breaks.
+    const photosQr = slide.querySelector('.qr[data-qr="photos"]');
+    if (photosQr && SHOW?.photos) {
+      const n = SHOW.photos.n + 4;
+      photosQr.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="The photos"><path d="${SHOW.photos.d}"/>${SHOW.photos.mark ?? ""}</svg>`;
     }
     if (slide.dataset.source === "sponsors") sponsorSlide(slide);
     else if (slide.dataset.source === "community") communitySlide(slide);

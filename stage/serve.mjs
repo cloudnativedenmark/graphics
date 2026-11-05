@@ -5,6 +5,9 @@
  *   node stage/serve.mjs            listen on the network, so a second machine
  *                                   (laptop, iPad) can run the control page
  *   node stage/serve.mjs --local    this machine only
+ *   node stage/serve.mjs main       also open the main stage's control panel
+ *   node stage/serve.mjs breakout   and screen (or the breakout's) in a Chrome
+ *                                   that may play sound without a click
  *   PORT=4040 STAGE_KEY=… node stage/serve.mjs
  *
  * It holds the show state — day, cue, panic, music, voice of god, guides — for each room
@@ -21,11 +24,11 @@
  * No dependencies: node:http, a static file handler, and EventSource.
  */
 
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
 import http from "node:http";
-import { networkInterfaces } from "node:os";
+import { homedir } from "node:os";
 import { dirname, extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -33,6 +36,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, "..");
 const PORT = Number(process.env.PORT ?? 4040);
 const LOCAL = process.argv.includes("--local");
+const OPEN = ["main", "breakout"].find((r) => process.argv.includes(r));
 const KEY = process.env.STAGE_KEY ?? randomBytes(4).toString("hex");
 
 // Only what the pages need is served — not content/, source/ or .venv.
@@ -52,7 +56,13 @@ const TYPES = {
   ".m4a": "audio/mp4",
 };
 
-execFileSync(process.execPath, [join(HERE, "build.mjs")], { stdio: "inherit" });
+try {
+  execFileSync(process.execPath, [join(HERE, "build.mjs")], { stdio: "pipe" });
+} catch (e) {
+  process.stderr.write(e.stdout ?? "");
+  process.stderr.write(e.stderr ?? "");
+  process.exit(1);
+}
 
 /** The stage file, re-read on every command so an edited run of show counts. */
 const readStage = () => JSON.parse(readFileSync(join(ROOT, "content", "2026-stage.json"), "utf8"));
@@ -80,11 +90,13 @@ function stepCounts(stage, room) {
   return Object.fromEntries(Object.keys(stage.days).map((day) => [day, stepsOf(stage, day, room).length]));
 }
 
+// music starts on: the first cue is the walk-in, which should have its bed
+// playing as soon as the screen window gets its first key press (f).
 // countdownTo: epoch ms the countdown runs to, set from the control page when
 // the schedule slips. null means "use the cue's own `at` time".
 // autoLiveAt: when the current walk-on goes live by itself (see walkonSeconds
 // in the stage file), so the control page can count it down.
-const fresh = () => ({ day: "1", i: 0, panic: false, music: false, vog: true, guides: false, countdownTo: null, autoLiveAt: null, rev: 0 });
+const fresh = () => ({ day: "1", i: 0, panic: false, music: true, vog: true, guides: false, countdownTo: null, autoLiveAt: null, rev: 0 });
 const states = Object.fromEntries(ROOMS.map((r) => [r, fresh()]));
 const clients = new Map(ROOMS.map((r) => [r, new Set()]));
 
@@ -257,33 +269,40 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, LOCAL ? "127.0.0.1" : "0.0.0.0", () => {
-  const hosts = LOCAL
-    ? ["localhost"]
-    : [
-        "localhost",
-        ...Object.values(networkInterfaces())
-          .flat()
-          .filter((a) => a && a.family === "IPv4" && !a.internal)
-          .map((a) => a.address),
-      ];
-  const chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  const c = process.stdout.isTTY && !process.env.NO_COLOR
+    ? (code) => (s) => `\x1b[${code}m${s}\x1b[0m`
+    : () => (s) => s;
+  const [bold, dim, rose, cyan, yellow] = [c(1), c(2), c(31), c(36), c(33)];
+  const url = (path) => cyan(`http://${path}`);
   console.log(`
-CND stage wall — server on port ${PORT}${LOCAL ? " (this machine only)" : ""}
+  ${bold("CND stage")} ${dim(`· port ${PORT}${LOCAL ? " · this machine only" : ""}`)}
 
-  Wall (this laptop): open this, drag the window onto the LED output, press f.
-  The autoplay flag lets the walk-in music start without a click on the wall.
-    "${chrome}" --new-window --autoplay-policy=no-user-gesture-required \\
-      "http://localhost:${PORT}/stage/index.html?output"
+  ${rose("Main stage")}  ${dim("control")}  ${url(`localhost:${PORT}/stage/control.html?key=${KEY}`)}
+              ${dim("screen ")}  ${url(`localhost:${PORT}/stage/index.html?output`)}
 
-  Control page (any machine on the same network):
-${hosts.map((h) => `    http://${h}:${PORT}/stage/control.html?key=${KEY}`).join("\n")}
-
-  Breakout room screen (1920×1080, its own operator): its output window
-    "${chrome}" --new-window --autoplay-policy=no-user-gesture-required \\
-      "http://localhost:${PORT}/stage/index.html?output&room=breakout"
-  and its control page:
-${hosts.map((h) => `    http://${h}:${PORT}/stage/control.html?key=${KEY}&room=breakout`).join("\n")}
-
-  Key: ${KEY}   (set STAGE_KEY to keep it the same between restarts)
-`);
+  ${yellow("Breakout  ")}  ${dim("control")}  ${url(`localhost:${PORT}/stage/control.html?key=${KEY}&room=breakout`)}
+              ${dim("screen ")}  ${url(`localhost:${PORT}/stage/index.html?output&room=breakout`)}
+${OPEN ? `\n  ${dim(`Opening the ${OPEN === "main" ? "main stage" : "breakout"} control and screen in Chrome, sound allowed.`)}\n` : `\n  ${dim("node stage/serve.mjs main | breakout  opens one room's pair with sound allowed")}\n`}`);
+  if (OPEN) openRoom(OPEN);
 });
+
+/**
+ * Open a room's control panel and screen in a Chrome of their own. Chrome
+ * otherwise plays no sound until someone clicks in the screen window, so the
+ * walk-in and afterparty music would stay silent. The autoplay switch only
+ * counts when Chrome starts, hence a separate profile: it starts a fresh
+ * Chrome even when your everyday one is open.
+ */
+function openRoom(room) {
+  const chrome = process.env.CHROME_BIN ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  if (!existsSync(chrome)) {
+    console.error(`  Chrome not found at ${chrome}; set CHROME_BIN, or open the links above.`);
+    return;
+  }
+  const q = room === "breakout" ? "&room=breakout" : "";
+  const flags = [`--user-data-dir=${join(homedir(), ".cnd-stage-chrome")}`, "--autoplay-policy=no-user-gesture-required", "--no-first-run", "--new-window"];
+  const launch = (url) => spawn(chrome, [...flags, url], { detached: true, stdio: "ignore" }).unref();
+  launch(`http://localhost:${PORT}/stage/control.html?key=${KEY}${q}`);
+  // The second window joins the Chrome the first one started.
+  setTimeout(() => launch(`http://localhost:${PORT}/stage/index.html?output${q}`), 1500);
+}

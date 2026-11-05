@@ -118,6 +118,7 @@ URL hash and the window title for the presenter.
 | `people` | Hexagon portraits with name and role. `data-source` fills it: `organizers` (two rows), `hosts` (the welcome talk's three, large: `data-size="hosts"`), `speakers` (everyone on the programme, names only: `data-size="all"`). | `.pad`, empty `.people` |
 | *maps* | `<div class="geomap" data-map="denmark">` or `"nordics"`, placed by CSS per map. Pins are the hexagon, or an image with `data-pin` (the Cloud Native Nordics mark). Outlines and pin label sides come from `shared/build-maps.py` (Natural Earth 1:10m). | `.geomap` |
 | `gallery` | Words left, photos in a hand-placed honeycomb right. Credit the photographer. | `.pad` > … + `.credit`, `img.photo` |
+| `gallery` (meetups) | The city honeycombs after the signs: the gallery grid with photo cells and `.hexcell` colour cells (`rose` with a big figure, `sand` with a short list). Give each city its own silhouette. | `.pad`, `img.photo`, `div.hexcell` |
 | `sponsors` | Tiered honeycomb of white hexagons. `data-source="sponsors"` fills it. | `.pad` |
 | `table` | Heading and a table; rows separated by tint, not rules. | `.pad`, `.wrap` > `table.cnd` |
 | `quote` | Quote mark, blockquote, rose attribution. | `.quote-mark`, `.quote`, `.attribution` |
@@ -152,7 +153,7 @@ the wall therefore show the same title, names, job titles and photos. Fix
 them in `content/`, never in a deck.
 
 ```html
-<section class="slide" data-layout="speaker" data-talk="d1-agent-no-idea"></section>
+<section class="slide" data-layout="speaker" data-talk="d1-reinvention"></section>
 ```
 
 A slug missing from the data logs a warning and leaves the slide empty.
@@ -165,7 +166,8 @@ Anything still unknown is marked `TODO` next to where it belongs, so
 ## 8. Presenting and exporting
 
 ```bash
-decks/start.sh day1-morning   # deck + speaker-notes window, served on :8026
+decks/start.sh                # all four decks, each with its speaker-notes window, on :8026
+decks/start.sh day1-morning   # just one
 ```
 
 Speaker notes go in the slide they belong to:

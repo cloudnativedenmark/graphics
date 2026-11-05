@@ -61,17 +61,23 @@ The laptop feeding the wall runs a small show server. It holds the current
 cue, and every page follows it:
 
 ```bash
-node stage/serve.mjs          # prints the two URLs below, with a key
+node stage/serve.mjs main       # main stage laptop: opens its control panel and screen
+node stage/serve.mjs breakout   # breakout laptop: the same for the breakout
+node stage/serve.mjs            # just prints both rooms' links
 ```
 
-- **Wall:** `http://localhost:4040/stage/index.html?output` on the wall
-  laptop, or the "Open the wall output window" link at the bottom of the
-  control page. Drag it onto the LED output and press `f`. The server prints the
-  Chrome command with `--autoplay-policy=no-user-gesture-required`, so the
-  music can start without anyone clicking on the wall.
-- **Control:** `http://<laptop-ip>:4040/stage/control.html?key=…` on any
-  machine on the same network (a second laptop or an iPad), or on the wall
-  laptop itself. It shows a live preview, Now and Next (with a still of the
+Each laptop runs its own server and opens its own room's pair. With `main`
+or `breakout` the two windows open in a Chrome of their own (profile
+`~/.cnd-stage-chrome`) started with `--autoplay-policy=no-user-gesture-required`,
+so the music starts without anyone clicking on the screen. Opened any other
+way, Chrome keeps the screen silent until someone presses a key in it, so
+press `f` there.
+
+- **Screen:** `http://localhost:4040/stage/index.html?output` (add
+  `&room=breakout` for the breakout). Drag it onto the LED output or the
+  projector and press `f`.
+- **Control:** `http://localhost:4040/stage/control.html?key=…` (add
+  `&room=breakout`). It shows a live preview, Now and Next (with a still of the
   next cue), large Next and Back buttons, panic still, music, guides, the
   countdown controls and the run of show. Tap a cue twice to jump to it.
   Switching day also takes two taps.
@@ -145,9 +151,9 @@ All generated with ElevenLabs Music, instrumental, loudness-matched:
 | Set | When | Files |
 |---|---|---|
 | calm | 08:00 breakfast, breaks, sponsor wall | `walkin.wav` (2:46), then lo-fi Rhodes, Scandinavian acoustic and downtempo marimba (`calm-1…3`, 3:00 each); quieter (−18 LUFS) |
-| preshow | the last 30 minutes before the show, and the countdown | "The November Beat" (3:00) first, then funky house, nu-disco, melodic house (4:30 each), disco house, indie electronic and nu-funk (`preshow-5…7`, 4:00 each); crossfading, and the list starts over at the end (−15.5 LUFS) |
+| preshow | the last 30 minutes before the show, the countdown, and the day-one afterparty | "The November Beat" (3:00) first, then funky house, nu-disco, melodic house (4:30 each), disco house, indie electronic and nu-funk (`preshow-5…7`, 4:00 each); crossfading, and the list starts over at the end (−15.5 LUFS) |
 | walk-on | every talk's walk-on | eight 20 s themes (`walkon-1…8`: piano, guitar and marimba, bells, electric piano, strings, brass, Nordic electronic, glockenspiel), taken in turn so neighbouring talks differ (−16 LUFS) |
-| voice of god | every main-stage walk-on | "Please welcome to the stage… from Adobe… Joseph Sandoval!" over the walk-on theme, one clip per talk, the hosts' included. Switchable from the control page |
+| voice of god | every main-stage walk-on | "Please welcome to the stage… from Saxo Bank… Johan Thomsen!" over the walk-on theme, one clip per talk, the hosts' included. Switchable from the control page |
 
 A cue picks its set by scene (`music.scenes` in `content/2026-stage.json`), or
 by its own `"music"`. Moving between cues on the same set keeps the track

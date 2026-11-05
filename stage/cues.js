@@ -47,6 +47,7 @@ window.CUES = (() => {
         break: `${cue.eyebrow} · ${cue.headline ?? `Back at ${cue.until}`}${cue.loop ? ` ⇄ ${cue.loop.slice(1).join(" ⇄ ")}` : ""}`,
         pitch: `Sponsor pitch · ${cue.sponsor} · ${cue.minutes ?? 2}:00`,
         message: `${cue.eyebrow} · ${cue.headline}`,
+        afterparty: `Afterparty${cue.loop ? ` ⇄ ${cue.loop.slice(1).map((n) => (n === "message" ? cue.headline : n)).join(" ⇄ ")}` : ""}, party music`,
         sponsors: "Sponsor wall",
         community: "Community sponsors & partners",
       }[cue.scene] ?? cue.scene
@@ -65,6 +66,7 @@ window.CUES = (() => {
     }
     if (cue.scene === "pitch") return "The clock starts when the cue comes up.";
     if (cue.scene === "message") return cue.body ?? "";
+    if (cue.scene === "afterparty") return `${cue.party?.when ?? "Afterparty"} · starts on "The November Beat"`;
     return "";
   }
 

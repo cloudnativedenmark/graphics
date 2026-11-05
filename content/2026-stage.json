@@ -19,6 +19,11 @@
         "assets/audio/calm-2-acoustic.mp3",
         "assets/audio/calm-3-marimba.mp3"
       ],
+      "break": [
+        "assets/audio/calm-1-lofi-rhodes.mp3",
+        "assets/audio/calm-2-acoustic.mp3",
+        "assets/audio/calm-3-marimba.mp3"
+      ],
       "preshow": [
         "assets/audio/preshow-4-november-beat.mp3",
         "assets/audio/preshow-1-funky-house.mp3",
@@ -32,7 +37,7 @@
     "scenes": {
       "walkin": "calm",
       "countdown": "preshow",
-      "break": "calm",
+      "break": "break",
       "sponsors": "calm"
     },
     "walkon": [
@@ -52,16 +57,16 @@
     "d1-welcome": "Please welcome to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
     "d1-morning-wrapup": "Please welcome back to the stage... your hosts... Kasper Borg Nissen... Jin-hong Brine-holt... and Allan Hoy-gore Jensen!",
     "d1-hackyourfuture": "Please welcome to the stage... the Managing Director of HackYourFuture Denmark... Helena Beerk-holm!",
-    "d1-agent-no-idea": "Please welcome to the stage... from Adobe... Joseph Sandoval!",
+    "d1-reinvention": "Please welcome to the stage... co-founder of BIMP, and the creator of AI for the rest of us... Hannah Foxwell!",
     "talk-sterile-patch": "Please welcome to the stage... from Saxo Bank... Yo-han Tom-sen!",
     "talk-collector-stories": "Please welcome to the stage... from IKEA, and an OpenTelemetry maintainer... Yohanna Er-yeling!",
     "talk-agent-substrate": "Please welcome to the stage... Cloud Developer Advocate... Abdel Sgee-war!",
     "talk-platforms-asked": "Please welcome to the stage... from the LEGO Group... Jacob Av-lund!",
-    "talk-kyverno-victoriametrics": "Please welcome to the stage... Diana To-day-a... and from Nirmata... Cortney Nickerson!",
+    "talk-kyverno-victoriametrics": "Please welcome to the stage... Diana To-day-a... and from Akamai... Cortney Nickerson!",
     "talk-sovereign-agentic-coding": "Please welcome to the stage... from Neurospace... Rasmus Stine-ikka!",
     "talk-postgres-observability": "Please welcome to the stage... Gabriele Ross-ee-nee!",
     "d1-whose-code": "Please welcome to the stage... from Dynatrace... Adriana Vee-lella... and from Altinity... Josh Lee!",
-    "d1-goblins-druids": "Please welcome to the stage... Michael Co-tay!",
+    "d1-goblins-druids": "Please welcome to the stage: Michael Cotay!",
     "sz-1306361": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
     "sz-1306364": "Good morning, and welcome to day two! Please welcome to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
     "d2-developers-nightmare": "Please welcome to the stage... Thomas Vee-tah-leh... and from Eficode... Alexandra Hoe Alders-hob!",
@@ -93,8 +98,9 @@
   },
   "roles": {
     "$comment": "Speaker job titles, keyed by portrait-order within a talk. Empty string hides the line rather than printing a placeholder on the wall.",
-    "d1-agent-no-idea": [
-      "Principal Product Manager, Developer Platforms, Adobe"
+    "talk-kyverno-victoriametrics": [
+      "",
+      "Principal Product Marketing Manager, Akamai"
     ],
     "d1-whose-code": [
       "Principal Developer Advocate, Dynatrace",
@@ -141,7 +147,7 @@
           "scene": "countdown",
           "at": "09:00",
           "title": "Opening keynotes",
-          "next": ["d1-welcome", "d1-hackyourfuture", "d1-agent-no-idea"],
+          "next": ["d1-welcome", "d1-hackyourfuture", "d1-reinvention"],
           "minutes": 5,
           "loop": ["countdown", "sponsors", "social"],
           "every": [40, 10, 10],
@@ -159,7 +165,7 @@
         },
         {
           "scene": "talk",
-          "talk": "d1-agent-no-idea",
+          "talk": "d1-reinvention",
           "$note": "09:25"
         },
         {
@@ -266,7 +272,17 @@
           "$note": "16:50"
         },
         {
-          "scene": "message",
+          "scene": "afterparty",
+          "$note": "End of day one: the afterparty, alternating with see-you-tomorrow. The party set plays.",
+          "music": "preshow",
+          "loop": ["afterparty", "message"],
+          "every": [45, 15],
+          "party": {
+            "eyebrow": "That's day one",
+            "headline": "Party time.",
+            "when": "Afterparty · 18:00",
+            "body": "Food, wine, beer, sodas and good company."
+          },
           "eyebrow": "That's day one",
           "headline": "See you tomorrow.",
           "body": "Doors open 08:00 · Scandic Copenhagen"

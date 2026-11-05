@@ -602,6 +602,14 @@
   font-size: 32px;
   text-align: center;
 }
+.city .body a {
+  color: inherit;
+  text-decoration: none;
+}
+.city .body small {
+  display: block;
+  font-size: 26px;
+}
 
 /* ── layout: gallery ─────────────────────────────────────────────────── */
 /* Words left, photos as a small honeycomb on the right: the wall's sponsor
@@ -637,6 +645,103 @@
   text-transform: uppercase;
   color: var(--muted);
   margin: 40px 0 0;
+}
+
+/* Colour cells for the meetup honeycombs, on the same grid and hexagon as
+ * .photo: a big figure or a short list. */
+.hexcell {
+  position: absolute;
+  width: 282px;
+  height: 320px;
+  clip-path: url(#cnd-hex);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--cnd-navy);
+  font-family: var(--cnd-font-display);
+}
+.hexcell.rose { background: var(--cnd-rose); }
+.hexcell.sand { background: var(--cnd-sand); }
+.hexcell b {
+  font-size: 150px;
+  font-weight: 700;
+  line-height: 0.9;
+}
+.hexcell span {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+}
+.hexcell i {
+  font-style: normal;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+/* The meetup honeycombs pack more, smaller cells: the same grid at 3/4. */
+.slide[data-cells="small"] .photo,
+.slide[data-cells="small"] .hexcell {
+  width: 212px;
+  height: 240px;
+}
+.slide[data-cells="small"] .hexcell b { font-size: 112px; }
+.slide[data-cells="small"] .hexcell span { font-size: 19px; }
+.slide[data-cells="small"] .hexcell i { font-size: 27px; margin-top: 6px; }
+
+/* An organizer: the portrait fills a hexagon, the name and company sit
+ * under it. Placed by hand in aligned rows (left, top, width, height). */
+.org {
+  position: absolute;
+  margin: 0;
+  width: 240px;
+  height: 272px;
+}
+.org img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: url(#cnd-hex);
+}
+.org figcaption {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+.org figcaption { top: calc(100% + 16px); }
+.org b {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.org span {
+  font-size: 17px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.org .initials {
+  width: 100%;
+  height: 100%;
+  clip-path: url(#cnd-hex);
+  background: var(--cnd-sand);
+  color: var(--cnd-navy);
+  display: grid;
+  place-items: center;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 96px;
 }
 
 /* ── layout: speaker ─────────────────────────────────────────────────── */
@@ -731,6 +836,11 @@
 }
 .qr svg {
   fill: var(--cnd-navy);
+}
+.qr svg .qr-star {
+  fill: var(--cnd-white);
+  stroke: var(--cnd-white);
+  stroke-width: 0.12;
 }
 
 /* ── layout: map ─────────────────────────────────────────────────────── */
@@ -934,16 +1044,20 @@
   position: relative;
 }
 
-/* Charity partner photo: one large hexagon on the right. */
-.hyf-photo {
-  position: absolute;
+/* A round logo fills more of its hexagon than a wordmark does. */
+.hexlogo.round img,
+.charity .hexlogo.round img {
+  inset: 15% 10%;
+  width: 80%;
+  height: 70%;
+}
+
+/* Charity partner: the logo on one large hexagon on the right. */
+.hyf-big {
   right: 110px;
   top: 150px;
-  width: 700px;
+  width: 688px;
   height: 780px;
-  object-fit: cover;
-  object-position: right center;
-  clip-path: url(#cnd-hex);
 }
 
 /* ── layout: table ───────────────────────────────────────────────────── */
@@ -1050,3 +1164,31 @@ table.cnd tbody tr[data-live] td {
 .cheese-cam .lens { fill: var(--cnd-navy); }
 .cheese-cam .glass { fill: var(--cnd-peach); }
 .cheese-cam .flash { fill: var(--cnd-white); }
+
+/* Kim's photo gallery QR, beside the camera. */
+.photos-qr {
+  position: absolute;
+  left: 450px;
+  top: 690px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.photos-qr .qr {
+  width: 268px;
+  height: 260px;
+}
+.photos-qr .qr svg {
+  width: 168px;
+  height: 168px;
+  margin-top: 14px;
+}
+.photos-qr p {
+  font-family: var(--cnd-font-display);
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-rose);
+  line-height: 1.2;
+}

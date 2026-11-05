@@ -337,7 +337,7 @@
       `<div class="hexlogo qr" style="width:${w.toFixed(1)}px;height:${h}px;${style}">` +
       `<svg viewBox="${HEX_VB.x} ${HEX_VB.y} ${HEX_VB.w} ${HEX_VB.h}"><path d="${HEX_D}"/></svg>` +
       `<svg class="code" viewBox="-2 -2 ${q.n + 4} ${q.n + 4}" style="left:${((w - side) / 2).toFixed(1)}px;top:${((h - side) / 2).toFixed(1)}px;width:${side.toFixed(1)}px;height:${side.toFixed(1)}px">` +
-      `<path d="${q.d}"/></svg></div>`
+      `<path d="${q.d}"/>${q.mark ?? ""}</svg></div>`
     );
   }
 
@@ -478,6 +478,55 @@
         blocks.join(""),
     };
   }
+
+  /* ── afterparty ───────────────────────────────────────────────────────
+   * Confetti: small hexagons in the field's colours, falling and turning.
+   * Seeded, so every still of the scene is the same picture; in a still
+   * they hang where they are placed. */
+  function confetti(n) {
+    let seed = 2026;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    const colours = ["rose", "peach", "sand", "white", "rose", "peach"];
+    let html = "";
+    for (let k = 0; k < n; k++) {
+      const size = 16 + rnd() * 34;
+      html +=
+        `<svg class="confetto ${colours[k % colours.length]}" viewBox="${HEX_VB.x} ${HEX_VB.y} ${HEX_VB.w} ${HEX_VB.h}" ` +
+        `style="left:${(rnd() * W).toFixed(0)}px;top:${(rnd() * H).toFixed(0)}px;width:${(size * HEX_RATIO).toFixed(1)}px;height:${size.toFixed(1)}px;` +
+        `--fall:${(9 + rnd() * 9).toFixed(1)}s;--delay:${(-rnd() * 18).toFixed(1)}s;--spin:${(rnd() < 0.5 ? -1 : 1) * (180 + rnd() * 360)}deg;--sway:${(20 + rnd() * 60).toFixed(0)}px">` +
+        `<path d="${HEX_D}"/></svg>`;
+    }
+    return `<div class="confetti">${html}</div>`;
+  }
+
+  /* A wine glass, a beer, a burger and a soda, drawn in curves (the wall has no
+   * straight lines), leaning in to clink. */
+  const DRINKS =
+    `<svg class="drink wine" viewBox="0 0 200 400" aria-hidden="true">` +
+    `<path class="glass" d="M40 20 Q30 120 60 170 Q80 200 92 210 L92 330 Q60 340 50 360 Q100 375 150 360 Q140 340 108 330 L108 210 Q120 200 140 170 Q170 120 160 20 Q100 8 40 20 Z"/>` +
+    `<path class="liquid" d="M37 80 Q100 92 163 80 Q160 140 132 174 Q112 196 100 200 Q88 196 68 174 Q40 140 37 80 Z"/>` +
+    `</svg>` +
+    `<svg class="drink beer" viewBox="0 0 260 400" aria-hidden="true">` +
+    `<path class="glass" d="M30 70 Q24 230 40 360 Q44 384 70 386 L170 386 Q196 384 200 360 Q216 230 210 70 Z"/>` +
+    `<path class="handle" d="M206 130 Q258 130 256 210 Q254 290 202 290 L203 258 Q226 256 226 210 Q226 164 207 162 Z"/>` +
+    `<path class="liquid" d="M40 120 Q120 132 200 120 Q206 240 192 352 Q188 368 168 370 L72 370 Q52 368 48 352 Q34 240 40 120 Z"/>` +
+    `<path class="foam" d="M22 82 Q20 40 60 44 Q80 14 120 30 Q160 10 186 40 Q226 38 218 84 Q210 118 180 110 Q150 132 120 116 Q90 134 62 112 Q26 122 22 82 Z"/>` +
+    `<circle class="bubble" cx="90" cy="250" r="9"/><circle class="bubble" cx="140" cy="300" r="7"/><circle class="bubble" cx="120" cy="200" r="6"/>` +
+    `</svg>` +
+    `<svg class="drink food" viewBox="0 0 340 300" aria-hidden="true">` +
+    `<path class="bun" d="M30 130 Q30 30 170 30 Q310 30 310 130 Q310 146 290 146 L50 146 Q30 146 30 130 Z"/>` +
+    `<circle class="seed" cx="110" cy="80" r="7"/><circle class="seed" cx="170" cy="60" r="7"/><circle class="seed" cx="230" cy="84" r="7"/><circle class="seed" cx="150" cy="104" r="6"/>` +
+    `<path class="lettuce" d="M20 156 Q50 140 80 158 Q110 140 140 158 Q170 140 200 158 Q230 140 260 158 Q290 140 320 156 Q324 176 300 174 L40 174 Q16 176 20 156 Z"/>` +
+    `<path class="cheese" d="M36 172 L304 172 Q300 186 270 196 Q250 214 236 196 L60 196 Q40 190 36 172 Z"/>` +
+    `<path class="patty" d="M28 200 Q28 186 50 186 L290 186 Q312 186 312 200 Q312 236 290 236 L50 236 Q28 236 28 200 Z"/>` +
+    `<path class="bun" d="M34 246 Q34 238 50 238 L290 238 Q306 238 306 246 Q306 290 250 290 L90 290 Q34 290 34 246 Z"/>` +
+    `</svg>` +
+    `<svg class="drink soda" viewBox="0 0 180 400" aria-hidden="true">` +
+    `<path class="can" d="M30 70 Q30 44 60 40 L120 40 Q150 44 150 70 L156 340 Q156 372 120 376 L60 376 Q24 372 24 340 Z"/>` +
+    `<path class="stripe" d="M27 170 Q90 150 153 170 L154 250 Q90 228 26 250 Z"/>` +
+    `<path class="top" d="M50 40 Q50 22 90 22 Q130 22 130 40 Z"/>` +
+    `<path class="straw" d="M96 30 Q98 -10 130 -30 L140 -18 Q112 0 110 30 Z"/>` +
+    `</svg>`;
 
   const SCENES = {
     walkin(cue) {
@@ -673,6 +722,34 @@
           `</div>` +
           `<div class="box zone-right">` +
           `<p class="body rise" style="--i:2">${esc(cue.body)}</p>` +
+          `</div>`,
+      };
+    },
+
+    // End of day one: the afterparty. Hexagon confetti falls across the
+    // whole wall, a wine glass, a beer and a soda clink in the middle, and
+    // the afterparty sponsor sits on the right. It loops with the "See you
+    // tomorrow" message (the cue's eyebrow, headline and body).
+    afterparty(cue) {
+      const p = cue.party ?? {};
+      const host = SHOW.tiers.find((t) => t.tier === "Afterparty")?.sponsors?.[0];
+      // The field nearly clears: the confetti is the decoration here, and the
+      // drinks need the middle to themselves.
+      return {
+        mode: "live",
+        html:
+          confetti(BREAKOUT ? 30 : 60) +
+          `<div class="box zone-left">` +
+          `<p class="eyebrow rise" style="--i:0">${esc(p.eyebrow ?? "That's day one")}</p>` +
+          `<h2 class="display rise" style="--i:1" data-fit="640">${esc(p.headline ?? "Party time.")}</h2>` +
+          `</div>` +
+          (BREAKOUT ? "" : `<div class="drinks rise" style="--i:2">${DRINKS}</div>`) +
+          `<div class="box zone-right">` +
+          `<p class="eyebrow rise" style="--i:3">${esc(p.when ?? "Afterparty")}</p>` +
+          `<p class="body rise" style="--i:4">${esc(p.body ?? "")}</p>` +
+          (host
+            ? `<div class="party-host rise" style="--i:5"><p class="eyebrow">Sponsored by</p>${hexLogo(host, BREAKOUT ? 240 : 300)}</div>`
+            : "") +
           `</div>`,
       };
     },
