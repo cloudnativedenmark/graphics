@@ -694,9 +694,8 @@
 .slide[data-cells="small"] .hexcell span { font-size: 19px; }
 .slide[data-cells="small"] .hexcell i { font-size: 27px; margin-top: 6px; }
 
-/* An organizer in a honeycomb cell: the portrait fills the hexagon, and
- * the name sits outside it, above the top row and below the bottom row
- * (data-name), so it never covers a face. */
+/* An organizer: the portrait fills a hexagon, the name and company sit
+ * under it. Placed by hand in aligned rows (left, top, width, height). */
 .org {
   position: absolute;
   margin: 0;
@@ -717,8 +716,7 @@
   justify-items: center;
   text-align: center;
 }
-.org[data-name="above"] figcaption { bottom: calc(100% + 14px); }
-.org[data-name="below"] figcaption { top: calc(100% + 14px); }
+.org figcaption { top: calc(100% + 16px); }
 .org b {
   font-family: var(--cnd-font-display);
   font-weight: 700;
@@ -744,10 +742,6 @@
   font-family: var(--cnd-font-display);
   font-weight: 700;
   font-size: 96px;
-}
-.slide[data-cells="large"] .org {
-  width: 282px;
-  height: 320px;
 }
 
 /* ── layout: speaker ─────────────────────────────────────────────────── */
