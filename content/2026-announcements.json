@@ -396,7 +396,7 @@
       "slug": "scannet",
       "name": "ScanNet",
       "tier": "Platinum",
-      "logo": "assets/sponsors/scannet.png"
+      "logo": "assets/sponsors/scannet.svg"
     },
     {
       "slug": "aws",
@@ -414,7 +414,7 @@
       "slug": "netic",
       "name": "Netic",
       "tier": "Gold",
-      "logo": "assets/sponsors/netic.png"
+      "logo": "assets/sponsors/netic.svg"
     },
     {
       "slug": "suse",
@@ -459,6 +459,66 @@
       "logo": "assets/sponsors/tigera.svg"
     },
     {
+      "slug": "ardan-labs",
+      "name": "Ardan Labs",
+      "tier": "Community",
+      "logo": "assets/sponsors/ardan-labs.svg"
+    },
+    {
+      "slug": "bankdata",
+      "name": "Bankdata",
+      "tier": "Community",
+      "logo": "assets/sponsors/bankdata.svg"
+    },
+    {
+      "slug": "deranged",
+      "name": "deranged",
+      "tier": "Community",
+      "logo": "assets/sponsors/deranged.svg"
+    },
+    {
+      "slug": "jysk",
+      "name": "JYSK",
+      "tier": "Community",
+      "logo": "assets/sponsors/jysk.svg"
+    },
+    {
+      "slug": "kamstrup",
+      "name": "Kamstrup",
+      "tier": "Community",
+      "logo": "assets/sponsors/kamstrup.svg"
+    },
+    {
+      "slug": "lego",
+      "name": "LEGO",
+      "tier": "Community",
+      "logo": "assets/sponsors/lego.svg"
+    },
+    {
+      "slug": "mft",
+      "name": "MFT Energy",
+      "tier": "Community",
+      "logo": "assets/sponsors/mft.svg"
+    },
+    {
+      "slug": "onlinecity",
+      "name": "OnlineCity.io",
+      "tier": "Community",
+      "logo": "assets/sponsors/onlinecity.svg"
+    },
+    {
+      "slug": "sysdig",
+      "name": "Sysdig",
+      "tier": "Community",
+      "logo": "assets/sponsors/sysdig.svg"
+    },
+    {
+      "slug": "zeronorth",
+      "name": "ZeroNorth",
+      "tier": "Community",
+      "logo": "assets/sponsors/zeronorth.svg"
+    },
+    {
       "slug": "upwind",
       "name": "Upwind",
       "tier": "Afterparty",
@@ -482,9 +542,26 @@
       "perRow": 3
     },
     {
+      "tier": "Community",
+      "ground": "sand",
+      "perRow": 5
+    },
+    {
       "tier": "Afterparty",
       "ground": "navy",
       "perRow": 1
+    }
+  ],
+  "partners": [
+    {
+      "slug": "cncf",
+      "name": "Cloud Native Computing Foundation",
+      "logo": "assets/partners/cncf.svg"
+    },
+    {
+      "slug": "hackyourfuture",
+      "name": "HackYourFuture Denmark",
+      "logo": "assets/partners/hyf-logo-round.svg"
     }
   ],
   "countdowns": [

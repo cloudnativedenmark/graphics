@@ -192,6 +192,9 @@ const show = {
       .filter((s) => s.tier === tier)
       .map((s) => ({ name: s.name, logo: fromStage(s.logo) })),
   })),
+  // Partners & media (CNCF, the charity partner): thanked beside the
+  // community sponsors, but not a sponsor tier.
+  partners: (content.partners ?? []).map((p) => ({ name: p.name, logo: fromStage(p.logo) })),
   days: stage.days,
   // Every session of both days in every room, in time order: the breaks'
   // "next here / next in the breakout" and the breakout screen read this.

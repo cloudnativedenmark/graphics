@@ -426,6 +426,59 @@
    * Each returns { html, mode } — mode picks the field density.
    */
 
+  /** Tiers left to right, largest first, each a small honeycomb of white
+   *  hexagons, under a heading in the left zone. Every tier shrinks together
+   *  until the row ends inside the frame. Used by the sponsor wall and the
+   *  community scene. */
+  const COMMUNITY_TIERS = ["Community"];
+  function tierWall(tiers, spec, eyebrow, headline) {
+    const gap = 16;
+    const widthAt = (k) =>
+      tiers.reduce((sum, tier) => {
+        const { h, per } = spec[tier.tier] ?? { h: 230, per: 3 };
+        const w = h * k * HEX_RATIO;
+        const rows = Math.ceil(tier.sponsors.length / per);
+        return sum + Math.min(per, tier.sponsors.length) * (w + gap) + (rows > 1 ? (w + gap) / 2 : 0) + 100;
+      }, -100 - gap);
+    const { x0, top, right, label } = L.sponsors;
+    // Shrink every tier together until the row ends inside the frame; the
+    // margins between tiers don't scale, so search rather than divide.
+    let k = 1;
+    while (k > 0.3 && widthAt(k) > right - x0) k -= 0.01;
+    let x = x0;
+    let i = 0;
+    const blocks = tiers.map((tier) => {
+      const base = spec[tier.tier] ?? { h: 230, per: 3 };
+      const h = Math.round(base.h * k);
+      const per = base.per;
+      const w = h * HEX_RATIO;
+      const rows = Math.ceil(tier.sponsors.length / per);
+      const html =
+        `<p class="tier-label rise" style="--i:${i++};left:${x}px;top:${top - label}px">${esc(tier.tier)}</p>` +
+        tier.sponsors
+          .map((s, n) => {
+            const r = Math.floor(n / per);
+            const c = n % per;
+            const lx = x + c * (w + gap) + (r % 2 ? (w + gap) / 2 : 0);
+            const ly = top + r * (h * 0.75 + gap);
+            return hexLogo(s, h, `position:absolute;left:${lx.toFixed(0)}px;top:${ly.toFixed(0)}px`);
+          })
+          .join("");
+      const cols = Math.min(per, tier.sponsors.length);
+      x += cols * (w + gap) + (rows > 1 ? (w + gap) / 2 : 0) + 100;
+      return `<div class="rise" style="--i:${i++}">${html}</div>`;
+    });
+    return {
+      mode: "sponsors",
+      html:
+        `<div class="box zone-left sponsors-head">` +
+        `<p class="eyebrow rise" style="--i:0">${esc(eyebrow)}</p>` +
+        `<h2 class="display rise" style="--i:1" data-fit="${BREAKOUT ? 300 : 640}">${esc(headline)}</h2>` +
+        `</div>` +
+        blocks.join(""),
+    };
+  }
+
   const SCENES = {
     walkin(cue) {
       return {
@@ -625,56 +678,25 @@
     },
 
     sponsors() {
-      // Tiers left to right, largest first, each a small honeycomb.
-      // Sizes are for three tiers; a fourth (the afterparty sponsor) shrinks
-      // every tier together until the row ends inside the wall.
-      const spec = { Platinum: { h: 560, per: 1 }, Gold: { h: 310, per: 2 }, Bronze: { h: 230, per: 3 }, Afterparty: { h: 310, per: 1 } };
-      const gap = 16;
-      const tiers = SHOW.tiers.filter((t) => t.sponsors.length);
-      const widthAt = (k) =>
-        tiers.reduce((sum, tier) => {
-          const { h, per } = spec[tier.tier] ?? { h: 230, per: 3 };
-          const w = h * k * HEX_RATIO;
-          const rows = Math.ceil(tier.sponsors.length / per);
-          return sum + Math.min(per, tier.sponsors.length) * (w + gap) + (rows > 1 ? (w + gap) / 2 : 0) + 100;
-        }, -100 - gap);
-      const { x0, top, right, label } = L.sponsors;
-      // Shrink every tier together until the row ends inside the frame; the
-      // margins between tiers don't scale, so search rather than divide.
-      let k = 1;
-      while (k > 0.3 && widthAt(k) > right - x0) k -= 0.01;
-      let x = x0;
-      let i = 0;
-      const blocks = tiers.map((tier) => {
-        const base = spec[tier.tier] ?? { h: 230, per: 3 };
-        const h = Math.round(base.h * k);
-        const per = base.per;
-        const w = h * HEX_RATIO;
-        const rows = Math.ceil(tier.sponsors.length / per);
-        const html =
-          `<p class="tier-label rise" style="--i:${i++};left:${x}px;top:${top - label}px">${esc(tier.tier)}</p>` +
-          tier.sponsors
-            .map((s, n) => {
-              const r = Math.floor(n / per);
-              const c = n % per;
-              const lx = x + c * (w + gap) + (r % 2 ? (w + gap) / 2 : 0);
-              const ly = top + r * (h * 0.75 + gap);
-              return hexLogo(s, h, `position:absolute;left:${lx.toFixed(0)}px;top:${ly.toFixed(0)}px`);
-            })
-            .join("");
-        const cols = Math.min(per, tier.sponsors.length);
-        x += cols * (w + gap) + (rows > 1 ? (w + gap) / 2 : 0) + 100;
-        return `<div class="rise" style="--i:${i++}">${html}</div>`;
-      });
-      return {
-        mode: "sponsors",
-        html:
-          `<div class="box zone-left sponsors-head">` +
-          `<p class="eyebrow rise" style="--i:0">${esc(SHOW.event.name)} ${esc(SHOW.event.year)}</p>` +
-          `<h2 class="display rise" style="--i:1" data-fit="${BREAKOUT ? 300 : 640}">Thank you, sponsors.</h2>` +
-          `</div>` +
-          blocks.join(""),
-      };
+      return tierWall(
+        SHOW.tiers.filter((t) => t.sponsors.length && !COMMUNITY_TIERS.includes(t.tier)),
+        { Platinum: { h: 560, per: 1 }, Gold: { h: 310, per: 2 }, Bronze: { h: 230, per: 3 }, Afterparty: { h: 310, per: 1 } },
+        `${SHOW.event.name} ${SHOW.event.year}`,
+        "Thank you, sponsors.",
+      );
+    },
+
+    // The community sponsors and the partners: a scene of their own, since
+    // ten more logos on the sponsor wall would shrink every tier.
+    community() {
+      const tiers = SHOW.tiers.filter((t) => t.sponsors.length && COMMUNITY_TIERS.includes(t.tier));
+      if (SHOW.partners?.length) tiers.push({ tier: "Partners & media", sponsors: SHOW.partners });
+      return tierWall(
+        tiers,
+        { Community: { h: 300, per: 5 }, "Partners & media": { h: 300, per: 1 } },
+        "Community sponsors & partners",
+        "Thank you, community.",
+      );
     },
 
     // The organizing team, in the walk-in and pre-show loops. Two rows of
@@ -844,7 +866,7 @@
    */
   const music = (() => {
     const cfg = SHOW.music;
-    const off = { cue() {}, set() {}, get on() { return false; } };
+    const off = { cue() {}, set() {}, vog() {}, get on() { return false; } };
     if (!cfg || !AUDIO) return off;
     const VOL = cfg.volume ?? 0.8;
     const XF = cfg.crossfade ?? 4;

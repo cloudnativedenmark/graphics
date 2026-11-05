@@ -127,14 +127,14 @@
         {
           "scene": "walkin",
           "$note": "08:00 registration and breakfast, calm music",
-          "loop": ["walkin", "sponsors", "team"],
+          "loop": ["walkin", "sponsors", "community", "team"],
           "every": 30
         },
         {
           "scene": "walkin",
           "music": "preshow",
           "$note": "08:30 pre-show: the energetic set for the last 30 minutes",
-          "loop": ["walkin", "sponsors", "team", "social"],
+          "loop": ["walkin", "sponsors", "community", "team", "social"],
           "every": 30
         },
         {
@@ -182,7 +182,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "10:05–10:25",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -195,7 +195,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -208,7 +208,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -221,7 +221,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -234,7 +234,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -247,7 +247,7 @@
           "eyebrow": "Coffee break",
           "until": "16:00",
           "$note": "15:30–16:00",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -276,7 +276,7 @@
         {
           "scene": "walkin",
           "$note": "Until the first session: keynotes are on the main stage",
-          "loop": ["walkin", "sponsors", "photos"],
+          "loop": ["walkin", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -284,7 +284,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "until 10:25",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -297,7 +297,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -310,7 +310,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -323,7 +323,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -336,7 +336,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -358,14 +358,14 @@
         {
           "scene": "walkin",
           "$note": "08:00 registration and breakfast, calm music",
-          "loop": ["walkin", "sponsors", "team"],
+          "loop": ["walkin", "sponsors", "community", "team"],
           "every": 30
         },
         {
           "scene": "walkin",
           "music": "preshow",
           "$note": "08:30 pre-show: the energetic set for the last 30 minutes",
-          "loop": ["walkin", "sponsors", "team", "social"],
+          "loop": ["walkin", "sponsors", "community", "team", "social"],
           "every": 30
         },
         {
@@ -424,7 +424,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "10:05–10:25",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -437,7 +437,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -450,7 +450,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -463,7 +463,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -476,7 +476,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -489,7 +489,7 @@
           "eyebrow": "Coffee break",
           "until": "15:50",
           "$note": "15:30–15:50",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -518,7 +518,7 @@
         {
           "scene": "walkin",
           "$note": "Until the first session: keynotes are on the main stage",
-          "loop": ["walkin", "sponsors", "photos"],
+          "loop": ["walkin", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -526,7 +526,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "until 10:25",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -539,7 +539,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -552,7 +552,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -565,7 +565,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -578,7 +578,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "photos"],
+          "loop": ["break", "feedback", "sponsors", "community", "photos"],
           "every": 30
         },
         {

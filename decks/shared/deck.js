@@ -289,6 +289,37 @@
     );
   }
 
+  /* The community sponsors and the partners, on a slide of their own: one
+   * honeycomb of five across, then the partners side by side beside it. */
+  function communitySlide(slide) {
+    const sponsors = (SHOW?.tiers ?? []).find((t) => t.tier === "Community")?.sponsors ?? [];
+    const partners = SHOW?.partners ?? [];
+    const gap = 14;
+    const top = 380;
+    const h = 230;
+    const w = h * HEX_RATIO;
+    const per = 5;
+    const tile = (s, x, y) =>
+      `<div class="hexlogo" style="left:${x.toFixed(0)}px;top:${y.toFixed(0)}px;width:${w.toFixed(0)}px;height:${h}px">` +
+      `<img src="${esc(asset(s.logo))}" alt="${esc(s.name)}"></div>`;
+    let x = 90;
+    const comb = sponsors
+      .map((s, n) => {
+        const r = Math.floor(n / per);
+        const c = n % per;
+        return tile(s, x + c * (w + gap) + (r % 2 ? (w + gap) / 2 : 0), top + r * (h * 0.75 + gap));
+      })
+      .join("");
+    const rows = Math.ceil(sponsors.length / per);
+    x += Math.min(per, sponsors.length) * (w + gap) + (rows > 1 ? (w + gap) / 2 : 0) + 76;
+    const partnerHtml = partners.map((s, n) => tile(s, x + n * (w + gap), top)).join("");
+    slide.insertAdjacentHTML(
+      "beforeend",
+      `<div class="rise">${sponsors.length ? `<p class="tier-label" style="left:90px;top:${top - 60}px">Community</p>` : ""}${comb}</div>` +
+        `<div class="rise">${partners.length ? `<p class="tier-label" style="left:${x}px;top:${top - 60}px">Partners &amp; media</p>` : ""}${partnerHtml}</div>`,
+    );
+  }
+
   function sponsorSlide(slide) {
     // Tiers left to right, largest first, each a small honeycomb — the wall's
     // sponsor scene, laid out under the heading instead of beside it.
@@ -299,7 +330,9 @@
     const gap = 14;
     const top = 380;
     const party = (SHOW?.tiers ?? []).find((t) => t.tier === "Afterparty")?.sponsors ?? [];
-    const tiers = (SHOW?.tiers ?? []).filter((t) => t.sponsors.length && t.tier !== "Afterparty");
+    const tiers = (SHOW?.tiers ?? []).filter(
+      (t) => t.sponsors.length && t.tier !== "Afterparty" && t.tier !== "Community",
+    );
     const widthAt = (k) =>
       tiers.reduce((sum, tier) => {
         const { h, per } = spec[tier.tier] ?? { h: 190, per: 2 };
@@ -406,6 +439,7 @@
       rateSlide(slide, t);
     }
     if (slide.dataset.source === "sponsors") sponsorSlide(slide);
+    else if (slide.dataset.source === "community") communitySlide(slide);
     else if (slide.dataset.source === "afterparty") partySlide(slide);
     else if (slide.dataset.source) peopleSlide(slide, slide.dataset.source);
 

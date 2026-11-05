@@ -42,12 +42,13 @@ window.CUES = (() => {
     }
     return (
       {
-        walkin: cue.music === "preshow" ? "Pre-show · welcome ⇄ sponsors ⇄ team, energetic music" : "Walk-in · welcome ⇄ sponsors ⇄ team, calm music",
+        walkin: `${cue.music === "preshow" ? "Pre-show" : "Walk-in"} · ${(cue.loop ?? ["walkin"]).map((n) => (n === "walkin" ? "welcome" : n)).join(" ⇄ ")}, ${cue.music === "preshow" ? "energetic" : "calm"} music`,
         countdown: `Countdown · ${cue.minutes ?? 5}:00${cue.loop ? " ⇄ sponsors" : ""}`,
         break: `${cue.eyebrow} · ${cue.headline ?? `Back at ${cue.until}`}${cue.loop ? ` ⇄ ${cue.loop.slice(1).join(" ⇄ ")}` : ""}`,
         pitch: `Sponsor pitch · ${cue.sponsor} · ${cue.minutes ?? 2}:00`,
         message: `${cue.eyebrow} · ${cue.headline}`,
         sponsors: "Sponsor wall",
+        community: "Community sponsors & partners",
       }[cue.scene] ?? cue.scene
     );
   }

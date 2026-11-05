@@ -51,6 +51,7 @@ To confirm with the vendor:
 | `social` | In the pre-show and countdown loops | "Post about your experience." left, the hashtags and the prize draw right (`social` in the stage file) |
 | `pitch` | Gold sponsor pitches, day two | The sponsor's logo on a white hexagon and a two-minute clock that starts when the cue comes up |
 | `sponsors` | Breaks | Tiered honeycomb of white hexagons |
+| `community` | Walk-in and break loops, after `sponsors` | "Thank you, community.": the Community sponsors as a honeycomb of five across, and Partners & media (CNCF, HackYourFuture) beside them. Its own scene, so the paid tiers keep their size |
 | `message` | Remarks, end of day | Eyebrow and headline left, one line right |
 | panic still (`b`) | Anything goes wrong | Lockup small at the left, nothing in the centre; safe mid-talk |
 

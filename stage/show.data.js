@@ -1063,7 +1063,7 @@ window.SHOW = {
       "sponsors": [
         {
           "name": "ScanNet",
-          "logo": "../assets/sponsors/scannet.png"
+          "logo": "../assets/sponsors/scannet.svg"
         }
       ]
     },
@@ -1080,7 +1080,7 @@ window.SHOW = {
         },
         {
           "name": "Netic",
-          "logo": "../assets/sponsors/netic.png"
+          "logo": "../assets/sponsors/netic.svg"
         },
         {
           "name": "SUSE",
@@ -1118,6 +1118,51 @@ window.SHOW = {
       ]
     },
     {
+      "tier": "Community",
+      "sponsors": [
+        {
+          "name": "Ardan Labs",
+          "logo": "../assets/sponsors/ardan-labs.svg"
+        },
+        {
+          "name": "Bankdata",
+          "logo": "../assets/sponsors/bankdata.svg"
+        },
+        {
+          "name": "deranged",
+          "logo": "../assets/sponsors/deranged.svg"
+        },
+        {
+          "name": "JYSK",
+          "logo": "../assets/sponsors/jysk.svg"
+        },
+        {
+          "name": "Kamstrup",
+          "logo": "../assets/sponsors/kamstrup.svg"
+        },
+        {
+          "name": "LEGO",
+          "logo": "../assets/sponsors/lego.svg"
+        },
+        {
+          "name": "MFT Energy",
+          "logo": "../assets/sponsors/mft.svg"
+        },
+        {
+          "name": "OnlineCity.io",
+          "logo": "../assets/sponsors/onlinecity.svg"
+        },
+        {
+          "name": "Sysdig",
+          "logo": "../assets/sponsors/sysdig.svg"
+        },
+        {
+          "name": "ZeroNorth",
+          "logo": "../assets/sponsors/zeronorth.svg"
+        }
+      ]
+    },
+    {
       "tier": "Afterparty",
       "sponsors": [
         {
@@ -1125,6 +1170,16 @@ window.SHOW = {
           "logo": "../assets/sponsors/upwind.svg"
         }
       ]
+    }
+  ],
+  "partners": [
+    {
+      "name": "Cloud Native Computing Foundation",
+      "logo": "../assets/partners/cncf.svg"
+    },
+    {
+      "name": "HackYourFuture Denmark",
+      "logo": "../assets/partners/hyf-logo-round.svg"
     }
   ],
   "days": {
@@ -1137,6 +1192,7 @@ window.SHOW = {
           "loop": [
             "walkin",
             "sponsors",
+            "community",
             "team"
           ],
           "every": 30
@@ -1148,6 +1204,7 @@ window.SHOW = {
           "loop": [
             "walkin",
             "sponsors",
+            "community",
             "team",
             "social"
           ],
@@ -1214,6 +1271,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1232,6 +1290,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1250,6 +1309,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1268,6 +1328,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1286,6 +1347,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1304,6 +1366,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1337,6 +1400,7 @@ window.SHOW = {
           "loop": [
             "walkin",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1350,6 +1414,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1368,6 +1433,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1386,6 +1452,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1404,6 +1471,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1422,6 +1490,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1448,6 +1517,7 @@ window.SHOW = {
           "loop": [
             "walkin",
             "sponsors",
+            "community",
             "team"
           ],
           "every": 30
@@ -1459,6 +1529,7 @@ window.SHOW = {
           "loop": [
             "walkin",
             "sponsors",
+            "community",
             "team",
             "social"
           ],
@@ -1536,6 +1607,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1554,6 +1626,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1572,6 +1645,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1590,6 +1664,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1608,6 +1683,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1626,6 +1702,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1659,6 +1736,7 @@ window.SHOW = {
           "loop": [
             "walkin",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1672,6 +1750,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1690,6 +1769,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1708,6 +1788,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1726,6 +1807,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30
@@ -1744,6 +1826,7 @@ window.SHOW = {
             "break",
             "feedback",
             "sponsors",
+            "community",
             "photos"
           ],
           "every": 30

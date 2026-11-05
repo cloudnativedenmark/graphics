@@ -48,8 +48,9 @@ function findChrome() {
 
 const CHROME = findChrome();
 
-// The afterparty sponsor hosts the party, not a booth.
-const NO_BOOTH = new Set(["Afterparty"]);
+// The afterparty sponsor hosts the party, and community sponsors support
+// the event without a booth.
+const NO_BOOTH = new Set(["Afterparty", "Community"]);
 
 const content = JSON.parse(
   readFileSync(join(ROOT, "content", "2026-announcements.json"), "utf8"),
