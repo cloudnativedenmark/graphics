@@ -664,6 +664,12 @@
 }
 .hexcell.rose { background: var(--cnd-rose); }
 .hexcell.sand { background: var(--cnd-sand); }
+/* A photo still to come: a faint cell in the photo's place, so the
+ * honeycomb's silhouette reads before the pictures arrive. */
+.hexcell.todo {
+  background: color-mix(in srgb, var(--cnd-sand) 12%, transparent);
+  color: var(--muted);
+}
 .hexcell b {
   font-size: 150px;
   font-weight: 700;
