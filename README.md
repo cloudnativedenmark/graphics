@@ -165,6 +165,17 @@ Arrows, space or a clicker to move, `p` to print. To export:
   --no-pdf-header-footer decks/day1-morning/index.html
 ```
 
+For Google Slides (comments and suggestions from the team), export editable
+PowerPoint files and drag them into Drive:
+
+```bash
+python3 decks/export-pptx.py   # → graphics/out/slides/<deck>.pptx; needs LibreOffice
+```
+
+Every word stays a text box and the speaker notes and TODOs come along; the
+field, photos, logo tiles, QR codes and maps are pictures. The HTML stays
+the source of truth for the show, so fold agreed changes back in here.
+
 Talk, organizer and sponsor slides are filled from `stage/show.data.js`, the
 same data the wall shows, so run the build after editing `content/`.
 Everything still unknown is marked `TODO`, so the pre-flight is:
