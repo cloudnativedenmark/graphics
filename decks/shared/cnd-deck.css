@@ -1003,6 +1003,47 @@
   transform: rotate(5deg);
 }
 
+/* The code of conduct's three points: an icon per hexagon, a short
+ * caption under each, in a row right of the headline. */
+.coc {
+  position: absolute;
+  right: 120px;
+  top: 300px;
+  display: flex;
+  gap: 48px;
+}
+.coc figure {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 28px;
+}
+.coc .cell {
+  width: 240px;
+  height: 272px;
+  clip-path: url(#cnd-hex);
+  background: var(--cell);
+  display: grid;
+  place-items: center;
+}
+.coc svg {
+  width: 120px;
+  height: 120px;
+  fill: none;
+  stroke: var(--cnd-navy);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.coc figcaption {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 /* ── layout: sponsors ────────────────────────────────────────────────── */
 /* The wall's sponsor scene: a small honeycomb of white hexagons per tier,
  * largest first. deck.js places them from the show data; logos are

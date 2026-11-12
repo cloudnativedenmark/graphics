@@ -144,8 +144,8 @@
      apart because the hexagon's shoulders sit at 23% and 77% of its height. object-view-box zooms each photo in on
      its subject. Each city gets its own silhouette and its own mix of
      photo and colour cells, so the three never read as one template.
-     Photos are resized copies in img/meetups/. Aalborg and Copenhagen:
-     TODO 2026, photos to come. -->
+     Photos are resized copies in img/meetups/. Copenhagen: TODO 2026,
+     photos to come. -->
 <!-- Organizers from cloudnativenordics.com/groups/aalborg, November 2026.
      Allan's company and portrait are from the CND team list; the page gives none for
      Camilla, Niels or Simon, and no photo for Simon, so he gets his
@@ -165,6 +165,28 @@
     <figcaption><b>Christoffer Hollensen</b><span>Trifork</span></figcaption></figure>
   <figure class="org" style="left:1320px;top:560px;width:240px;height:272px"><div class="initials">SB</div>
     <figcaption><b>Simon Bengtsson</b></figcaption></figure>
+</section>
+
+<!-- Aalborg's honeycomb is a compact block, four rows of three, so it
+     stands taller than Aarhus's 5-4-5 band and Copenhagen's 4-5-4.
+     TODO 2026: the two stats. -->
+<section class="slide" data-layout="gallery" data-cells="small">
+  <div class="pad">
+    <p class="eyebrow">Cloud Native Aalborg</p>
+    <h2 class="display">Aalborg.</h2>
+  </div>
+  <img class="photo" src="img/meetups/aalborg-speaker.jpg" alt="A speaker talking with his hands" style="left:934px;top:118px">
+  <img class="photo" src="img/meetups/aalborg-stickers.jpg" alt="A laptop covered in cloud native stickers" style="left:1162px;top:118px">
+  <img class="photo" src="img/meetups/aalborg-lectern.jpg" alt="A speaker at the lectern by the chalkboard menu" style="left:1390px;top:118px">
+  <img class="photo" src="img/meetups/aalborg-snacks.jpg" alt="A bowl of snacks" style="left:1048px;top:319px">
+  <div class="hexcell rose" style="left:1276px;top:319px"><i>TODO</i><span>stat</span></div>
+  <img class="photo" src="img/meetups/aalborg-laughing.jpg" alt="Two attendees laughing" style="left:1504px;top:319px">
+  <div class="hexcell sand" style="left:934px;top:520px"><i>TODO</i><span>stat</span></div>
+  <img class="photo" src="img/meetups/aalborg-talk-screen.jpg" alt="A speaker pointing at the screen" style="left:1162px;top:520px">
+  <img class="photo" src="img/meetups/aalborg-audience.jpg" alt="Two attendees listening" style="left:1390px;top:520px">
+  <img class="photo" src="img/meetups/aalborg-curls.jpg" alt="An attendee smiling at the camera" style="left:1048px;top:721px">
+  <img class="photo" src="img/meetups/aalborg-salad.jpg" alt="Salad on the buffet" style="left:1276px;top:721px">
+  <img class="photo" src="img/meetups/aalborg-pink-glasses.jpg" alt="An attendee in pink glasses" style="left:1504px;top:721px">
 </section>
 
 <!-- Organizers from cloudnativenordics.com/groups/aarhus (portraits are the
@@ -344,23 +366,43 @@
 </section>
 
 <!-- The full code is at cloudnativedenmark.dk/code-of-conduct. The three
-     points are its gist, not a quote. -->
+     hexagons are its gist, not a quote; the icons are drawn here, stroked
+     in navy on the cell colour. -->
 <section class="slide" data-layout="logistics">
-  <div class="pad">
+  <div class="pad" style="right: 1000px">
     <p class="eyebrow">Code of conduct</p>
     <h2 class="display">Be kind.</h2>
-    <ul class="marked">
-      <li>Make everyone welcome, whoever they are and whatever they know.</li>
-      <li>Disagree with ideas, respectfully. Never with people.</li>
-      <li>No harassment of any kind, on stage, in the hallway or online.</li>
-    </ul>
-    <p class="body">Something not right? Talk to any organizer or come to the
-    registration desk. The full code is at <strong>cloudnativedenmark.dk/code-of-conduct</strong>.</p>
+    <p class="body">Something not right? Talk to any organizer.</p>
+    <p class="body"><strong>cloudnativedenmark.dk<br>/code-of-conduct</strong></p>
+  </div>
+  <div class="coc">
+    <figure style="--cell: var(--cnd-rose)">
+      <div class="cell"><svg viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="21" r="7"/><path d="M19 47c0-8 6-13 13-13s13 5 13 13"/>
+        <circle cx="14" cy="26" r="5"/><path d="M4 46c0-6 4-10 10-10 2.5 0 4.5.6 6 1.7"/>
+        <circle cx="50" cy="26" r="5"/><path d="M60 46c0-6-4-10-10-10-2.5 0-4.5.6-6 1.7"/>
+      </svg></div>
+      <figcaption>Everyone<br>welcome</figcaption>
+    </figure>
+    <figure style="--cell: var(--cnd-peach)">
+      <div class="cell"><svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M6 12h30a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H20l-8 7v-7H6a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/>
+        <path d="M46 24h12a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-4v7l-8-7H32a4 4 0 0 1-4-4v-4"/>
+      </svg></div>
+      <figcaption>Argue ideas,<br>not people</figcaption>
+    </figure>
+    <figure style="--cell: var(--cnd-sand)">
+      <div class="cell"><svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 5l22 8v16c0 14-9 25-22 30C19 54 10 43 10 29V13z"/><path d="M22 32l7 7 13-14"/>
+      </svg></div>
+      <figcaption>No<br>harassment</figcaption>
+    </figure>
   </div>
 </section>
 
-<!-- Conference floor map, rasterised at 2x from
-     cloud-native-denmark-2026-conference-map.svg. A PNG rather than the SVG
+<!-- Conference floor map, rasterised at 2920x2300 from the SVG on
+     cloudnativedenmark.dk/conference-map (November 2026: booth 6 is EDB
+     Postgres AI). A PNG rather than the SVG
      because the map carries its own colours and sponsor logos, which the
      token lint would (rightly) reject in a deck source file. -->
 <section class="slide" data-layout="map" data-field="none">
