@@ -232,6 +232,12 @@ const show = {
   organizers: (stage.organizers?.people ?? []).map((o) => ({ ...o, portrait: fromStage(o.portrait) })),
   social: stage.social ?? null,
   photos: stage.qr?.photos ? qrPath({ rows: qrRows(stage.qr.photos) }) : null,
+  // Every link in stage.qr, encoded, for the decks' <div class="qr" data-qr="name">.
+  qrs: Object.fromEntries(
+    Object.entries(stage.qr ?? {})
+      .filter(([k, v]) => !k.startsWith("$") && typeof v === "string")
+      .map(([k, v]) => [k, qrPath({ rows: qrRows(v) })]),
+  ),
   music: stage.music
     ? {
         ...stage.music,

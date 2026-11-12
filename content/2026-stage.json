@@ -272,6 +272,15 @@
           "$note": "16:50"
         },
         {
+          "scene": "message",
+          "$note": "17:00–18:00, after the closing remarks: the sponsor crawl, alternating with the sponsor wall. Next goes to the afterparty at 18:00.",
+          "loop": ["message", "sponsors"],
+          "every": 30,
+          "eyebrow": "Sponsor crawl · 17:00–18:00",
+          "headline": "Visit the booths.",
+          "body": "Meet the teams supporting Cloud Native Denmark. Afterparty at 18:00."
+        },
+        {
           "scene": "afterparty",
           "$note": "End of day one: the afterparty, alternating with see-you-tomorrow. The party set plays.",
           "music": "preshow",
@@ -280,8 +289,8 @@
           "party": {
             "eyebrow": "That's day one",
             "headline": "Party time.",
-            "when": "Afterparty · 18:00",
-            "body": "Food, wine, beer, sodas and good company."
+            "when": "Afterparty · 18:00–21:00",
+            "body": "Sponsor crawl first: visit the booths until 18:00. Then food, wine, beer, sodas and good company."
           },
           "eyebrow": "That's day one",
           "headline": "See you tomorrow.",
@@ -364,7 +373,7 @@
           "scene": "message",
           "eyebrow": "That's it in this room",
           "headline": "See you tomorrow.",
-          "body": "Closing remarks on the main stage"
+          "body": "Closing remarks on the main stage, then the sponsor crawl at 17:00 and the afterparty at 18:00"
         }
       ]
     },
@@ -669,8 +678,11 @@
     }
   },
   "qr": {
-    "$comment": "QR codes on the wall and the breakout screen are drawn from content/2026-qr.json, which stage/import-qr.py reads out of QR PNGs. The feedback codes are Sessionize's export (organizer dashboard → Session Feedback → download QR codes), keyed by session id; the feedback scene shows the one for the talk the room just had. `photos` is the photographers' Picdrop gallery, in the break loops; the build encodes the link itself (stage/qr.mjs).",
-    "photos": "https://www.picdrop.com/kim-yennguyen/PtE1CyXcQm"
+    "$comment": "QR codes on the wall and the breakout screen are drawn from content/2026-qr.json, which stage/import-qr.py reads out of QR PNGs. The feedback codes are Sessionize's export (organizer dashboard → Session Feedback → download QR codes), keyed by session id; the feedback scene shows the one for the talk the room just had. `photos` is the photographers' Picdrop gallery, in the break loops; the build encodes the link itself (stage/qr.mjs). The build encodes every link here the same way into SHOW.qrs, for the decks: `aalborg`, `aarhus` and `copenhagen` are the meetup groups on the local communities slide.",
+    "photos": "https://www.picdrop.com/kim-yennguyen/PtE1CyXcQm",
+    "aalborg": "https://ocgroups.dev/cncf/group/aalborg",
+    "aarhus": "https://ocgroups.dev/cncf/group/cncf-aarhus",
+    "copenhagen": "https://www.meetup.com/cloud-native-copenhagen/"
   },
   "social": {
     "$comment": "The `social` scene, in the pre-show and countdown loops. The prize line matches the decks.",

@@ -81,7 +81,7 @@ for (const [day, d] of Object.entries(stage.days)) for (const room of ["main", "
   const prefix = room === "breakout" ? "b" : "d";
   let i = 0;
   cues.forEach((cue, c) => {
-    const states = cue.scene === "talk" ? [...(stage.clearBeforeWalkon ? ["clear"] : []), "walkon", "live"] : [null];
+    const states = cue.scene === "talk" ? [...(stage.clearBeforeWalkon ? ["clear"] : []), "walkon", "live"] : cue.scene === "pitch" ? ["intro", "running"] : [null];
     const clock = cue.scene === "countdown" ? `&clock=${cue.at.split(":")[0] - 1}:55:00` : "";
     // A looping cue gets one still per scene in its loop, same step number.
     if (cue.loop?.length) {
@@ -91,7 +91,7 @@ for (const [day, d] of Object.entries(stage.days)) for (const room of ["main", "
       return;
     }
     for (const state of states) {
-      const label = cue.scene === "talk" ? `${state}-${nameOf(cue.talk)}` : cue.scene === "pitch" ? `pitch-${slugify(cue.sponsor)}` : cue.scene;
+      const label = cue.scene === "talk" ? `${state}-${nameOf(cue.talk)}` : cue.scene === "pitch" ? `pitch-${state}-${slugify(cue.sponsor)}` : cue.scene;
       shoot(`day=${day}&step=${i}${clock}`, `${prefix}${day}-${String(i).padStart(2, "0")}-${label}.png`, room);
       i++;
     }

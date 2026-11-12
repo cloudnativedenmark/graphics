@@ -697,8 +697,8 @@
     },
 
     // A gold sponsor's two minutes: their logo large on the left, the clock on
-    // the right, the speaker between them. The clock starts when the cue
-    // comes up (stage/serve.mjs).
+    // the right, the speaker between them. Two steps on one scene: the intro
+    // holds the clock at full time, Next starts it (stage/serve.mjs).
     pitch(cue) {
       const sp = SHOW.tiers.flatMap((t) => t.sponsors.map((s) => ({ ...s, tier: t.tier }))).find((s) => s.name === cue.sponsor);
       return {
@@ -1357,7 +1357,8 @@
     // Same as the server: a countdown starts at its `minutes` when it comes up.
     if (`${next.day}:${next.i}` !== before) {
       const step = stepsFor(next.day)[next.i];
-      next.countdownTo = ["countdown", "pitch"].includes(step?.cue.scene) ? Date.now() + (step.cue.minutes ?? 5) * 60000 : null;
+      const timed = step?.cue.scene === "countdown" || (step?.cue.scene === "pitch" && step.state === "running");
+      next.countdownTo = timed ? Date.now() + (step.cue.minutes ?? 5) * 60000 : null;
     }
     return next;
   }

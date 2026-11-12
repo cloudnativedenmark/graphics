@@ -56,7 +56,7 @@
 </section>
 
 <!-- Facts from content/2026-social-media-plan.md; map from
-     shared/denmark.js. -->
+     shared/denmark.js, the cities pinned with the CND mark. -->
 <section class="slide" data-layout="split" data-field="none">
   <div class="pad">
     <p class="eyebrow">What we are</p>
@@ -74,7 +74,7 @@
       </dl>
     </div>
   </div>
-  <div class="geomap" data-map="denmark"></div>
+  <div class="geomap" data-map="denmark" data-pin="../../brand/logo/cnd-mark.svg" style="--pin: 80"></div>
 </section>
 
 <!-- Kim Yen Nguyen's 2025 photos, already selected in assets/photos/2025
@@ -119,7 +119,8 @@
   <div class="geomap" data-map="nordics" data-pin="../../assets/partners/cloud-native-nordics-mark.svg"></div>
 </section>
 
-<!-- local communities -------------------------------------------------- -->
+<!-- local communities: each QR is the link beside it, from qr in
+     content/2026-stage.json ------------------------------------------- -->
 <section class="slide" data-layout="cities">
   <div class="pad">
     <p class="eyebrow">Your local communities</p>
@@ -127,11 +128,14 @@
   </div>
   <div class="signs">
     <div class="city"><div class="citysign"><div class="face">Aalborg</div></div>
-      <p class="body"><a href="https://ocgroups.dev/cncf/group/aalborg">ocgroups.dev<small>/cncf/group/aalborg</small></a></p></div>
+      <div class="join"><div class="qr" data-qr="aalborg" data-label="Aalborg meetup group"></div>
+      <p class="body"><a href="https://ocgroups.dev/cncf/group/aalborg">ocgroups.dev<small>/cncf/group/aalborg</small></a></p></div></div>
     <div class="city"><div class="citysign"><div class="face">Aarhus</div></div>
-      <p class="body"><a href="https://ocgroups.dev/cncf/group/cncf-aarhus">ocgroups.dev<small>/cncf/group/cncf-aarhus</small></a></p></div>
+      <div class="join"><div class="qr" data-qr="aarhus" data-label="Aarhus meetup group"></div>
+      <p class="body"><a href="https://ocgroups.dev/cncf/group/cncf-aarhus">ocgroups.dev<small>/cncf/group/cncf-aarhus</small></a></p></div></div>
     <div class="city"><div class="citysign"><div class="face">København</div></div>
-      <p class="body"><a href="https://www.meetup.com/cloud-native-copenhagen/">meetup.com<small>/cloud-native-copenhagen</small></a></p></div>
+      <div class="join"><div class="qr" data-qr="copenhagen" data-label="København meetup group"></div>
+      <p class="body"><a href="https://www.meetup.com/cloud-native-copenhagen/">meetup.com<small>/cloud-native-copenhagen</small></a></p></div></div>
   </div>
 </section>
 
@@ -140,8 +144,8 @@
      apart because the hexagon's shoulders sit at 23% and 77% of its height. object-view-box zooms each photo in on
      its subject. Each city gets its own silhouette and its own mix of
      photo and colour cells, so the three never read as one template.
-     Photos are resized copies in img/meetups/. Aalborg and Copenhagen:
-     TODO 2026, photos to come. -->
+     Photos are resized copies in img/meetups/. Copenhagen: TODO 2026,
+     photos to come. -->
 <!-- Organizers from cloudnativenordics.com/groups/aalborg, November 2026.
      Allan's company and portrait are from the CND team list; the page gives none for
      Camilla, Niels or Simon, and no photo for Simon, so he gets his
@@ -161,6 +165,28 @@
     <figcaption><b>Christoffer Hollensen</b><span>Trifork</span></figcaption></figure>
   <figure class="org" style="left:1320px;top:560px;width:240px;height:272px"><div class="initials">SB</div>
     <figcaption><b>Simon Bengtsson</b></figcaption></figure>
+</section>
+
+<!-- Aalborg's honeycomb is a compact block, four rows of three, so it
+     stands taller than Aarhus's 5-4-5 band and Copenhagen's 4-5-4.
+     TODO 2026: the two stats. -->
+<section class="slide" data-layout="gallery" data-cells="small">
+  <div class="pad">
+    <p class="eyebrow">Cloud Native Aalborg</p>
+    <h2 class="display">Aalborg.</h2>
+  </div>
+  <img class="photo" src="img/meetups/aalborg-speaker.jpg" alt="A speaker talking with his hands" style="left:934px;top:118px">
+  <img class="photo" src="img/meetups/aalborg-stickers.jpg" alt="A laptop covered in cloud native stickers" style="left:1162px;top:118px">
+  <img class="photo" src="img/meetups/aalborg-lectern.jpg" alt="A speaker at the lectern by the chalkboard menu" style="left:1390px;top:118px">
+  <img class="photo" src="img/meetups/aalborg-snacks.jpg" alt="A bowl of snacks" style="left:1048px;top:319px">
+  <div class="hexcell rose" style="left:1276px;top:319px"><i>TODO</i><span>stat</span></div>
+  <img class="photo" src="img/meetups/aalborg-laughing.jpg" alt="Two attendees laughing" style="left:1504px;top:319px">
+  <div class="hexcell sand" style="left:934px;top:520px"><i>TODO</i><span>stat</span></div>
+  <img class="photo" src="img/meetups/aalborg-talk-screen.jpg" alt="A speaker pointing at the screen" style="left:1162px;top:520px">
+  <img class="photo" src="img/meetups/aalborg-audience.jpg" alt="Two attendees listening" style="left:1390px;top:520px">
+  <img class="photo" src="img/meetups/aalborg-curls.jpg" alt="An attendee smiling at the camera" style="left:1048px;top:721px">
+  <img class="photo" src="img/meetups/aalborg-salad.jpg" alt="Salad on the buffet" style="left:1276px;top:721px">
+  <img class="photo" src="img/meetups/aalborg-pink-glasses.jpg" alt="An attendee in pink glasses" style="left:1504px;top:721px">
 </section>
 
 <!-- Organizers from cloudnativenordics.com/groups/aarhus (portraits are the
@@ -339,23 +365,56 @@
   </div>
 </section>
 
-<!-- TODO 2026: confirm the code of conduct URL and the reporting email and
-     phone number, and who is on the incident team this year. -->
+<!-- The full code is at cloudnativedenmark.dk/code-of-conduct. The three
+     hexagons are its gist, not a quote; the icons are drawn here, stroked
+     in navy on the cell colour. -->
 <section class="slide" data-layout="logistics">
-  <div class="pad">
+  <div class="pad" style="right: 1000px">
     <p class="eyebrow">Code of conduct</p>
     <h2 class="display">Be kind.</h2>
-    <dl class="kv">
-      <dt>Read it</dt><dd>cloudnativedenmark.dk/code-of-conduct</dd>
-      <dt>Report</dt><dd>Any organizer, in person</dd>
-      <dt>Email</dt><dd>TODO — reporting address</dd>
-      <dt>Phone</dt><dd>TODO — incident phone</dd>
-    </dl>
+    <p class="body">Something not right? Talk to any organizer.</p>
+    <p class="body"><strong>cloudnativedenmark.dk<br>/code-of-conduct</strong></p>
+  </div>
+  <div class="coc">
+    <figure style="--cell: var(--cnd-rose)">
+      <div class="cell"><svg viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="21" r="7"/><path d="M19 47c0-8 6-13 13-13s13 5 13 13"/>
+        <circle cx="14" cy="26" r="5"/><path d="M4 46c0-6 4-10 10-10 2.5 0 4.5.6 6 1.7"/>
+        <circle cx="50" cy="26" r="5"/><path d="M60 46c0-6-4-10-10-10-2.5 0-4.5.6-6 1.7"/>
+      </svg></div>
+      <figcaption>Everyone<br>welcome</figcaption>
+    </figure>
+    <figure style="--cell: var(--cnd-peach)">
+      <div class="cell"><svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M6 12h30a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H20l-8 7v-7H6a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4z"/>
+        <path d="M46 24h12a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-4v7l-8-7H32a4 4 0 0 1-4-4v-4"/>
+      </svg></div>
+      <figcaption>Argue ideas,<br>not people</figcaption>
+    </figure>
+    <figure style="--cell: var(--cnd-sand)">
+      <div class="cell"><svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 5l22 8v16c0 14-9 25-22 30C19 54 10 43 10 29V13z"/><path d="M22 32l7 7 13-14"/>
+      </svg></div>
+      <figcaption>No<br>harassment</figcaption>
+    </figure>
   </div>
 </section>
 
-<!-- Conference floor map, rasterised at 2x from
-     cloud-native-denmark-2026-conference-map.svg. A PNG rather than the SVG
+<!-- The Pac-Man rule: stand in an open circle with a gap, so anyone can
+     walk up and join. Drawn with the field's hexagons, not the arcade
+     character: a ring of people with a gap (dashed) and someone new (rose) stepping into it. -->
+<section class="slide" data-layout="logistics" data-field="none">
+  <div class="pad" style="right: 1000px">
+    <p class="eyebrow">The Pac-Man rule</p>
+    <h2 class="display">Leave<br>a gap.</h2>
+    <p class="body">Talking in a group? Stand in an open circle, so anyone can walk up and join the conversation.</p>
+  </div>
+  <svg class="pacman" viewBox="-130 0 930 800" aria-hidden="true"><polygon points="244.1,116.5 320.3,160.5 320.3,248.5 244.1,292.5 167.9,248.5 167.9,160.5" fill="var(--cnd-peach)"/><polygon points="455.6,68.3 531.8,112.3 531.8,200.3 455.6,244.3 379.4,200.3 379.4,112.3" fill="var(--cnd-slate)"/><polygon points="625.2,203.5 701.5,247.5 701.5,335.5 625.2,379.5 549.0,335.5 549.0,247.5" fill="var(--cnd-peach)"/><polygon points="625.2,420.5 701.5,464.5 701.5,552.5 625.2,596.5 549.0,552.5 549.0,464.5" fill="var(--cnd-slate)"/><polygon points="455.6,555.7 531.8,599.7 531.8,687.7 455.6,731.7 379.4,687.7 379.4,599.7" fill="var(--cnd-peach)"/><polygon points="244.1,507.5 320.3,551.5 320.3,639.5 244.1,683.5 167.9,639.5 167.9,551.5" fill="var(--cnd-slate)"/><polygon points="-45.0,312.0 31.2,356.0 31.2,444.0 -45.0,488.0 -121.2,444.0 -121.2,356.0" fill="var(--cnd-rose)"/><polygon points="150.0,312.0 226.2,356.0 226.2,444.0 150.0,488.0 73.8,444.0 73.8,356.0" fill="none" stroke="var(--cnd-rose)" stroke-width="4" stroke-dasharray="12 10"/></svg>
+</section>
+
+<!-- Conference floor map, rasterised at 2920x2300 from the SVG on
+     cloudnativedenmark.dk/conference-map (November 2026: booth 6 is EDB
+     Postgres AI). A PNG rather than the SVG
      because the map carries its own colours and sponsor logos, which the
      token lint would (rightly) reject in a deck source file. -->
 <section class="slide" data-layout="map" data-field="none">
@@ -371,10 +430,10 @@
   <div class="pad">
     <p class="eyebrow">Get online</p>
     <h2 class="display">Wifi.</h2>
-    <!-- TODO 2026: get the network and password from Scandic on setup day -->
+    <!-- From Scandic's event sheet: an open network with a sign-in page. -->
     <dl class="kv">
-      <dt>Network</dt><dd>TODO — from venue</dd>
-      <dt>Password</dt><dd>TODO — from venue</dd>
+      <dt>Network</dt><dd>Scandic_easy</dd>
+      <dt>Password</dt><dd>None. Open a browser to connect</dd>
     </dl>
   </div>
 </section>
@@ -433,7 +492,10 @@
 </section>
 
 <!-- Three winners are drawn on day two (day2-afternoon, social draw). -->
-<section class="slide" data-layout="logistics">
+<!-- The LinkedIn logo in one colour (white), as LinkedIn's brand rules
+     allow; their blue is not in the palette. -->
+<section class="slide" data-layout="logistics" data-field="quiet">
+  <svg class="social-logo" viewBox="0 0 24 24" role="img" aria-label="LinkedIn"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
   <div class="pad">
     <p class="eyebrow">Sharing is caring</p>
     <h2 class="display">Post it.</h2>
@@ -517,17 +579,50 @@
   </div>
 </section>
 
-<!-- The stamp card is graphics/build-stamp-card.mjs. The draw is in
+<!-- The booth card is graphics/build-stamp-card.mjs. The draw is in
      day2-afternoon ("Sponsor booth visits"). TODO 2026: the prizes. -->
-<section class="slide" data-layout="logistics">
-  <div class="pad">
+<!-- Each sponsor hands out its own coloured sticker; it goes in that
+     booth's circle on the back of the card. The printed card says stamps,
+     the slide says stickers. The pictures are the printed 12-booth card
+     (sponsors' booths only, no community sponsors), resized. The card is
+     printed: don't rebuild or change graphics/build-stamp-card.mjs. -->
+<section class="slide" data-layout="logistics" data-field="none">
+  <div class="pad" style="right: 760px">
     <p class="eyebrow">Visit the sponsor booths</p>
-    <h2 class="display">Collect<br>the stamps.</h2>
+    <h2 class="display">Collect<br>the stickers.</h2>
     <dl class="kv">
-      <dt>Collect</dt><dd>A stamp from every booth on your card</dd>
+      <dt>Collect</dt><dd>A sticker from every booth on your card</dd>
       <dt>Hand in</dt><dd>The full card at the registration desk</dd>
       <dt>Win</dt><dd>Cool prizes, drawn on day two</dd>
     </dl>
+  </div>
+  <div class="card-preview">
+    <img class="front" src="img/stamp-card-front.png" alt="The front of the booth card">
+    <img class="back" src="img/stamp-card-back.png" alt="The back of the booth card: one circle per sponsor booth for its sticker">
+  </div>
+</section>
+
+<!-- The sponsor crawl, 17:00–18:00 on day one, before the afterparty:
+     the hour to finish the booth card. -->
+<section class="slide" data-layout="logistics">
+  <div class="pad">
+    <p class="eyebrow">Tonight · 17:00–18:00</p>
+    <h2 class="display">Sponsor<br>crawl.</h2>
+    <p class="body">Visit the sponsor booths and meet the teams supporting
+    Cloud Native Denmark. Bring your booth card.</p>
+  </div>
+</section>
+
+<!-- The afterparty, announced in the morning. Upwind is its sponsor (tier
+     "Afterparty"); deck.js fills the tile from the show data. Sponsor crawl
+     17:00–18:00, afterparty 18:00–21:00 (the website's programme), same as
+     the afternoon deck and the wall. -->
+<section class="slide" data-layout="logistics" data-field="quiet" data-source="afterparty">
+  <div class="pad">
+    <p class="eyebrow">Tonight</p>
+    <h2 class="display">Afterparty,<br>18:00.</h2>
+    <p class="body">18:00–21:00, after the sponsor crawl at 17:00. Food,
+    drinks and good company, included in your ticket.</p>
   </div>
 </section>
 

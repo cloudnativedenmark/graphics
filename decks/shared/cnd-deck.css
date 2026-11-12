@@ -560,13 +560,14 @@
   position: absolute;
   left: var(--m);
   right: var(--m);
-  top: 420px;
+  top: 330px;
   display: flex;
   justify-content: space-between;
 }
 .city {
   width: 520px;
   display: grid;
+  grid-template-columns: 100%;
   justify-items: center;
 }
 .citysign {
@@ -597,10 +598,30 @@
   width: 62%;
   fill: var(--cnd-navy);
 }
+/* The group's QR on a small white hexagon, its link beside it. */
+.city .join {
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.city .join .qr {
+  flex: none;
+  width: 216px;
+  height: 210px;
+}
+.city .join .qr svg {
+  width: 138px;
+  height: 138px;
+  margin-top: 10px;
+}
+.city .join small {
+  white-space: nowrap;
+  font-size: 22px;
+}
 .city .body {
-  margin-top: 30px;
+  margin: 0;
   font-size: 32px;
-  text-align: center;
 }
 .city .body a {
   color: inherit;
@@ -932,6 +953,9 @@
 .slide[data-layout="logistics"] .body {
   max-width: 1100px;
 }
+.slide[data-layout="logistics"] .marked + .body {
+  margin-top: 56px;
+}
 .kv {
   display: grid;
   grid-template-columns: max-content 1fr;
@@ -952,6 +976,91 @@
   margin: 0;
   font-family: var(--cnd-font-display);
   font-weight: 700;
+}
+
+/* The booth card, front and back, fanned on the right of its slide. */
+.card-preview {
+  position: absolute;
+  right: 120px;
+  top: 170px;
+  width: 640px;
+  height: 760px;
+}
+.card-preview img {
+  position: absolute;
+  width: 440px;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+}
+.card-preview .front {
+  left: 0;
+  top: 40px;
+  transform: rotate(-7deg);
+}
+.card-preview .back {
+  right: 0;
+  top: 110px;
+  transform: rotate(5deg);
+}
+
+/* The code of conduct's three points: an icon per hexagon, a short
+ * caption under each, in a row right of the headline. */
+.coc {
+  position: absolute;
+  right: 120px;
+  top: 300px;
+  display: flex;
+  gap: 48px;
+}
+.coc figure {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 28px;
+}
+.coc .cell {
+  width: 240px;
+  height: 272px;
+  clip-path: url(#cnd-hex);
+  background: var(--cell);
+  display: grid;
+  place-items: center;
+}
+.coc svg {
+  width: 120px;
+  height: 120px;
+  fill: none;
+  stroke: var(--cnd-navy);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.coc figcaption {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* The Pac-Man rule's ring of people, right of the copy. */
+.pacman {
+  position: absolute;
+  right: 130px;
+  top: 140px;
+  width: 800px;
+  height: 800px;
+}
+
+/* The "Post it" slide's LinkedIn logo, large on the right. */
+.social-logo {
+  position: absolute;
+  right: 220px;
+  top: 340px;
+  width: 400px;
+  height: 400px;
+  fill: var(--cnd-white);
 }
 
 /* ── layout: sponsors ────────────────────────────────────────────────── */
