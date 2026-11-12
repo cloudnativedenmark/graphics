@@ -400,6 +400,18 @@
   </div>
 </section>
 
+<!-- The Pac-Man rule: stand in an open circle with a gap, so anyone can
+     walk up and join. Drawn with the field's hexagons, not the arcade
+     character: a ring of people with a gap (dashed) and someone new (rose) stepping into it. -->
+<section class="slide" data-layout="logistics" data-field="none">
+  <div class="pad" style="right: 1000px">
+    <p class="eyebrow">The Pac-Man rule</p>
+    <h2 class="display">Leave<br>a gap.</h2>
+    <p class="body">Talking in a group? Stand in an open circle, so anyone can walk up and join the conversation.</p>
+  </div>
+  <svg class="pacman" viewBox="-130 0 930 800" aria-hidden="true"><polygon points="244.1,116.5 320.3,160.5 320.3,248.5 244.1,292.5 167.9,248.5 167.9,160.5" fill="var(--cnd-peach)"/><polygon points="455.6,68.3 531.8,112.3 531.8,200.3 455.6,244.3 379.4,200.3 379.4,112.3" fill="var(--cnd-slate)"/><polygon points="625.2,203.5 701.5,247.5 701.5,335.5 625.2,379.5 549.0,335.5 549.0,247.5" fill="var(--cnd-peach)"/><polygon points="625.2,420.5 701.5,464.5 701.5,552.5 625.2,596.5 549.0,552.5 549.0,464.5" fill="var(--cnd-slate)"/><polygon points="455.6,555.7 531.8,599.7 531.8,687.7 455.6,731.7 379.4,687.7 379.4,599.7" fill="var(--cnd-peach)"/><polygon points="244.1,507.5 320.3,551.5 320.3,639.5 244.1,683.5 167.9,639.5 167.9,551.5" fill="var(--cnd-slate)"/><polygon points="-45.0,312.0 31.2,356.0 31.2,444.0 -45.0,488.0 -121.2,444.0 -121.2,356.0" fill="var(--cnd-rose)"/><polygon points="150.0,312.0 226.2,356.0 226.2,444.0 150.0,488.0 73.8,444.0 73.8,356.0" fill="none" stroke="var(--cnd-rose)" stroke-width="4" stroke-dasharray="12 10"/></svg>
+</section>
+
 <!-- Conference floor map, rasterised at 2920x2300 from the SVG on
      cloudnativedenmark.dk/conference-map (November 2026: booth 6 is EDB
      Postgres AI). A PNG rather than the SVG
@@ -418,10 +430,10 @@
   <div class="pad">
     <p class="eyebrow">Get online</p>
     <h2 class="display">Wifi.</h2>
-    <!-- TODO 2026: get the network and password from Scandic on setup day -->
+    <!-- From Scandic's event sheet: an open network with a sign-in page. -->
     <dl class="kv">
-      <dt>Network</dt><dd>TODO — from venue</dd>
-      <dt>Password</dt><dd>TODO — from venue</dd>
+      <dt>Network</dt><dd>Scandic_easy</dd>
+      <dt>Password</dt><dd>None. Open a browser to connect</dd>
     </dl>
   </div>
 </section>
@@ -480,7 +492,10 @@
 </section>
 
 <!-- Three winners are drawn on day two (day2-afternoon, social draw). -->
-<section class="slide" data-layout="logistics">
+<!-- The LinkedIn logo in one colour (white), as LinkedIn's brand rules
+     allow; their blue is not in the palette. -->
+<section class="slide" data-layout="logistics" data-field="quiet">
+  <svg class="social-logo" viewBox="0 0 24 24" role="img" aria-label="LinkedIn"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
   <div class="pad">
     <p class="eyebrow">Sharing is caring</p>
     <h2 class="display">Post it.</h2>
@@ -587,15 +602,27 @@
   </div>
 </section>
 
+<!-- The sponsor crawl, 17:00–18:00 on day one, before the afterparty:
+     the hour to finish the booth card. -->
+<section class="slide" data-layout="logistics">
+  <div class="pad">
+    <p class="eyebrow">Tonight · 17:00–18:00</p>
+    <h2 class="display">Sponsor<br>crawl.</h2>
+    <p class="body">Visit the sponsor booths and meet the teams supporting
+    Cloud Native Denmark. Bring your booth card.</p>
+  </div>
+</section>
+
 <!-- The afterparty, announced in the morning. Upwind is its sponsor (tier
-     "Afterparty"); deck.js fills the tile from the show data. 17:00, when
-     the last session ends, same as the afternoon deck and the wall. -->
+     "Afterparty"); deck.js fills the tile from the show data. Sponsor crawl
+     17:00–18:00, afterparty 18:00–21:00 (the website's programme), same as
+     the afternoon deck and the wall. -->
 <section class="slide" data-layout="logistics" data-field="quiet" data-source="afterparty">
   <div class="pad">
     <p class="eyebrow">Tonight</p>
-    <h2 class="display">Afterparty,<br>17:00.</h2>
-    <p class="body">In the restaurant, straight after the last session.
-    Food, drinks and good company.</p>
+    <h2 class="display">Afterparty,<br>18:00.</h2>
+    <p class="body">18:00–21:00, after the sponsor crawl at 17:00. Food,
+    drinks and good company, included in your ticket.</p>
   </div>
 </section>
 

@@ -1044,6 +1044,25 @@
   text-align: center;
 }
 
+/* The Pac-Man rule's ring of people, right of the copy. */
+.pacman {
+  position: absolute;
+  right: 130px;
+  top: 140px;
+  width: 800px;
+  height: 800px;
+}
+
+/* The "Post it" slide's LinkedIn logo, large on the right. */
+.social-logo {
+  position: absolute;
+  right: 220px;
+  top: 340px;
+  width: 400px;
+  height: 400px;
+  fill: var(--cnd-white);
+}
+
 /* ── layout: sponsors ────────────────────────────────────────────────── */
 /* The wall's sponsor scene: a small honeycomb of white hexagons per tier,
  * largest first. deck.js places them from the show data; logos are

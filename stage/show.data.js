@@ -1427,6 +1427,18 @@ window.SHOW = {
           "$note": "16:50"
         },
         {
+          "scene": "message",
+          "$note": "17:00–18:00, after the closing remarks: the sponsor crawl, alternating with the sponsor wall. Next goes to the afterparty at 18:00.",
+          "loop": [
+            "message",
+            "sponsors"
+          ],
+          "every": 30,
+          "eyebrow": "Sponsor crawl · 17:00–18:00",
+          "headline": "Visit the booths.",
+          "body": "Meet the teams supporting Cloud Native Denmark. Afterparty at 18:00."
+        },
+        {
           "scene": "afterparty",
           "$note": "End of day one: the afterparty, alternating with see-you-tomorrow. The party set plays.",
           "music": "preshow",
@@ -1441,8 +1453,8 @@ window.SHOW = {
           "party": {
             "eyebrow": "That's day one",
             "headline": "Party time.",
-            "when": "Afterparty · 17:00",
-            "body": "Food, wine, beer, sodas and good company."
+            "when": "Afterparty · 18:00–21:00",
+            "body": "Sponsor crawl first: visit the booths until 18:00. Then food, wine, beer, sodas and good company."
           },
           "eyebrow": "That's day one",
           "headline": "See you tomorrow.",
@@ -1560,7 +1572,7 @@ window.SHOW = {
           "scene": "message",
           "eyebrow": "That's it in this room",
           "headline": "See you tomorrow.",
-          "body": "Closing remarks on the main stage"
+          "body": "Closing remarks on the main stage, then the sponsor crawl at 17:00 and the afterparty at 18:00"
         }
       ]
     },
