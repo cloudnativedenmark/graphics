@@ -73,7 +73,8 @@ const ROOMS = ["main", "breakout"];
 const roomOf = (r) => (ROOMS.includes(r) ? r : "main");
 
 /** Steps per day and room, counted the way stage/cues.js flattens them: a
- *  talk is two (three with the clear step). */
+ *  talk is two (three with the clear step), a sponsor pitch two (intro, then
+ *  the clock running). */
 function stepsOf(stage, day, room) {
   const d = stage.days[day];
   return ((room === "breakout" ? d?.breakout : d?.cues) ?? []).flatMap((cue) =>
@@ -83,7 +84,12 @@ function stepsOf(stage, day, room) {
           { scene: "talk", state: "walkon" },
           { scene: "talk", state: "live" },
         ]
-      : [{ scene: cue.scene, cue }],
+      : cue.scene === "pitch"
+        ? [
+            { scene: "pitch", state: "intro", cue },
+            { scene: "pitch", state: "running", cue },
+          ]
+        : [{ scene: cue.scene, cue }],
   );
 }
 function stepCounts(stage, room) {
@@ -133,9 +139,10 @@ function scheduleAutoLive(stage, room) {
  * Entering a countdown cue starts its clock: `minutes` (default 5) from the
  * moment it appears. Leaving it clears the clock, so the next countdown
  * starts fresh. The control page's buttons adjust it while it runs. A
- * sponsor's pitch runs on the same clock.
+ * sponsor's pitch runs on the same clock, from its second step: the first
+ * holds the clock while the sponsor is introduced.
  */
-const TIMED = new Set(["countdown", "pitch"]);
+const timed = (step) => step?.scene === "countdown" || (step?.scene === "pitch" && step.state === "running");
 const lastStep = {};
 function onStep(stage, room) {
   const state = states[room];
@@ -143,7 +150,7 @@ function onStep(stage, room) {
   if (key === lastStep[room]) return;
   lastStep[room] = key;
   const step = stepsOf(stage, state.day, room)[state.i];
-  state.countdownTo = TIMED.has(step?.scene) ? Date.now() + Number(step.cue.minutes ?? 5) * 60000 : null;
+  state.countdownTo = timed(step) ? Date.now() + Number(step.cue.minutes ?? 5) * 60000 : null;
 }
 
 function command(body) {

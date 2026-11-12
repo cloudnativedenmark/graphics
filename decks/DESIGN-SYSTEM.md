@@ -166,8 +166,8 @@ Anything still unknown is marked `TODO` next to where it belongs, so
 ## 8. Presenting and exporting
 
 ```bash
-decks/start.sh                # all four decks, each with its speaker-notes window, on :8026
-decks/start.sh day1-morning   # just one
+decks/start.sh                # lists the decks and the command for each
+decks/start.sh day1-morning   # that deck and its speaker-notes window, on :8026
 ```
 
 Speaker notes go in the slide they belong to:

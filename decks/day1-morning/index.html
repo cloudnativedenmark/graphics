@@ -56,7 +56,7 @@
 </section>
 
 <!-- Facts from content/2026-social-media-plan.md; map from
-     shared/denmark.js. -->
+     shared/denmark.js, the cities pinned with the CND mark. -->
 <section class="slide" data-layout="split" data-field="none">
   <div class="pad">
     <p class="eyebrow">What we are</p>
@@ -74,7 +74,7 @@
       </dl>
     </div>
   </div>
-  <div class="geomap" data-map="denmark"></div>
+  <div class="geomap" data-map="denmark" data-pin="../../brand/logo/cnd-mark.svg" style="--pin: 80"></div>
 </section>
 
 <!-- Kim Yen Nguyen's 2025 photos, already selected in assets/photos/2025
@@ -119,7 +119,8 @@
   <div class="geomap" data-map="nordics" data-pin="../../assets/partners/cloud-native-nordics-mark.svg"></div>
 </section>
 
-<!-- local communities -------------------------------------------------- -->
+<!-- local communities: each QR is the link beside it, from qr in
+     content/2026-stage.json ------------------------------------------- -->
 <section class="slide" data-layout="cities">
   <div class="pad">
     <p class="eyebrow">Your local communities</p>
@@ -127,11 +128,14 @@
   </div>
   <div class="signs">
     <div class="city"><div class="citysign"><div class="face">Aalborg</div></div>
-      <p class="body"><a href="https://ocgroups.dev/cncf/group/aalborg">ocgroups.dev<small>/cncf/group/aalborg</small></a></p></div>
+      <div class="join"><div class="qr" data-qr="aalborg" data-label="Aalborg meetup group"></div>
+      <p class="body"><a href="https://ocgroups.dev/cncf/group/aalborg">ocgroups.dev<small>/cncf/group/aalborg</small></a></p></div></div>
     <div class="city"><div class="citysign"><div class="face">Aarhus</div></div>
-      <p class="body"><a href="https://ocgroups.dev/cncf/group/cncf-aarhus">ocgroups.dev<small>/cncf/group/cncf-aarhus</small></a></p></div>
+      <div class="join"><div class="qr" data-qr="aarhus" data-label="Aarhus meetup group"></div>
+      <p class="body"><a href="https://ocgroups.dev/cncf/group/cncf-aarhus">ocgroups.dev<small>/cncf/group/cncf-aarhus</small></a></p></div></div>
     <div class="city"><div class="citysign"><div class="face">København</div></div>
-      <p class="body"><a href="https://www.meetup.com/cloud-native-copenhagen/">meetup.com<small>/cloud-native-copenhagen</small></a></p></div>
+      <div class="join"><div class="qr" data-qr="copenhagen" data-label="København meetup group"></div>
+      <p class="body"><a href="https://www.meetup.com/cloud-native-copenhagen/">meetup.com<small>/cloud-native-copenhagen</small></a></p></div></div>
   </div>
 </section>
 
@@ -517,17 +521,38 @@
   </div>
 </section>
 
-<!-- The stamp card is graphics/build-stamp-card.mjs. The draw is in
+<!-- The booth card is graphics/build-stamp-card.mjs. The draw is in
      day2-afternoon ("Sponsor booth visits"). TODO 2026: the prizes. -->
-<section class="slide" data-layout="logistics">
-  <div class="pad">
+<!-- Each sponsor hands out its own coloured sticker; it goes in that
+     booth's circle on the back of the card. The printed card says stamps,
+     the slide says stickers. The pictures are the printed 12-booth card
+     (sponsors' booths only, no community sponsors), resized. The card is
+     printed: don't rebuild or change graphics/build-stamp-card.mjs. -->
+<section class="slide" data-layout="logistics" data-field="none">
+  <div class="pad" style="right: 760px">
     <p class="eyebrow">Visit the sponsor booths</p>
-    <h2 class="display">Collect<br>the stamps.</h2>
+    <h2 class="display">Collect<br>the stickers.</h2>
     <dl class="kv">
-      <dt>Collect</dt><dd>A stamp from every booth on your card</dd>
+      <dt>Collect</dt><dd>A sticker from every booth on your card</dd>
       <dt>Hand in</dt><dd>The full card at the registration desk</dd>
       <dt>Win</dt><dd>Cool prizes, drawn on day two</dd>
     </dl>
+  </div>
+  <div class="card-preview">
+    <img class="front" src="img/stamp-card-front.png" alt="The front of the booth card">
+    <img class="back" src="img/stamp-card-back.png" alt="The back of the booth card: one circle per sponsor booth for its sticker">
+  </div>
+</section>
+
+<!-- The afterparty, announced in the morning. Upwind is its sponsor (tier
+     "Afterparty"); deck.js fills the tile from the show data. 17:00, when
+     the last session ends, same as the afternoon deck and the wall. -->
+<section class="slide" data-layout="logistics" data-field="quiet" data-source="afterparty">
+  <div class="pad">
+    <p class="eyebrow">Tonight</p>
+    <h2 class="display">Afterparty,<br>17:00.</h2>
+    <p class="body">In the restaurant, straight after the last session.
+    Food, drinks and good company.</p>
   </div>
 </section>
 

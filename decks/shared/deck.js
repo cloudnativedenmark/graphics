@@ -438,12 +438,14 @@
     } else if (t && slide.dataset.layout === "rate") {
       rateSlide(slide, t);
     }
-    // The photographers' gallery, the same code the wall shows in the breaks.
-    const photosQr = slide.querySelector('.qr[data-qr="photos"]');
-    if (photosQr && SHOW?.photos) {
-      const n = SHOW.photos.n + 4;
-      photosQr.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="The photos"><path d="${SHOW.photos.d}"/>${SHOW.photos.mark ?? ""}</svg>`;
-    }
+    // Codes for the links in the stage file's `qr` (the photographers'
+    // gallery, the meetup groups), encoded by stage/build.mjs.
+    slide.querySelectorAll(".qr[data-qr]").forEach((el) => {
+      const q = SHOW?.qrs?.[el.dataset.qr];
+      if (!q) return console.warn(`deck: no QR "${el.dataset.qr}" in stage/show.data.js; add its link to qr in content/2026-stage.json`);
+      const n = q.n + 4;
+      el.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="${esc(el.dataset.label ?? el.dataset.qr)}"><path d="${q.d}"/>${q.mark ?? ""}</svg>`;
+    });
     if (slide.dataset.source === "sponsors") sponsorSlide(slide);
     else if (slide.dataset.source === "community") communitySlide(slide);
     else if (slide.dataset.source === "afterparty") partySlide(slide);

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Serve the remarks decks and open each next to its speaker-notes follower.
 #
-#   decks/start.sh                               all four decks
+#   decks/start.sh                               list the decks and how to open each
 #   decks/start.sh day2-afternoon                just that one
 #   decks/start.sh day1-morning day1-afternoon   any few
 #   PORT=9000 decks/start.sh ...
@@ -14,7 +14,10 @@ cd "$(dirname "$0")/.."
 PORT="${PORT:-8026}"
 
 if [ $# -eq 0 ]; then
-  set -- day1-morning day1-afternoon day2-morning day2-afternoon
+  echo "Open a deck and its speaker notes with:"
+  for d in day1-morning day1-afternoon day2-morning day2-afternoon; do echo "  decks/start.sh $d"; done
+  echo "Name several to open them together."
+  exit 0
 fi
 
 DECKS=()

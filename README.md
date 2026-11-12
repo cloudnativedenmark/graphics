@@ -147,8 +147,9 @@ scale, the layouts, the field, do/don't. Read it before editing a slide.
 
 ```bash
 node stage/build.mjs           # content → stage/show.data.js
-decks/start.sh                 # serves on :8026, opens all four decks and their notes
-decks/start.sh day2-afternoon  # just one, or name several
+decks/start.sh                 # lists the decks and the command for each
+decks/start.sh day1-morning    # serves on :8026, opens that deck and its notes
+decks/start.sh day1-morning day1-afternoon  # or name several
 ```
 
 For each deck, `start.sh` opens two windows: the deck (press `f` on the
