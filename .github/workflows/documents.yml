@@ -1,0 +1,167 @@
+# On a pull request: render the documents it touches and comment links to
+# the PDFs. On main: render every document onto the rolling `documents`
+# release, so each has a stable link.
+#
+# PDFs are uploaded unzipped, so the link opens in the browser. Artifacts and
+# releases in a private repo need a GitHub login with access to it: documents
+# carry crew phone numbers, so they don't go to a public preview host.
+name: Documents
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - content/documents/**
+      - graphics/build-documents.mjs
+      - graphics/markdown.mjs
+      - graphics/templates/document.css
+      - brand/**
+      - .github/workflows/documents.yml
+  pull_request:
+    paths:
+      - content/documents/**
+      - graphics/build-documents.mjs
+      - graphics/markdown.mjs
+      - graphics/templates/document.css
+      - brand/**
+      - .github/workflows/documents.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documents-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changed:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      slugs: ${{ steps.pick.outputs.slugs }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      # A template or brand change can move every document; otherwise only
+      # the documents edited in this PR.
+      - id: pick
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          changed=$(git diff --name-only "$BASE"...HEAD)
+          if grep -qE '^(graphics/(build-documents|markdown)\.mjs|graphics/templates/document\.css|brand/|\.github/workflows/documents\.yml)' <<<"$changed"; then
+            files=$(ls content/documents/*.md 2>/dev/null || true)
+          else
+            files=$(grep -E '^content/documents/[^/]+\.md$' <<<"$changed" || true)
+          fi
+          # `if`, not `&&`: a deleted last file must not fail the loop under pipefail.
+          slugs=$(for f in $files; do if [ -f "$f" ]; then basename "$f" .md; fi; done | jq -R . | jq -sc .)
+          echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: changed
+    if: needs.changed.outputs.slugs != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        slug: ${{ fromJSON(needs.changed.outputs.slugs) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Render
+        env:
+          SLUG: ${{ matrix.slug }}
+        run: node graphics/build-documents.mjs "$SLUG"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          path: graphics/out/documents/${{ matrix.slug }}.pdf
+          archive: false
+          retention-days: 30
+
+  # Runs when a render fails too, so the comment never keeps the last run's
+  # links. Not for forks: their token is read-only; the PDFs are on the run.
+  comment:
+    needs: [changed, build]
+    if: >-
+      ${{ !cancelled() && needs.changed.result == 'success' && needs.changed.outputs.slugs != '[]'
+      && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - id: body
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLUGS: ${{ needs.changed.outputs.slugs }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          run="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          artifacts=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --paginate \
+            --jq '.artifacts[] | "\(.name)\t\(.id)"')
+          {
+            echo "body<<EOF"
+            echo "### Document previews"
+            echo
+            echo "| Document | PDF | TODOs left |"
+            echo "|---|---|---|"
+            for slug in $(jq -r '.[]' <<<"$SLUGS"); do
+              id=$(awk -F'\t' -v n="$slug.pdf" '$1 == n { print $2 }' <<<"$artifacts")
+              todos=$( { grep -ow 'TODO' "content/documents/$slug.md" || true; } | wc -l | tr -d ' ')
+              if [ -n "$id" ]; then pdf="[$slug.pdf]($run/artifacts/$id)"; else pdf="render failed, [see the run]($run)"; fi
+              echo "| \`$slug\` | $pdf | $todos |"
+            done
+            echo
+            echo "Rendered from $SHA. Links open in the browser for anyone with access to this repo, for 30 days."
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: documents
+          message: ${{ steps.body.outputs.body }}
+
+  publish:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Render
+        run: node graphics/build-documents.mjs
+
+      # One release whose tag follows main: upload replaces each PDF in
+      # place, and PDFs of deleted documents are removed.
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=documents
+          if gh release view "$tag" >/dev/null 2>&1; then
+            git tag -f "$tag"
+            git push -f origin "refs/tags/$tag"
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --title "Documents" --notes "" --latest=false
+          fi
+          gh release upload "$tag" graphics/out/documents/*.pdf --clobber
+          for name in $(gh release view "$tag" --json assets --jq '.assets[].name'); do
+            if [ ! -f "graphics/out/documents/$name" ]; then gh release delete-asset "$tag" "$name" --yes; fi
+          done
+          gh release edit "$tag" --notes "Every document in content/documents/, rendered from $GITHUB_SHA on each push to main."

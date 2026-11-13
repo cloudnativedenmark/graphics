@@ -33,6 +33,7 @@ If Chrome is not found, set `CHROME_BIN`.
 | Slides | edit the deck HTML in `decks/`; talk, team and sponsor slides fill from `stage/show.data.js` (`node stage/build.mjs`) |
 | LED wall behind the stage | edit `content/2026-stage.json`, run `node stage/render.mjs`; read `docs/stage-led-wall.md` |
 | Something to tweak in Canva | `graphics/build-canva-import.py` |
+| Guide, brief, handout or any printable document (PDF) | write `content/documents/<slug>.md`, run `node graphics/build-documents.mjs <slug>` |
 
 **Prefer the content file over one-off commands** when the thing being made is
 part of the 2026 set. It keeps the PNGs and the Canva HTML in step, and it means
@@ -90,6 +91,25 @@ frames that have a reference; everything else is judged by eye.
 Be careful with ad-hoc pixel checks — counting white pixels per row cannot tell
 white text from a white shape on a dark ground. If a check would pass on a
 broken render, it is not a check.
+
+## Documents
+
+Printable documents are Markdown with front matter (`title`, `eyebrow`, `lead`,
+`meta`, `updated`) in `content/documents/`; README has the syntax. The
+template owns the look, so write content, not HTML or CSS.
+
+- **Keep the author's words.** Restructure into sections, lists, tables and
+  callouts; fix typos; don't rewrite the voice.
+- **Write links as their URL** (`[cloudnativedenmark.dk/schedule](https://…)`),
+  because people print these. Link to headings with `#slug`, GitHub-style.
+- **Mark what you don't know `TODO`** rather than guessing a link, name or
+  number. It prints highlighted. `grep -rn TODO content/documents/` before
+  anyone sends one.
+- **Every clock time carries its timezone**, `14:40 CET`: speakers and
+  attendees are international. The conference runs on CET (UTC+1).
+- Bump `updated` when the content changes; it goes in every page's footer.
+- **Look at the PDF** (`pdftocairo -png -r 80`) before calling it done: page
+  breaks and table widths are judged by eye.
 
 ## Canva
 

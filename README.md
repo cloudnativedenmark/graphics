@@ -100,6 +100,55 @@ node graphics/render.mjs linkedin-cover --theme dark \
 
 ---
 
+## Documents
+
+Guides, briefs and handouts as branded A4 PDFs, written in Markdown. The track
+host guide is the first.
+
+```bash
+node graphics/build-documents.mjs                   # every document
+node graphics/build-documents.mjs track-host-guide  # one
+```
+
+Sources live in [`content/documents/`](content/documents/), output in
+`graphics/out/documents/` (a PDF, and the HTML to open in Chrome while
+editing). The look is [`graphics/templates/document.css`](graphics/templates/document.css):
+a navy cover card with the lockup and the field, numbered sections, white paper.
+
+```markdown
+---
+title: Track host guide.
+eyebrow: Cloud Native Denmark 2026 · Crew
+lead: One or two sentences under the title.
+meta: 19–20 November 2026 · Scandic Copenhagen
+updated: 2026-11-13
+---
+
+## A section
+
+- [ ] A task, printed with an empty hexagon to tick
+- A bullet
+
+> [!TIP] Callout title
+> Sand callout. `[!IMPORTANT]`, `[!WARNING]` and `[!CAUTION]` go navy.
+```
+
+Tables, nested lists, `[links](#a-heading)` within the PDF and raw HTML
+(`<div class="page-break"></div>`) work too. A `TODO` anywhere prints
+highlighted, so a draft can't pass for final: `grep -rn TODO content/documents/`
+before sending. Write links as their URL — half of these get printed.
+
+A pull request that touches a document gets a comment linking its PDF,
+rendered by CI ([`.github/workflows/documents.yml`](.github/workflows/documents.yml)).
+The link opens in the browser for anyone with access to this repo.
+
+On main, every document is rebuilt onto the
+[`documents` release](https://github.com/cloudnativedenmark/graphics/releases/tag/documents),
+so the latest PDF always has the same link:
+`https://github.com/cloudnativedenmark/graphics/releases/download/documents/<slug>.pdf`.
+
+---
+
 ## Importing into Canva
 
 Canva is for **minor tweaks by hand**; this repo stays the source of truth for
