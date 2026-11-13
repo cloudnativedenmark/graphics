@@ -101,7 +101,7 @@ template owns the look, so write content, not HTML or CSS.
 - **Keep the author's words.** Restructure into sections, lists, tables and
   callouts; fix typos; don't rewrite the voice.
 - **Write links as their URL** (`[cloudnativedenmark.dk/schedule](https://…)`),
-  because people print these. Link to headings with `#slug`.
+  because people print these. Link to headings with `#slug`, GitHub-style.
 - **Mark what you don't know `TODO`** rather than guessing a link, name or
   number. It prints highlighted. `grep -rn TODO content/documents/` before
   anyone sends one.

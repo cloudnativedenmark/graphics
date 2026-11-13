@@ -21,8 +21,8 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { frontMatter, inline, markdown } from "./markdown.mjs";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { frontMatter, inline, markdown, plain } from "./markdown.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "content", "documents");
@@ -90,11 +90,12 @@ function coverField() {
 }
 
 const cssString = (s) => `"${s.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
-const plain = (s) => s.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
 
 function formatDate(iso) {
   const d = new Date(`${iso}T12:00:00Z`);
-  if (Number.isNaN(d.getTime())) throw new Error(`updated: "${iso}" is not YYYY-MM-DD`);
+  // The round trip rejects dates that would roll over, like 2026-02-30.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso) || Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== iso)
+    throw new Error(`updated: "${iso}" is not a YYYY-MM-DD date`);
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 }
 
@@ -162,7 +163,7 @@ for (const file of files) {
       "--no-pdf-header-footer",
       "--generate-pdf-document-outline",
       `--print-to-pdf=${pdf}`,
-      `file://${html}`,
+      pathToFileURL(html).href,
     ],
     { stdio: "ignore" },
   );

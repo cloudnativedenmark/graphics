@@ -14,8 +14,13 @@
 const esc = (s) =>
   s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
+/** Tags stripped and entities decoded; `&amp;` last, so `&amp;lt;` stays `&lt;`. */
+export const plain = (html) =>
+  html.replace(/<[^>]+>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+
 /** `---` delimited `key: value` lines at the top of the file. */
 export function frontMatter(src) {
+  src = src.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
   const m = src.match(/^---\n([\s\S]*?)\n---\n?/);
   if (!m) return { data: {}, body: src };
   const data = {};
@@ -27,28 +32,41 @@ export function frontMatter(src) {
 }
 
 export function inline(text) {
-  const codes = [];
-  let s = text.replace(/`([^`]+)`/g, (_, c) => `\u0000${codes.push(c) - 1}\u0000`);
+  // Code spans and link targets are stashed before the emphasis and TODO
+  // passes, so neither can reach inside them.
+  const stash = [];
+  const keep = (html) => `\u0000${stash.push(html) - 1}\u0000`;
+  let s = text.replace(/`([^`]+)`/g, (_, c) => keep(`<code>${esc(c)}</code>`));
   s = esc(s);
-  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, href) => `<a href="${href}">${t}</a>`);
-  s = s.replace(/&lt;((?:https?:\/\/|mailto:)[^\s&]+)&gt;/g, (_, href) => `<a href="${href}">${href.replace(/^mailto:/, "")}</a>`);
+  s = s.replace(/&lt;((?:https?:\/\/|mailto:)\S+?)&gt;/g, (_, href) =>
+    keep(`<a href="${href}">${href.replace(/^mailto:/, "")}</a>`),
+  );
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, href) => `<a href="${keep(href)}">${t}</a>`);
   s = s.replace(/\*\*(?!\s)(.+?)\*\*/g, "<strong>$1</strong>");
   s = s.replace(/\*(?![\s*])(.+?)\*/g, "<em>$1</em>");
   s = s.replace(/(<[^>]*>)|\bTODO\b/g, (m, tag) => tag ?? `<mark class="todo">TODO</mark>`);
-  return s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${esc(codes[i])}</code>`);
+  const restore = (x) => x.replace(/\u0000(\d+)\u0000/g, (_, i) => restore(stash[i]));
+  return restore(s);
 }
 
 const HEADING = /^(#{1,4})\s+(.*?)\s*#*\s*$/;
 const RULE = /^ {0,3}([-*_])( *\1){2,} *$/;
 const QUOTE = /^ *>/;
 const ITEM = /^( *)([-*+]|\d+[.)]) +(.*)$/;
-const HTML = /^ *<\/?[a-z][^>]*>/i;
+// A tag name then whitespace, `/` or `>`: `<https://…>` is an autolink, not HTML.
+const HTML = /^ *<\/?[a-z][a-z0-9-]*(?:\s[^>]*)?\/?>/i;
 const SEP = /^ *\|? *:?-+:? *(\| *:?-+:? *)*\|? *$/;
 
 const indentOf = (l) => l.match(/^ */)[0].length;
 const isTable = (lines, i) => lines[i].includes("|") && i + 1 < lines.length && SEP.test(lines[i + 1]);
+// As in CommonMark, only an ordered list starting at 1 interrupts a
+// paragraph, so a wrapped line like "2026. was good" stays prose.
+const interrupts = (line) => {
+  const m = line.match(ITEM);
+  return m && (!/\d/.test(m[2]) || parseInt(m[2], 10) === 1);
+};
 const startsBlock = (lines, i) =>
-  [HEADING, RULE, QUOTE, ITEM, HTML].some((re) => re.test(lines[i])) || isTable(lines, i);
+  [HEADING, RULE, QUOTE, HTML].some((re) => re.test(lines[i])) || interrupts(lines[i]) || isTable(lines, i);
 
 const cells = (l) =>
   l.trim().replace(/^\|/, "").replace(/\|$/, "").split(/(?<!\\)\|/).map((c) => c.trim().replace(/\\\|/g, "|"));
@@ -60,10 +78,10 @@ const joinLines = (ls) =>
     .replace(/\\<br>/g, "<br>");
 
 export function markdown(src) {
+  // GitHub's heading ids, so `#slug` links read the same on GitHub and in the PDF.
   const ids = new Map();
   const slug = (html) => {
-    const base = html.replace(/<[^>]+>/g, "").toLowerCase().normalize("NFKD")
-      .replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
+    const base = plain(html).trim().toLowerCase().replace(/[^\p{L}\p{M}\p{N}\p{Pc} -]/gu, "").replace(/ /g, "-") || "section";
     const n = (ids.get(base) ?? 0) + 1;
     ids.set(base, n);
     return n === 1 ? base : `${base}-${n}`;
@@ -154,7 +172,7 @@ function list(lines, i, slug) {
       if (indentOf(n) <= base) loose = true;
       items.at(-1).push("");
       i = j;
-    } else if (indentOf(lines[i]) > base || !startsBlock(lines, i)) {
+    } else if (indentOf(lines[i]) > base || (!ITEM.test(lines[i]) && !startsBlock(lines, i))) {
       items.at(-1).push(lines[i++]);
     } else {
       break;

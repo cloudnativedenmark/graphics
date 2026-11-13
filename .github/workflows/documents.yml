@@ -44,7 +44,8 @@ jobs:
           else
             files=$(grep -E '^content/documents/[^/]+\.md$' <<<"$changed" || true)
           fi
-          slugs=$(for f in $files; do [ -f "$f" ] && basename "$f" .md; done | jq -R . | jq -sc .)
+          # `if`, not `&&`: a deleted last file must not fail the loop under pipefail.
+          slugs=$(for f in $files; do if [ -f "$f" ]; then basename "$f" .md; fi; done | jq -R . | jq -sc .)
           echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
 
   build:
@@ -73,8 +74,10 @@ jobs:
           archive: false
           retention-days: 30
 
+  # Runs when a render fails too, so the comment never keeps the last run's links.
   comment:
     needs: [changed, build]
+    if: ${{ !cancelled() && needs.changed.result == 'success' && needs.changed.outputs.slugs != '[]' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -100,8 +103,9 @@ jobs:
             echo "|---|---|---|"
             for slug in $(jq -r '.[]' <<<"$SLUGS"); do
               id=$(awk -F'\t' -v n="$slug.pdf" '$1 == n { print $2 }' <<<"$artifacts")
-              todos=$(grep -ow 'TODO' "content/documents/$slug.md" | wc -l | tr -d ' ')
-              echo "| \`$slug\` | [$slug.pdf]($run/artifacts/$id) | $todos |"
+              todos=$( { grep -ow 'TODO' "content/documents/$slug.md" || true; } | wc -l | tr -d ' ')
+              if [ -n "$id" ]; then pdf="[$slug.pdf]($run/artifacts/$id)"; else pdf="render failed, [see the run]($run)"; fi
+              echo "| \`$slug\` | $pdf | $todos |"
             done
             echo
             echo "Rendered from $SHA. Links open in the browser for anyone with access to this repo, for 30 days."
