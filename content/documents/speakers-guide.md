@@ -10,13 +10,13 @@ Dear speaker,
 
 Thank you for speaking at Cloud Native Denmark 2026. The talks are what bring the community together, and we're glad yours is one of them.
 
-This guide covers the practical bits, so you can focus on your talk. If anything is unclear, get in touch. We're happy to help.
+This guide covers the practical bits, so you can focus on your talk. All times are Copenhagen time, CET (UTC+1). If anything is unclear, get in touch. We're happy to help.
 
 ## Speakers' dinner
 
-If you have signed up for the speakers' dinner, you should have received a ticket for it, sent around 14:40 on 12 November. The ticket is valid for the entire day (single entry).
+If you have signed up for the speakers' dinner, you should have received a ticket for it, sent around 14:40 CET on 12 November. The ticket is valid for the entire day (single entry).
 
-If you'd like to be guided to the restaurant, some of the organisers will be at the main entrance, and we enter at 17:40.
+If you'd like to be guided to the restaurant, some of the organisers will be at the main entrance, and we enter at 17:40 CET.
 
 ## Your talk
 

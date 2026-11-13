@@ -105,6 +105,8 @@ template owns the look, so write content, not HTML or CSS.
 - **Mark what you don't know `TODO`** rather than guessing a link, name or
   number. It prints highlighted. `grep -rn TODO content/documents/` before
   anyone sends one.
+- **Every clock time carries its timezone**, `14:40 CET`: speakers and
+  attendees are international. The conference runs on CET (UTC+1).
 - Bump `updated` when the content changes; it goes in every page's footer.
 - **Look at the PDF** (`pdftocairo -png -r 80`) before calling it done: page
   breaks and table widths are judged by eye.
