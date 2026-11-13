@@ -74,10 +74,13 @@ jobs:
           archive: false
           retention-days: 30
 
-  # Runs when a render fails too, so the comment never keeps the last run's links.
+  # Runs when a render fails too, so the comment never keeps the last run's
+  # links. Not for forks: their token is read-only; the PDFs are on the run.
   comment:
     needs: [changed, build]
-    if: ${{ !cancelled() && needs.changed.result == 'success' && needs.changed.outputs.slugs != '[]' }}
+    if: >-
+      ${{ !cancelled() && needs.changed.result == 'success' && needs.changed.outputs.slugs != '[]'
+      && github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

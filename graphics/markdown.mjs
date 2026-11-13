@@ -41,7 +41,8 @@ export function inline(text) {
   s = s.replace(/&lt;((?:https?:\/\/|mailto:)\S+?)&gt;/g, (_, href) =>
     keep(`<a href="${href}">${href.replace(/^mailto:/, "")}</a>`),
   );
-  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, href) => `<a href="${keep(href)}">${t}</a>`);
+  // One level of balanced parentheses in the target, for URLs like …/Markdown_(software).
+  s = s.replace(/\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)/g, (_, t, href) => `<a href="${keep(href)}">${t}</a>`);
   s = s.replace(/\*\*(?!\s)(.+?)\*\*/g, "<strong>$1</strong>");
   s = s.replace(/\*(?![\s*])(.+?)\*/g, "<em>$1</em>");
   s = s.replace(/(<[^>]*>)|\bTODO\b/g, (m, tag) => tag ?? `<mark class="todo">TODO</mark>`);
@@ -49,7 +50,8 @@ export function inline(text) {
   return restore(s);
 }
 
-const HEADING = /^(#{1,4})\s+(.*?)\s*#*\s*$/;
+// Closing hashes only after whitespace, so `## C#` keeps its hash.
+const HEADING = /^(#{1,4})\s+(.*?)(?:\s+#+)?\s*$/;
 const RULE = /^ {0,3}([-*_])( *\1){2,} *$/;
 const QUOTE = /^ *>/;
 const ITEM = /^( *)([-*+]|\d+[.)]) +(.*)$/;
@@ -79,12 +81,14 @@ const joinLines = (ls) =>
 
 export function markdown(src) {
   // GitHub's heading ids, so `#slug` links read the same on GitHub and in the PDF.
-  const ids = new Map();
+  // Repeats get -1, -2…, skipping any id already taken.
+  const used = new Set();
   const slug = (html) => {
     const base = plain(html).trim().toLowerCase().replace(/[^\p{L}\p{M}\p{N}\p{Pc} -]/gu, "").replace(/ /g, "-") || "section";
-    const n = (ids.get(base) ?? 0) + 1;
-    ids.set(base, n);
-    return n === 1 ? base : `${base}-${n}`;
+    let id = base;
+    for (let n = 1; used.has(id); n++) id = `${base}-${n}`;
+    used.add(id);
+    return id;
   };
   return blocks(src.replace(/\r\n?/g, "\n").replace(/\t/g, "    ").split("\n"), slug).join("\n");
 }
