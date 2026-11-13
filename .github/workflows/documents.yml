@@ -1,11 +1,22 @@
-# Render the documents a pull request touches and comment links to the PDFs.
+# On a pull request: render the documents it touches and comment links to
+# the PDFs. On main: render every document onto the rolling `documents`
+# release, so each has a stable link.
 #
-# PDFs are uploaded unzipped, so the link opens in the browser. Artifacts in a
-# private repo need a GitHub login with access to it: documents carry crew
-# phone numbers, so they don't go to a public preview host.
+# PDFs are uploaded unzipped, so the link opens in the browser. Artifacts and
+# releases in a private repo need a GitHub login with access to it: documents
+# carry crew phone numbers, so they don't go to a public preview host.
 name: Documents
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - content/documents/**
+      - graphics/build-documents.mjs
+      - graphics/markdown.mjs
+      - graphics/templates/document.css
+      - brand/**
+      - .github/workflows/documents.yml
   pull_request:
     paths:
       - content/documents/**
@@ -19,11 +30,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: documents-${{ github.event.pull_request.number }}
+  group: documents-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   changed:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     outputs:
       slugs: ${{ steps.pick.outputs.slugs }}
@@ -119,3 +131,37 @@ jobs:
         with:
           header: documents
           message: ${{ steps.body.outputs.body }}
+
+  publish:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Render
+        run: node graphics/build-documents.mjs
+
+      # One release whose tag follows main: upload replaces each PDF in
+      # place, and PDFs of deleted documents are removed.
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=documents
+          if gh release view "$tag" >/dev/null 2>&1; then
+            git tag -f "$tag"
+            git push -f origin "refs/tags/$tag"
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --title "Documents" --notes "" --latest=false
+          fi
+          gh release upload "$tag" graphics/out/documents/*.pdf --clobber
+          for name in $(gh release view "$tag" --json assets --jq '.assets[].name'); do
+            if [ ! -f "graphics/out/documents/$name" ]; then gh release delete-asset "$tag" "$name" --yes; fi
+          done
+          gh release edit "$tag" --notes "Every document in content/documents/, rendered from $GITHUB_SHA on each push to main."

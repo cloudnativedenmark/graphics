@@ -142,6 +142,11 @@ A pull request that touches a document gets a comment linking its PDF,
 rendered by CI ([`.github/workflows/documents.yml`](.github/workflows/documents.yml)).
 The link opens in the browser for anyone with access to this repo.
 
+On main, every document is rebuilt onto the
+[`documents` release](https://github.com/cloudnativedenmark/graphics/releases/tag/documents),
+so the latest PDF always has the same link:
+`https://github.com/cloudnativedenmark/graphics/releases/download/documents/<slug>.pdf`.
+
 ---
 
 ## Importing into Canva
