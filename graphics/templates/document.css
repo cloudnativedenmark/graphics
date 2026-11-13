@@ -369,8 +369,10 @@ blockquote > :last-child,
 
 /* ── tables ──────────────────────────────────────────────────────────── */
 
-/* Rows separated by tint, not rules, as on the deck table layout. */
+/* Rows separated by tint, not rules, as on the deck table layout. A table
+ * moves to the next page whole if it fits there; taller ones still split. */
 table {
+  break-inside: avoid;
   width: 100%;
   margin: 2mm 0 5mm;
   border-collapse: separate;
