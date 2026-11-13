@@ -10,7 +10,7 @@ Dear speaker,
 
 Thank you for speaking at Cloud Native Denmark 2026. The talks are what bring the community together, and we're glad yours is one of them.
 
-This guide covers the practical bits, so you can focus on your talk. All times are Copenhagen time, CET (UTC+1). If anything is unclear, get in touch. We're happy to help.
+This guide covers the practical bits, so you can focus on your talk. All times are Copenhagen time, CET (UTC+1). If anything is unclear, get in touch at [contact@cloudnativedenmark.dk](mailto:contact@cloudnativedenmark.dk). We're happy to help.
 
 ## Speakers' dinner
 
@@ -40,7 +40,7 @@ Your slot is on the schedule at [cloudnativedenmark.dk/schedule](https://cloudna
 
 ## Slides
 
-We'd like to make the slides available to the community, and we know some people like to look through them in advance. Please send us a copy of your slides as a PDF at TODO whenever you feel comfortable, company policy and time permitting.
+We'd like to make the slides available to the community, and we know some people like to look through them in advance. Please send us a copy of your slides as a PDF to [contact@cloudnativedenmark.dk](mailto:contact@cloudnativedenmark.dk) whenever you feel comfortable, company policy and time permitting.
 
 ## Thank you
 
