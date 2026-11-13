@@ -18,7 +18,7 @@ This is a new concept for us, so don't hesitate to reach out to us or your fello
 
 - [ ] Read up on the talks in your track. Your [schedule and staffing](#schedule) are below.
 - [ ] Check the conference schedule at [cloudnativedenmark.dk/schedule](https://cloudnativedenmark.dk/schedule), so you know when the breaks are. For a hard copy of the session abstracts, print a detailed schedule from [cloudnativedenmark.dk/schedule/track-overview](https://cloudnativedenmark.dk/schedule/track-overview).
-- [ ] Skim the speakers guide: TODO link.
+- [ ] Skim the speaker's guide, so you know what speakers have been told.
 - [ ] Look up the conference map at [cloudnativedenmark.dk/conference-map](https://cloudnativedenmark.dk/conference-map), and find the nearest emergency exits, just in case.
 - [ ] Join Slido as co-host with the invitation link: TODO link.
 - [ ] In Slido, open your room's dashboard. Questions from the audience arrive there, and you moderate them.
@@ -27,6 +27,9 @@ This is a new concept for us, so don't hesitate to reach out to us or your fello
 > Attendees go to **slido.com**, enter code **#3716 399** and select the right room. Their questions appear in your moderator view.
 >
 > Questions keep accumulating in the room until you archive them. Keep the room clean by archiving questions between talks.
+
+> [!IMPORTANT] The Q&A may be on the big screen
+> If Slido is shown on the screen, attendees can scan the QR code and see the questions too. Ask the nearest A/V person or organiser how the Q&A will be operated in your room, or take a moment between talks to rehearse the moderation.
 
 ## Before the talk (T–10)
 
@@ -63,6 +66,8 @@ This is a new concept for us, so don't hesitate to reach out to us or your fello
 
 ## Contact details
 
+We can set up a shared Slack channel or a WhatsApp group for the hosts and organisers. We'll decide which on the day.
+
 ### Hosts
 
 | Name | Email | Phone |
@@ -76,5 +81,5 @@ This is a new concept for us, so don't hesitate to reach out to us or your fello
 
 | Name | Email | Phone |
 |---|---|---|
-| Per Hedegaard Christiansen | — | [+45 31 71 29 17](tel:+4531712917) |
+| Per Hedegaard Christiansen | [per@cloudnativedenmark.dk](mailto:per@cloudnativedenmark.dk) | [+45 31 71 29 17](tel:+4531712917) |
 | Mads Høgstedt Danquah | [mads@cloudnativedenmark.dk](mailto:mads@cloudnativedenmark.dk) | [+45 29 84 16 15](tel:+4529841615) |
