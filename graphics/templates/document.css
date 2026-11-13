@@ -1,0 +1,409 @@
+/* Printed documents: guides, briefs, handouts. A4, rendered from Markdown by
+ * graphics/build-documents.mjs. Colours and families come from
+ * brand/tokens.css only; the token lint scans this file.
+ *
+ * Paper is white, not bone or sand: these go to office printers, and a full
+ * ground wastes toner and stops short of the edge anyway. The navy cover is a
+ * card inside the margins for the same reason. Sand is for callouts and table
+ * rows, navy for the cover and important callouts, red only for markers. */
+
+@page {
+  size: A4;
+  margin: 16mm 17mm 19mm;
+
+  @bottom-left {
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 7pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cnd-slate);
+    vertical-align: middle;
+  }
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 7pt;
+    letter-spacing: 0.08em;
+    color: var(--cnd-slate);
+    vertical-align: middle;
+  }
+}
+
+/* tokens.css zeroes overflow for fixed-size canvases; a document paginates. */
+html,
+body {
+  overflow: visible;
+}
+
+body {
+  font-family: var(--cnd-font-body);
+  font-size: 10pt;
+  line-height: 1.55;
+  color: var(--cnd-navy);
+  background: var(--cnd-white);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Pointy-top hexagon, for markers. A clip path, not a mask: Chrome's PDF
+ * export drops masks (decks/DESIGN-SYSTEM.md §6). */
+:root {
+  --hex: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+
+/* ── cover ───────────────────────────────────────────────────────────── */
+
+.cover {
+  position: relative;
+  overflow: hidden;
+  min-height: 92mm;
+  padding: 17mm 12mm 11mm;
+  margin-bottom: 13mm;
+  border-radius: 4mm;
+  background: var(--cnd-navy);
+  color: var(--cnd-bone);
+  break-inside: avoid;
+}
+.cover .field {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 84mm;
+  height: 100%;
+}
+.cover > :not(.field) {
+  position: relative;
+  max-width: 98mm;
+}
+
+/* The wordmark artwork with the mark at its upper right, at the designer's
+ * measured ratios (cnd-deck.css). Never re-typeset this. */
+.lockup {
+  width: 40mm;
+  aspect-ratio: 1511.728 / 870.581;
+  margin-bottom: 12mm;
+}
+.lockup img {
+  position: absolute;
+  display: block;
+}
+.lockup .wordmark {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.lockup .mark {
+  left: 83.03%;
+  top: -18.75%;
+  width: 42.07%;
+  height: 70%;
+  object-fit: contain;
+}
+
+.eyebrow {
+  margin: 0 0 3mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 8.5pt;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-rose);
+}
+.cover h1 {
+  margin: 0;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 34pt;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--cnd-bone);
+}
+.cover .lead {
+  margin: 5mm 0 0;
+  font-size: 11.5pt;
+  line-height: 1.45;
+  color: var(--cnd-sand);
+}
+.cover .meta {
+  margin: 7mm 0 0;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 7.5pt;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--cnd-sand) 70%, transparent);
+}
+
+/* ── body ────────────────────────────────────────────────────────────── */
+
+/* Text runs in a column right of a rail that carries the section numbers. */
+.doc {
+  padding-left: 27mm;
+}
+
+.doc h1,
+.doc h2 {
+  position: relative;
+  margin: 11mm 0 3.5mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 15pt;
+  line-height: 1.15;
+  letter-spacing: var(--cnd-track-display);
+  text-transform: uppercase;
+  break-after: avoid;
+}
+.doc > :first-child {
+  margin-top: 0;
+}
+
+/* The outline-numeral device from the countdowns: ground-coloured fill,
+ * red stroke. */
+.doc h2 {
+  counter-increment: section;
+}
+.doc h2::before {
+  content: counter(section, decimal-leading-zero);
+  position: absolute;
+  left: -27mm;
+  top: -0.2em;
+  font-size: 27pt;
+  line-height: 1;
+  letter-spacing: var(--cnd-track-display);
+  color: var(--cnd-white);
+  -webkit-text-stroke: 0.7pt var(--cnd-red);
+}
+
+.doc h3 {
+  margin: 6mm 0 2mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 11pt;
+  line-height: 1.25;
+  break-after: avoid;
+}
+.doc h4 {
+  margin: 5mm 0 1.5mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 8pt;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-ink-muted);
+  break-after: avoid;
+}
+
+p {
+  margin: 0 0 2.8mm;
+}
+strong {
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--cnd-red);
+  text-decoration-thickness: 0.25mm;
+  text-underline-offset: 0.6mm;
+}
+
+code {
+  padding: 0 0.8mm;
+  border-radius: 0.8mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 0.95em;
+  background: color-mix(in srgb, var(--cnd-sand) 70%, var(--cnd-white));
+}
+
+mark.todo {
+  padding: 0 1mm;
+  border-radius: 0.8mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  color: var(--cnd-navy);
+  background: var(--cnd-peach);
+}
+
+hr {
+  height: 0;
+  margin: 7mm 0;
+  border: 0;
+  border-top: 0.3mm solid var(--cnd-sand);
+}
+
+.page-break {
+  break-after: page;
+}
+
+/* ── lists ───────────────────────────────────────────────────────────── */
+
+ul,
+ol {
+  margin: 0 0 3.5mm;
+  padding: 0;
+  list-style: none;
+}
+li {
+  position: relative;
+  margin-bottom: 1.7mm;
+  padding-left: 6.5mm;
+  break-inside: avoid;
+}
+li > ul,
+li > ol {
+  margin: 1.7mm 0 0;
+}
+ul.loose > li,
+ol.loose > li {
+  margin-bottom: 3mm;
+}
+
+ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0.8mm;
+  top: 0.48em;
+  width: 2.1mm;
+  height: 2.4mm;
+  background: var(--cnd-red);
+  clip-path: var(--hex);
+}
+li > ul > li::before {
+  background: var(--cnd-rose);
+}
+
+ol > li::before {
+  content: counter(list-item);
+  position: absolute;
+  left: 0;
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  color: var(--cnd-red);
+}
+
+/* Task items get an empty hexagon to tick on paper. */
+ul > li.task {
+  padding-left: 7.5mm;
+}
+ul > li.task::before {
+  left: 0;
+  top: 0.22em;
+  width: 3.6mm;
+  height: 4.1mm;
+}
+ul > li.task::after {
+  content: "";
+  position: absolute;
+  left: 0.45mm;
+  top: calc(0.22em + 0.5mm);
+  width: 2.7mm;
+  height: 3.1mm;
+  background: var(--cnd-white);
+  clip-path: var(--hex);
+}
+ul > li.task.done::after {
+  display: none;
+}
+
+/* ── callouts ────────────────────────────────────────────────────────── */
+
+blockquote,
+.callout {
+  margin: 4.5mm 0;
+  padding: 4.5mm 6mm 4mm;
+  border-radius: 3mm;
+  background: var(--cnd-sand);
+  break-inside: avoid;
+}
+blockquote > :last-child,
+.callout > :last-child {
+  margin-bottom: 0;
+}
+.callout strong {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+}
+.callout-label {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  margin-bottom: 2mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 8pt;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+}
+.callout-label::before {
+  content: "";
+  flex: none;
+  width: 2.3mm;
+  height: 2.6mm;
+  background: var(--cnd-red);
+  clip-path: var(--hex);
+}
+
+/* Important, warning and caution go navy, the way the stage does it. */
+.callout-important,
+.callout-warning,
+.callout-caution {
+  color: var(--cnd-bone);
+  background: var(--cnd-navy);
+}
+.callout-important .callout-label,
+.callout-warning .callout-label,
+.callout-caution .callout-label {
+  color: var(--cnd-rose);
+}
+.callout-important strong,
+.callout-warning strong,
+.callout-caution strong {
+  color: var(--cnd-white);
+}
+
+/* ── tables ──────────────────────────────────────────────────────────── */
+
+/* Rows separated by tint, not rules, as on the deck table layout. */
+table {
+  width: 100%;
+  margin: 2mm 0 5mm;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 9pt;
+  line-height: 1.4;
+}
+thead {
+  display: table-header-group;
+}
+tr {
+  break-inside: avoid;
+}
+th {
+  padding: 0 3mm 2mm;
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 7pt;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--cnd-ink-muted);
+}
+td {
+  padding: 2.2mm 3mm;
+  vertical-align: top;
+}
+tbody tr:nth-child(odd) td {
+  background: color-mix(in srgb, var(--cnd-sand) 50%, var(--cnd-white));
+}
+tbody tr td:first-child {
+  border-radius: 1.5mm 0 0 1.5mm;
+}
+tbody tr td:last-child {
+  border-radius: 0 1.5mm 1.5mm 0;
+}
