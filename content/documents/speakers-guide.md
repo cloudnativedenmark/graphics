@@ -1,7 +1,7 @@
 ---
 title: Speaker's guide.
 eyebrow: Cloud Native Denmark 2026 · Speakers
-lead: Everything you need for the day itself, from the speakers' dinner to the moment you step off stage.
+lead: Everything you need for the conference, from the speakers' dinner to the moment you step off stage.
 meta: 19–20 November 2026 · Scandic Copenhagen
 updated: 2026-11-13
 ---
@@ -14,9 +14,13 @@ This guide covers the practical bits, so you can focus on your talk. All times a
 
 ## Speakers' dinner
 
+> [!TIP] Wednesday 18 November, 18:00 CET
+> **Kilden i Haven, Tivoli Gardens.** We'll be seated in the upper part of the restaurant.\
+> A three-course dinner, drinks and Tivoli Gardens admission are included.
+
 If you have signed up for the speakers' dinner, you should have received a ticket for it, sent around 14:40 CET on 12 November. The ticket is valid for the entire day (single entry).
 
-If you'd like to be guided to the restaurant, some of the organisers will be at the main entrance, and we enter at 17:40 CET.
+If you'd like to be guided to the restaurant, some of the organisers will be at Tivoli's main entrance, and we enter at 17:40 CET.
 
 ## Your talk
 

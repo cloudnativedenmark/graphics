@@ -20,7 +20,7 @@ This is a new concept for us, so don't hesitate to reach out to us or your fello
 - [ ] Check the conference schedule at [cloudnativedenmark.dk/schedule](https://cloudnativedenmark.dk/schedule), so you know when the breaks are. For a hard copy of the session abstracts, print a detailed schedule from [cloudnativedenmark.dk/schedule/track-overview](https://cloudnativedenmark.dk/schedule/track-overview).
 - [ ] Skim the speaker's guide, so you know what speakers have been told.
 - [ ] Look up the conference map at [cloudnativedenmark.dk/conference-map](https://cloudnativedenmark.dk/conference-map), and find the nearest emergency exits, just in case.
-- [ ] Join Slido as co-host with the invitation link: TODO link.
+- [ ] Join Slido as co-host with the [invitation link](https://auth.slido.com/eu1/api/latest/the-auth/user/lifecycle-process/shareable-link/init?token=2da857616a3c4d1798c53e6a8e54ce10edbed8a31d66a496d3ec21c0602c79a2).
 - [ ] In Slido, open your room's dashboard. Questions from the audience arrive there, and you moderate them.
 
 > [!TIP] Slido for your room
