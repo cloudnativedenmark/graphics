@@ -138,6 +138,10 @@ Tables, nested lists, `[links](#a-heading)` within the PDF and raw HTML
 highlighted, so a draft can't pass for final: `grep -rn TODO content/documents/`
 before sending. Write links as their URL — half of these get printed.
 
+A pull request that touches a document gets a comment linking its PDF,
+rendered by CI ([`.github/workflows/documents.yml`](.github/workflows/documents.yml)).
+The link opens in the browser for anyone with access to this repo.
+
 ---
 
 ## Importing into Canva

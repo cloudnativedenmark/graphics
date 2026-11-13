@@ -1,0 +1,114 @@
+# Render the documents a pull request touches and comment links to the PDFs.
+#
+# PDFs are uploaded unzipped, so the link opens in the browser. Artifacts in a
+# private repo need a GitHub login with access to it: documents carry crew
+# phone numbers, so they don't go to a public preview host.
+name: Documents
+
+on:
+  pull_request:
+    paths:
+      - content/documents/**
+      - graphics/build-documents.mjs
+      - graphics/markdown.mjs
+      - graphics/templates/document.css
+      - brand/**
+      - .github/workflows/documents.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documents-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  changed:
+    runs-on: ubuntu-latest
+    outputs:
+      slugs: ${{ steps.pick.outputs.slugs }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      # A template or brand change can move every document; otherwise only
+      # the documents edited in this PR.
+      - id: pick
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          changed=$(git diff --name-only "$BASE"...HEAD)
+          if grep -qE '^(graphics/(build-documents|markdown)\.mjs|graphics/templates/document\.css|brand/|\.github/workflows/documents\.yml)' <<<"$changed"; then
+            files=$(ls content/documents/*.md 2>/dev/null || true)
+          else
+            files=$(grep -E '^content/documents/[^/]+\.md$' <<<"$changed" || true)
+          fi
+          slugs=$(for f in $files; do [ -f "$f" ] && basename "$f" .md; done | jq -R . | jq -sc .)
+          echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: changed
+    if: needs.changed.outputs.slugs != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        slug: ${{ fromJSON(needs.changed.outputs.slugs) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Render
+        env:
+          SLUG: ${{ matrix.slug }}
+        run: node graphics/build-documents.mjs "$SLUG"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          path: graphics/out/documents/${{ matrix.slug }}.pdf
+          archive: false
+          retention-days: 30
+
+  comment:
+    needs: [changed, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - id: body
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLUGS: ${{ needs.changed.outputs.slugs }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          run="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          artifacts=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --paginate \
+            --jq '.artifacts[] | "\(.name)\t\(.id)"')
+          {
+            echo "body<<EOF"
+            echo "### Document previews"
+            echo
+            echo "| Document | PDF | TODOs left |"
+            echo "|---|---|---|"
+            for slug in $(jq -r '.[]' <<<"$SLUGS"); do
+              id=$(awk -F'\t' -v n="$slug.pdf" '$1 == n { print $2 }' <<<"$artifacts")
+              todos=$(grep -ow 'TODO' "content/documents/$slug.md" | wc -l | tr -d ' ')
+              echo "| \`$slug\` | [$slug.pdf]($run/artifacts/$id) | $todos |"
+            done
+            echo
+            echo "Rendered from $SHA. Links open in the browser for anyone with access to this repo, for 30 days."
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: documents
+          message: ${{ steps.body.outputs.body }}
