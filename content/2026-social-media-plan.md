@@ -1093,7 +1093,7 @@ Grounds run `sand`, `navy` and `red` so the feed never shows two identical backg
 
 ## 7. Moments: the 2025 photography
 
-Kim Yen Nguyen shot 1,043 frames at Cloud Native Denmark 2025 in Savværket, Aarhus. Ten of them are now cards.
+Kim-Yen Nguyen shot 1,043 frames at Cloud Native Denmark 2025 in Savværket, Aarhus. Ten of them are now cards.
 
 These are the "I don't want to miss that" posts, and they are the only asset in the campaign that cannot be argued with. A card can claim the room was full. A photograph of the full room ends the discussion.
 
@@ -1109,7 +1109,7 @@ The footer band alternates `sand` and `navy` down the list, so a run of these in
 
 **Three rules for these.**
 
-1. **Credit Kim Yen Nguyen in every post.** Photographer credit is not optional and it costs you nine characters.
+1. **Credit Kim-Yen Nguyen in every post.** Photographer credit is not optional and it costs you nine characters.
 2. **Say it is last year, in the copy.** The tab says `CND/2025`, but somebody skimming will read a packed hall as a 2026 promise. The venue also changed — 2025 was Savværket in Aarhus, 2026 is Scandic Copenhagen — so a caption that implies otherwise is just wrong.
 3. **No photographs of identifiable children.** The delivery has a lot of them, from the FIRST LEGO League and Coding Pirates sets, and they are genuinely charming. Publishing them needs a media release per child, which is a question for the organisers rather than a rendering decision. I left all of them out.
 
@@ -1140,7 +1140,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > That is the thing a recording cannot give you back.
 >
-> 19–20 November, Scandic Copenhagen. Photo: Kim Yen Nguyen, CND 2025.
+> 19–20 November, Scandic Copenhagen. Photo: Kim-Yen Nguyen, CND 2025.
 >
 > Tickets → cloudnativedenmark.ticketbutler.io/en/e/cloud-native-denmark-26/
 >
@@ -1154,7 +1154,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > We build the schedule with breaks long enough for it. Twenty minutes between sessions, on purpose.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > #CloudNativeDenmark #CND2026
 
@@ -1166,7 +1166,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > The talks get recorded. These do not.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > #CloudNativeDenmark #CND2026 #Kubernetes
 
@@ -1178,7 +1178,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > If you have ever wondered why the coffee breaks are twenty minutes and the schedule starts on time, it is because somebody argued about it in a Slack channel on a Sunday.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > #CloudNativeDenmark #CND2026 #Community
 
@@ -1188,7 +1188,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > The talks people were still quoting in the spring were not the ones with the most slides. Something about a goblin, a druid and an agentic AI strategy suggests this year will be no different.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > #CloudNativeDenmark #CND2026
 
@@ -1198,7 +1198,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > No caption needed.
 >
-> Photo: Kim Yen Nguyen, CND 2025. 19–20 November, Copenhagen.
+> Photo: Kim-Yen Nguyen, CND 2025. 19–20 November, Copenhagen.
 >
 > #CloudNativeDenmark #CND2026
 
@@ -1210,7 +1210,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > Standard tickets are 1.999 DKK until 17 November.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > #CloudNativeDenmark #CND2026 #Community
 
@@ -1220,7 +1220,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > Three days out. The badges get laid out, the signage goes up, and somebody counts the lanyards twice.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > #CloudNativeDenmark #CND2026
 
@@ -1230,7 +1230,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 >
 > Last year it rained on day one and the hall was full by 09:00 anyway. Standard tickets close tonight; after that it is Late Bird at 4.999 DKK.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > Tickets → cloudnativedenmark.ticketbutler.io/en/e/cloud-native-denmark-26/
 >
@@ -1240,7 +1240,7 @@ The last three double up with the countdown posts in the final week. Two posts a
 
 > Doors at 08:00 tomorrow. And to answer the question we get every year: yes, there is an after party, and no, it does not end at five.
 >
-> Photo: Kim Yen Nguyen, CND 2025.
+> Photo: Kim-Yen Nguyen, CND 2025.
 >
 > #CloudNativeDenmark #CND2026
 
