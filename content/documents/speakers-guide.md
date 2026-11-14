@@ -10,7 +10,7 @@ Dear speaker,
 
 We're incredibly excited to welcome you as a speaker at Cloud Native Denmark 2026. The talks are what bring the community together, and we're glad yours is one of them.
 
-This guide covers the practical bits, so you can focus on your talk. We keep it up to date at [cloudnativedenmark.dk/speakers-guide](https://cloudnativedenmark.dk/speakers-guide) and will email you about any big changes. All times are Copenhagen time, CET (UTC+1).
+This guide covers the practical bits, so you can focus on your talk. If anything big changes, we'll email you an updated guide. All times are Copenhagen time, CET (UTC+1).
 
 > [!TIP] At a glance
 > **Speakers' dinner:** Wednesday 18 November, 18:00 CET, Kilden i Haven, Tivoli Gardens\
