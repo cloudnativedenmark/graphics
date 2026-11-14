@@ -72,8 +72,8 @@ You'll be invited to **#cnd26-track-hosts** on Slack, the channel for hosts and 
 | Name | Email | Phone |
 |---|---|---|
 | Marcus Noble | [cndenmark@marcusnoble.co.uk](mailto:cndenmark@marcusnoble.co.uk) | [+44 7821 202331](tel:+447821202331) |
-| Stefan Daugaard Poulsen | [cyberzed@sleddog.dk](mailto:cyberzed@sleddog.dk) | TODO |
-| Henrik Løvborg | [henrik@redhat.com](mailto:henrik@redhat.com) | TODO |
+| Stefan Daugaard Poulsen | [cyberzed@sleddog.dk](mailto:cyberzed@sleddog.dk) | [+45 51 95 08 16](tel:+4551950816) |
+| Henrik Løvborg | [henrik@redhat.com](mailto:henrik@redhat.com) | [+45 28 30 75 45](tel:+4528307545) |
 | Rasmus Selsmark | [rasmus@unity3d.com](mailto:rasmus@unity3d.com) | [+45 28 78 04 33](tel:+4528780433) |
 
 ### Organisers

@@ -57,8 +57,8 @@ There is a host for each track. They're your point of contact on the day, introd
 | Track | Day | Host | Phone |
 |---|---|---|---|
 | Main track | Thursday 19 Nov | Marcus Noble | [+44 7821 202331](tel:+447821202331) |
-| Breakout | Thursday 19 Nov | Stefan Daugaard Poulsen | TODO |
-| Main track | Friday 20 Nov | Henrik Løvborg | TODO |
+| Breakout | Thursday 19 Nov | Stefan Daugaard Poulsen | [+45 51 95 08 16](tel:+4551950816) |
+| Main track | Friday 20 Nov | Henrik Løvborg | [+45 28 30 75 45](tel:+4528307545) |
 | Breakout | Friday 20 Nov | Rasmus Selsmark | [+45 28 78 04 33](tel:+4528780433) |
 
 > [!IMPORTANT] Before your talk
