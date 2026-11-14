@@ -32,9 +32,10 @@ from pathlib import Path
 
 import numpy as np
 from bs4 import BeautifulSoup, NavigableString
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFont
 from pptx import Presentation
 from pptx.dml.color import RGBColor
+from pptx.enum.dml import MSO_LINE_DASH_STYLE
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml import parse_xml
@@ -212,10 +213,17 @@ def _arc(x1, y1, rx, ry, phi, fa, fs, x2, y2, n=10):
     return pts
 
 
+class Subpaths(list):
+    """Polygons, with .closed saying which subpaths ended in Z."""
+
+    closed: list
+
+
 def path_polys(d, steps=12):
-    """Flatten an SVG path into a list of closed polygons."""
+    """Flatten an SVG path into a list of polygons (see Subpaths)."""
     toks = list(_tokens_of(d))
-    i, polys, cur = 0, [], []
+    i, polys, cur = 0, Subpaths(), []
+    polys.closed = []
     x = y = sx = sy = 0.0
     cmd = None
     last_c = None
@@ -234,6 +242,7 @@ def path_polys(d, steps=12):
             if cmd in "Zz":
                 if cur:
                     polys.append(cur)
+                    polys.closed.append(True)
                 cur = []
                 x, y = sx, sy
                 last_c = None
@@ -246,6 +255,7 @@ def path_polys(d, steps=12):
                 nx, ny = x + nx, y + ny
             if cur:
                 polys.append(cur)
+                polys.closed.append(False)
             cur = [(nx, ny)]
             x, y, sx, sy = nx, ny, nx, ny
             cmd = "l" if rel else "L"
@@ -309,7 +319,57 @@ def path_polys(d, steps=12):
             i += 1
     if cur:
         polys.append(cur)
+        polys.closed.append(False)
     return polys
+
+
+def draw_svg_icon(svg_el, size, fill=None, stroke=None, stroke_w=0, evenodd=False):
+    """A small inline SVG (paths, circles, polygons) as a transparent PNG.
+
+    Enough SVG for the deck's own icons: fill, or stroke with round caps,
+    and even-odd fill for logos cut out of a shape."""
+    vb = [float(v) for v in re.split(r"[ ,]+", (svg_el.get("viewbox") or svg_el.get("viewBox")).strip())]
+    k = 4
+    W_, H_ = int(size[0] * SS * k), int(size[1] * SS * k)
+    s = min(W_ / vb[2], H_ / vb[3])
+    ox, oy = (W_ - vb[2] * s) / 2, (H_ - vb[3] * s) / 2
+
+    def tr(p):
+        return (ox + (p[0] - vb[0]) * s, oy + (p[1] - vb[1]) * s)
+
+    shapes = []
+    for el in svg_el.find_all(["path", "circle", "polygon"]):
+        if el.name == "circle":
+            cx, cy, r = float(el["cx"]), float(el["cy"]), float(el["r"])
+            pts = [(cx + r * math.cos(a / 48 * 2 * math.pi), cy + r * math.sin(a / 48 * 2 * math.pi)) for a in range(48)]
+            shapes.append(([pts], [True]))
+        elif el.name == "polygon":
+            nums = [float(v) for v in re.split(r"[ ,]+", el["points"].strip())]
+            shapes.append(([list(zip(nums[::2], nums[1::2]))], [True]))
+        else:
+            sp = path_polys(el["d"])
+            shapes.append((list(sp), sp.closed))
+    im = Image.new("RGBA", (W_, H_), (0, 0, 0, 0))
+    if fill is not None:
+        m = Image.new("L", (W_, H_), 0)
+        for polys, _ in shapes:
+            for poly in polys:
+                if len(poly) < 3:
+                    continue
+                layer = Image.new("L", (W_, H_), 0)
+                ImageDraw.Draw(layer).polygon([tr(p) for p in poly], fill=255)
+                m = ImageChops.logical_xor(m.convert("1"), layer.convert("1")).convert("L") if evenodd else ImageChops.lighter(m, layer)
+        im.paste(Image.new("RGBA", (W_, H_), fill + (255,)), (0, 0), m)
+    if stroke is not None:
+        dr = ImageDraw.Draw(im)
+        lw = max(1, round(stroke_w * s))
+        for polys, closed in shapes:
+            for poly, c in zip(polys, closed):
+                pts = [tr(p) for p in poly] + ([tr(poly[0])] if c else [])
+                dr.line(pts, fill=stroke + (255,), width=lw, joint="curve")
+                for p in (pts[0], pts[-1]):
+                    dr.ellipse([p[0] - lw / 2, p[1] - lw / 2, p[0] + lw / 2, p[1] + lw / 2], fill=stroke + (255,))
+    return im.resize((int(size[0] * SS), int(size[1] * SS)), Image.LANCZOS)
 
 
 HEX_POLY = path_polys(HEX_D)[0]
@@ -723,6 +783,32 @@ def txt_br(el):
     return s.replace(" \x01", "\x01").replace("\x01 ", "\x01").replace("\x01", "\n")
 
 
+def rich(el, st):
+    """An element's text as runs: <strong>/<b> bold, <br> a line break."""
+    segs = []
+    for node in el.children:
+        if isinstance(node, NavigableString):
+            if type(node).__name__ == "Comment":
+                continue
+            segs.append([re.sub(r"\s+", " ", str(node)), st])
+        elif node.name == "br":
+            segs.append(["\n", st])
+        elif node.name in ("strong", "b"):
+            segs.append([txt_br(node), S(st, bold=True, file=SG_B if st["face"] == "Space Grotesk" else st["file"])])
+        else:
+            segs.append([txt_br(node), st])
+    out = []
+    for t, s_ in segs:
+        if out and out[-1][1] is s_:
+            out[-1][0] += t
+        else:
+            out.append([t, s_])
+    if out:
+        out[0][0] = out[0][0].lstrip()
+        out[-1][0] = out[-1][0].rstrip()
+    return [(t.replace(" \n", "\n").replace("\n ", "\n"), s_) for t, s_ in out if t]
+
+
 def css_px(style_attr, prop):
     m = re.search(rf"(?:^|;)\s*{prop}\s*:\s*(-?[\d.]+)px", style_attr or "")
     return float(m.group(1)) if m else None
@@ -803,6 +889,11 @@ def qr_image(code, w, h, qr_size, qr_dy, ground=WHITE):
     qr = big.resize((side, side), Image.LANCZOS)
     tile.alpha_composite(qr, (round((m.size[0] - side) / 2), round((m.size[1] - side) / 2 + qr_dy * SS)))
     return tile
+
+
+def qr_code(name):
+    """A link's QR from the stage file's qr (stage/build.mjs encodes them)."""
+    return (SHOW.get("qrs") or {}).get(name) or (SHOW.get(name) if name == "photos" else None)
 
 
 def outline_figure(text, size=247):
@@ -941,7 +1032,7 @@ def pad_blocks(pad, layout, display_size):
             blocks.append(([(txt_br(el), HEADING)], 24 if prev == "eyebrow" else 0))
         elif "body" in cls:
             mt = {"logistics": 44, "section": 44, "gallery": 40, "map": 40, "rate": 36}.get(layout, 30)
-            blocks.append(([(txt_br(el), BODY)], mt if prev in ("display", "heading") else 24))
+            blocks.append((rich(el, BODY), mt if prev in ("display", "heading") else 24))
         elif "credit" in cls:
             blocks.append(([(txt_br(el), CREDIT)], 40))
         elif el.name == "dl" and "kv" in cls:
@@ -1282,7 +1373,7 @@ def lay_split(slide, sec, deck_dir):
 def lay_cities(slide, sec, deck_dir):
     top_heading(slide, sec)
     for i, city in enumerate(sec.find_all(class_="city")):
-        x, y, w = 90 + i * 610, 420, 520
+        x, y, w = 90 + i * 610, 330, 520
         h = w / 1.6
         rounded(slide, x, y, w, h, 30, fill=WHITE)
         rounded(slide, x + 16 + 3.5, y + 16 + 3.5, w - 32 - 7, h - 32 - 7, 18 - 3.5, line=NAVY, line_w=7)
@@ -1297,7 +1388,20 @@ def lay_cities(slide, sec, deck_dir):
         body = city.find(class_="body")
         small = body.find("small")
         link = small.extract().get_text() if small else ""
-        blocks_box(slide, x, y + h + 30, w, 100, [([(txt(body), style("Inter", 32, color=MUTED))], 0), ([(link, style("Inter", 26, color=MUTED))], 0)], align="c")
+        join = city.find(class_="join")
+        if join is None:
+            blocks_box(slide, x, y + h + 30, w, 100, [([(txt(body), style("Inter", 32, color=MUTED))], 0), ([(link, style("Inter", 26, color=MUTED))], 0)], align="c")
+            continue
+        # The group's QR on a small white silhouette, its link beside it,
+        # the pair centred under the sign.
+        main_st, small_st = style("Inter", 32, color=MUTED), style("Inter", 22, color=MUTED)
+        tw = max(measure(txt(body), main_st), measure(link, small_st)) + 8
+        qw, qh = 216, 210
+        jx = x + (w - (qw + 20 + tw)) / 2
+        jy = y + h + 36
+        q = join.find(class_="qr")
+        picture(slide, qr_image(qr_code(q.get("data-qr")), qw, qh, 138, 5), jx, jy, qw, qh, name=q.get("data-label") or "QR")
+        blocks_box(slide, jx + qw + 20, jy, tw + 40, qh, [([(txt(body), main_st)], 0), ([(link, small_st)], 0)], anchor="m")
 
 
 def lay_gallery(slide, sec, deck_dir):
@@ -1324,7 +1428,8 @@ def lay_gallery(slide, sec, deck_dir):
             first = True
             for part in el.find_all(recursive=False):
                 if part.name == "b":
-                    s_ = style(size=112 if small else 150, bold=True, color=color, lh=0.9)
+                    fs = css_px(part.get("style"), "font-size") or (112 if small else 150)
+                    s_ = style(size=fs, bold=True, color=color, lh=0.9)
                     mt = 0
                 elif part.name == "span":
                     s_ = style(size=19 if small else 24, color=color, upper=True, track=0.08, lh=1.2)
@@ -1473,13 +1578,30 @@ def lay_logistics(slide, sec, deck_dir):
         if "hyf-big" in cls:
             hexlogo_tile(slide, asset(el.find("img")["src"], deck_dir), W - 110 - 688, 150, 688, 780, round_=True, name=el.find("img").get("alt"))
         elif "photos-qr" in cls:
-            im = qr_image(SHOW.get("photos"), 268, 260, 168, 7)
+            im = qr_image(qr_code(el.find(class_="qr").get("data-qr", "photos")), 268, 260, 168, 7)
             picture(slide, im, 450, 690, 268, 260, name="Photos QR")
             p = el.find("p")
             st = style(size=34, color=ROSE, upper=True, track=0.08, lh=1.2)
             blocks_box(slide, 450 + 268 + 32, 690, 500, 260, [([(txt_br(p), st)], 0)], anchor="m")
         elif "crew" in cls:
             lay_crew(slide, el, deck_dir)
+        elif "coc" in cls:
+            lay_coc(slide, el)
+        elif el.name == "svg" and "pacman" in cls:
+            lay_pacman(slide, el)
+        elif el.name == "svg" and "social-logo" in cls:
+            picture(slide, draw_svg_icon(el, (400, 400), fill=WHITE, evenodd=True), W - 220 - 400, 340, 400, 400, name=el.get("aria-label") or "Logo")
+        elif "card-preview" in cls:
+            # The booth card fanned: front and back, rotated as in the CSS.
+            x0, y0 = W - 120 - 640, 170
+            for img in el.find_all("img"):
+                p = asset(img["src"], deck_dir)
+                iw, ih = Image.open(p).size
+                w, h = 440, 440 * ih / iw
+                front = "front" in (img.get("class") or [])
+                x, y = (x0, y0 + 40) if front else (x0 + 640 - 440, y0 + 110)
+                pic = picture(slide, p, x, y, w, h, name=img.get("alt") or "Card")
+                pic.rotation = -7 if front else 5
     if sec.get("data-source") == "afterparty":
         party = next((t["sponsors"] for t in SHOW.get("tiers", []) if t["tier"] == "Afterparty"), [])
         h = 500
@@ -1491,19 +1613,65 @@ def lay_logistics(slide, sec, deck_dir):
             hexlogo_tile(slide, show_asset(s["logo"]), x, 250 + 44 + 26 + n * (h + 26), w, h, name=s["name"])
 
 
+CSS_VAR_COLOURS = {"rose": ROSE, "peach": PEACH, "sand": SAND, "slate": SLATE, "navy": NAVY, "white": WHITE, "red": RED}
+
+
+def css_colour(value, default=None):
+    m = re.search(r"--cnd-([a-z-]+)", value or "")
+    return CSS_VAR_COLOURS.get(m.group(1), default) if m else default
+
+
+def lay_coc(slide, el):
+    """The code of conduct's three points: hexagon, icon, caption."""
+    figs = el.find_all("figure")
+    cw, ch, gap = 240, 272, 48
+    x = W - 120 - (len(figs) * cw + (len(figs) - 1) * gap)
+    for fig in figs:
+        hex_shape(slide, x, 300, cw, ch, css_colour(fig.get("style"), ROSE)).name = "Cell"
+        svg = fig.find("svg")
+        picture(slide, draw_svg_icon(svg, (120, 120), stroke=NAVY, stroke_w=3.5), x + (cw - 120) / 2, 300 + (ch - 120) / 2, 120, 120, name="Icon")
+        cap = fig.find("figcaption")
+        st = style(size=30, bold=True, upper=True, lh=1.1)
+        blocks_box(slide, x - 20, 300 + ch + 28, cw + 40, 90, [([(txt_br(cap), st)], 0)], align="c")
+        x += cw + gap
+
+
+def lay_pacman(slide, svg):
+    """The Pac-Man rule's ring of hexagons, as shapes people can move."""
+    vb = [float(v) for v in re.split(r"[ ,]+", svg["viewbox" if svg.has_attr("viewbox") else "viewBox"].strip())]
+    bx, by, bw, bh = W - 130 - 800, 140, 800, 800
+    s = min(bw / vb[2], bh / vb[3])
+    ox, oy = bx + (bw - vb[2] * s) / 2, by + (bh - vb[3] * s) / 2
+    for poly in svg.find_all("polygon"):
+        nums = [float(v) for v in re.split(r"[ ,]+", poly["points"].strip())]
+        pts = [(ox + (px_ - vb[0]) * s, oy + (py_ - vb[1]) * s) for px_, py_ in zip(nums[::2], nums[1::2])]
+        fill = css_colour(poly.get("fill"))
+        stroke = css_colour(poly.get("stroke"))
+        shp = freeform(slide, pts, fill or NAVY)
+        if fill is None:
+            shp.fill.background()
+        if stroke is not None:
+            shp.line.color.rgb = rgb(stroke)
+            shp.line.width = E(float(poly.get("stroke-width", 1)) * s)
+            shp.line.dash_style = MSO_LINE_DASH_STYLE.DASH
+
+
 def lay_split_extras(slide, sec, deck_dir):
     gm = sec.find(class_="geomap")
     if gm is not None:
         name = gm["data-map"]
+        pin = gm.get("data-pin")
+        # --pin and --label: the stylesheet's per-map values, or the slide's.
+        st = gm.get("style", "")
+        size = float((re.search(r"--pin:\s*([\d.]+)", st) or [None, None])[1] or (52 if name == "denmark" else 44))
+        label = float((re.search(r"--label:\s*([\d.]+)", st) or [None, None])[1] or (50 if name == "denmark" else 27))
         if name == "denmark":
             w, h, top = 720, 724, 270
             x = W - 90 - w
-            im, padx = geomap_image("denmark", w, h)
         else:
             w, h, top = 1080, 980, 50
             x = W - 60 - w
-            pin = gm.get("data-pin")
-            im, padx = geomap_image("nordics", w, h, pin_img=asset(pin, deck_dir) if pin else None, pin=44, label=27)
+        im, padx = geomap_image(name, w, h, pin_img=asset(pin, deck_dir) if pin else None, pin=size, label=label)
         picture(slide, im, x - padx, top, w + 2 * padx, h, name=f"Map: {name}")
     logo = sec.find("img", class_="cnn-logo")
     if logo is not None:
