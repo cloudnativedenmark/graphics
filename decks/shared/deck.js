@@ -490,7 +490,10 @@
         el.style.fontSize = "";
         const max = Number(el.dataset.fit);
         let size = parseFloat(getComputedStyle(el).fontSize);
-        while (el.scrollHeight > max && size > 40) {
+        // Shrink until it is no taller than its budget and no word runs
+        // past its box: one long word ("PODDISRUPTIONBUDGETS?") cannot
+        // wrap, and the slide's overflow: hidden would cut it off.
+        while ((el.scrollHeight > max || el.scrollWidth > el.clientWidth + 1) && size > 40) {
           size -= 2;
           el.style.fontSize = `${size}px`;
         }

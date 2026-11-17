@@ -599,7 +599,7 @@ DENSITY = {
     "none": lambda x: 0,
 }
 ALPHA = {"right": 0.9, "edges": 0.9, "quiet": 0.35, "none": 0}
-DEFAULT_FIELD = {"title": "right", "section": "edges", "logistics": "right", "speaker": "edges", "quote": "edges", "photo": "none"}
+DEFAULT_FIELD = {"title": "right", "section": "edges", "logistics": "right", "speaker": "edges", "quote": "edges", "photo": "none", "pitch": "edges"}
 _fields = {}
 
 
@@ -1235,7 +1235,8 @@ def lay_speaker(slide, sec, deck_dir):
     w = 980
     size = 104
     disp = S(DISPLAY, size=size, lh=0.96)
-    while text_h(t["title"], disp, w) > 440 and size > 40:
+    longest = max(t["title"].split(), key=lambda x: measure(x, disp))
+    while (text_h(t["title"], disp, w) > 440 or measure(longest, disp) > w) and size > 40:
         size -= 2
         disp = S(DISPLAY, size=size, lh=0.96)
     blocks = [([(eyebrow, EYEBROW)], 0), ([(t["title"], disp)], 24)]
@@ -1656,6 +1657,17 @@ def lay_pacman(slide, svg):
             shp.line.dash_style = MSO_LINE_DASH_STYLE.DASH
 
 
+def lay_pitch(slide, sec, deck_dir):
+    """A gold sponsor's breaker: their logo on a large white hexagon."""
+    name = sec.get("data-sponsor")
+    s = next((x for t in SHOW.get("tiers", []) for x in t["sponsors"] if x["name"] == name), None)
+    if s is None:
+        return
+    h = 760
+    w = h * HEX_RATIO
+    hexlogo_tile(slide, show_asset(s["logo"]), (W - w) / 2, (H - h) / 2, w, h, name=s["name"])
+
+
 def lay_split_extras(slide, sec, deck_dir):
     gm = sec.find(class_="geomap")
     if gm is not None:
@@ -1684,6 +1696,8 @@ def lay_split_extras(slide, sec, deck_dir):
 def build_note(sec, authored):
     if authored:
         return authored
+    if sec.get("data-layout") == "pitch":
+        return f"Gold sponsor pitch: {sec.get('data-sponsor')}. Put this up while they walk on."
     t = SHOW["talks"].get(sec.get("data-talk") or "")
     if not t:
         return ""
@@ -1765,6 +1779,7 @@ def build(deck, soup):
             "cities": lay_cities,
             "sponsors": lay_sponsors,
             "table": lay_table,
+            "pitch": lay_pitch,
         }.get(layout, lambda s, e, d: lay_centered(s, e, d, "section"))(slide, sec, deck_dir)
         note = build_note(sec, authored)
         td = todos(sec)
