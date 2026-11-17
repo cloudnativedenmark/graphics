@@ -77,7 +77,6 @@
     "talk-observability-matrix": "Please welcome to the stage... from Dynatrace... Henrik Rexed!",
     "talk-cadence-uber": "Please welcome to the stage... from Uber... Seva Ka-losh-in!",
     "talk-ai-side-effects": "Please welcome to the stage... from Monzo... Marcus Noble!",
-    "d2-map-keeps-changing": "Please welcome to the stage... from Syntasso... Paula Kennedy!",
     "d2-dbaas-trap": "Please welcome to the stage... from EDB... Gabriele Bartolini!",
     "sz-1306366": "For the very last time... please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!"
   },
@@ -111,9 +110,6 @@
     ],
     "d2-developers-nightmare": [
       "TODO role, organization",
-      "TODO role, organization"
-    ],
-    "d2-map-keeps-changing": [
       "TODO role, organization"
     ],
     "d2-dbaas-trap": [
@@ -519,18 +515,13 @@
         },
         {
           "scene": "talk",
-          "talk": "d2-map-keeps-changing",
-          "$note": "15:50"
-        },
-        {
-          "scene": "talk",
           "talk": "d2-dbaas-trap",
-          "$note": "16:15"
+          "$note": "15:50, moved up from 16:15 when Paula Kennedy cancelled"
         },
         {
           "scene": "talk",
           "talk": "sz-1306366",
-          "$note": "16:40"
+          "$note": "16:15; the day now ends at 16:35"
         },
         {
           "scene": "message",

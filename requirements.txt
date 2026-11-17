@@ -12,4 +12,6 @@ numpy>=1.26           # the geometry measurement in extract.py
 psd-tools>=1.18       # reading the designer's PSDs (extract.py only)
 fonttools[woff]>=4.50 # font metrics, subsetting, static instances
 lxml>=5.0             # injecting text outline XML into PPTX
-python-pptx>=1.0      # the PPTX Canva hand-off
+python-pptx>=1.0      # the PPTX Canva hand-off, and the break decks for Slides
+pdfplumber>=0.11      # reading the break deck PDFs (decks/breaks-to-pptx.py)
+pikepdf>=8.0          # taking their text out for the background (same)

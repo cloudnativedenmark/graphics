@@ -137,30 +137,6 @@ window.SHOW = {
       },
       "announce": "../assets/audio/announce/d2-developers-nightmare.mp3"
     },
-    "d2-map-keeps-changing": {
-      "slug": "d2-map-keeps-changing",
-      "kind": "Keynote",
-      "title": "How Do You Explore When the Map Keeps Changing?",
-      "speakers": [
-        {
-          "name": "Paula Kennedy",
-          "role": "COO, Syntasso",
-          "portrait": "../assets/speakers/paula_kennedy.jpg",
-          "align": "xMinYMid"
-        }
-      ],
-      "id": "1306855",
-      "day": "2",
-      "room": "Main stage",
-      "start": "15:50",
-      "end": "16:15",
-      "feedback": {
-        "n": 29,
-        "d": "M0 0h7v1h-7zM9 0h1v1h-1zM13 0h3v1h-3zM19 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM11 1h1v1h-1zM13 1h5v1h-5zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h6v1h-6zM15 2h1v1h-1zM18 2h3v1h-3zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h5v1h-5zM14 3h2v1h-2zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h3v1h-3zM12 4h1v1h-1zM15 4h2v1h-2zM19 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM12 5h1v1h-1zM17 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM11 7h2v1h-2zM14 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h2v1h-2zM12 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM1 9h1v1h-1zM4 9h1v1h-1zM7 9h3v1h-3zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM3 10h5v1h-5zM9 10h8v1h-8zM20 10h1v1h-1zM23 10h2v1h-2zM0 11h1v1h-1zM3 11h1v1h-1zM7 11h1v1h-1zM10 11h1v1h-1zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM0 12h2v1h-2zM3 12h1v1h-1zM5 12h3v1h-3zM19 12h1v1h-1zM25 12h2v1h-2zM3 13h3v1h-3zM7 13h1v1h-1zM9 13h1v1h-1zM19 13h6v1h-6zM28 13h1v1h-1zM3 14h4v1h-4zM9 14h3v1h-3zM20 14h2v1h-2zM23 14h4v1h-4zM5 15h1v1h-1zM7 15h2v1h-2zM18 15h2v1h-2zM21 15h4v1h-4zM27 15h1v1h-1zM0 16h1v1h-1zM5 16h2v1h-2zM8 16h1v1h-1zM11 16h1v1h-1zM25 16h2v1h-2zM0 17h1v1h-1zM3 17h3v1h-3zM7 17h3v1h-3zM19 17h6v1h-6zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM3 18h1v1h-1zM5 18h2v1h-2zM8 18h1v1h-1zM10 18h2v1h-2zM13 18h4v1h-4zM18 18h1v1h-1zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM2 19h2v1h-2zM10 19h4v1h-4zM15 19h1v1h-1zM19 19h2v1h-2zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM4 20h1v1h-1zM6 20h2v1h-2zM10 20h1v1h-1zM14 20h2v1h-2zM17 20h1v1h-1zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h1v1h-1zM10 21h3v1h-3zM15 21h4v1h-4zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM17 22h4v1h-4zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h2v1h-2zM11 23h2v1h-2zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM12 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h2v1h-2zM11 25h1v1h-1zM13 25h3v1h-3zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h4v1h-4zM13 26h5v1h-5zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM10 27h6v1h-6zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h3v1h-3zM14 28h2v1h-2zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
-        "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      },
-      "announce": "../assets/audio/announce/d2-map-keeps-changing.mp3"
-    },
     "d2-dbaas-trap": {
       "slug": "d2-dbaas-trap",
       "kind": "Keynote",
@@ -176,8 +152,8 @@ window.SHOW = {
       "id": "1260088",
       "day": "2",
       "room": "Main stage",
-      "start": "16:15",
-      "end": "16:40",
+      "start": "15:50",
+      "end": "16:15",
       "feedback": {
         "n": 29,
         "d": "M0 0h7v1h-7zM8 0h1v1h-1zM10 0h6v1h-6zM17 0h2v1h-2zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h2v1h-2zM12 1h2v1h-2zM16 1h1v1h-1zM18 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h2v1h-2zM16 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h3v1h-3zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM12 4h1v1h-1zM14 4h1v1h-1zM16 4h5v1h-5zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM13 5h1v1h-1zM15 5h6v1h-6zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM15 7h3v1h-3zM0 8h1v1h-1zM2 8h2v1h-2zM5 8h3v1h-3zM9 8h1v1h-1zM11 8h3v1h-3zM15 8h1v1h-1zM17 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM27 8h2v1h-2zM5 9h1v1h-1zM9 9h1v1h-1zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM3 10h1v1h-1zM5 10h4v1h-4zM13 10h1v1h-1zM16 10h3v1h-3zM21 10h1v1h-1zM26 10h2v1h-2zM0 11h2v1h-2zM3 11h3v1h-3zM11 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM22 11h2v1h-2zM28 11h1v1h-1zM4 12h1v1h-1zM6 12h1v1h-1zM11 12h1v1h-1zM19 12h1v1h-1zM25 12h2v1h-2zM4 13h1v1h-1zM7 13h4v1h-4zM19 13h1v1h-1zM22 13h1v1h-1zM26 13h3v1h-3zM0 14h3v1h-3zM6 14h1v1h-1zM8 14h1v1h-1zM11 14h1v1h-1zM19 14h2v1h-2zM22 14h2v1h-2zM26 14h3v1h-3zM4 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM18 15h2v1h-2zM21 15h4v1h-4zM27 15h1v1h-1zM1 16h1v1h-1zM3 16h1v1h-1zM6 16h4v1h-4zM11 16h1v1h-1zM18 16h1v1h-1zM20 16h2v1h-2zM23 16h3v1h-3zM27 16h1v1h-1zM1 17h1v1h-1zM4 17h2v1h-2zM7 17h1v1h-1zM10 17h2v1h-2zM20 17h1v1h-1zM23 17h1v1h-1zM25 17h3v1h-3zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h3v1h-3zM8 18h2v1h-2zM13 18h5v1h-5zM21 18h1v1h-1zM26 18h1v1h-1zM3 19h3v1h-3zM7 19h1v1h-1zM11 19h4v1h-4zM17 19h3v1h-3zM21 19h1v1h-1zM26 19h1v1h-1zM1 20h3v1h-3zM6 20h5v1h-5zM13 20h2v1h-2zM16 20h2v1h-2zM20 20h7v1h-7zM8 21h2v1h-2zM11 21h2v1h-2zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM8 22h1v1h-1zM11 22h1v1h-1zM14 22h2v1h-2zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM13 23h3v1h-3zM19 23h2v1h-2zM24 23h2v1h-2zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM9 24h1v1h-1zM12 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h2v1h-2zM13 25h1v1h-1zM19 25h1v1h-1zM21 25h1v1h-1zM23 25h3v1h-3zM27 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h5v1h-5zM17 26h4v1h-4zM23 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM10 27h1v1h-1zM13 27h3v1h-3zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM11 28h3v1h-3zM17 28h7v1h-7zM25 28h1v1h-1zM27 28h1v1h-1z",
@@ -1087,8 +1063,8 @@ window.SHOW = {
       "id": "1306366",
       "day": "2",
       "room": "Main stage",
-      "start": "16:40",
-      "end": "17:00",
+      "start": "16:15",
+      "end": "16:35",
       "feedback": {
         "n": 29,
         "d": "M0 0h7v1h-7zM9 0h2v1h-2zM13 0h3v1h-3zM18 0h1v1h-1zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h2v1h-2zM12 1h5v1h-5zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM10 2h4v1h-4zM15 2h1v1h-1zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h3v1h-3zM12 3h1v1h-1zM14 3h2v1h-2zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h4v1h-4zM15 4h2v1h-2zM18 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM11 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM12 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM10 8h3v1h-3zM16 8h4v1h-4zM22 8h5v1h-5zM0 9h2v1h-2zM4 9h2v1h-2zM9 9h3v1h-3zM13 9h3v1h-3zM19 9h6v1h-6zM28 9h1v1h-1zM0 10h4v1h-4zM5 10h3v1h-3zM9 10h2v1h-2zM12 10h5v1h-5zM20 10h1v1h-1zM23 10h2v1h-2zM3 11h2v1h-2zM10 11h2v1h-2zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM0 12h1v1h-1zM2 12h1v1h-1zM4 12h1v1h-1zM6 12h3v1h-3zM11 12h1v1h-1zM19 12h1v1h-1zM25 12h2v1h-2zM0 13h1v1h-1zM3 13h2v1h-2zM7 13h3v1h-3zM11 13h1v1h-1zM19 13h6v1h-6zM28 13h1v1h-1zM2 14h1v1h-1zM5 14h2v1h-2zM8 14h4v1h-4zM20 14h2v1h-2zM23 14h4v1h-4zM0 15h2v1h-2zM3 15h1v1h-1zM5 15h1v1h-1zM8 15h1v1h-1zM10 15h2v1h-2zM18 15h2v1h-2zM21 15h4v1h-4zM27 15h1v1h-1zM1 16h10v1h-10zM25 16h2v1h-2zM0 17h1v1h-1zM3 17h1v1h-1zM5 17h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM11 17h1v1h-1zM19 17h6v1h-6zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM3 18h7v1h-7zM12 18h5v1h-5zM18 18h1v1h-1zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM2 19h3v1h-3zM7 19h1v1h-1zM9 19h1v1h-1zM11 19h3v1h-3zM15 19h1v1h-1zM19 19h2v1h-2zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM4 20h1v1h-1zM6 20h2v1h-2zM9 20h4v1h-4zM14 20h2v1h-2zM17 20h1v1h-1zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h4v1h-4zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM11 22h1v1h-1zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h3v1h-3zM14 23h1v1h-1zM16 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h2v1h-2zM11 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h2v1h-2zM14 25h2v1h-2zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM12 26h6v1h-6zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM14 27h2v1h-2zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h4v1h-4zM14 28h2v1h-2zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
@@ -1777,18 +1753,13 @@ window.SHOW = {
         },
         {
           "scene": "talk",
-          "talk": "d2-map-keeps-changing",
-          "$note": "15:50"
-        },
-        {
-          "scene": "talk",
           "talk": "d2-dbaas-trap",
-          "$note": "16:15"
+          "$note": "15:50, moved up from 16:15 when Paula Kennedy cancelled"
         },
         {
           "scene": "talk",
           "talk": "sz-1306366",
-          "$note": "16:40"
+          "$note": "16:15; the day now ends at 16:35"
         },
         {
           "scene": "message",
@@ -2146,6 +2117,24 @@ window.SHOW = {
       "talk": "sz-1306361"
     },
     {
+      "id": "00f903bb-9cf1-41c6-82da-0b985b988450",
+      "day": "1",
+      "room": "Main stage",
+      "start": "17:00",
+      "end": "18:00",
+      "service": true,
+      "title": "Sponsor crawl"
+    },
+    {
+      "id": "f8e322b8-3764-4a6c-a336-0e501dc6d929",
+      "day": "1",
+      "room": "Main stage",
+      "start": "18:00",
+      "end": "21:00",
+      "service": true,
+      "title": "After party - sponsored by Upwind"
+    },
+    {
       "id": "98afb4b6-c846-4762-a548-d45679c09617",
       "day": "2",
       "room": "Main stage",
@@ -2346,27 +2335,19 @@ window.SHOW = {
       "title": "Coffee break"
     },
     {
-      "id": "1306855",
+      "id": "1260088",
       "day": "2",
       "room": "Main stage",
       "start": "15:50",
       "end": "16:15",
-      "talk": "d2-map-keeps-changing"
-    },
-    {
-      "id": "1260088",
-      "day": "2",
-      "room": "Main stage",
-      "start": "16:15",
-      "end": "16:40",
       "talk": "d2-dbaas-trap"
     },
     {
       "id": "1306366",
       "day": "2",
       "room": "Main stage",
-      "start": "16:40",
-      "end": "17:00",
+      "start": "16:15",
+      "end": "16:35",
       "talk": "sz-1306366"
     }
   ],

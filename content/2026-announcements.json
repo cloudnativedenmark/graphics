@@ -37,15 +37,6 @@
       "portrait2": "assets/speakers/alexandra.png"
     },
     {
-      "slug": "d2-map-keeps-changing",
-      "eyebrow": "Keynote",
-      "headline": "How do you|explore when the|map keeps|changing?",
-      "body": "How Do You Explore When the Map Keeps|Changing?||Paula Kennedy",
-      "ground": "sand",
-      "portrait": "assets/speakers/paula_kennedy.jpg",
-      "align": "xMinYMid"
-    },
-    {
       "slug": "d2-dbaas-trap",
       "eyebrow": "Keynote",
       "headline": "Beyond the|DBaaS trap.",

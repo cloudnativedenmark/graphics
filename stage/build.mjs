@@ -205,6 +205,62 @@ if (missing.length) {
   process.exit(1);
 }
 
+/* The cues are written by hand, the schedule is synced from Sessionize: check
+ * one against the other, so a moved or cancelled talk cannot leave the wall
+ * running yesterday's programme. Main stage only; the breakout screen reads
+ * the programme directly. */
+if (schedule) {
+  const errors = [];
+  const warnings = [];
+  const MAIN = "Main stage";
+  const isBreak = (p) => p.service && /coffee break|lunch/i.test(p.title);
+  for (const [day, { cues }] of Object.entries(stage.days)) {
+    const onStage = programme.filter((p) => p.day === day && p.room === MAIN);
+    const want = onStage.filter((p) => p.talk).map((p) => p.talk);
+    const have = cues.filter((c) => c.scene === "talk").map((c) => c.talk);
+    if (want.join() !== have.join()) {
+      const label = (slug) => `${talks[slug]?.start ?? "--:--"} ${slug} (${talks[slug]?.title ?? "?"})`;
+      errors.push(
+        `day ${day}: the talk cues are not the main-stage schedule.\n` +
+          `    schedule: ${want.map(label).join("\n              ")}\n` +
+          `    cues:     ${have.map(label).join("\n              ")}`,
+      );
+    }
+    const breaks = onStage.filter(isBreak).map((p) => p.end);
+    const backAt = cues.filter((c) => c.scene === "break").map((c) => c.until);
+    if (breaks.join() !== backAt.join()) {
+      errors.push(`day ${day}: break cues end at ${backAt.join(", ")}; the schedule's breaks end at ${breaks.join(", ")}`);
+    }
+    const first = onStage.find((p) => p.talk);
+    for (const c of cues.filter((c) => c.scene === "countdown")) {
+      if (first && c.at !== first.start) errors.push(`day ${day}: countdown is to ${c.at}; the first talk starts at ${first.start}`);
+    }
+    // The $note times are for people reading the file; keep them honest too.
+    for (const c of cues.filter((c) => c.scene === "talk")) {
+      const at = c.$note?.match(/^\d\d:\d\d/)?.[0];
+      const start = talks[c.talk]?.start;
+      if (at && start && at !== start) warnings.push(`day ${day}: ${c.talk} cue note says ${at}, the schedule says ${start}`);
+    }
+    // Every main-stage walk-on carries a voice-over (docs/stage-led-wall.md).
+    for (const slug of have) {
+      if (!stage.announce?.[slug]) warnings.push(`day ${day}: ${slug} has no walk-on words in announce`);
+      else if (!talks[slug]?.announce) warnings.push(`day ${day}: ${slug} has no walk-on clip, assets/audio/announce/${slug}.mp3`);
+    }
+  }
+  const cued = new Set(Object.values(stage.days).flatMap((d) => d.cues.map((c) => c.talk)).filter(Boolean));
+  for (const slug of Object.keys(stage.announce ?? {})) {
+    if (!slug.startsWith("$") && !cued.has(slug)) warnings.push(`announce has words for ${slug}, which no cue plays`);
+  }
+  for (const w of warnings) console.warn(`warning: ${w}`);
+  if (errors.length) {
+    console.error(
+      `content/2026-stage.json is out of step with content/2026-schedule.json:\n  ${errors.join("\n  ")}\n` +
+        "Move the cues in the stage file to match the schedule (docs/stage-led-wall.md).",
+    );
+    process.exit(1);
+  }
+}
+
 const tierOrder = content.tiers.map((t) => t.tier);
 const show = {
   event: tokens.event,

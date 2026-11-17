@@ -136,7 +136,16 @@ missing job titles come from the speakers' Sessionize taglines. The break
 scenes read the whole programme for "next here" and "next in the breakout".
 
 The cues themselves (`days` in the stage file) are edited by hand: when the
-schedule moves, move the cue's `at` or `until` with it.
+schedule moves, move the cue's `at` or `until` with it. `node stage/build.mjs`
+holds you to that. It stops when a day's talk cues are not the main-stage
+schedule in order, when a break cue's `until` is not the schedule's break end,
+or when the countdown's `at` is not the first talk. It warns when a cue's
+`$note` time is stale, when a cued talk has no walk-on words or clip, and
+when `announce` has words for a talk no cue plays. A cancelled talk comes out
+of the cues, `announce`, `roles` and the announcements file together.
+
+The break decks on the projectors (`decks/breaks/`) come from the same
+programme: `node decks/build-breaks.mjs` after any schedule change.
 
 **QR codes.** `qr` in the stage file holds the links: `photos` for the Picdrop
 gallery, and `feedback.sessions` keyed by the talk's Sessionize title, with

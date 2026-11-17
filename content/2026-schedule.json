@@ -463,6 +463,26 @@
       ]
     },
     {
+      "id": "00f903bb-9cf1-41c6-82da-0b985b988450",
+      "title": "Sponsor crawl",
+      "room": "Main stage",
+      "day": "1",
+      "start": "17:00",
+      "end": "18:00",
+      "service": true,
+      "speakers": []
+    },
+    {
+      "id": "f8e322b8-3764-4a6c-a336-0e501dc6d929",
+      "title": "After party - sponsored by Upwind",
+      "room": "Main stage",
+      "day": "1",
+      "start": "18:00",
+      "end": "21:00",
+      "service": true,
+      "speakers": []
+    },
+    {
       "id": "98afb4b6-c846-4762-a548-d45679c09617",
       "title": "Registration and breakfast",
       "room": "Main stage",
@@ -839,28 +859,12 @@
       "speakers": []
     },
     {
-      "id": "1306855",
-      "title": "How Do You Explore When the Map Keeps Changing?",
-      "room": "Main stage",
-      "day": "2",
-      "start": "15:50",
-      "end": "16:15",
-      "service": false,
-      "speakers": [
-        {
-          "name": "Paula Kennedy",
-          "tagLine": "COO, Syntasso",
-          "portrait": "assets/speakers/paula_kennedy.jpg"
-        }
-      ]
-    },
-    {
       "id": "1260088",
       "title": "Beyond the DBaaS Trap: Achieving Data Sovereignty With Kubernetes and CloudNativePG",
       "room": "Main stage",
       "day": "2",
-      "start": "16:15",
-      "end": "16:40",
+      "start": "15:50",
+      "end": "16:15",
       "service": false,
       "speakers": [
         {
@@ -875,8 +879,8 @@
       "title": "Thank you, surprises, and raffles",
       "room": "Main stage",
       "day": "2",
-      "start": "16:40",
-      "end": "17:00",
+      "start": "16:15",
+      "end": "16:35",
       "service": false,
       "speakers": [
         {
