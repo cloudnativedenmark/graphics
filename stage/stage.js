@@ -754,6 +754,27 @@
       };
     },
 
+    // After the afterparty: a sing-along to "The November Beat". Title on the
+    // left; across the rest of the wall the line being sung, large, and the
+    // next one dimmed under it. tickLyrics() follows the track.
+    lyrics(cue) {
+      lyricsNow = { cue, t0: performance.now() };
+      return {
+        mode: "live",
+        html:
+          confetti(BREAKOUT ? 20 : 40) +
+          `<div class="box zone-left">` +
+          `<p class="eyebrow rise" style="--i:0">${esc(cue.eyebrow ?? "Sing along")}</p>` +
+          `<h2 class="display rise" style="--i:1" data-fit="640">${esc(cue.headline ?? "")}</h2>` +
+          `</div>` +
+          `<div class="box lyrics rise" style="--i:2">` +
+          `<p class="eyebrow lyric-section"></p>` +
+          `<p class="lyric-line"></p>` +
+          `<p class="lyric-next"></p>` +
+          `</div>`,
+      };
+    },
+
     sponsors() {
       return tierWall(
         SHOW.tiers.filter((t) => t.sponsors.length && !COMMUNITY_TIERS.includes(t.tier)),
@@ -922,6 +943,41 @@
       const m = Math.min(99, Math.floor(left / 60));
       el.textContent = `${String(m).padStart(2, "0")}:${String(left % 60).padStart(2, "0")}`;
     });
+  }
+
+  /* ── lyrics ───────────────────────────────────────────────────────────
+   * The sing-along follows the track itself where this window plays it (the
+   * output window); elsewhere (preview, control, music off) it counts from
+   * when the scene came up, which is when the track starts too. */
+  let lyricsNow = null;
+  let lyricsShown = null;
+  function tickLyrics() {
+    const box = document.querySelector(".lyrics");
+    if (!box || !lyricsNow) return;
+    const { cue, t0 } = lyricsNow;
+    const lines = cue.lines ?? [];
+    const length = cue.length ?? 180;
+    const fixed = params.get("lyricsAt");
+    const at = fixed != null ? Number(fixed) : music.position?.(cue.music) ?? ((performance.now() - t0) / 1000) % length;
+    let k = -1;
+    for (let n = 0; n < lines.length; n++) if (lines[n].at <= at) k = n;
+    const cur = lines[k];
+    // In the intro and the instrumental gaps (past a line's `until`), the
+    // line coming up waits, dimmed, so the room is ready for it.
+    const singing = cur && !(cur.until && at >= cur.until);
+    const big = singing ? cur : lines[k + 1] ?? lines[0];
+    const after = lines[lines.indexOf(big) + 1];
+    const key = `${lines.indexOf(big)}:${singing}`;
+    if (key === lyricsShown) return;
+    lyricsShown = key;
+    box.querySelector(".lyric-section").textContent = big?.section ?? "";
+    const line = box.querySelector(".lyric-line");
+    line.textContent = big?.text ?? "";
+    line.classList.toggle("waiting", !singing);
+    line.classList.remove("enter");
+    void line.offsetWidth;
+    line.classList.add("enter");
+    box.querySelector(".lyric-next").textContent = singing && after ? after.text : "";
   }
 
   /* ── music ────────────────────────────────────────────────────────────
@@ -1157,6 +1213,12 @@
           if (enabled && st && !st.paused) fade(st, VOL, 1.2);
         }
       },
+      /** Seconds into the playing track of `set`, or null when this window
+       *  is not playing it (no sound here, music off, another set). */
+      position(set) {
+        const a = decks[active];
+        return enabled && current === set && !a.paused ? a.currentTime : null;
+      },
       /** Rehearsal: jump the bed to `s` seconds before the end of its track,
        *  to hear the handover without waiting 4 minutes. */
       skipToEnd(s = 10) {
@@ -1242,6 +1304,8 @@
     // card stays where it is.
     if (scene.talk && !BREAKOUT) planLive(el);
     tickClocks();
+    lyricsShown = null;
+    tickLyrics();
     field.set(stepState === "live" ? "live" : scene.mode);
     return el;
   }
@@ -1432,6 +1496,7 @@
   fit();
 
   if (!STILL) setInterval(tickClocks, 250);
+  setInterval(tickLyrics, 100);
 
   document.fonts.ready.then(() => {
     ready = true;

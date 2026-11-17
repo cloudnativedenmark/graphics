@@ -54,6 +54,7 @@ window.CUES = (() => {
         pitch: `${state === "running" ? "Pitch clock" : "Sponsor pitch"} · ${cue.sponsor} · ${cue.minutes ?? 2}:00`,
         message: `${cue.eyebrow} · ${cue.headline}`,
         afterparty: `Afterparty${cue.loop ? ` ⇄ ${cue.loop.slice(1).map((n) => (n === "message" ? cue.headline : n)).join(" ⇄ ")}` : ""}, party music`,
+        lyrics: `${cue.eyebrow ?? "Sing along"} · ${cue.headline ?? ""}`,
         sponsors: "Sponsor wall",
         community: "Community sponsors & partners",
       }[cue.scene] ?? cue.scene
@@ -73,6 +74,7 @@ window.CUES = (() => {
     if (cue.scene === "pitch" && step.state === "intro") return "Introduce the sponsor; the clock holds. Next starts it.";
     if (cue.scene === "pitch") return "The clock is running.";
     if (cue.scene === "message") return cue.body ?? "";
+    if (cue.scene === "lyrics") return "The song starts from the top; the lines follow it.";
     if (cue.scene === "afterparty") return `${cue.party?.when ?? "Afterparty"} · starts on "The November Beat"`;
     return "";
   }
