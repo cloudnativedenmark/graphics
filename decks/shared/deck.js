@@ -125,6 +125,7 @@
     logistics: "right",
     speaker: "edges",
     quote: "edges",
+    pitch: "edges",
     photo: "none",
   };
 
@@ -323,6 +324,21 @@
     );
   }
 
+  /* A breaker before a gold sponsor's pitch: just their logo, on the white
+   * hexagon the wall's pitch scene uses, in the middle of the slide. */
+  function pitchSlide(slide) {
+    const name = slide.dataset.sponsor;
+    const s = (SHOW?.tiers ?? []).flatMap((t) => t.sponsors).find((x) => x.name === name);
+    if (!s) return console.warn(`deck: no sponsor "${name}" in stage/show.data.js`);
+    const h = 760;
+    const w = h * HEX_RATIO;
+    slide.insertAdjacentHTML(
+      "beforeend",
+      `<div class="hexlogo pitch-logo rise" style="left:${((1920 - w) / 2).toFixed(0)}px;top:${(1080 - h) / 2}px;width:${w.toFixed(0)}px;height:${h}px">` +
+        `<img src="${esc(asset(s.logo))}" alt="${esc(s.name)}"></div>`,
+    );
+  }
+
   function sponsorSlide(slide) {
     // Tiers left to right, largest first, each a small honeycomb — the wall's
     // sponsor scene, laid out under the heading instead of beside it.
@@ -449,6 +465,7 @@
       const n = q.n + 4;
       el.innerHTML = `<svg viewBox="-2 -2 ${n} ${n}" role="img" aria-label="${esc(el.dataset.label ?? el.dataset.qr)}"><path d="${q.d}"/>${q.mark ?? ""}</svg>`;
     });
+    if (slide.dataset.layout === "pitch") pitchSlide(slide);
     if (slide.dataset.source === "sponsors") sponsorSlide(slide);
     else if (slide.dataset.source === "community") communitySlide(slide);
     else if (slide.dataset.source === "afterparty") partySlide(slide);
@@ -512,6 +529,7 @@
     const t = slug ? SHOW?.talks?.[slug] : null;
     if (t && slide.dataset.layout === "speaker") return `${t.kind}: ${namesOf(t)}`;
     if (t && slide.dataset.layout === "rate") return `Rate: ${t.title}`;
+    if (slide.dataset.layout === "pitch") return `Gold sponsor pitch: ${slide.dataset.sponsor}`;
     const eyebrow = text(slide.querySelector(".eyebrow"));
     const head = text(slide.querySelector(".display, .heading"));
     return [eyebrow, head].filter(Boolean).join(" · ") || slide.dataset.layout || "Slide";
