@@ -53,6 +53,7 @@ To confirm with the vendor:
 | `sponsors` | Breaks | Tiered honeycomb of white hexagons |
 | `community` | Walk-in and break loops, after `sponsors` | "Thank you, community.": the Community sponsors as a honeycomb of five across, and Partners & media (CNCF, HackYourFuture) beside them. Its own scene, so the paid tiers keep their size |
 | `message` | Remarks, end of day | Eyebrow and headline left, one line right |
+| `lyrics` | After the day-one afterparty | Sing-along: "The November Beat" starts from the top and loops; the title left, the line being sung large across the rest of the wall, the next one dimmed under it. In the intro and instrumental gaps the coming line waits, dimmed. Lines and their times (seconds into the track) are the cue's `lines`. It follows the track in the window that plays it; other windows count from when the cue came up. `?lyricsAt=52` freezes it at 0:52 for stills |
 | panic still (`b`) | Anything goes wrong | Lockup small at the left, nothing in the centre; safe mid-talk |
 
 ## Running the show
@@ -160,7 +161,8 @@ All generated with ElevenLabs Music, instrumental, loudness-matched:
 | Set | When | Files |
 |---|---|---|
 | calm | 08:00 breakfast, breaks, sponsor wall | `walkin.wav` (2:46), then lo-fi Rhodes, Scandinavian acoustic and downtempo marimba (`calm-1…3`, 3:00 each); quieter (−18 LUFS) |
-| preshow | the last 30 minutes before the show, the countdown, and the day-one afterparty | "The November Beat" (3:00) first, then funky house, nu-disco, melodic house (4:30 each), disco house, indie electronic and nu-funk (`preshow-5…7`, 4:00 each); crossfading, and the list starts over at the end (−15.5 LUFS) |
+| preshow | the last 30 minutes before the show, the countdown, and day one's sponsor crawl and afterparty | "The November Beat" (3:00) first, then funky house, nu-disco, melodic house (4:30 each), disco house, indie electronic and nu-funk (`preshow-5…7`, 4:00 each); crossfading, and the list starts over at the end (−15.5 LUFS) |
+| november | the sing-along after the afterparty | "The November Beat" on its own, from the top, looping |
 | walk-on | every talk's walk-on | eight 20 s themes (`walkon-1…8`: piano, guitar and marimba, bells, electric piano, strings, brass, Nordic electronic, glockenspiel), taken in turn so neighbouring talks differ (−16 LUFS) |
 | voice of god | every main-stage walk-on | "Please welcome to the stage… from Saxo Bank… Johan Thomsen!" over the walk-on theme, one clip per talk, the hosts' included. Switchable from the control page |
 
