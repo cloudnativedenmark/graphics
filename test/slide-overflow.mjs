@@ -113,8 +113,8 @@ const PROBE = `
 })();
 `;
 
-function measure(deckDir) {
-  const src = join(DECKS, deckDir, "index.html");
+function measure(deckDir, file = "index.html") {
+  const src = join(DECKS, deckDir, file);
   const html = readFileSync(src, "utf8").replace(
     "</body>",
     `<script>${PROBE}</script></body>`,
@@ -153,17 +153,25 @@ const decodeEntities = (s) =>
 
 // ---------------------------------------------------------------------------
 
+// A deck is a folder with an index.html, or one of the generated break
+// decks (decks/build-breaks.mjs), each its own page in decks/breaks/.
 const decks = readdirSync(DECKS, { withFileTypes: true })
   .filter((d) => d.isDirectory() && d.name !== "shared")
-  .map((d) => d.name)
-  .sort();
+  .flatMap((d) =>
+    existsSync(join(DECKS, d.name, "index.html"))
+      ? [[d.name, "index.html"]]
+      : readdirSync(join(DECKS, d.name))
+          .filter((f) => f.endsWith(".html") && !f.startsWith("."))
+          .map((f) => [d.name, f]),
+  )
+  .sort((a, b) => a.join("/").localeCompare(b.join("/")));
 
 let failures = 0;
 let slides = 0;
 
-for (const deck of decks) {
-  console.log(`\n=== ${deck} ===`);
-  const results = measure(deck);
+for (const [deck, file] of decks) {
+  console.log(`\n=== ${file === "index.html" ? deck : `${deck}/${file}`} ===`);
+  const results = measure(deck, file);
   for (const r of results) {
     slides++;
     const wrongSize = r.w !== STAGE_W || r.h !== STAGE_H;

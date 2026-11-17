@@ -31,6 +31,7 @@ If Chrome is not found, set `CHROME_BIN`.
 | Sponsor tier honeycomb | `render.mjs sponsors` |
 | LinkedIn page cover | `render.mjs linkedin-cover` |
 | Slides | edit the deck HTML in `decks/`; talk, team and sponsor slides fill from `stage/show.data.js` (`node stage/build.mjs`) |
+| Break slides (coffee, lunch) for the projectors | `node decks/build-breaks.mjs` — generated from the schedule, never edited by hand; `--pptx` for Slides |
 | LED wall behind the stage | edit `content/2026-stage.json`, run `node stage/render.mjs`; read `docs/stage-led-wall.md` |
 | Something to tweak in Canva | `graphics/build-canva-import.py` |
 | Guide, brief, handout or any printable document (PDF) | write `content/documents/<slug>.md`, run `node graphics/build-documents.mjs <slug>` |

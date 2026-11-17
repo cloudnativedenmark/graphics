@@ -208,11 +208,14 @@
           : "";
       })
       .join("");
+    // A break deck says where and when instead ("Up next on the main
+    // stage · 10:25"), via data-eyebrow.
     const day = dayLabel(slug);
+    const eyebrow = slide.dataset.eyebrow ?? `${t.kind}${day ? ` · ${day}` : ""}`;
     slide.innerHTML =
       `<div class="portraits rise">${portraits}</div>` +
       `<div class="copy rise">` +
-      `<p class="eyebrow">${esc(t.kind)}${day ? ` · ${esc(day)}` : ""}</p>` +
+      `<p class="eyebrow">${esc(eyebrow)}</p>` +
       `<h2 class="display" data-fit="440">${title(t.title)}</h2>` +
       `<div class="names">` +
       t.speakers

@@ -228,6 +228,24 @@ the source of truth for the show, so fold agreed changes back in here.
 
 Talk, organizer and sponsor slides are filled from `stage/show.data.js`, the
 same data the wall shows, so run the build after editing `content/`.
+### Break decks
+
+One deck per coffee break and lunch, per room with a screen (main stage and
+breakout), generated from the schedule rather than written by hand:
+
+```bash
+node decks/build-breaks.mjs                   # all of them → decks/breaks/<day>-<room>-<HHMM>.html + .pdf
+node decks/build-breaks.mjs day2-main-1550    # just one
+node decks/build-breaks.mjs --pptx            # and PowerPoint for Slides → graphics/out/slides/breaks/
+```
+
+Each runs: back at, and what starts then in every room; a rating QR for every
+talk in that room since the last break; tonight's sponsor crawl and party on
+day one; sponsors; the next speaker; Post it; community; photos. When the
+programme changes, re-sync (`node stage/sync-schedule.mjs`) and run it again.
+It rebuilds the stage data first and drops decks for breaks that are gone.
+Never edit the generated HTML or PDFs.
+
 Everything still unknown is marked `TODO`, so the pre-flight is:
 
 ```bash
@@ -251,7 +269,9 @@ The control page runs on any machine on the same network, and the server
 prints its URL with the key.
 
 The run of show is `content/2026-stage.json`. Talk titles, names and portraits
-come from the announcements file by slug.
+come from the announcements file by slug. `node stage/build.mjs` checks the
+cues against the synced schedule and stops if a talk is out of order or a
+break ends at the wrong time; it warns about walk-ons without words or a clip.
 
 ---
 
