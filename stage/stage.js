@@ -1000,6 +1000,7 @@
   const music = (() => {
     const cfg = SHOW.music;
     const off = { cue() {}, set() {}, vog() {}, get on() { return false; } };
+    const { vogPlays } = window.CUES;
     if (!cfg || !AUDIO) return off;
     const VOL = cfg.volume ?? 0.8;
     const XF = cfg.crossfade ?? 4;
@@ -1018,8 +1019,9 @@
     let sting = stings[0] ?? null;
     // The voice of god: "Please welcome to the stage…", one clip per talk,
     // `delay` seconds into the walk-on, with the theme ducked under it. It
-    // has its own switch (`vog` in the show state), independent of the
-    // music: with the music off the voice plays on its own.
+    // has its own mode (`vog` in the show state: off, hosts or all, see
+    // vogModes in cues.js), independent of the music: with the music off
+    // the voice plays on its own.
     const VO = { delay: 1.2, duck: 0.3, volume: 1, ...cfg.announce };
     const voices = new Map(
       Object.values(SHOW.talks)
@@ -1028,7 +1030,8 @@
     );
     let voice = null;
     let voiceTimer = null;
-    let vogOn = true;
+    let vogMode = window.CUES.vogMode(undefined, ROOM);
+    let voiceTalk = null; // the talk whose walk-on `voice` belongs to
     function stopVoice(seconds) {
       clearTimeout(voiceTimer);
       const v = voice;
@@ -1169,7 +1172,8 @@
             st.volume = VOL;
             st.play().catch(() => {});
           }
-          voice = vogOn ? voices.get(cue.talk) ?? null : null;
+          voiceTalk = SHOW.talks[cue.talk] ?? null;
+          voice = vogPlays(vogMode, voiceTalk) ? voices.get(cue.talk) ?? null : null;
           const v = voice;
           if (v) {
             voiceTimer = setTimeout(() => {
@@ -1202,12 +1206,13 @@
       get on() {
         return enabled;
       },
-      /** The voice-of-god switch. Off mid-announcement fades the voice out
-       *  and brings the theme back up under nobody. */
-      vog(on) {
-        if (on === vogOn) return;
-        vogOn = on;
-        if (!on && voice && (!voice.paused || voiceTimer)) {
+      /** The voice-of-god mode. A mode that leaves out the walk-on in
+       *  progress fades its voice out and brings the theme back up under
+       *  nobody. */
+      vog(mode) {
+        if (mode === vogMode) return;
+        vogMode = mode;
+        if (!vogPlays(mode, voiceTalk) && voice && (!voice.paused || voiceTimer)) {
           const st = sting;
           stopVoice(0.5);
           if (enabled && st && !st.paused) fade(st, VOL, 1.2);
@@ -1230,7 +1235,7 @@
         const name = (a) => (a.src ? decodeURIComponent(a.src.split("/").pop()) : null);
         return {
           enabled,
-          vog: vogOn,
+          vog: vogMode,
           blocked,
           set: current,
           lastEvent,
@@ -1278,7 +1283,7 @@
     i: 0,
     panic: false,
     music: false,
-    vog: true,
+    vog: window.CUES.vogMode(undefined, ROOM),
     guides: params.has("guides"),
     countdownTo: null,
     mountedCue: null,
@@ -1289,7 +1294,7 @@
     const steps = stepsFor(state.day);
     hud.innerHTML =
       `<ol>${steps.map((s, i) => `<li${i === state.i ? " data-current" : ""}>${esc(describe(s))}</li>`).join("")}</ol>` +
-      `<div>${esc(dayLabel(state.day))}${state.panic ? " · <b>PANIC STILL</b>" : ""} · music ${state.music ? "on" : "off"} · voice of god ${state.vog === false ? "off" : "on"}` +
+      `<div>${esc(dayLabel(state.day))}${state.panic ? " · <b>PANIC STILL</b>" : ""} · music ${state.music ? "on" : "off"} · voice of god ${window.CUES.VOG_LABELS[window.CUES.vogMode(state.vog, ROOM)].toLowerCase()}` +
       `${FOLLOW ? " · following the show server" : ""}` +
       `${AUDIO ? "" : " · <b>no sound in this window</b> (sound plays in the ?output window; add ?audio to rehearse with sound here)"}<br>` +
       `<kbd>→</kbd> next &nbsp;<kbd>←</kbd> back &nbsp;<kbd>1</kbd><kbd>2</kbd> day &nbsp;<kbd>b</kbd> still &nbsp;<kbd>m</kbd> music &nbsp;<kbd>v</kbd> voice of god &nbsp;<kbd>g</kbd> guides &nbsp;<kbd>f</kbd> fullscreen</div>`;
@@ -1355,7 +1360,7 @@
     // `silent`: a walk-on replayed only to glide into a live talk after a
     // reload. The room is mid-talk; it must not hear the walk-on theme again.
     music.set(state.music && !silent);
-    music.vog(state.vog !== false);
+    music.vog(window.CUES.vogMode(state.vog, ROOM));
     const talkIndex = cuesFor(state.day, ROOM).slice(0, step.c).filter((c) => c.scene === "talk").length;
     music.cue(state.panic ? "panic" : `${state.day}:${state.i}`, state.panic ? null : step.cue, step.state, talkIndex);
     if (state.panic) {
@@ -1411,7 +1416,11 @@
     else if (cmd.cmd === "day" && SHOW.days[cmd.day]) Object.assign(next, { day: cmd.day, i: 0, panic: false });
     else if (cmd.cmd === "panic") next.panic = !state.panic;
     else if (cmd.cmd === "music") next.music = !state.music;
-    else if (cmd.cmd === "vog") next.vog = state.vog === false;
+    else if (cmd.cmd === "vog") {
+      const modes = window.CUES.vogModes(ROOM);
+      const now = window.CUES.vogMode(state.vog, ROOM);
+      next.vog = modes.includes(cmd.mode) ? cmd.mode : modes[(modes.indexOf(now) + 1) % modes.length];
+    }
     else if (cmd.cmd === "guides") next.guides = !state.guides;
     else if (cmd.cmd === "countdown") {
       if (cmd.minutes != null) next.countdownTo = Date.now() + cmd.minutes * 60000;
