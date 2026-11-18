@@ -66,6 +66,7 @@
     "talk-kyverno-victoriametrics": "Please welcome to the stage... Diana To-day-a... and from Akamai... Cortney Nickerson!",
     "talk-sovereign-agentic-coding": "Please welcome to the stage... from Neurospace... Rasmus Stine-ikka!",
     "talk-postgres-observability": "Please welcome to the stage... Gabriele Ross-ee-nee!",
+    "d1-welcome-back": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
     "d1-whose-code": "Please welcome to the stage... from Dynatrace... Adriana Vee-lella... and from Altinity... Josh Lee!",
     "d1-goblins-druids": "Please welcome to the stage: Michael Cotay!",
     "sz-1306361": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
@@ -252,6 +253,12 @@
           "$note": "15:30–16:00",
           "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-welcome-back",
+          "offSchedule": true,
+          "$note": "16:00, the hosts again before the afternoon keynotes; not a Sessionize session, so offSchedule"
         },
         {
           "scene": "talk",
@@ -680,6 +687,27 @@
           "name": "Helena Birkholm",
           "role": "Managing Director, HackYourFuture Denmark",
           "portrait": "assets/speakers/helena_birkholm.jpg"
+        }
+      ]
+    },
+    "d1-welcome-back": {
+      "kind": "Welcome",
+      "title": "Welcome back",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg"
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-allan.jpg"
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-kasper-nissen.jpg"
         }
       ]
     },

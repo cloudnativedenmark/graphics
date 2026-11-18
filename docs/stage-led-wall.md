@@ -144,6 +144,9 @@ or when the countdown's `at` is not the first talk. It warns when a cue's
 `$note` time is stale, when a cued talk has no walk-on words or clip, and
 when `announce` has words for a talk no cue plays. A cancelled talk comes out
 of the cues, `announce`, `roles` and the announcements file together.
+A hosts' walk-on that is not a Sessionize session (day one's afternoon
+"Welcome back") carries `"offSchedule": true` on its cue: it plays like any
+other walk-on, and the order check leaves it out.
 
 The break decks on the projectors (`decks/breaks/`) come from the same
 programme: `node decks/build-breaks.mjs` after any schedule change.
@@ -183,9 +186,11 @@ any talk with a clip. The clip starts 1.2 s into the theme, the theme drops to
 30% under it and comes back after it (`music.announce`). Next, going live or
 panic stops it.
 
-**Voice of god** on the control page (or `v`) switches the announcements on
-and off for the whole show, for when the hosts would rather introduce a
-speaker themselves. It starts on. Off mid-announcement fades the voice and
+**Voice of god** on the control page has a mode per room. The main stage has
+All sessions (the default), Hosts only (just the hosts' welcomes, wrap-ups
+and remarks, for when the hosts introduce every speaker themselves) and Off.
+The breakout has Off (its default) and All sessions. `v` steps through them.
+A mode that leaves out the announcement in progress fades the voice and
 brings the theme back up. It is independent of Music: with the music off and
 the voice on, the voice plays on its own.
 
