@@ -10,6 +10,10 @@
  *                                   that may play sound without a click
  *   PORT=4040 STAGE_KEY=… node stage/serve.mjs
  *
+ * Runs the same on Windows (PowerShell: $env:STAGE_KEY = "…" before the
+ * node line). Chrome is found in its usual place on macOS, Windows and
+ * Linux; set CHROME_BIN when it lives somewhere else.
+ *
  * It holds the show state — day, cue, panic, music, voice of god, guides — for each room
  * (the main-stage wall and the breakout screen, each with its own operator)
  * and pushes every change to that room's pages over Server-Sent Events. The wall window and the
@@ -300,10 +304,25 @@ ${OPEN ? `\n  ${dim(`Opening the ${OPEN === "main" ? "main stage" : "breakout"} 
  * counts when Chrome starts, hence a separate profile: it starts a fresh
  * Chrome even when your everyday one is open.
  */
+/** Chrome on macOS, Windows or Linux; CHROME_BIN wins when it is set. */
+function findChrome() {
+  if (process.env.CHROME_BIN) return process.env.CHROME_BIN;
+  const windows = [process.env.PROGRAMFILES, process.env["PROGRAMFILES(X86)"], process.env.LOCALAPPDATA]
+    .filter(Boolean)
+    .map((dir) => join(dir, "Google", "Chrome", "Application", "chrome.exe"));
+  return [
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    ...windows,
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/chromium",
+  ].find((path) => existsSync(path));
+}
+
 function openRoom(room) {
-  const chrome = process.env.CHROME_BIN ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-  if (!existsSync(chrome)) {
-    console.error(`  Chrome not found at ${chrome}; set CHROME_BIN, or open the links above.`);
+  const chrome = findChrome();
+  if (!chrome || !existsSync(chrome)) {
+    console.error(`  Chrome not found${chrome ? ` at ${chrome}` : ""}; set CHROME_BIN, or open the links above.`);
     return;
   }
   const q = room === "breakout" ? "&room=breakout" : "";
