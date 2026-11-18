@@ -185,7 +185,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "10:05–10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -198,7 +198,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -211,7 +211,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -224,7 +224,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -237,7 +237,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -250,7 +250,7 @@
           "eyebrow": "Coffee break",
           "until": "16:00",
           "$note": "15:30–16:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -343,7 +343,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "until 10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -356,7 +356,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -369,7 +369,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -382,7 +382,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -395,7 +395,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -483,7 +483,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "10:05–10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -496,7 +496,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -509,7 +509,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -522,7 +522,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -535,7 +535,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -548,7 +548,7 @@
           "eyebrow": "Coffee break",
           "until": "15:50",
           "$note": "15:30–15:50",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -580,7 +580,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "until 10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -593,7 +593,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -606,7 +606,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -619,7 +619,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -632,7 +632,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -723,5 +723,5 @@
   "clearBeforeWalkon": true,
   "$clearBeforeWalkon": "Every talk starts on a clear wall: the faint field only, no text, no music. The next press brings the walk-on and its music. So a talk is three presses: clear, walk-on, live (live also comes by itself after walkonSeconds).",
   "$countdown": "A countdown cue starts at `minutes` (default 5) the moment it comes up on the wall, and counts down. The control page can restart or nudge it. `at` is only the fallback for renders.",
-  "$loop": "A cue's `loop` alternates between these scenes (hexagon wave between them) while its music carries on. `every` is the seconds per scene: one number for all, or a list with one per scene ([40, 10, 10]: 40 s countdown, 10 s sponsors, 10 s hashtags, every minute). `holdLast` keeps a countdown on its first scene for its final seconds. The phase comes from the clock, so the wall and the control preview switch together."
+  "$loop": "A cue's `loop` alternates between these scenes (hexagon wave between them) while its music carries on. `every` is the seconds per scene: one number for all, or a list with one per scene ([40, 10, 10]: 40 s countdown, 10 s sponsors, 10 s hashtags, every minute). `holdLast` keeps a countdown on its first scene for its final seconds. The loop counts from the moment its cue comes up, so it always opens on its first scene (a break on the feedback QR for the talk just finished, or on its \"back at\" scene when that talk has no QR); the wall and the control preview count from the same moment, so they switch together."
 }

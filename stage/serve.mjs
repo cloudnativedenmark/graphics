@@ -105,7 +105,9 @@ function stepCounts(stage, room) {
 // vog: the voice-of-god mode, the first of the room's VOG_MODES by default
 // (the same list as vogModes in stage/cues.js).
 const VOG_MODES = { main: ["all", "hosts", "off"], breakout: ["off", "all"] };
-const fresh = (room) => ({ day: "1", i: 0, panic: false, music: true, vog: VOG_MODES[room][0], guides: false, countdownTo: null, autoLiveAt: null, rev: 0 });
+// stepAt: when the current step came up, so a looping cue starts on its
+// first scene and every window counts the loop from the same moment.
+const fresh = (room) => ({ day: "1", i: 0, panic: false, music: true, vog: VOG_MODES[room][0], guides: false, countdownTo: null, autoLiveAt: null, stepAt: Date.now(), rev: 0 });
 const states = Object.fromEntries(ROOMS.map((r) => [r, fresh(r)]));
 const clients = new Map(ROOMS.map((r) => [r, new Set()]));
 
@@ -133,6 +135,8 @@ function scheduleAutoLive(stage, room) {
     if (state.rev !== rev) return;
     state.i += 1;
     state.autoLiveAt = null;
+    state.stepAt = Date.now();
+    lastStep[room] = `${state.day}:${state.i}`;
     state.rev++;
     broadcast(room);
   }, secs * 1000);
@@ -152,6 +156,7 @@ function onStep(stage, room) {
   const key = `${state.day}:${state.i}`;
   if (key === lastStep[room]) return;
   lastStep[room] = key;
+  state.stepAt = Date.now();
   const step = stepsOf(stage, state.day, room)[state.i];
   state.countdownTo = timed(step) ? Date.now() + Number(step.cue.minutes ?? 5) * 60000 : null;
 }

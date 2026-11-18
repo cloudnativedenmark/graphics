@@ -1284,8 +1284,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "10:05–10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1303,8 +1303,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1322,8 +1322,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1341,8 +1341,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1360,8 +1360,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1379,8 +1379,8 @@ window.SHOW = {
           "until": "16:00",
           "$note": "15:30–16:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1601,8 +1601,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "until 10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1620,8 +1620,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1639,8 +1639,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1658,8 +1658,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1677,8 +1677,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1794,8 +1794,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "10:05–10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1813,8 +1813,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1832,8 +1832,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1851,8 +1851,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1870,8 +1870,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1889,8 +1889,8 @@ window.SHOW = {
           "until": "15:50",
           "$note": "15:30–15:50",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1932,8 +1932,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "until 10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1951,8 +1951,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1970,8 +1970,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1989,8 +1989,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -2008,8 +2008,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"

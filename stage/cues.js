@@ -50,7 +50,8 @@ window.CUES = (() => {
       {
         walkin: `${cue.music === "preshow" ? "Pre-show" : "Walk-in"} · ${(cue.loop ?? ["walkin"]).map((n) => (n === "walkin" ? "welcome" : n)).join(" ⇄ ")}, ${cue.music === "preshow" ? "energetic" : "calm"} music`,
         countdown: `Countdown · ${cue.minutes ?? 5}:00${cue.loop ? " ⇄ sponsors" : ""}`,
-        break: `${cue.eyebrow} · ${cue.headline ?? `Back at ${cue.until}`}${cue.loop ? ` ⇄ ${cue.loop.slice(1).join(" ⇄ ")}` : ""}`,
+        // The loop in its order, the break's own scene named by its time.
+        break: `${cue.eyebrow} · ${(cue.loop ?? ["break"]).map((n) => (n === "break" ? (cue.headline ?? `Back at ${cue.until}`) : n)).join(" ⇄ ")}`,
         pitch: `${state === "running" ? "Pitch clock" : "Sponsor pitch"} · ${cue.sponsor} · ${cue.minutes ?? 2}:00`,
         message: `${cue.eyebrow} · ${cue.headline}`,
         afterparty: `Afterparty${cue.loop ? ` ⇄ ${cue.loop.slice(1).map((n) => (n === "message" ? cue.headline : n)).join(" ⇄ ")}` : ""}, party music`,
