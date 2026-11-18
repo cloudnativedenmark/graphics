@@ -58,6 +58,9 @@ window.CUES = (() => {
         lyrics: `${cue.eyebrow ?? "Sing along"} · ${cue.headline ?? ""}`,
         sponsors: "Sponsor wall",
         community: "Community sponsors & partners",
+        organizers: `${cue.headline ?? "Thank you to all organizers."} · names read out, strings, confetti`,
+        teammate: `${cue.headline ?? "Thank you, Claude Code."} · dancing mascot, strings`,
+        attendees: `${cue.headline ?? "Thank you, everyone."} · strings, confetti`,
       }[cue.scene] ?? cue.scene
     );
   }
@@ -76,6 +79,7 @@ window.CUES = (() => {
     if (cue.scene === "pitch") return "The clock is running.";
     if (cue.scene === "message") return cue.body ?? "";
     if (cue.scene === "lyrics") return "The song starts from the top; the lines follow it.";
+    if (cue.voice) return "The voice of god plays (unless it is off), over quiet strings. Next moves on.";
     if (cue.scene === "afterparty") return `${cue.party?.when ?? "Afterparty"} · starts on "The November Beat"`;
     return "";
   }
@@ -87,7 +91,7 @@ window.CUES = (() => {
    *          hosts are never on the breakout's run of show.
    *   all    every walk-on that has a clip
    * The first mode is the room's default. */
-  const VOG_MODES = { main: ["all", "hosts", "off"], breakout: ["off", "all"] };
+  const VOG_MODES = { main: ["all", "hosts", "off"], breakout: ["all", "off"] };
   const VOG_LABELS = { off: "Off", hosts: "Hosts only", all: "All sessions" };
   const HOST_KINDS = new Set(["Welcome", "Wrap-up", "Remarks"]);
   const vogModes = (room = "main") => VOG_MODES[room] ?? VOG_MODES.main;

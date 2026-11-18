@@ -528,6 +528,55 @@
     `<path class="straw" d="M96 30 Q98 -10 130 -30 L140 -18 Q112 0 110 30 Z"/>` +
     `</svg>`;
 
+  /* The organizing team: two rows of five small portraits in the right
+   * two-thirds, name (and job title, where `roles`) under each. */
+  function teamWall(eyebrow, headline, { roles }) {
+    const people = SHOW.organizers ?? [];
+    const cols = Math.ceil(people.length / 2) || 1;
+    const x0 = 1290, x1 = W - 100, colW = (x1 - x0) / cols;
+    const h = 270, w = h * HEX_RATIO;
+    const cells = people
+      .map((o, n) => {
+        const r = Math.floor(n / cols), c = n % cols;
+        const left = x0 + c * colW, top = 110 + r * 500;
+        return (
+          `<div class="org rise" style="--i:${2 + n};left:${left.toFixed(0)}px;top:${top}px;width:${colW.toFixed(0)}px">` +
+          (o.portrait ? `<img class="portrait" src="${esc(o.portrait)}" alt="" style="position:relative;display:block;margin:0 auto;width:${w.toFixed(0)}px;height:${h}px">` : "") +
+          `<p class="org-name">${esc(o.name)}</p>` +
+          (roles ? `<p class="org-role">${esc(o.role)}</p>` : "") +
+          `</div>`
+        );
+      })
+      .join("");
+    return {
+      mode: "sponsors",
+      html:
+        `<div class="box zone-left" style="width:980px">` +
+        `<p class="eyebrow rise" style="--i:0">${esc(eyebrow)}</p>` +
+        `<h2 class="display rise" style="--i:1" data-fit="640">${esc(headline)}</h2>` +
+        `</div>` +
+        cells,
+    };
+  }
+
+  /* The Claude Code mascot, from its 24-unit icon, taken apart so it can
+   * move: body, two arms, four legs and two eyes (the icon's eyes are holes;
+   * here they are navy, so one can close). Its own orange, like a sponsor's
+   * logo keeps its colours (--claude-code in stage.css). */
+  const MASCOT =
+    `<svg class="mascot" viewBox="-2 1.5 28 20.5" aria-label="Claude Code">` +
+    `<g class="mascot-dance">` +
+    `<rect class="leg leg-a" x="4.487" y="16.6" width="1.513" height="3.4"/>` +
+    `<rect class="leg leg-b" x="7.488" y="16.6" width="1.512" height="3.4"/>` +
+    `<rect class="leg leg-a" x="15" y="16.6" width="1.513" height="3.4"/>` +
+    `<rect class="leg leg-b" x="18" y="16.6" width="1.487" height="3.4"/>` +
+    `<rect class="arm arm-l" x="0" y="10.95" width="3.4" height="3.1"/>` +
+    `<rect class="arm arm-r" x="20.6" y="10.949" width="3.4" height="3.102"/>` +
+    `<rect class="mascot-body" x="3" y="5" width="18" height="12.079"/>` +
+    `<rect class="eye" x="6" y="8.102" width="1.488" height="2.847"/>` +
+    `<rect class="eye eye-wink" x="16.51" y="8.102" width="1.49" height="2.847"/>` +
+    `</g></svg>`;
+
   const SCENES = {
     walkin(cue) {
       return {
@@ -801,29 +850,45 @@
     // five small portraits in the right two-thirds; nobody is on stage yet,
     // so the middle is free.
     team() {
-      const people = SHOW.organizers ?? [];
-      const cols = Math.ceil(people.length / 2) || 1;
-      const x0 = 1290, x1 = W - 100, colW = (x1 - x0) / cols;
-      const h = 270, w = h * HEX_RATIO;
-      const cells = people
-        .map((o, n) => {
-          const r = Math.floor(n / cols), c = n % cols;
-          const left = x0 + c * colW, top = 110 + r * 500;
-          return (
-            `<div class="org rise" style="--i:${2 + n};left:${left.toFixed(0)}px;top:${top}px;width:${colW.toFixed(0)}px">` +
-            (o.portrait ? `<img class="portrait" src="${esc(o.portrait)}" alt="" style="position:relative;display:block;margin:0 auto;width:${w.toFixed(0)}px;height:${h}px">` : "") +
-            `<p class="org-name">${esc(o.name)}</p><p class="org-role">${esc(o.role)}</p></div>`
-          );
-        })
-        .join("");
+      return teamWall(`${SHOW.event.name} ${SHOW.event.year}`, "Your organizers.", { roles: true });
+    },
+
+    // Day two, after the closing remarks: the same team wall, names only,
+    // with confetti, while the voice of god reads the names (the cue's
+    // `announce`, over the quiet strings).
+    organizers(cue) {
+      const wall = teamWall(cue.eyebrow ?? `${SHOW.event.name} ${SHOW.event.year}`, cue.headline ?? "Thank you to all organizers.", { roles: false });
+      return { ...wall, html: confetti(BREAKOUT ? 24 : 50) + wall.html };
+    },
+
+    // Our secret teammate: the Claude Code mascot in the middle, dancing,
+    // and every few seconds a wink. Words left and right as on the afterparty.
+    teammate(cue) {
       return {
-        mode: "sponsors",
+        mode: "live",
         html:
-          `<div class="box zone-left" style="width:980px">` +
-          `<p class="eyebrow rise" style="--i:0">${esc(SHOW.event.name)} ${esc(SHOW.event.year)}</p>` +
-          `<h2 class="display rise" style="--i:1" data-fit="640">Your organizers.</h2>` +
+          confetti(BREAKOUT ? 24 : 50) +
+          `<div class="box zone-left">` +
+          `<p class="eyebrow rise" style="--i:0">${esc(cue.eyebrow ?? "Our secret teammate")}</p>` +
+          `<h2 class="display rise" style="--i:1" data-fit="640">${esc(cue.headline ?? "Thank you, Claude Code.")}</h2>` +
           `</div>` +
-          cells,
+          `<div class="mascot-stage rise" style="--i:2">${MASCOT}</div>` +
+          (cue.body ? `<div class="box zone-right"><p class="body rise" style="--i:3">${esc(cue.body)}</p></div>` : ""),
+      };
+    },
+
+    // The last thank-you, to everyone in the room: the most confetti of the
+    // show, the middle left to the hosts.
+    attendees(cue) {
+      return {
+        mode: "live",
+        html:
+          confetti(BREAKOUT ? 40 : 90) +
+          `<div class="box zone-left">` +
+          `<p class="eyebrow rise" style="--i:0">${esc(cue.eyebrow ?? "And most of all")}</p>` +
+          `<h2 class="display rise" style="--i:1" data-fit="640">${esc(cue.headline ?? "Thank you, everyone.")}</h2>` +
+          `</div>` +
+          (cue.body ? `<div class="box zone-right"><p class="body rise" style="--i:2">${esc(cue.body)}</p></div>` : ""),
       };
     },
 
@@ -1028,14 +1093,32 @@
         .filter((t) => t.announce)
         .map((t) => [t.slug, Object.assign(new Audio(t.announce), { preload: "auto" })]),
     );
+    // A cue's own voice (the closing thank-yous), keyed by clip. It plays
+    // over the cue's bed, which ducks under it the way a theme does, and in
+    // the same modes as the hosts' remarks: the hosts are on stage for it.
+    const cueVoices = new Map(
+      Object.values(SHOW.days)
+        .flatMap((d) => [...(d.cues ?? []), ...(d.breakout ?? [])])
+        .filter((c) => c.voice)
+        .map((c) => [c.voice, Object.assign(new Audio(c.voice), { preload: "auto" })]),
+    );
+    const CUE_VOICE_KIND = { kind: "Remarks" };
     let voice = null;
     let voiceTimer = null;
     let vogMode = window.CUES.vogMode(undefined, ROOM);
     let voiceTalk = null; // the talk whose walk-on `voice` belongs to
+    let bedDucked = false; // the bed is down under a cue's voice
+    function unduckBed(seconds) {
+      if (!bedDucked) return;
+      bedDucked = false;
+      const a = decks[active];
+      if (enabled && current && !a.paused) fade(a, VOL, seconds);
+    }
     function stopVoice(seconds) {
       clearTimeout(voiceTimer);
       const v = voice;
       if (v && !v.paused) fade(v, 0, seconds, () => v.pause());
+      unduckBed(Math.max(seconds, 1.2));
     }
 
     const timers = new Map();
@@ -1196,6 +1279,22 @@
         stopSting(1.5);
         want = !cue || cue.music === false ? null : (cue.music ?? cfg.scenes?.[cue.scene] ?? null);
         bed(4);
+        voiceTalk = cue?.voice ? CUE_VOICE_KIND : null;
+        voice = cue?.voice && vogPlays(vogMode, voiceTalk) ? cueVoices.get(cue.voice) ?? null : null;
+        const v = voice;
+        if (v) {
+          voiceTimer = setTimeout(() => {
+            v.currentTime = 0;
+            v.volume = VO.volume;
+            v.onended = () => v === voice && unduckBed(1.5);
+            play(v);
+            const a = decks[active];
+            if (enabled && current && !a.paused) {
+              bedDucked = true;
+              fade(a, VOL * VO.duck, 0.6);
+            }
+          }, VO.delay * 1000);
+        }
       },
       set(on) {
         if (on === enabled) return;
@@ -1214,7 +1313,7 @@
         vogMode = mode;
         if (!vogPlays(mode, voiceTalk) && voice && (!voice.paused || voiceTimer)) {
           const st = sting;
-          stopVoice(0.5);
+          stopVoice(0.5); // brings a ducked bed back up too
           if (enabled && st && !st.paused) fade(st, VOL, 1.2);
         }
       },

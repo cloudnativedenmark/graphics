@@ -432,6 +432,12 @@ body {
   overflow: hidden;
   pointer-events: none;
 }
+/* Words, portraits and the mascot stay in front of the falling confetti. */
+.confetti ~ .box,
+.confetti ~ .org,
+.confetti ~ .mascot-stage,
+.confetti ~ .drinks,
+.confetti ~ .lyrics { z-index: 1; }
 .confetto {
   position: absolute;
   opacity: 0.85;
@@ -515,6 +521,73 @@ body {
 }
 .party-host .hexlogo {
   position: relative;
+}
+
+/* ── thank you, Claude Code ───────────────────────────────────────────── */
+/* The mascot in the middle third, clear of the bottom band a lectern may
+ * hide. It dances (sway and bounce, arms and legs in turn) and winks its
+ * right eye every few seconds. Units inside the SVG are the icon's own
+ * 24-unit grid, so the moves are in those units. */
+
+.mascot-stage {
+  position: absolute;
+  left: 1316px;
+  top: 120px;
+  width: 1064px;
+  height: 780px;
+}
+.mascot {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  --claude-code: #D97757; /* Claude Code's own orange: a guest's mark keeps its colour */
+}
+.mascot .mascot-body,
+.mascot .arm,
+.mascot .leg { fill: var(--claude-code); }
+.mascot .eye { fill: var(--cnd-navy); }
+
+.mascot-dance,
+.mascot .arm,
+.mascot .leg,
+.mascot .eye {
+  transform-box: fill-box;
+}
+.mascot-dance {
+  transform-origin: 50% 100%;
+  animation: mascot-dance 1.2s ease-in-out infinite;
+}
+.mascot .leg   { animation: mascot-step 0.6s ease-in-out infinite alternate; }
+.mascot .leg-b { animation-delay: -0.6s; }
+.mascot .arm-l { transform-origin: 100% 50%; animation: mascot-wave-l 1.2s ease-in-out infinite; }
+.mascot .arm-r { transform-origin: 0% 50%;   animation: mascot-wave-r 1.2s ease-in-out infinite; }
+.mascot .eye-wink {
+  transform-origin: 50% 60%;
+  animation: mascot-wink 3.6s ease-in-out 1s infinite;
+}
+
+@keyframes mascot-dance {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  25%      { transform: translateY(-1.1px) rotate(0deg); }
+  50%      { transform: translateY(0) rotate(4deg); }
+  75%      { transform: translateY(-1.1px) rotate(0deg); }
+}
+@keyframes mascot-step {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-0.9px); }
+}
+@keyframes mascot-wave-l {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(28deg); }
+}
+@keyframes mascot-wave-r {
+  0%, 100% { transform: rotate(-28deg); }
+  50%      { transform: rotate(0deg); }
+}
+/* Open most of the cycle, then one quick wink. */
+@keyframes mascot-wink {
+  0%, 70%, 78%, 100% { transform: scaleY(1); }
+  73%, 75%           { transform: scaleY(0.1); }
 }
 
 /* ── still mode (renders) ─────────────────────────────────────────────── */

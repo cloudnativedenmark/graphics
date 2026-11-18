@@ -104,7 +104,7 @@ function stepCounts(stage, room) {
 // in the stage file), so the control page can count it down.
 // vog: the voice-of-god mode, the first of the room's VOG_MODES by default
 // (the same list as vogModes in stage/cues.js).
-const VOG_MODES = { main: ["all", "hosts", "off"], breakout: ["off", "all"] };
+const VOG_MODES = { main: ["all", "hosts", "off"], breakout: ["all", "off"] };
 // stepAt: when the current step came up, so a looping cue starts on its
 // first scene and every window counts the loop from the same moment.
 const fresh = (room) => ({ day: "1", i: 0, panic: false, music: true, vog: VOG_MODES[room][0], guides: false, countdownTo: null, autoLiveAt: null, stepAt: Date.now(), rev: 0 });
