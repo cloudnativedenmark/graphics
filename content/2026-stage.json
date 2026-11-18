@@ -11,9 +11,11 @@
     "volume": 0.8,
     "crossfade": 4,
     "announce": { "delay": 1.2, "duck": 0.3 },
-    "$announce": "Each walk-on's announcement starts `delay` seconds into the theme; the theme drops to `duck` of its volume under the voice and comes back after it.",
+    "$announce": "Each walk-on's announcement starts `delay` seconds into the theme; the theme drops to `duck` of its volume under the voice and comes back after it. A cue's own `announce` (the thank-yous) does the same over that cue's bed.",
+    "$thanks": "The strings walk-on theme (walkon-5) without its fade-out, crossfaded into a two-minute loop and mixed at -23 LUFS, well under the other beds: it sits under the voice of god on the closing thank-yous.",
     "sets": {
       "november": ["assets/audio/preshow-4-november-beat.mp3"],
+      "thanks": ["assets/audio/thanks-strings.mp3"],
       "calm": [
         "assets/audio/walkin.wav",
         "assets/audio/calm-1-lofi-rhodes.mp3",
@@ -54,7 +56,7 @@
   },
   "$ticker": "Walk-in and break scenes have no sponsor row by default: the sponsor wall is part of their loop instead. A cue's `ticker` (a list of tiers, e.g. [\"Platinum\", \"Gold\"]) brings the row back: six white hexagons across the bottom, the logos changing in groups every 7 s.",
   "announce": {
-    "$comment": "The voice of god on every main-stage walk-on: the hosts' and each speaker's. The control page has three modes on the main stage: All sessions (the default), Hosts only (just the hosts' welcome, wrap-ups and remarks, so the hosts introduce every speaker themselves) and Off; v steps through them. The breakout has Off (its default) and All sessions. The walk-on theme plays in every mode. ElevenLabs voice \"Brian\" (nPczCjzI2devNBz1zQrb), eleven_multilingual_v2, stability 0.4, style 0.45, speed 0.92; trimmed and normalised to -15 LUFS into assets/audio/announce/<slug>.mp3. The build picks a clip up by slug. These are the words as sent, names spelled for the voice. Any talk can have one: add its words here and a clip at that path.",
+    "$comment": "The voice of god on every main-stage walk-on: the hosts' and each speaker's. The control page has three modes on the main stage: All sessions (the default), Hosts only (just the hosts' welcome, wrap-ups and remarks, so the hosts introduce every speaker themselves) and Off; v steps through them. The breakout has All sessions (its default) and Off; the breakout talks' words are in here too. The walk-on theme plays in every mode. ElevenLabs voice \"Brian\" (nPczCjzI2devNBz1zQrb), eleven_multilingual_v2, stability 0.4, style 0.45, speed 0.92; trimmed and normalised to -15 LUFS into assets/audio/announce/<slug>.mp3. The build picks a clip up by slug. These are the words as sent, names spelled for the voice. Any talk can have one: add its words here and a clip at that path.",
     "d1-welcome": "Please welcome to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
     "d1-morning-wrapup": "Please welcome back to the stage... your hosts... Kasper Borg Nissen... Jin-hong Brine-holt... and Allan Hoy-gore Jensen!",
     "d1-hackyourfuture": "Please welcome to the stage... the Managing Director of HackYourFuture Denmark... Helena Beerk-holm!",
@@ -80,7 +82,20 @@
     "talk-cadence-uber": "Please welcome to the stage... from Uber... Seva Ka-losh-in!",
     "talk-ai-side-effects": "Please welcome to the stage... from Monzo... Marcus Noble!",
     "d2-dbaas-trap": "Please welcome to the stage... from EDB... Gabriele Bartolini!",
-    "sz-1306366": "For the very last time... please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!"
+    "sz-1306366": "For the very last time... please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
+    "talk-lazy-developer": "Please welcome to the stage... from Dynatrace... Adriana Vih-lella... and Diana Toh-day-ah!",
+    "talk-pdb-trust": "Please welcome to the stage... from Saxo Bank... Kar-lis Ah-kots Gree-boo-lis!",
+    "talk-us-independent": "Please welcome to the stage... from ABAX... Thomas Or-nell!",
+    "talk-no-ssh-bare-metal": "Please welcome to the stage... Karsten Nielsen!",
+    "talk-crossplane-should-not": "Please welcome to the stage... from Vision... Lee-eh-neh Look-shee-ka!",
+    "talk-two-standards": "Please welcome to the stage... CNCF Ambassador and OpenFeature maintainer... Simon Shrot-ner!",
+    "talk-data-swamp": "Please welcome to the stage... from Ack-you-ity and Altinity... Grat-zee-ah-no Casto... and Josh Lee!",
+    "talk-sovereign-boring": "Please welcome to the stage... from Corti... Steffen Karlsson... and Nicklas Frahm!",
+    "talk-manual-otel": "Please welcome to the stage... from Dash zero... Juliano Costa!",
+    "talk-my-cloud-home": "Please welcome to the stage... cloud native educator and architect... Thomas Shoots!",
+    "thanks-organizers": "Ladies and gentlemen... please give a huge round of applause... for the team who made Cloud Native Denmark happen... your organizers! Jin-hong Brine-holt... Kasper Borg Nissen... Pair Hay-the-gore Kristyansen... Mert Gun-gur... Tor Anker Kvees-gore Lang-eh... Allan Hoy-gore Jensen... Sur-en Boss Yakobsen... Mass Hoe-stet Dan-kwah... Aleksander Novak... and Robert Jensen! Thank you!",
+    "thanks-claude-code": "And now... a very special thank you... to our secret teammate... who worked on this wall with us, slide by slide, all through the night... Claude Code! Thank you, Claude!",
+    "thanks-attendees": "And finally... the biggest thank you of all... goes to you! Every single one of you... Thank you for coming... and thank you for being Cloud Native Denmark!"
   },
   "organizers": {
     "$comment": "The team slide in the walk-in and pre-show loops. From cloudnativedenmark.dk/team; the site's \"Role @ Company\" is written \"Role, Company\" here.",
@@ -567,6 +582,32 @@
           "scene": "talk",
           "talk": "sz-1306366",
           "$note": "16:15; the day now ends at 16:35"
+        },
+        {
+          "scene": "organizers",
+          "$note": "After the closing remarks: the organizers on the wall, the voice of god reads their names over the quiet strings, confetti. Next goes on to Claude Code.",
+          "music": "thanks",
+          "announce": "thanks-organizers",
+          "eyebrow": "Cloud Native Denmark 2026",
+          "headline": "Thank you to all organizers."
+        },
+        {
+          "scene": "teammate",
+          "$note": "Our secret teammate: the Claude Code mascot dances and winks. Same strings carry on.",
+          "music": "thanks",
+          "announce": "thanks-claude-code",
+          "eyebrow": "Our secret teammate",
+          "headline": "Thank you, Claude Code.",
+          "body": "Every slide, every cue and every voice on this wall, built together with us."
+        },
+        {
+          "scene": "attendees",
+          "$note": "Last of the thank-yous, to the room. Next goes to the closing screen and the strings fade out.",
+          "music": "thanks",
+          "announce": "thanks-attendees",
+          "eyebrow": "And most of all",
+          "headline": "Thank you, everyone.",
+          "body": "Two days, one community. Thank you for coming, for every question and every conversation."
         },
         {
           "scene": "message",

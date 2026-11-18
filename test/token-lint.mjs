@@ -28,6 +28,7 @@ const ALLOWED = new Map([
   ["#000", "SVG mask luminance — black knocks out, not a brand colour"],
   ["#FFFFFF", "brand white, also mask luminance"],
   ["#000000", "SVG mask luminance"],
+  ["#D97757", "Claude Code's own orange, on its mascot in the day-two thank-you (stage.css): a guest's mark keeps its colours, as sponsor logos do"],
 ]);
 
 function walk(dir) {

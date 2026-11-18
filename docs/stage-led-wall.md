@@ -176,8 +176,8 @@ and the talk goes live by itself after `walkonSeconds` (20). Next goes live
 sooner. The control page's Next button counts the 20 seconds down. Nothing
 plays during a talk.
 
-**Voice of god.** Every main-stage walk-on, speakers and hosts, carries a
-voice-over: `assets/audio/announce/<talk slug>.mp3`, generated with
+**Voice of god.** Every walk-on, main stage and breakout, speakers and hosts,
+carries a voice-over: `assets/audio/announce/<talk slug>.mp3`, generated with
 ElevenLabs (voice Brian), 4–11 s each. The words are in
 `content/2026-stage.json` → `announce`, with names spelled for the voice
 ("Hoy-gore" for Højgaard, "Er-yeling" for Öjeling). Listen to them all before
@@ -186,10 +186,21 @@ any talk with a clip. The clip starts 1.2 s into the theme, the theme drops to
 30% under it and comes back after it (`music.announce`). Next, going live or
 panic stops it.
 
+**Closing thank-yous.** On day two, after the hosts' last remarks and before
+the closing screen, three cues thank people: the organizers (their portraits
+and names, the voice reads the names), Claude Code (its mascot dances and
+winks) and everyone in the room. Each has confetti and its own voice-over: a
+cue's `announce` names the words in `announce` and the clip
+`assets/audio/announce/<name>.mp3`, and it plays over the cue's bed the way a
+walk-on's plays over the theme. The bed is the `thanks` set, the strings
+walk-on theme looped and mixed quiet, and it carries on across all three
+cues. These voices play in Hosts only as well as All sessions, since the
+hosts are on stage for them. Next moves on; nothing is timed.
+
 **Voice of god** on the control page has a mode per room. The main stage has
 All sessions (the default), Hosts only (just the hosts' welcomes, wrap-ups
 and remarks, for when the hosts introduce every speaker themselves) and Off.
-The breakout has Off (its default) and All sessions. `v` steps through them.
+The breakout has All sessions (its default) and Off. `v` steps through them.
 A mode that leaves out the announcement in progress fades the voice and
 brings the theme back up. It is independent of Music: with the music off and
 the voice on, the voice plays on its own.
