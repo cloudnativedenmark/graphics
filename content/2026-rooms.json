@@ -1,0 +1,13 @@
+{
+  "$comment": "Door signs for the venue's screens, one per room. Built by decks/build-rooms.mjs into graphics/out/rooms/<file>.pdf and .pptx. `file` is the venue's room name (the file names they asked for), `room` is the eyebrow above the sign and may be left out, `sign` is the display line: | breaks the line, and it ends in a full stop like DENMARK. does.",
+  "rooms": [
+    { "file": "Gra.chr.ama.fred", "sign": "Main|stage." },
+    { "file": "Ros.kro.mars.sha", "sign": "Breakout." },
+    { "file": "Børsen", "room": "Børsen", "sign": "Workshop." },
+    { "file": "Hamlet", "room": "Hamlet", "sign": "Speakers|room." },
+    { "file": "Christian", "room": "Christian", "sign": "Silence|room." },
+    { "file": "Kastellet", "room": "Kastellet", "sign": "Office." },
+    { "file": "Frederik", "room": "Frederik", "sign": "Wardrobe." },
+    { "file": "Margrethe", "room": "Margrethe", "sign": "Wardrobe|& storage." }
+  ]
+}
