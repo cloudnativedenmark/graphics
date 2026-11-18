@@ -3,6 +3,7 @@
 
     python3 decks/breaks-to-pptx.py                     all of them
     python3 decks/breaks-to-pptx.py day1-main-1025      just one (or several)
+    python3 decks/breaks-to-pptx.py --src DIR --out DIR other PDFs (the room signs)
 
 Writes graphics/out/slides/breaks/<name>.pptx, for Google Slides.
 
@@ -277,7 +278,7 @@ def convert(name, tmp):
                     w["baseline"] = b_
             for b in blocks_of(lines_of(words)):
                 add_text(slide, b)
-            slide.notes_slide.notes_text_frame.text = f"Break deck {name}, converted from decks/breaks/{name}.pdf."
+            slide.notes_slide.notes_text_frame.text = f"Converted from {(SRC / name).relative_to(ROOT)}.pdf."
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / f"{name}.pptx"
     prs.save(out)
@@ -285,7 +286,18 @@ def convert(name, tmp):
 
 
 def main():
-    names = sys.argv[1:] or sorted(p.stem for p in SRC.glob("*.pdf"))
+    global SRC, OUT
+    args = sys.argv[1:]
+    for flag in ("--src", "--out"):
+        if flag in args:
+            i = args.index(flag)
+            path = Path(args[i + 1]).resolve()
+            if flag == "--src":
+                SRC = path
+            else:
+                OUT = path
+            del args[i : i + 2]
+    names = args or sorted(p.stem for p in SRC.glob("*.pdf"))
     with tempfile.TemporaryDirectory() as tmp:
         for n in names:
             out, k = convert(n, Path(tmp))
