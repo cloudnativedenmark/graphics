@@ -5,7 +5,7 @@
     { "file": "Ros.kro.mars.sha", "sign": "Breakout." },
     { "file": "Børsen", "room": "Børsen", "sign": "Workshop." },
     { "file": "Hamlet", "room": "Hamlet", "sign": "Speakers|room." },
-    { "file": "Christian", "room": "Christian", "sign": "Silence|room." },
+    { "file": "Christian", "room": "Christian", "sign": "Quiet|room." },
     { "file": "Kastellet", "room": "Kastellet", "sign": "Office." },
     { "file": "Frederik", "room": "Frederik", "sign": "Wardrobe." },
     { "file": "Margrethe", "room": "Margrethe", "sign": "Wardrobe|& storage." }
