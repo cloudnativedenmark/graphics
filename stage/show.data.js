@@ -2540,7 +2540,7 @@ window.SHOW = {
     },
     {
       "name": "Aleksander Nowak",
-      "role": "Senior Platform Engineer, wawa fertility",
+      "role": "Member of Technical Staff: Infrastructure & Security, wawa fertility",
       "portrait": "../assets/organizers/organizer-alek.jpg"
     },
     {
