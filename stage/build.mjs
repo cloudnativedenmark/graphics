@@ -217,7 +217,9 @@ if (schedule) {
   for (const [day, { cues }] of Object.entries(stage.days)) {
     const onStage = programme.filter((p) => p.day === day && p.room === MAIN);
     const want = onStage.filter((p) => p.talk).map((p) => p.talk);
-    const have = cues.filter((c) => c.scene === "talk").map((c) => c.talk);
+    // `offSchedule`: a hosts' walk-on that is not a Sessionize session (the
+    // afternoon "Welcome back"). It plays on the wall but is not checked.
+    const have = cues.filter((c) => c.scene === "talk" && !c.offSchedule).map((c) => c.talk);
     if (want.join() !== have.join()) {
       const label = (slug) => `${talks[slug]?.start ?? "--:--"} ${slug} (${talks[slug]?.title ?? "?"})`;
       errors.push(
