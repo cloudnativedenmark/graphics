@@ -191,29 +191,24 @@ window.SHOW = {
       },
       "announce": "../assets/audio/announce/talk-lazy-developer.mp3"
     },
-    "talk-manual-otel": {
-      "slug": "talk-manual-otel",
+    "talk-operators-in-action": {
+      "slug": "talk-operators-in-action",
       "kind": "Session",
-      "title": "How manual OTel instrumentation saves more than just money",
+      "title": "Operators in Action: Making Kubernetes Work for You",
       "speakers": [
         {
-          "name": "Juliano Costa",
-          "role": "CNCF Ambassador | Principal Developer Relations Engineer at Dash0",
-          "portrait": "../assets/speakers/juliano_costa.jpg",
+          "name": "Verena Traub",
+          "role": "Cloud & DevOps Consultant at b'nerd GmbH",
+          "portrait": "../assets/speakers/verena_traub.jpg",
           "align": null
         }
       ],
-      "id": "1221120",
+      "id": "1252414",
       "day": "2",
       "room": "Breakout",
       "start": "14:00",
       "end": "14:35",
-      "feedback": {
-        "n": 29,
-        "d": "M0 0h7v1h-7zM13 0h3v1h-3zM19 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h2v1h-2zM12 1h5v1h-5zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h4v1h-4zM13 2h1v1h-1zM15 2h1v1h-1zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM11 3h2v1h-2zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM15 4h5v1h-5zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM17 5h2v1h-2zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM11 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM1 9h5v1h-5zM11 9h1v1h-1zM13 9h3v1h-3zM19 9h6v1h-6zM28 9h1v1h-1zM2 10h1v1h-1zM4 10h4v1h-4zM13 10h4v1h-4zM20 10h1v1h-1zM23 10h2v1h-2zM4 11h1v1h-1zM7 11h1v1h-1zM9 11h2v1h-2zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM1 12h1v1h-1zM4 12h4v1h-4zM9 12h1v1h-1zM11 12h1v1h-1zM18 12h2v1h-2zM25 12h2v1h-2zM0 13h4v1h-4zM5 13h1v1h-1zM7 13h1v1h-1zM9 13h3v1h-3zM19 13h6v1h-6zM28 13h1v1h-1zM1 14h2v1h-2zM6 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM20 14h2v1h-2zM23 14h4v1h-4zM0 15h1v1h-1zM2 15h4v1h-4zM8 15h4v1h-4zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM5 16h2v1h-2zM9 16h3v1h-3zM25 16h2v1h-2zM0 17h4v1h-4zM5 17h1v1h-1zM9 17h1v1h-1zM18 17h7v1h-7zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM8 18h2v1h-2zM11 18h1v1h-1zM13 18h5v1h-5zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM5 19h1v1h-1zM7 19h1v1h-1zM10 19h4v1h-4zM15 19h1v1h-1zM18 19h3v1h-3zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM2 20h3v1h-3zM6 20h3v1h-3zM14 20h2v1h-2zM17 20h1v1h-1zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h3v1h-3zM12 21h1v1h-1zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM11 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h4v1h-4zM13 25h3v1h-3zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h2v1h-2zM13 26h1v1h-1zM15 26h3v1h-3zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h2v1h-2zM12 27h2v1h-2zM15 27h1v1h-1zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h4v1h-4zM13 28h1v1h-1zM15 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
-        "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      },
-      "announce": "../assets/audio/announce/talk-manual-otel.mp3"
+      "announce": "../assets/audio/announce/talk-operators-in-action.mp3"
     },
     "talk-data-swamp": {
       "slug": "talk-data-swamp",
@@ -2070,8 +2065,8 @@ window.SHOW = {
         },
         {
           "scene": "talk",
-          "talk": "talk-manual-otel",
-          "$note": "14:00–14:35"
+          "talk": "talk-operators-in-action",
+          "$note": "14:00–14:35; Verena Traub stepped in when Juliano Costa cancelled"
         },
         {
           "scene": "break",
@@ -2494,12 +2489,12 @@ window.SHOW = {
       "title": "Lunch"
     },
     {
-      "id": "1221120",
+      "id": "1252414",
       "day": "2",
       "room": "Breakout",
       "start": "14:00",
       "end": "14:35",
-      "talk": "talk-manual-otel"
+      "talk": "talk-operators-in-action"
     },
     {
       "id": "1263748",
