@@ -1286,6 +1286,7 @@
     vog: window.CUES.vogMode(undefined, ROOM),
     guides: params.has("guides"),
     countdownTo: null,
+    stepAt: Date.now(),
     mountedCue: null,
   };
   state.i = Math.max(0, Math.min(stepsFor(state.day).length - 1, Number(params.get("step") ?? 0)));
@@ -1315,9 +1316,11 @@
     return el;
   }
 
-  /* A looping cue (the pre-show) alternates scenes on the clock: every
-   * window computes the same phase from Date.now(), so they stay in step
-   * without asking the server. */
+  /* A looping cue (the pre-show, a break) alternates scenes on the clock,
+   * counted from when the cue came up (`stepAt` in the show state), so it
+   * always opens on its first scene: a break on the feedback QR. Every window
+   * computes the same phase from it, so they stay in step without asking the
+   * server. Without a stepAt (an old state), the phase runs off the clock. */
   let loopTimer = null;
   // `every` is seconds per scene: one number for all, or a list, one each.
   // `holdLast`: in the last this-many seconds of a countdown, stay on the
@@ -1330,7 +1333,7 @@
     if (cue.holdLast && countdownTo && countdownTo - Date.now() <= cue.holdLast * 1000) return 0;
     const loop = loopOf(cue, day);
     const secs = loop.map((_, k) => (Array.isArray(cue.every) ? cue.every[k] : cue.every) ?? 30);
-    let t = (Date.now() / 1000) % secs.reduce((a, b) => a + b, 0);
+    let t = ((Date.now() - (state.stepAt ?? 0)) / 1000) % secs.reduce((a, b) => a + b, 0);
     for (let k = 0; k < secs.length; k++) {
       if (t < secs[k]) return k;
       t -= secs[k];
@@ -1427,8 +1430,10 @@
       else if (cmd.add != null && state.countdownTo) next.countdownTo = state.countdownTo + cmd.add * 60000;
       else if (cmd.clear) next.countdownTo = null;
     }
-    // Same as the server: a countdown starts at its `minutes` when it comes up.
+    // Same as the server: a countdown starts at its `minutes` when it comes
+    // up, and a loop starts on its first scene.
     if (`${next.day}:${next.i}` !== before) {
+      next.stepAt = Date.now();
       const step = stepsFor(next.day)[next.i];
       const timed = step?.cue.scene === "countdown" || (step?.cue.scene === "pitch" && step.state === "running");
       next.countdownTo = timed ? Date.now() + (step.cue.minutes ?? 5) * 60000 : null;
