@@ -79,5 +79,26 @@ window.CUES = (() => {
     return "";
   }
 
-  return { stepsFor, cuesFor, nextIn, describe, detail, namesOf };
+  /* Voice of god modes, per room. Same list as VOG_MODES in serve.mjs.
+   *   off    no announcements; the walk-on theme still plays
+   *   hosts  only the hosts' own walk-ons (welcome, wrap-ups, remarks), so the
+   *          hosts introduce every speaker themselves. Main stage only: the
+   *          hosts are never on the breakout's run of show.
+   *   all    every walk-on that has a clip
+   * The first mode is the room's default. */
+  const VOG_MODES = { main: ["all", "hosts", "off"], breakout: ["off", "all"] };
+  const VOG_LABELS = { off: "Off", hosts: "Hosts only", all: "All sessions" };
+  const HOST_KINDS = new Set(["Welcome", "Wrap-up", "Remarks"]);
+  const vogModes = (room = "main") => VOG_MODES[room] ?? VOG_MODES.main;
+  /** The room's mode from the show state; old states held true / false. */
+  function vogMode(vog, room = "main") {
+    const modes = vogModes(room);
+    if (vog === true) return "all";
+    if (vog === false) return "off";
+    return modes.includes(vog) ? vog : modes[0];
+  }
+  /** Whether a talk's walk-on gets its announcement under `mode`. */
+  const vogPlays = (mode, talk) => mode === "all" || (mode === "hosts" && HOST_KINDS.has(talk?.kind));
+
+  return { stepsFor, cuesFor, nextIn, describe, detail, namesOf, vogModes, vogMode, vogPlays, VOG_LABELS };
 })();
