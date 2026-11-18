@@ -2515,7 +2515,7 @@ window.SHOW = {
     },
     {
       "name": "Mert Gungor",
-      "role": "Software Engineer, Corti",
+      "role": "Platform Engineer, ATP",
       "portrait": "../assets/organizers/organizer-mert-gungor.jpg"
     },
     {
