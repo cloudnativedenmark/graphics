@@ -92,7 +92,7 @@
     "talk-two-standards": "Please welcome to the stage... CNCF Ambassador and OpenFeature maintainer... Simon Shrot-ner!",
     "talk-data-swamp": "Please welcome to the stage... from Ack-you-ity and Altinity... Grat-zee-ah-no Casto... and Josh Lee!",
     "talk-sovereign-boring": "Please welcome to the stage... from Corti... Steffen Karlsson... and Nicklas Frahm!",
-    "talk-manual-otel": "Please welcome to the stage... from Dash zero... Juliano Costa!",
+    "talk-operators-in-action": "Please welcome to the stage... from bee-nerd... Veh-ray-na Trowb!",
     "talk-my-cloud-home": "Please welcome to the stage... cloud native educator and architect... Thomas Shoots!",
     "thanks-organizers": "Ladies and gentlemen... please give a huge round of applause... for the team who made Cloud Native Denmark happen... your organizers! Jin-hong Brine-holt... Kasper Borg Nissen... Pair Hay-the-gore Kristyansen... Mert Gun-gur... Tor Anker Kvees-gore Lang-eh... Allan Hoy-gore Jensen... Sur-en Boss Yakobsen... Mass Hoe-stet Dan-kwah... Aleksander Novak... and Robert Jensen! Thank you!",
     "thanks-claude-code": "And now... a very special thank you... to our secret teammate... who worked on this wall with us, slide by slide, all through the night... Claude Code! Thank you, Claude!",
@@ -679,8 +679,8 @@
         },
         {
           "scene": "talk",
-          "talk": "talk-manual-otel",
-          "$note": "14:00–14:35"
+          "talk": "talk-operators-in-action",
+          "$note": "14:00–14:35; Verena Traub stepped in when Juliano Costa cancelled"
         },
         {
           "scene": "break",
