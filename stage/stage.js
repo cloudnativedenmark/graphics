@@ -761,16 +761,20 @@
       };
     },
 
+    // `big`: the closing screen, set larger, with the body as display type.
     message(cue) {
+      const big = cue.big ? " message-big" : "";
       return {
         mode: "ambient",
         html:
-          `<div class="box zone-left">` +
+          `<div class="box zone-left${big}">` +
           `<p class="eyebrow rise" style="--i:0">${esc(cue.eyebrow)}</p>` +
-          `<h2 class="display rise" style="--i:1" data-fit="640">${esc(cue.headline)}</h2>` +
+          `<h2 class="display rise" style="--i:1" data-fit="${cue.big ? 840 : 640}">${esc(cue.headline)}</h2>` +
           `</div>` +
-          `<div class="box zone-right">` +
-          `<p class="body rise" style="--i:2">${esc(cue.body)}</p>` +
+          `<div class="box zone-right${big}">` +
+          (cue.big
+            ? `<p class="display see-you rise" style="--i:2" data-fit="840">${esc(cue.body)}</p>`
+            : `<p class="body rise" style="--i:2">${esc(cue.body)}</p>`) +
           `</div>`,
       };
     },

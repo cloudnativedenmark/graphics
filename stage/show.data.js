@@ -2041,6 +2041,7 @@ window.SHOW = {
         },
         {
           "scene": "message",
+          "big": true,
           "eyebrow": "Thank you",
           "headline": "Cloud Native Denmark.",
           "body": "See you in 2027."
