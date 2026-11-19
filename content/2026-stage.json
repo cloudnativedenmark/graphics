@@ -637,6 +637,42 @@
           "eyebrow": "Thank you",
           "headline": "Cloud Native Denmark.",
           "body": "See you in 2027."
+        },
+        {
+          "scene": "lyrics",
+          "$note": "End of day two, after the closing screen: the same sing-along as day one. \"The November Beat\" from the top, the line being sung large with the next one under it.",
+          "music": "november",
+          "length": 178.2,
+          "eyebrow": "Sing along",
+          "headline": "The November Beat.",
+          "lines": [
+            {"at": 14.7, "section": "Verse 1", "text": "Welcome to the gathering in Copenhagen, November days"},
+            {"at": 24.3, "section": "Verse 1", "text": "Cloud Native Denmark shines through the autumn haze"},
+            {"at": 32.3, "section": "Verse 1", "text": "Our organizers guide us, keeping the vision clear"},
+            {"at": 36.9, "section": "Verse 1", "text": "A brand new chapter starts with fresh ideas here"},
+            {"at": 40.9, "section": "Verse 1", "text": "We shape the systems, code the future space"},
+            {"at": 44.9, "section": "Verse 1", "text": "Bringing the whole community to this special place", "until": 49.6},
+            {"at": 50.2, "section": "Chorus", "text": "We are Cloud Native Denmark, unified and strong"},
+            {"at": 55.2, "section": "Chorus", "text": "From Copenhagen to the north where we belong"},
+            {"at": 58.9, "section": "Chorus", "text": "Aarhus is rising, Aalborg is in the sound"},
+            {"at": 64.0, "section": "Chorus", "text": "The greatest tech community that can be found!"},
+            {"at": 70.2, "section": "Chorus", "text": "(Oh-oh, cloud native we stand!)", "until": 73.8},
+            {"at": 84.7, "section": "Verse 2", "text": "Step inside the venue, the talks are on the screen"},
+            {"at": 89.1, "section": "Verse 2", "text": "The brilliant minds of Kubernetes on the scene"},
+            {"at": 93.0, "section": "Verse 2", "text": "We are sharing stories, code, and architectures bold"},
+            {"at": 97.6, "section": "Verse 2", "text": "Secrets of the cluster ready to unfold"},
+            {"at": 101.4, "section": "Verse 2", "text": "From continuous delivery to the service mesh design"},
+            {"at": 109.4, "section": "Verse 2", "text": "In Copenhagen's heart, the future will align", "until": 114.4},
+            {"at": 120.7, "section": "Chorus", "text": "We are Cloud Native Denmark, unified and strong"},
+            {"at": 125.7, "section": "Chorus", "text": "From Copenhagen to the north where we belong"},
+            {"at": 131.0, "section": "Chorus", "text": "Aarhus is rising, Aalborg is in the sound"},
+            {"at": 139.1, "section": "Chorus", "text": "The greatest tech community that can be found!"},
+            {"at": 145.5, "section": "Chorus", "text": "(Oh-oh, cloud native we stand!)", "until": 149.0},
+            {"at": 155.7, "section": "Outro", "text": "See you on November nineteen and twenty…"},
+            {"at": 158.0, "section": "Outro", "text": "Cloud Native Denmark…"},
+            {"at": 162.6, "section": "Outro", "text": "(Join the community!)"},
+            {"at": 166.0, "section": "Outro", "text": "Copenhagen awaits…", "until": 175.0}
+          ]
         }
       ],
       "breakout": [
