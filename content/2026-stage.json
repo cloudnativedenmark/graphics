@@ -872,11 +872,12 @@
     }
   },
   "qr": {
-    "$comment": "QR codes on the wall and the breakout screen are drawn from content/2026-qr.json, which stage/import-qr.py reads out of QR PNGs. The feedback codes are Sessionize's export (organizer dashboard → Session Feedback → download QR codes), keyed by session id; the feedback scene shows the one for the talk the room just had. `photos` is the photographers' Picdrop gallery, in the break loops; the build encodes the link itself (stage/qr.mjs). The build encodes every link here the same way into SHOW.qrs, for the decks: `aalborg`, `aarhus` and `copenhagen` are the meetup groups on the local communities slide.",
+    "$comment": "QR codes on the wall and the breakout screen are drawn from content/2026-qr.json, which stage/import-qr.py reads out of QR PNGs. The feedback codes are Sessionize's export (organizer dashboard → Session Feedback → download QR codes), keyed by session id; the feedback scene shows the one for the talk the room just had. `photos` is the photographers' Picdrop gallery, in the break loops; the build encodes the link itself (stage/qr.mjs). The build encodes every link here the same way into SHOW.qrs, for the decks: `aalborg`, `aarhus` and `copenhagen` are the meetup groups on the local communities slide; `event-feedback` is the whole-event Google Form on the closing deck's rate slide.",
     "photos": "https://www.picdrop.com/kim-yennguyen/PtE1CyXcQm",
     "aalborg": "https://ocgroups.dev/cncf/group/aalborg",
     "aarhus": "https://ocgroups.dev/cncf/group/cncf-aarhus",
-    "copenhagen": "https://www.meetup.com/cloud-native-copenhagen/"
+    "copenhagen": "https://www.meetup.com/cloud-native-copenhagen/",
+    "event-feedback": "https://forms.gle/4XVnmNoEa5koLV238"
   },
   "social": {
     "$comment": "The `social` scene, in the pre-show and countdown loops. The prize line matches the decks.",
