@@ -188,30 +188,27 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM9 0h2v1h-2zM12 0h4v1h-4zM19 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h2v1h-2zM12 1h7v1h-7zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h4v1h-4zM13 2h1v1h-1zM15 2h1v1h-1zM18 2h3v1h-3zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h2v1h-2zM12 3h1v1h-1zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h2v1h-2zM11 4h1v1h-1zM15 4h5v1h-5zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h3v1h-3zM18 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h2v1h-2zM11 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM11 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM0 9h3v1h-3zM7 9h2v1h-2zM13 9h3v1h-3zM19 9h6v1h-6zM28 9h1v1h-1zM1 10h2v1h-2zM6 10h1v1h-1zM9 10h1v1h-1zM12 10h5v1h-5zM20 10h1v1h-1zM23 10h2v1h-2zM2 11h4v1h-4zM7 11h1v1h-1zM9 11h1v1h-1zM11 11h1v1h-1zM18 11h4v1h-4zM23 11h3v1h-3zM27 11h1v1h-1zM0 12h1v1h-1zM2 12h2v1h-2zM6 12h6v1h-6zM19 12h1v1h-1zM25 12h2v1h-2zM1 13h1v1h-1zM8 13h1v1h-1zM10 13h2v1h-2zM19 13h6v1h-6zM28 13h1v1h-1zM1 14h1v1h-1zM3 14h1v1h-1zM6 14h1v1h-1zM11 14h1v1h-1zM20 14h2v1h-2zM23 14h4v1h-4zM0 15h1v1h-1zM4 15h1v1h-1zM9 15h2v1h-2zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM2 16h3v1h-3zM6 16h1v1h-1zM8 16h1v1h-1zM10 16h2v1h-2zM18 16h1v1h-1zM25 16h2v1h-2zM0 17h1v1h-1zM2 17h2v1h-2zM5 17h1v1h-1zM10 17h1v1h-1zM19 17h6v1h-6zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM3 18h1v1h-1zM6 18h1v1h-1zM8 18h1v1h-1zM10 18h1v1h-1zM13 18h5v1h-5zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM2 19h1v1h-1zM4 19h2v1h-2zM7 19h3v1h-3zM12 19h2v1h-2zM15 19h1v1h-1zM18 19h3v1h-3zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM10 20h3v1h-3zM14 20h2v1h-2zM17 20h1v1h-1zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h1v1h-1zM11 21h2v1h-2zM15 21h4v1h-4zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM10 22h2v1h-2zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM11 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM12 25h1v1h-1zM14 25h2v1h-2zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM11 26h1v1h-1zM13 26h1v1h-1zM15 26h3v1h-3zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h3v1h-3zM14 27h2v1h-2zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h5v1h-5zM15 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-lazy-developer.mp3"
     },
-    "talk-manual-otel": {
-      "slug": "talk-manual-otel",
+    "talk-operators-in-action": {
+      "slug": "talk-operators-in-action",
       "kind": "Session",
-      "title": "How manual OTel instrumentation saves more than just money",
+      "title": "Operators in Action: Making Kubernetes Work for You",
       "speakers": [
         {
-          "name": "Juliano Costa",
-          "role": "CNCF Ambassador | Principal Developer Relations Engineer at Dash0",
-          "portrait": "../assets/speakers/juliano_costa.jpg",
+          "name": "Verena Traub",
+          "role": "Cloud & DevOps Consultant at b'nerd GmbH",
+          "portrait": "../assets/speakers/verena_traub.jpg",
           "align": null
         }
       ],
-      "id": "1221120",
+      "id": "1252414",
       "day": "2",
       "room": "Breakout",
       "start": "14:00",
       "end": "14:35",
-      "feedback": {
-        "n": 29,
-        "d": "M0 0h7v1h-7zM13 0h3v1h-3zM19 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h2v1h-2zM12 1h5v1h-5zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h4v1h-4zM13 2h1v1h-1zM15 2h1v1h-1zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM11 3h2v1h-2zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM15 4h5v1h-5zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM17 5h2v1h-2zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM11 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM1 9h5v1h-5zM11 9h1v1h-1zM13 9h3v1h-3zM19 9h6v1h-6zM28 9h1v1h-1zM2 10h1v1h-1zM4 10h4v1h-4zM13 10h4v1h-4zM20 10h1v1h-1zM23 10h2v1h-2zM4 11h1v1h-1zM7 11h1v1h-1zM9 11h2v1h-2zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM1 12h1v1h-1zM4 12h4v1h-4zM9 12h1v1h-1zM11 12h1v1h-1zM18 12h2v1h-2zM25 12h2v1h-2zM0 13h4v1h-4zM5 13h1v1h-1zM7 13h1v1h-1zM9 13h3v1h-3zM19 13h6v1h-6zM28 13h1v1h-1zM1 14h2v1h-2zM6 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM20 14h2v1h-2zM23 14h4v1h-4zM0 15h1v1h-1zM2 15h4v1h-4zM8 15h4v1h-4zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM5 16h2v1h-2zM9 16h3v1h-3zM25 16h2v1h-2zM0 17h4v1h-4zM5 17h1v1h-1zM9 17h1v1h-1zM18 17h7v1h-7zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h1v1h-1zM6 18h1v1h-1zM8 18h2v1h-2zM11 18h1v1h-1zM13 18h5v1h-5zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM5 19h1v1h-1zM7 19h1v1h-1zM10 19h4v1h-4zM15 19h1v1h-1zM18 19h3v1h-3zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM2 20h3v1h-3zM6 20h3v1h-3zM14 20h2v1h-2zM17 20h1v1h-1zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h3v1h-3zM12 21h1v1h-1zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM11 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h4v1h-4zM13 25h3v1h-3zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h2v1h-2zM13 26h1v1h-1zM15 26h3v1h-3zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h2v1h-2zM12 27h2v1h-2zM15 27h1v1h-1zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h4v1h-4zM13 28h1v1h-1zM15 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
-        "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      "announce": "../assets/audio/announce/talk-operators-in-action.mp3"
     },
     "talk-data-swamp": {
       "slug": "talk-data-swamp",
@@ -240,7 +237,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM10 0h1v1h-1zM12 0h4v1h-4zM19 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM11 1h1v1h-1zM13 1h4v1h-4zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM13 2h1v1h-1zM15 2h1v1h-1zM18 2h3v1h-3zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM11 3h1v1h-1zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h2v1h-2zM15 4h2v1h-2zM19 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h2v1h-2zM11 5h2v1h-2zM18 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM10 7h3v1h-3zM14 7h1v1h-1zM16 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM1 9h1v1h-1zM5 9h1v1h-1zM7 9h3v1h-3zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM4 10h4v1h-4zM11 10h1v1h-1zM13 10h4v1h-4zM20 10h1v1h-1zM23 10h2v1h-2zM1 11h2v1h-2zM4 11h2v1h-2zM7 11h1v1h-1zM9 11h3v1h-3zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM0 12h1v1h-1zM3 12h2v1h-2zM6 12h6v1h-6zM18 12h2v1h-2zM25 12h2v1h-2zM1 13h2v1h-2zM4 13h2v1h-2zM7 13h4v1h-4zM19 13h6v1h-6zM28 13h1v1h-1zM0 14h1v1h-1zM3 14h1v1h-1zM5 14h3v1h-3zM9 14h3v1h-3zM18 14h1v1h-1zM20 14h2v1h-2zM23 14h4v1h-4zM0 15h1v1h-1zM2 15h3v1h-3zM7 15h1v1h-1zM10 15h1v1h-1zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM1 16h3v1h-3zM6 16h6v1h-6zM25 16h2v1h-2zM0 17h2v1h-2zM8 17h2v1h-2zM19 17h6v1h-6zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h3v1h-3zM6 18h5v1h-5zM13 18h4v1h-4zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM2 19h1v1h-1zM4 19h2v1h-2zM7 19h1v1h-1zM9 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM15 19h1v1h-1zM18 19h3v1h-3zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM6 20h1v1h-1zM9 20h1v1h-1zM14 20h2v1h-2zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h5v1h-5zM15 21h4v1h-4zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h2v1h-2zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h4v1h-4zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM10 25h3v1h-3zM14 25h2v1h-2zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h3v1h-3zM14 26h4v1h-4zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM12 27h1v1h-1zM15 27h1v1h-1zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h3v1h-3zM13 28h1v1h-1zM15 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-data-swamp.mp3"
     },
     "talk-collector-stories": {
       "slug": "talk-collector-stories",
@@ -335,7 +333,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM10 0h2v1h-2zM13 0h3v1h-3zM19 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM11 1h6v1h-6zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM10 2h1v1h-1zM13 2h1v1h-1zM15 2h1v1h-1zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM11 3h1v1h-1zM14 3h2v1h-2zM17 3h3v1h-3zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h5v1h-5zM15 4h2v1h-2zM19 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM12 5h1v1h-1zM17 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h3v1h-3zM12 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM2 9h4v1h-4zM7 9h2v1h-2zM10 9h1v1h-1zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM0 10h3v1h-3zM5 10h6v1h-6zM12 10h5v1h-5zM20 10h1v1h-1zM23 10h2v1h-2zM0 11h1v1h-1zM3 11h3v1h-3zM10 11h2v1h-2zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM1 12h4v1h-4zM6 12h1v1h-1zM9 12h1v1h-1zM19 12h1v1h-1zM25 12h2v1h-2zM1 13h2v1h-2zM4 13h2v1h-2zM8 13h1v1h-1zM10 13h2v1h-2zM18 13h7v1h-7zM28 13h1v1h-1zM0 14h8v1h-8zM9 14h1v1h-1zM11 14h1v1h-1zM20 14h2v1h-2zM23 14h4v1h-4zM4 15h2v1h-2zM7 15h1v1h-1zM10 15h2v1h-2zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM0 16h1v1h-1zM2 16h3v1h-3zM6 16h1v1h-1zM10 16h1v1h-1zM25 16h2v1h-2zM0 17h2v1h-2zM3 17h1v1h-1zM5 17h1v1h-1zM7 17h2v1h-2zM10 17h1v1h-1zM18 17h7v1h-7zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM4 18h1v1h-1zM6 18h2v1h-2zM9 18h1v1h-1zM12 18h5v1h-5zM18 18h1v1h-1zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM2 19h4v1h-4zM7 19h4v1h-4zM12 19h2v1h-2zM15 19h1v1h-1zM19 19h2v1h-2zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM8 20h2v1h-2zM11 20h2v1h-2zM14 20h2v1h-2zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h1v1h-1zM10 21h3v1h-3zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h1v1h-1zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM10 23h2v1h-2zM14 23h1v1h-1zM16 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM11 24h2v1h-2zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM10 25h2v1h-2zM13 25h3v1h-3zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h2v1h-2zM11 26h1v1h-1zM14 26h4v1h-4zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM11 27h1v1h-1zM13 27h3v1h-3zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h5v1h-5zM14 28h2v1h-2zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-pdb-trust.mp3"
     },
     "talk-cadence-uber": {
       "slug": "talk-cadence-uber",
@@ -430,7 +429,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM9 0h2v1h-2zM13 0h3v1h-3zM17 0h2v1h-2zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM11 1h1v1h-1zM13 1h4v1h-4zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM12 2h2v1h-2zM15 2h1v1h-1zM19 2h2v1h-2zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h2v1h-2zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h5v1h-5zM15 4h2v1h-2zM18 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h4v1h-4zM17 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h2v1h-2zM11 7h1v1h-1zM14 7h1v1h-1zM16 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM0 9h1v1h-1zM2 9h1v1h-1zM5 9h1v1h-1zM7 9h1v1h-1zM9 9h1v1h-1zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM2 10h1v1h-1zM4 10h1v1h-1zM6 10h2v1h-2zM13 10h4v1h-4zM20 10h1v1h-1zM23 10h2v1h-2zM1 11h1v1h-1zM3 11h1v1h-1zM5 11h1v1h-1zM7 11h3v1h-3zM11 11h1v1h-1zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM0 12h1v1h-1zM2 12h3v1h-3zM6 12h2v1h-2zM19 12h1v1h-1zM25 12h2v1h-2zM1 13h2v1h-2zM4 13h2v1h-2zM7 13h1v1h-1zM18 13h7v1h-7zM28 13h1v1h-1zM3 14h2v1h-2zM6 14h1v1h-1zM8 14h1v1h-1zM18 14h1v1h-1zM20 14h2v1h-2zM23 14h4v1h-4zM0 15h1v1h-1zM5 15h1v1h-1zM9 15h2v1h-2zM18 15h2v1h-2zM21 15h4v1h-4zM27 15h1v1h-1zM1 16h1v1h-1zM4 16h3v1h-3zM8 16h2v1h-2zM11 16h1v1h-1zM25 16h2v1h-2zM0 17h1v1h-1zM2 17h2v1h-2zM5 17h1v1h-1zM8 17h1v1h-1zM19 17h6v1h-6zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM3 18h7v1h-7zM11 18h1v1h-1zM13 18h4v1h-4zM18 18h1v1h-1zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM4 19h1v1h-1zM9 19h2v1h-2zM12 19h2v1h-2zM15 19h1v1h-1zM19 19h2v1h-2zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM5 20h3v1h-3zM10 20h2v1h-2zM14 20h2v1h-2zM17 20h1v1h-1zM19 20h6v1h-6zM26 20h3v1h-3zM8 21h1v1h-1zM10 21h2v1h-2zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM9 22h2v1h-2zM12 22h1v1h-1zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h2v1h-2zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h1v1h-1zM12 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h3v1h-3zM13 25h3v1h-3zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM12 26h1v1h-1zM14 26h4v1h-4zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM12 27h2v1h-2zM15 27h1v1h-1zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h4v1h-4zM13 28h1v1h-1zM15 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-two-standards.mp3"
     },
     "talk-ai-side-effects": {
       "slug": "talk-ai-side-effects",
@@ -477,7 +477,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM9 0h3v1h-3zM13 0h1v1h-1zM16 0h1v1h-1zM19 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM11 1h1v1h-1zM14 1h7v1h-7zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM9 2h1v1h-1zM13 2h2v1h-2zM16 2h1v1h-1zM19 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h1v1h-1zM12 3h4v1h-4zM17 3h2v1h-2zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM10 4h1v1h-1zM14 4h1v1h-1zM18 4h3v1h-3zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM11 5h1v1h-1zM13 5h1v1h-1zM17 5h4v1h-4zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM9 7h3v1h-3zM13 7h2v1h-2zM16 7h2v1h-2zM19 7h2v1h-2zM0 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM11 8h2v1h-2zM14 8h2v1h-2zM17 8h4v1h-4zM24 8h1v1h-1zM27 8h1v1h-1zM2 9h1v1h-1zM4 9h2v1h-2zM7 9h1v1h-1zM14 9h2v1h-2zM17 9h2v1h-2zM20 9h3v1h-3zM25 9h1v1h-1zM28 9h1v1h-1zM1 10h1v1h-1zM5 10h9v1h-9zM21 10h4v1h-4zM26 10h3v1h-3zM1 11h2v1h-2zM4 11h2v1h-2zM7 11h1v1h-1zM9 11h2v1h-2zM18 11h1v1h-1zM20 11h2v1h-2zM27 11h1v1h-1zM0 12h1v1h-1zM2 12h1v1h-1zM5 12h7v1h-7zM19 12h4v1h-4zM25 12h1v1h-1zM27 12h2v1h-2zM0 13h2v1h-2zM3 13h2v1h-2zM8 13h2v1h-2zM20 13h3v1h-3zM25 13h1v1h-1zM28 13h1v1h-1zM1 14h1v1h-1zM3 14h1v1h-1zM5 14h6v1h-6zM18 14h1v1h-1zM22 14h4v1h-4zM27 14h2v1h-2zM0 15h1v1h-1zM4 15h1v1h-1zM7 15h2v1h-2zM10 15h2v1h-2zM18 15h1v1h-1zM21 15h2v1h-2zM25 15h1v1h-1zM27 15h1v1h-1zM0 16h4v1h-4zM6 16h2v1h-2zM9 16h1v1h-1zM18 16h1v1h-1zM20 16h3v1h-3zM25 16h1v1h-1zM27 16h2v1h-2zM1 17h2v1h-2zM4 17h2v1h-2zM8 17h2v1h-2zM18 17h1v1h-1zM20 17h3v1h-3zM25 17h2v1h-2zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h1v1h-1zM5 18h2v1h-2zM8 18h3v1h-3zM12 18h2v1h-2zM17 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM27 18h2v1h-2zM1 19h1v1h-1zM3 19h2v1h-2zM10 19h2v1h-2zM15 19h1v1h-1zM17 19h2v1h-2zM20 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM6 20h1v1h-1zM12 20h1v1h-1zM16 20h2v1h-2zM19 20h6v1h-6zM8 21h2v1h-2zM11 21h3v1h-3zM15 21h2v1h-2zM19 21h2v1h-2zM24 21h1v1h-1zM26 21h3v1h-3zM0 22h7v1h-7zM10 22h1v1h-1zM14 22h4v1h-4zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h2v1h-2zM0 23h1v1h-1zM6 23h1v1h-1zM10 23h5v1h-5zM16 23h2v1h-2zM19 23h2v1h-2zM24 23h2v1h-2zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h3v1h-3zM14 24h2v1h-2zM18 24h1v1h-1zM20 24h5v1h-5zM27 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM10 25h1v1h-1zM12 25h4v1h-4zM20 25h1v1h-1zM23 25h2v1h-2zM26 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h4v1h-4zM14 26h1v1h-1zM17 26h1v1h-1zM23 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM11 27h2v1h-2zM14 27h2v1h-2zM19 27h3v1h-3zM24 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM12 28h2v1h-2zM16 28h1v1h-1zM19 28h3v1h-3zM24 28h2v1h-2zM27 28h2v1h-2z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-us-independent.mp3"
     },
     "talk-sovereign-boring": {
       "slug": "talk-sovereign-boring",
@@ -506,7 +507,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM8 0h1v1h-1zM10 0h6v1h-6zM17 0h2v1h-2zM20 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM10 1h2v1h-2zM13 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h3v1h-3zM14 3h2v1h-2zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM11 4h2v1h-2zM14 4h1v1h-1zM16 4h2v1h-2zM19 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM9 5h1v1h-1zM12 5h2v1h-2zM15 5h2v1h-2zM19 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h1v1h-1zM11 7h1v1h-1zM15 7h4v1h-4zM0 8h1v1h-1zM2 8h2v1h-2zM5 8h3v1h-3zM9 8h2v1h-2zM12 8h2v1h-2zM15 8h1v1h-1zM17 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM27 8h2v1h-2zM4 9h2v1h-2zM8 9h1v1h-1zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM2 10h2v1h-2zM6 10h1v1h-1zM8 10h4v1h-4zM13 10h1v1h-1zM16 10h3v1h-3zM21 10h1v1h-1zM26 10h2v1h-2zM0 11h1v1h-1zM3 11h2v1h-2zM8 11h4v1h-4zM20 11h1v1h-1zM22 11h2v1h-2zM28 11h1v1h-1zM0 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM19 12h1v1h-1zM25 12h2v1h-2zM1 13h5v1h-5zM7 13h5v1h-5zM19 13h1v1h-1zM22 13h1v1h-1zM26 13h3v1h-3zM0 14h4v1h-4zM5 14h2v1h-2zM8 14h1v1h-1zM11 14h1v1h-1zM18 14h3v1h-3zM22 14h2v1h-2zM26 14h3v1h-3zM0 15h1v1h-1zM3 15h2v1h-2zM8 15h2v1h-2zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM0 16h3v1h-3zM4 16h1v1h-1zM6 16h2v1h-2zM9 16h2v1h-2zM18 16h1v1h-1zM20 16h2v1h-2zM23 16h3v1h-3zM27 16h1v1h-1zM2 17h1v1h-1zM4 17h2v1h-2zM7 17h2v1h-2zM11 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM25 17h3v1h-3zM0 18h1v1h-1zM2 18h2v1h-2zM6 18h1v1h-1zM8 18h9v1h-9zM18 18h1v1h-1zM21 18h1v1h-1zM26 18h1v1h-1zM2 19h3v1h-3zM8 19h2v1h-2zM13 19h2v1h-2zM17 19h3v1h-3zM21 19h1v1h-1zM26 19h1v1h-1zM1 20h1v1h-1zM3 20h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM10 20h1v1h-1zM12 20h3v1h-3zM16 20h2v1h-2zM20 20h7v1h-7zM8 21h1v1h-1zM10 21h3v1h-3zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM8 22h2v1h-2zM11 22h1v1h-1zM14 22h2v1h-2zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h8v1h-8zM19 23h2v1h-2zM24 23h2v1h-2zM28 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM10 24h1v1h-1zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM10 25h4v1h-4zM19 25h1v1h-1zM21 25h1v1h-1zM23 25h3v1h-3zM27 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h3v1h-3zM14 26h1v1h-1zM17 26h4v1h-4zM23 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h1v1h-1zM12 27h4v1h-4zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM11 28h2v1h-2zM17 28h7v1h-7zM25 28h1v1h-1zM27 28h1v1h-1z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-sovereign-boring.mp3"
     },
     "talk-sovereign-agentic-coding": {
       "slug": "talk-sovereign-agentic-coding",
@@ -735,7 +737,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM12 0h4v1h-4zM19 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM9 1h1v1h-1zM11 1h1v1h-1zM13 1h5v1h-5zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM12 2h2v1h-2zM15 2h1v1h-1zM18 2h3v1h-3zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM14 3h2v1h-2zM17 3h1v1h-1zM19 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h2v1h-2zM15 4h2v1h-2zM18 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h4v1h-4zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h5v1h-5zM14 7h1v1h-1zM16 7h1v1h-1zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h5v1h-5zM9 8h1v1h-1zM11 8h1v1h-1zM16 8h4v1h-4zM22 8h5v1h-5zM1 9h1v1h-1zM4 9h2v1h-2zM8 9h1v1h-1zM12 9h4v1h-4zM19 9h6v1h-6zM28 9h1v1h-1zM3 10h1v1h-1zM5 10h2v1h-2zM12 10h5v1h-5zM20 10h1v1h-1zM23 10h2v1h-2zM0 11h1v1h-1zM2 11h1v1h-1zM5 11h1v1h-1zM11 11h1v1h-1zM19 11h3v1h-3zM23 11h3v1h-3zM27 11h1v1h-1zM1 12h2v1h-2zM4 12h3v1h-3zM9 12h1v1h-1zM11 12h1v1h-1zM19 12h1v1h-1zM25 12h2v1h-2zM1 13h5v1h-5zM7 13h3v1h-3zM18 13h7v1h-7zM28 13h1v1h-1zM3 14h1v1h-1zM6 14h5v1h-5zM18 14h1v1h-1zM20 14h2v1h-2zM23 14h4v1h-4zM0 15h1v1h-1zM4 15h2v1h-2zM8 15h1v1h-1zM11 15h1v1h-1zM19 15h1v1h-1zM21 15h4v1h-4zM27 15h1v1h-1zM0 16h2v1h-2zM3 16h2v1h-2zM6 16h1v1h-1zM8 16h2v1h-2zM25 16h2v1h-2zM0 17h1v1h-1zM2 17h2v1h-2zM10 17h2v1h-2zM19 17h6v1h-6zM26 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM3 18h2v1h-2zM6 18h2v1h-2zM11 18h6v1h-6zM18 18h1v1h-1zM21 18h1v1h-1zM26 18h1v1h-1zM0 19h1v1h-1zM7 19h1v1h-1zM10 19h4v1h-4zM15 19h1v1h-1zM19 19h2v1h-2zM23 19h2v1h-2zM27 19h1v1h-1zM0 20h1v1h-1zM2 20h2v1h-2zM5 20h5v1h-5zM14 20h2v1h-2zM17 20h8v1h-8zM26 20h3v1h-3zM8 21h2v1h-2zM11 21h2v1h-2zM15 21h2v1h-2zM20 21h1v1h-1zM24 21h5v1h-5zM0 22h7v1h-7zM10 22h1v1h-1zM12 22h1v1h-1zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h3v1h-3zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM10 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h2v1h-2zM16 24h1v1h-1zM18 24h1v1h-1zM20 24h5v1h-5zM26 24h1v1h-1zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h1v1h-1zM11 25h2v1h-2zM14 25h2v1h-2zM17 25h4v1h-4zM25 25h2v1h-2zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h2v1h-2zM14 26h4v1h-4zM20 26h8v1h-8zM0 27h1v1h-1zM6 27h1v1h-1zM11 27h3v1h-3zM15 27h1v1h-1zM17 27h2v1h-2zM20 27h2v1h-2zM23 27h1v1h-1zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM11 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM19 28h1v1h-1zM22 28h1v1h-1zM24 28h3v1h-3z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-no-ssh-bare-metal.mp3"
     },
     "talk-crossplane-should-not": {
       "slug": "talk-crossplane-should-not",
@@ -758,7 +761,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM9 0h1v1h-1zM13 0h1v1h-1zM16 0h1v1h-1zM19 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM10 1h1v1h-1zM12 1h4v1h-4zM18 1h1v1h-1zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h2v1h-2zM13 2h1v1h-1zM16 2h5v1h-5zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h1v1h-1zM12 3h4v1h-4zM18 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h1v1h-1zM13 4h2v1h-2zM16 4h3v1h-3zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h5v1h-5zM17 5h3v1h-3zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM10 7h1v1h-1zM12 7h1v1h-1zM14 7h1v1h-1zM17 7h2v1h-2zM20 7h1v1h-1zM0 8h1v1h-1zM3 8h1v1h-1zM5 8h2v1h-2zM8 8h1v1h-1zM11 8h2v1h-2zM15 8h1v1h-1zM18 8h2v1h-2zM21 8h1v1h-1zM23 8h1v1h-1zM0 9h4v1h-4zM7 9h1v1h-1zM11 9h2v1h-2zM14 9h2v1h-2zM17 9h2v1h-2zM20 9h3v1h-3zM25 9h1v1h-1zM28 9h1v1h-1zM0 10h1v1h-1zM4 10h3v1h-3zM11 10h2v1h-2zM16 10h1v1h-1zM19 10h1v1h-1zM21 10h1v1h-1zM23 10h5v1h-5zM1 11h3v1h-3zM7 11h2v1h-2zM10 11h1v1h-1zM18 11h1v1h-1zM21 11h1v1h-1zM23 11h1v1h-1zM26 11h2v1h-2zM0 12h1v1h-1zM2 12h2v1h-2zM6 12h1v1h-1zM10 12h2v1h-2zM18 12h5v1h-5zM25 12h1v1h-1zM27 12h2v1h-2zM0 13h6v1h-6zM7 13h2v1h-2zM10 13h1v1h-1zM18 13h4v1h-4zM2 14h1v1h-1zM4 14h3v1h-3zM8 14h1v1h-1zM11 14h1v1h-1zM18 14h1v1h-1zM20 14h1v1h-1zM22 14h1v1h-1zM24 14h5v1h-5zM0 15h2v1h-2zM3 15h2v1h-2zM8 15h3v1h-3zM18 15h1v1h-1zM21 15h2v1h-2zM25 15h1v1h-1zM27 15h1v1h-1zM0 16h3v1h-3zM4 16h1v1h-1zM6 16h1v1h-1zM8 16h1v1h-1zM19 16h3v1h-3zM27 16h1v1h-1zM2 17h1v1h-1zM4 17h1v1h-1zM8 17h2v1h-2zM11 17h1v1h-1zM21 17h3v1h-3zM25 17h1v1h-1zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h2v1h-2zM6 18h1v1h-1zM10 18h1v1h-1zM12 18h2v1h-2zM18 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM27 18h2v1h-2zM3 19h2v1h-2zM7 19h5v1h-5zM13 19h1v1h-1zM15 19h6v1h-6zM22 19h1v1h-1zM27 19h2v1h-2zM0 20h1v1h-1zM5 20h7v1h-7zM14 20h1v1h-1zM16 20h1v1h-1zM19 20h6v1h-6zM26 20h1v1h-1zM8 21h1v1h-1zM13 21h1v1h-1zM15 21h6v1h-6zM24 21h1v1h-1zM26 21h3v1h-3zM0 22h7v1h-7zM10 22h2v1h-2zM13 22h3v1h-3zM17 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM27 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM12 23h2v1h-2zM16 23h1v1h-1zM19 23h2v1h-2zM24 23h4v1h-4zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM12 24h1v1h-1zM14 24h2v1h-2zM18 24h1v1h-1zM20 24h5v1h-5zM27 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM8 25h3v1h-3zM12 25h5v1h-5zM19 25h2v1h-2zM22 25h5v1h-5zM28 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM9 26h1v1h-1zM11 26h2v1h-2zM14 26h1v1h-1zM20 26h1v1h-1zM24 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM9 27h2v1h-2zM15 27h1v1h-1zM19 27h3v1h-3zM24 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM10 28h2v1h-2zM13 28h1v1h-1zM20 28h3v1h-3zM24 28h1v1h-1zM27 28h1v1h-1z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-crossplane-should-not.mp3"
     },
     "talk-my-cloud-home": {
       "slug": "talk-my-cloud-home",
@@ -781,7 +785,8 @@ window.SHOW = {
         "n": 29,
         "d": "M0 0h7v1h-7zM8 0h1v1h-1zM11 0h1v1h-1zM15 0h3v1h-3zM19 0h1v1h-1zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM10 1h1v1h-1zM13 1h2v1h-2zM16 1h2v1h-2zM20 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM11 2h2v1h-2zM14 2h5v1h-5zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM10 3h1v1h-1zM12 3h1v1h-1zM14 3h1v1h-1zM18 3h2v1h-2zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM9 4h7v1h-7zM18 4h1v1h-1zM20 4h1v1h-1zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h3v1h-3zM15 5h1v1h-1zM18 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM9 7h1v1h-1zM11 7h1v1h-1zM14 7h3v1h-3zM20 7h1v1h-1zM0 8h1v1h-1zM2 8h1v1h-1zM6 8h2v1h-2zM9 8h2v1h-2zM13 8h2v1h-2zM18 8h1v1h-1zM20 8h1v1h-1zM23 8h1v1h-1zM26 8h1v1h-1zM28 8h1v1h-1zM1 9h2v1h-2zM4 9h2v1h-2zM8 9h2v1h-2zM11 9h4v1h-4zM18 9h3v1h-3zM22 9h2v1h-2zM27 9h2v1h-2zM2 10h2v1h-2zM6 10h1v1h-1zM8 10h2v1h-2zM15 10h1v1h-1zM17 10h1v1h-1zM19 10h1v1h-1zM22 10h1v1h-1zM24 10h3v1h-3zM28 10h1v1h-1zM0 11h3v1h-3zM4 11h2v1h-2zM8 11h2v1h-2zM11 11h1v1h-1zM18 11h3v1h-3zM23 11h1v1h-1zM25 11h1v1h-1zM2 12h1v1h-1zM6 12h1v1h-1zM8 12h4v1h-4zM18 12h1v1h-1zM20 12h1v1h-1zM22 12h2v1h-2zM28 12h1v1h-1zM0 13h1v1h-1zM2 13h2v1h-2zM7 13h3v1h-3zM11 13h1v1h-1zM18 13h3v1h-3zM22 13h2v1h-2zM27 13h2v1h-2zM0 14h2v1h-2zM3 14h1v1h-1zM5 14h2v1h-2zM8 14h2v1h-2zM18 14h2v1h-2zM21 14h2v1h-2zM24 14h1v1h-1zM28 14h1v1h-1zM0 15h4v1h-4zM8 15h1v1h-1zM11 15h1v1h-1zM18 15h2v1h-2zM22 15h2v1h-2zM0 16h7v1h-7zM9 16h2v1h-2zM19 16h2v1h-2zM22 16h2v1h-2zM28 16h1v1h-1zM1 17h1v1h-1zM4 17h1v1h-1zM7 17h1v1h-1zM11 17h1v1h-1zM19 17h2v1h-2zM22 17h2v1h-2zM26 17h3v1h-3zM0 18h3v1h-3zM6 18h1v1h-1zM8 18h1v1h-1zM11 18h2v1h-2zM15 18h1v1h-1zM17 18h1v1h-1zM19 18h5v1h-5zM25 18h1v1h-1zM28 18h1v1h-1zM2 19h2v1h-2zM5 19h1v1h-1zM7 19h2v1h-2zM10 19h2v1h-2zM13 19h1v1h-1zM19 19h3v1h-3zM23 19h1v1h-1zM0 20h2v1h-2zM3 20h4v1h-4zM11 20h1v1h-1zM13 20h1v1h-1zM15 20h2v1h-2zM20 20h6v1h-6zM27 20h1v1h-1zM8 21h1v1h-1zM10 21h1v1h-1zM12 21h1v1h-1zM16 21h1v1h-1zM18 21h1v1h-1zM20 21h1v1h-1zM24 21h3v1h-3zM28 21h1v1h-1zM0 22h7v1h-7zM8 22h1v1h-1zM13 22h2v1h-2zM16 22h2v1h-2zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM28 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h1v1h-1zM11 23h2v1h-2zM14 23h3v1h-3zM18 23h1v1h-1zM20 23h1v1h-1zM24 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM9 24h2v1h-2zM13 24h2v1h-2zM17 24h9v1h-9zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM9 25h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM17 25h1v1h-1zM19 25h3v1h-3zM24 25h4v1h-4zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h1v1h-1zM12 26h2v1h-2zM15 26h1v1h-1zM19 26h1v1h-1zM21 26h1v1h-1zM24 26h1v1h-1zM27 26h2v1h-2zM0 27h1v1h-1zM6 27h1v1h-1zM10 27h1v1h-1zM12 27h3v1h-3zM17 27h1v1h-1zM20 27h1v1h-1zM23 27h3v1h-3zM0 28h7v1h-7zM8 28h2v1h-2zM14 28h4v1h-4zM20 28h1v1h-1zM23 28h2v1h-2zM28 28h1v1h-1z",
         "mark": "<path d=\"M13.15 12.1H15.3A2.1 2.1 0 0 1 17.4 14.2V16.35A0.55 0.55 0 0 1 16.85 16.9H13.15A0.55 0.55 0 0 1 12.6 16.35V12.65A0.55 0.55 0 0 1 13.15 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M15.197 12.932L15.367 14.21L16.581 14.642L15.418 15.199L15.383 16.488L14.494 15.554L13.257 15.918L13.871 14.784L13.142 13.72L14.41 13.954Z\"/>"
-      }
+      },
+      "announce": "../assets/audio/announce/talk-my-cloud-home.mp3"
     },
     "talk-sterile-patch": {
       "slug": "talk-sterile-patch",
@@ -866,6 +871,58 @@ window.SHOW = {
         "mark": "<path d=\"M12.65 12.1H14.8A2.1 2.1 0 0 1 16.9 14.2V16.35A0.55 0.55 0 0 1 16.35 16.9H12.65A0.55 0.55 0 0 1 12.1 16.35V12.65A0.55 0.55 0 0 1 12.65 12.1Z\"/><path class=\"qr-star\" stroke-linejoin=\"round\" d=\"M14.697 12.932L14.867 14.21L16.081 14.642L14.918 15.199L14.883 16.488L13.994 15.554L12.757 15.918L13.371 14.784L12.642 13.72L13.91 13.954Z\"/>"
       },
       "announce": "../assets/audio/announce/d1-hackyourfuture.mp3"
+    },
+    "d1-welcome-back": {
+      "slug": "d1-welcome-back",
+      "kind": "Welcome",
+      "title": "Welcome back",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-jinhong-brejnholt.jpg",
+          "align": null
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-allan.jpg",
+          "align": null
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-kasper-nissen.jpg",
+          "align": null
+        }
+      ],
+      "announce": "../assets/audio/announce/d1-welcome-back.mp3"
+    },
+    "d2-welcome-back": {
+      "slug": "d2-welcome-back",
+      "kind": "Welcome",
+      "title": "Welcome back",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-jinhong-brejnholt.jpg",
+          "align": null
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-kasper-nissen.jpg",
+          "align": null
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-allan.jpg",
+          "align": null
+        }
+      ],
+      "announce": "../assets/audio/announce/d2-welcome-back.mp3"
     },
     "d1-morning-wrapup": {
       "slug": "d1-morning-wrapup",
@@ -1284,8 +1341,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "10:05–10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1303,8 +1360,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1322,8 +1379,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1341,8 +1398,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1360,8 +1417,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1379,13 +1436,19 @@ window.SHOW = {
           "until": "16:00",
           "$note": "15:30–16:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
           ],
           "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-welcome-back",
+          "offSchedule": true,
+          "$note": "16:00, the hosts again before the afternoon keynotes; not a Sessionize session, so offSchedule"
         },
         {
           "scene": "talk",
@@ -1601,8 +1664,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "until 10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1620,8 +1683,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1639,8 +1702,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1658,8 +1721,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1677,8 +1740,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1794,8 +1857,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "10:05–10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1813,8 +1876,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1832,8 +1895,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1851,8 +1914,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1870,8 +1933,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1889,13 +1952,19 @@ window.SHOW = {
           "until": "15:50",
           "$note": "15:30–15:50",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
           ],
           "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d2-welcome-back",
+          "offSchedule": true,
+          "$note": "15:50, the hosts again before the closing keynote; not a Sessionize session, so offSchedule"
         },
         {
           "scene": "talk",
@@ -1906,6 +1975,35 @@ window.SHOW = {
           "scene": "talk",
           "talk": "sz-1306366",
           "$note": "16:15; the day now ends at 16:35"
+        },
+        {
+          "scene": "organizers",
+          "$note": "After the closing remarks: the organizers on the wall, the voice of god reads their names over the quiet strings, confetti. Next goes on to Claude Code.",
+          "music": "thanks",
+          "announce": "thanks-organizers",
+          "eyebrow": "Cloud Native Denmark 2026",
+          "headline": "Thank you to all organizers.",
+          "voice": "../assets/audio/announce/thanks-organizers.mp3"
+        },
+        {
+          "scene": "teammate",
+          "$note": "Our secret teammate: the Claude Code mascot dances and winks. Same strings carry on.",
+          "music": "thanks",
+          "announce": "thanks-claude-code",
+          "eyebrow": "Our secret teammate",
+          "headline": "Thank you, Claude Code.",
+          "body": "Every slide, every cue and every voice on this wall, built together with us.",
+          "voice": "../assets/audio/announce/thanks-claude-code.mp3"
+        },
+        {
+          "scene": "attendees",
+          "$note": "Last of the thank-yous, to the room. Next goes to the closing screen and the strings fade out.",
+          "music": "thanks",
+          "announce": "thanks-attendees",
+          "eyebrow": "And most of all",
+          "headline": "Thank you, everyone.",
+          "body": "Two days, one community. Thank you for coming, for every question and every conversation.",
+          "voice": "../assets/audio/announce/thanks-attendees.mp3"
         },
         {
           "scene": "message",
@@ -1932,8 +2030,8 @@ window.SHOW = {
           "until": "10:25",
           "$note": "until 10:25",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1951,8 +2049,8 @@ window.SHOW = {
           "until": "11:20",
           "$note": "11:00–11:20",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1970,8 +2068,8 @@ window.SHOW = {
           "until": "12:15",
           "$note": "11:55–12:15",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1989,8 +2087,8 @@ window.SHOW = {
           "until": "14:00",
           "$note": "12:50–14:00",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -1999,8 +2097,8 @@ window.SHOW = {
         },
         {
           "scene": "talk",
-          "talk": "talk-manual-otel",
-          "$note": "14:00–14:35"
+          "talk": "talk-operators-in-action",
+          "$note": "14:00–14:35; Verena Traub stepped in when Juliano Costa cancelled"
         },
         {
           "scene": "break",
@@ -2008,8 +2106,8 @@ window.SHOW = {
           "until": "14:55",
           "$note": "14:35–14:55",
           "loop": [
-            "break",
             "feedback",
+            "break",
             "sponsors",
             "community",
             "photos"
@@ -2423,12 +2521,12 @@ window.SHOW = {
       "title": "Lunch"
     },
     {
-      "id": "1221120",
+      "id": "1252414",
       "day": "2",
       "room": "Breakout",
       "start": "14:00",
       "end": "14:35",
-      "talk": "talk-manual-otel"
+      "talk": "talk-operators-in-action"
     },
     {
       "id": "1263748",
@@ -2515,7 +2613,7 @@ window.SHOW = {
     },
     {
       "name": "Mert Gungor",
-      "role": "Software Engineer, Corti",
+      "role": "Platform Engineer, ATP",
       "portrait": "../assets/organizers/organizer-mert-gungor.jpg"
     },
     {
@@ -2540,7 +2638,7 @@ window.SHOW = {
     },
     {
       "name": "Aleksander Nowak",
-      "role": "Senior Platform Engineer, wawa fertility",
+      "role": "Member of Technical Staff: Infrastructure & Security, wawa fertility",
       "portrait": "../assets/organizers/organizer-alek.jpg"
     },
     {
@@ -2587,10 +2685,14 @@ window.SHOW = {
       "delay": 1.2,
       "duck": 0.3
     },
-    "$announce": "Each walk-on's announcement starts `delay` seconds into the theme; the theme drops to `duck` of its volume under the voice and comes back after it.",
+    "$announce": "Each walk-on's announcement starts `delay` seconds into the theme; the theme drops to `duck` of its volume under the voice and comes back after it. A cue's own `announce` (the thank-yous) does the same over that cue's bed.",
+    "$thanks": "The strings walk-on theme (walkon-5) without its fade-out, crossfaded into a two-minute loop and mixed at -23 LUFS, well under the other beds: it sits under the voice of god on the closing thank-yous.",
     "sets": {
       "november": [
         "../assets/audio/preshow-4-november-beat.mp3"
+      ],
+      "thanks": [
+        "../assets/audio/thanks-strings.mp3"
       ],
       "calm": [
         "../assets/audio/walkin.wav",

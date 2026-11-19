@@ -528,6 +528,55 @@
     `<path class="straw" d="M96 30 Q98 -10 130 -30 L140 -18 Q112 0 110 30 Z"/>` +
     `</svg>`;
 
+  /* The organizing team: two rows of five small portraits in the right
+   * two-thirds, name (and job title, where `roles`) under each. */
+  function teamWall(eyebrow, headline, { roles }) {
+    const people = SHOW.organizers ?? [];
+    const cols = Math.ceil(people.length / 2) || 1;
+    const x0 = 1290, x1 = W - 100, colW = (x1 - x0) / cols;
+    const h = 270, w = h * HEX_RATIO;
+    const cells = people
+      .map((o, n) => {
+        const r = Math.floor(n / cols), c = n % cols;
+        const left = x0 + c * colW, top = 110 + r * 500;
+        return (
+          `<div class="org rise" style="--i:${2 + n};left:${left.toFixed(0)}px;top:${top}px;width:${colW.toFixed(0)}px">` +
+          (o.portrait ? `<img class="portrait" src="${esc(o.portrait)}" alt="" style="position:relative;display:block;margin:0 auto;width:${w.toFixed(0)}px;height:${h}px">` : "") +
+          `<p class="org-name">${esc(o.name)}</p>` +
+          (roles ? `<p class="org-role">${esc(o.role)}</p>` : "") +
+          `</div>`
+        );
+      })
+      .join("");
+    return {
+      mode: "sponsors",
+      html:
+        `<div class="box zone-left" style="width:980px">` +
+        `<p class="eyebrow rise" style="--i:0">${esc(eyebrow)}</p>` +
+        `<h2 class="display rise" style="--i:1" data-fit="640">${esc(headline)}</h2>` +
+        `</div>` +
+        cells,
+    };
+  }
+
+  /* The Claude Code mascot, from its 24-unit icon, taken apart so it can
+   * move: body, two arms, four legs and two eyes (the icon's eyes are holes;
+   * here they are navy, so one can close). Its own orange, like a sponsor's
+   * logo keeps its colours (--claude-code in stage.css). */
+  const MASCOT =
+    `<svg class="mascot" viewBox="-2 1.5 28 20.5" aria-label="Claude Code">` +
+    `<g class="mascot-dance">` +
+    `<rect class="leg leg-a" x="4.487" y="16.6" width="1.513" height="3.4"/>` +
+    `<rect class="leg leg-b" x="7.488" y="16.6" width="1.512" height="3.4"/>` +
+    `<rect class="leg leg-a" x="15" y="16.6" width="1.513" height="3.4"/>` +
+    `<rect class="leg leg-b" x="18" y="16.6" width="1.487" height="3.4"/>` +
+    `<rect class="arm arm-l" x="0" y="10.95" width="3.4" height="3.1"/>` +
+    `<rect class="arm arm-r" x="20.6" y="10.949" width="3.4" height="3.102"/>` +
+    `<rect class="mascot-body" x="3" y="5" width="18" height="12.079"/>` +
+    `<rect class="eye" x="6" y="8.102" width="1.488" height="2.847"/>` +
+    `<rect class="eye eye-wink" x="16.51" y="8.102" width="1.49" height="2.847"/>` +
+    `</g></svg>`;
+
   const SCENES = {
     walkin(cue) {
       return {
@@ -801,29 +850,45 @@
     // five small portraits in the right two-thirds; nobody is on stage yet,
     // so the middle is free.
     team() {
-      const people = SHOW.organizers ?? [];
-      const cols = Math.ceil(people.length / 2) || 1;
-      const x0 = 1290, x1 = W - 100, colW = (x1 - x0) / cols;
-      const h = 270, w = h * HEX_RATIO;
-      const cells = people
-        .map((o, n) => {
-          const r = Math.floor(n / cols), c = n % cols;
-          const left = x0 + c * colW, top = 110 + r * 500;
-          return (
-            `<div class="org rise" style="--i:${2 + n};left:${left.toFixed(0)}px;top:${top}px;width:${colW.toFixed(0)}px">` +
-            (o.portrait ? `<img class="portrait" src="${esc(o.portrait)}" alt="" style="position:relative;display:block;margin:0 auto;width:${w.toFixed(0)}px;height:${h}px">` : "") +
-            `<p class="org-name">${esc(o.name)}</p><p class="org-role">${esc(o.role)}</p></div>`
-          );
-        })
-        .join("");
+      return teamWall(`${SHOW.event.name} ${SHOW.event.year}`, "Your organizers.", { roles: true });
+    },
+
+    // Day two, after the closing remarks: the same team wall, names only,
+    // with confetti, while the voice of god reads the names (the cue's
+    // `announce`, over the quiet strings).
+    organizers(cue) {
+      const wall = teamWall(cue.eyebrow ?? `${SHOW.event.name} ${SHOW.event.year}`, cue.headline ?? "Thank you to all organizers.", { roles: false });
+      return { ...wall, html: confetti(BREAKOUT ? 24 : 50) + wall.html };
+    },
+
+    // Our secret teammate: the Claude Code mascot in the middle, dancing,
+    // and every few seconds a wink. Words left and right as on the afterparty.
+    teammate(cue) {
       return {
-        mode: "sponsors",
+        mode: "live",
         html:
-          `<div class="box zone-left" style="width:980px">` +
-          `<p class="eyebrow rise" style="--i:0">${esc(SHOW.event.name)} ${esc(SHOW.event.year)}</p>` +
-          `<h2 class="display rise" style="--i:1" data-fit="640">Your organizers.</h2>` +
+          confetti(BREAKOUT ? 24 : 50) +
+          `<div class="box zone-left">` +
+          `<p class="eyebrow rise" style="--i:0">${esc(cue.eyebrow ?? "Our secret teammate")}</p>` +
+          `<h2 class="display rise" style="--i:1" data-fit="640">${esc(cue.headline ?? "Thank you, Claude Code.")}</h2>` +
           `</div>` +
-          cells,
+          `<div class="mascot-stage rise" style="--i:2">${MASCOT}</div>` +
+          (cue.body ? `<div class="box zone-right"><p class="body rise" style="--i:3">${esc(cue.body)}</p></div>` : ""),
+      };
+    },
+
+    // The last thank-you, to everyone in the room: the most confetti of the
+    // show, the middle left to the hosts.
+    attendees(cue) {
+      return {
+        mode: "live",
+        html:
+          confetti(BREAKOUT ? 40 : 90) +
+          `<div class="box zone-left">` +
+          `<p class="eyebrow rise" style="--i:0">${esc(cue.eyebrow ?? "And most of all")}</p>` +
+          `<h2 class="display rise" style="--i:1" data-fit="640">${esc(cue.headline ?? "Thank you, everyone.")}</h2>` +
+          `</div>` +
+          (cue.body ? `<div class="box zone-right"><p class="body rise" style="--i:2">${esc(cue.body)}</p></div>` : ""),
       };
     },
 
@@ -1000,6 +1065,7 @@
   const music = (() => {
     const cfg = SHOW.music;
     const off = { cue() {}, set() {}, vog() {}, get on() { return false; } };
+    const { vogPlays } = window.CUES;
     if (!cfg || !AUDIO) return off;
     const VOL = cfg.volume ?? 0.8;
     const XF = cfg.crossfade ?? 4;
@@ -1018,21 +1084,41 @@
     let sting = stings[0] ?? null;
     // The voice of god: "Please welcome to the stage…", one clip per talk,
     // `delay` seconds into the walk-on, with the theme ducked under it. It
-    // has its own switch (`vog` in the show state), independent of the
-    // music: with the music off the voice plays on its own.
+    // has its own mode (`vog` in the show state: off, hosts or all, see
+    // vogModes in cues.js), independent of the music: with the music off
+    // the voice plays on its own.
     const VO = { delay: 1.2, duck: 0.3, volume: 1, ...cfg.announce };
     const voices = new Map(
       Object.values(SHOW.talks)
         .filter((t) => t.announce)
         .map((t) => [t.slug, Object.assign(new Audio(t.announce), { preload: "auto" })]),
     );
+    // A cue's own voice (the closing thank-yous), keyed by clip. It plays
+    // over the cue's bed, which ducks under it the way a theme does, and in
+    // the same modes as the hosts' remarks: the hosts are on stage for it.
+    const cueVoices = new Map(
+      Object.values(SHOW.days)
+        .flatMap((d) => [...(d.cues ?? []), ...(d.breakout ?? [])])
+        .filter((c) => c.voice)
+        .map((c) => [c.voice, Object.assign(new Audio(c.voice), { preload: "auto" })]),
+    );
+    const CUE_VOICE_KIND = { kind: "Remarks" };
     let voice = null;
     let voiceTimer = null;
-    let vogOn = true;
+    let vogMode = window.CUES.vogMode(undefined, ROOM);
+    let voiceTalk = null; // the talk whose walk-on `voice` belongs to
+    let bedDucked = false; // the bed is down under a cue's voice
+    function unduckBed(seconds) {
+      if (!bedDucked) return;
+      bedDucked = false;
+      const a = decks[active];
+      if (enabled && current && !a.paused) fade(a, VOL, seconds);
+    }
     function stopVoice(seconds) {
       clearTimeout(voiceTimer);
       const v = voice;
       if (v && !v.paused) fade(v, 0, seconds, () => v.pause());
+      unduckBed(Math.max(seconds, 1.2));
     }
 
     const timers = new Map();
@@ -1169,7 +1255,8 @@
             st.volume = VOL;
             st.play().catch(() => {});
           }
-          voice = vogOn ? voices.get(cue.talk) ?? null : null;
+          voiceTalk = SHOW.talks[cue.talk] ?? null;
+          voice = vogPlays(vogMode, voiceTalk) ? voices.get(cue.talk) ?? null : null;
           const v = voice;
           if (v) {
             voiceTimer = setTimeout(() => {
@@ -1192,6 +1279,22 @@
         stopSting(1.5);
         want = !cue || cue.music === false ? null : (cue.music ?? cfg.scenes?.[cue.scene] ?? null);
         bed(4);
+        voiceTalk = cue?.voice ? CUE_VOICE_KIND : null;
+        voice = cue?.voice && vogPlays(vogMode, voiceTalk) ? cueVoices.get(cue.voice) ?? null : null;
+        const v = voice;
+        if (v) {
+          voiceTimer = setTimeout(() => {
+            v.currentTime = 0;
+            v.volume = VO.volume;
+            v.onended = () => v === voice && unduckBed(1.5);
+            play(v);
+            const a = decks[active];
+            if (enabled && current && !a.paused) {
+              bedDucked = true;
+              fade(a, VOL * VO.duck, 0.6);
+            }
+          }, VO.delay * 1000);
+        }
       },
       set(on) {
         if (on === enabled) return;
@@ -1202,14 +1305,15 @@
       get on() {
         return enabled;
       },
-      /** The voice-of-god switch. Off mid-announcement fades the voice out
-       *  and brings the theme back up under nobody. */
-      vog(on) {
-        if (on === vogOn) return;
-        vogOn = on;
-        if (!on && voice && (!voice.paused || voiceTimer)) {
+      /** The voice-of-god mode. A mode that leaves out the walk-on in
+       *  progress fades its voice out and brings the theme back up under
+       *  nobody. */
+      vog(mode) {
+        if (mode === vogMode) return;
+        vogMode = mode;
+        if (!vogPlays(mode, voiceTalk) && voice && (!voice.paused || voiceTimer)) {
           const st = sting;
-          stopVoice(0.5);
+          stopVoice(0.5); // brings a ducked bed back up too
           if (enabled && st && !st.paused) fade(st, VOL, 1.2);
         }
       },
@@ -1230,7 +1334,7 @@
         const name = (a) => (a.src ? decodeURIComponent(a.src.split("/").pop()) : null);
         return {
           enabled,
-          vog: vogOn,
+          vog: vogMode,
           blocked,
           set: current,
           lastEvent,
@@ -1278,9 +1382,10 @@
     i: 0,
     panic: false,
     music: false,
-    vog: true,
+    vog: window.CUES.vogMode(undefined, ROOM),
     guides: params.has("guides"),
     countdownTo: null,
+    stepAt: Date.now(),
     mountedCue: null,
   };
   state.i = Math.max(0, Math.min(stepsFor(state.day).length - 1, Number(params.get("step") ?? 0)));
@@ -1289,7 +1394,7 @@
     const steps = stepsFor(state.day);
     hud.innerHTML =
       `<ol>${steps.map((s, i) => `<li${i === state.i ? " data-current" : ""}>${esc(describe(s))}</li>`).join("")}</ol>` +
-      `<div>${esc(dayLabel(state.day))}${state.panic ? " · <b>PANIC STILL</b>" : ""} · music ${state.music ? "on" : "off"} · voice of god ${state.vog === false ? "off" : "on"}` +
+      `<div>${esc(dayLabel(state.day))}${state.panic ? " · <b>PANIC STILL</b>" : ""} · music ${state.music ? "on" : "off"} · voice of god ${window.CUES.VOG_LABELS[window.CUES.vogMode(state.vog, ROOM)].toLowerCase()}` +
       `${FOLLOW ? " · following the show server" : ""}` +
       `${AUDIO ? "" : " · <b>no sound in this window</b> (sound plays in the ?output window; add ?audio to rehearse with sound here)"}<br>` +
       `<kbd>→</kbd> next &nbsp;<kbd>←</kbd> back &nbsp;<kbd>1</kbd><kbd>2</kbd> day &nbsp;<kbd>b</kbd> still &nbsp;<kbd>m</kbd> music &nbsp;<kbd>v</kbd> voice of god &nbsp;<kbd>g</kbd> guides &nbsp;<kbd>f</kbd> fullscreen</div>`;
@@ -1310,9 +1415,11 @@
     return el;
   }
 
-  /* A looping cue (the pre-show) alternates scenes on the clock: every
-   * window computes the same phase from Date.now(), so they stay in step
-   * without asking the server. */
+  /* A looping cue (the pre-show, a break) alternates scenes on the clock,
+   * counted from when the cue came up (`stepAt` in the show state), so it
+   * always opens on its first scene: a break on the feedback QR. Every window
+   * computes the same phase from it, so they stay in step without asking the
+   * server. Without a stepAt (an old state), the phase runs off the clock. */
   let loopTimer = null;
   // `every` is seconds per scene: one number for all, or a list, one each.
   // `holdLast`: in the last this-many seconds of a countdown, stay on the
@@ -1325,7 +1432,7 @@
     if (cue.holdLast && countdownTo && countdownTo - Date.now() <= cue.holdLast * 1000) return 0;
     const loop = loopOf(cue, day);
     const secs = loop.map((_, k) => (Array.isArray(cue.every) ? cue.every[k] : cue.every) ?? 30);
-    let t = (Date.now() / 1000) % secs.reduce((a, b) => a + b, 0);
+    let t = ((Date.now() - (state.stepAt ?? 0)) / 1000) % secs.reduce((a, b) => a + b, 0);
     for (let k = 0; k < secs.length; k++) {
       if (t < secs[k]) return k;
       t -= secs[k];
@@ -1355,7 +1462,7 @@
     // `silent`: a walk-on replayed only to glide into a live talk after a
     // reload. The room is mid-talk; it must not hear the walk-on theme again.
     music.set(state.music && !silent);
-    music.vog(state.vog !== false);
+    music.vog(window.CUES.vogMode(state.vog, ROOM));
     const talkIndex = cuesFor(state.day, ROOM).slice(0, step.c).filter((c) => c.scene === "talk").length;
     music.cue(state.panic ? "panic" : `${state.day}:${state.i}`, state.panic ? null : step.cue, step.state, talkIndex);
     if (state.panic) {
@@ -1411,15 +1518,21 @@
     else if (cmd.cmd === "day" && SHOW.days[cmd.day]) Object.assign(next, { day: cmd.day, i: 0, panic: false });
     else if (cmd.cmd === "panic") next.panic = !state.panic;
     else if (cmd.cmd === "music") next.music = !state.music;
-    else if (cmd.cmd === "vog") next.vog = state.vog === false;
+    else if (cmd.cmd === "vog") {
+      const modes = window.CUES.vogModes(ROOM);
+      const now = window.CUES.vogMode(state.vog, ROOM);
+      next.vog = modes.includes(cmd.mode) ? cmd.mode : modes[(modes.indexOf(now) + 1) % modes.length];
+    }
     else if (cmd.cmd === "guides") next.guides = !state.guides;
     else if (cmd.cmd === "countdown") {
       if (cmd.minutes != null) next.countdownTo = Date.now() + cmd.minutes * 60000;
       else if (cmd.add != null && state.countdownTo) next.countdownTo = state.countdownTo + cmd.add * 60000;
       else if (cmd.clear) next.countdownTo = null;
     }
-    // Same as the server: a countdown starts at its `minutes` when it comes up.
+    // Same as the server: a countdown starts at its `minutes` when it comes
+    // up, and a loop starts on its first scene.
     if (`${next.day}:${next.i}` !== before) {
+      next.stepAt = Date.now();
       const step = stepsFor(next.day)[next.i];
       const timed = step?.cue.scene === "countdown" || (step?.cue.scene === "pitch" && step.state === "running");
       next.countdownTo = timed ? Date.now() + (step.cue.minutes ?? 5) * 60000 : null;

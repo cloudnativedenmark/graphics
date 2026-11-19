@@ -192,6 +192,19 @@ for (const t of Object.values(talks)) {
   if (existsSync(join(ROOT, file))) t.announce = fromStage(file);
 }
 
+// A cue that is not a walk-on can carry its own voice of god (the closing
+// thank-yous): `announce` names the words in `announce` and the clip at
+// assets/audio/announce/<name>.mp3, which the wall plays over the cue's bed.
+for (const [day, d] of Object.entries(stage.days)) {
+  for (const cue of [...(d.cues ?? []), ...(d.breakout ?? [])]) {
+    if (typeof cue.announce !== "string") continue;
+    const file = `assets/audio/announce/${cue.announce}.mp3`;
+    if (!stage.announce?.[cue.announce]) console.warn(`warning: day ${day}: ${cue.scene} cue has no words for ${cue.announce} in announce`);
+    if (existsSync(join(ROOT, file))) cue.voice = fromStage(file);
+    else console.warn(`warning: day ${day}: ${cue.scene} cue has no clip, ${file}`);
+  }
+}
+
 const missing = [];
 for (const [day, { cues }] of Object.entries(stage.days)) {
   for (const cue of cues) {
@@ -217,7 +230,9 @@ if (schedule) {
   for (const [day, { cues }] of Object.entries(stage.days)) {
     const onStage = programme.filter((p) => p.day === day && p.room === MAIN);
     const want = onStage.filter((p) => p.talk).map((p) => p.talk);
-    const have = cues.filter((c) => c.scene === "talk").map((c) => c.talk);
+    // `offSchedule`: a hosts' walk-on that is not a Sessionize session (the
+    // afternoon "Welcome back"). It plays on the wall but is not checked.
+    const have = cues.filter((c) => c.scene === "talk" && !c.offSchedule).map((c) => c.talk);
     if (want.join() !== have.join()) {
       const label = (slug) => `${talks[slug]?.start ?? "--:--"} ${slug} (${talks[slug]?.title ?? "?"})`;
       errors.push(
@@ -247,7 +262,7 @@ if (schedule) {
       else if (!talks[slug]?.announce) warnings.push(`day ${day}: ${slug} has no walk-on clip, assets/audio/announce/${slug}.mp3`);
     }
   }
-  const cued = new Set(Object.values(stage.days).flatMap((d) => d.cues.map((c) => c.talk)).filter(Boolean));
+  const cued = new Set(Object.values(stage.days).flatMap((d) => [...d.cues, ...(d.breakout ?? [])].flatMap((c) => [c.talk, c.announce])).filter(Boolean));
   for (const slug of Object.keys(stage.announce ?? {})) {
     if (!slug.startsWith("$") && !cued.has(slug)) warnings.push(`announce has words for ${slug}, which no cue plays`);
   }

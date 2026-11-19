@@ -8,7 +8,7 @@
   the wall and this page's preview follow the server, so what you see here is
   what the wall shows.
 
-  Keys: → / space / PageDown next · ← / PageUp back · b still · m music · v voice of god
+  Keys: → / space / PageDown next · ← / PageUp back · b still · m music · v next voice-of-god mode
   A presentation clicker works.
 -->
 <meta charset="utf-8">
@@ -117,6 +117,11 @@
   .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
   .row button { flex: 1 1 auto; font-size: 15px; padding: 13px 14px; }
 
+  /* Voice of god: one button per mode, the current one pressed. */
+  .vog { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+  .vog .label { margin: 0 4px 0 0; }
+  .vog button { flex: 1 1 auto; font-size: 15px; padding: 13px 14px; }
+
   .countdown { margin-top: 12px; }
   .countdown .row { margin-top: 0; }
   .countdown .state { font-size: 14px; margin: 8px 0 0; color: color-mix(in srgb, var(--cnd-sand) 75%, transparent); }
@@ -183,8 +188,11 @@
     <div class="row">
       <button id="panic" class="danger" aria-pressed="false">Panic still</button>
       <button id="music" aria-pressed="false">Music</button>
-      <button id="vog" aria-pressed="true">Voice of god</button>
       <button id="guides" aria-pressed="false">Guides</button>
+    </div>
+
+    <div class="vog" id="vog" role="group" aria-label="Voice of god">
+      <p class="label">Voice of god</p>
     </div>
 
     <div class="card countdown">

@@ -59,7 +59,21 @@
   $("prev").onclick = () => send({ cmd: "prev" });
   $("panic").onclick = () => send({ cmd: "panic" });
   $("music").onclick = () => send({ cmd: "music" });
-  $("vog").onclick = () => send({ cmd: "vog" });
+  // One button per mode this room has: Off · Hosts only · All sessions on the
+  // main stage, Off · All sessions in the breakout (no hosts there).
+  const { vogModes, vogMode, VOG_LABELS } = window.CUES;
+  $("vog").insertAdjacentHTML(
+    "beforeend",
+    vogModes(ROOM)
+      .slice()
+      .sort((a, b) => ["off", "hosts", "all"].indexOf(a) - ["off", "hosts", "all"].indexOf(b))
+      .map((m) => `<button data-vog="${m}" aria-pressed="false"${KEY ? "" : " disabled"}>${VOG_LABELS[m]}</button>`)
+      .join(""),
+  );
+  $("vog").onclick = (e) => {
+    const mode = e.target.closest("[data-vog]")?.dataset.vog;
+    if (mode) send({ cmd: "vog", mode });
+  };
   $("guides").onclick = () => send({ cmd: "guides" });
   $("days").onclick = (e) => {
     const day = e.target.closest("[data-day]")?.dataset.day;
@@ -137,8 +151,8 @@
     $("music").setAttribute("aria-pressed", state.music);
     // Sound comes out of the wall window (?output) only, never this page.
     $("music").textContent = `Music ${state.music ? "on" : "off"} · plays from the wall`;
-    $("vog").setAttribute("aria-pressed", state.vog !== false);
-    $("vog").textContent = `Voice of god ${state.vog !== false ? "on" : "off"}`;
+    const vog = vogMode(state.vog, ROOM);
+    document.querySelectorAll("[data-vog]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.vog === vog));
     $("guides").setAttribute("aria-pressed", state.guides);
     document.querySelectorAll("[data-day]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.day === state.day));
 

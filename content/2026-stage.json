@@ -11,9 +11,11 @@
     "volume": 0.8,
     "crossfade": 4,
     "announce": { "delay": 1.2, "duck": 0.3 },
-    "$announce": "Each walk-on's announcement starts `delay` seconds into the theme; the theme drops to `duck` of its volume under the voice and comes back after it.",
+    "$announce": "Each walk-on's announcement starts `delay` seconds into the theme; the theme drops to `duck` of its volume under the voice and comes back after it. A cue's own `announce` (the thank-yous) does the same over that cue's bed.",
+    "$thanks": "The strings walk-on theme (walkon-5) without its fade-out, crossfaded into a two-minute loop and mixed at -23 LUFS, well under the other beds: it sits under the voice of god on the closing thank-yous.",
     "sets": {
       "november": ["assets/audio/preshow-4-november-beat.mp3"],
+      "thanks": ["assets/audio/thanks-strings.mp3"],
       "calm": [
         "assets/audio/walkin.wav",
         "assets/audio/calm-1-lofi-rhodes.mp3",
@@ -54,7 +56,7 @@
   },
   "$ticker": "Walk-in and break scenes have no sponsor row by default: the sponsor wall is part of their loop instead. A cue's `ticker` (a list of tiers, e.g. [\"Platinum\", \"Gold\"]) brings the row back: six white hexagons across the bottom, the logos changing in groups every 7 s.",
   "announce": {
-    "$comment": "The voice of god on every main-stage walk-on: the hosts' and each speaker's. The control page switches it off (Voice of god, or v) when the hosts would rather introduce a speaker themselves; the walk-on theme still plays. ElevenLabs voice \"Brian\" (nPczCjzI2devNBz1zQrb), eleven_multilingual_v2, stability 0.4, style 0.45, speed 0.92; trimmed and normalised to -15 LUFS into assets/audio/announce/<slug>.mp3. The build picks a clip up by slug. These are the words as sent, names spelled for the voice. Any talk can have one: add its words here and a clip at that path.",
+    "$comment": "The voice of god on every main-stage walk-on: the hosts' and each speaker's. The control page has three modes on the main stage: All sessions (the default), Hosts only (just the hosts' welcome, wrap-ups and remarks, so the hosts introduce every speaker themselves) and Off; v steps through them. The breakout has All sessions (its default) and Off; the breakout talks' words are in here too. The walk-on theme plays in every mode. ElevenLabs voice \"Brian\" (nPczCjzI2devNBz1zQrb), eleven_multilingual_v2, stability 0.4, style 0.45, speed 0.92; trimmed and normalised to -15 LUFS into assets/audio/announce/<slug>.mp3. The build picks a clip up by slug. These are the words as sent, names spelled for the voice. Any talk can have one: add its words here and a clip at that path.",
     "d1-welcome": "Please welcome to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
     "d1-morning-wrapup": "Please welcome back to the stage... your hosts... Kasper Borg Nissen... Jin-hong Brine-holt... and Allan Hoy-gore Jensen!",
     "d1-hackyourfuture": "Please welcome to the stage... the Managing Director of HackYourFuture Denmark... Helena Beerk-holm!",
@@ -66,6 +68,8 @@
     "talk-kyverno-victoriametrics": "Please welcome to the stage... Diana To-day-a... and from Akamai... Cortney Nickerson!",
     "talk-sovereign-agentic-coding": "Please welcome to the stage... from Neurospace... Rasmus Stine-ikka!",
     "talk-postgres-observability": "Please welcome to the stage... Gabriele Ross-ee-nee!",
+    "d1-welcome-back": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
+    "d2-welcome-back": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
     "d1-whose-code": "Please welcome to the stage... from Dynatrace... Adriana Vee-lella... and from Altinity... Josh Lee!",
     "d1-goblins-druids": "Please welcome to the stage: Michael Cotay!",
     "sz-1306361": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
@@ -79,7 +83,20 @@
     "talk-cadence-uber": "Please welcome to the stage... from Uber... Seva Ka-losh-in!",
     "talk-ai-side-effects": "Please welcome to the stage... from Monzo... Marcus Noble!",
     "d2-dbaas-trap": "Please welcome to the stage... from EDB... Gabriele Bartolini!",
-    "sz-1306366": "For the very last time... please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!"
+    "sz-1306366": "For the very last time... please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
+    "talk-lazy-developer": "Please welcome to the stage... Adriana Vih-lella... and Diana Toh-day-ah!",
+    "talk-pdb-trust": "Please welcome to the stage... from Saxo Bank... Kar-lis Ah-kots Gree-boo-lis!",
+    "talk-us-independent": "Please welcome to the stage... from ABAX... Thomas Or-nell!",
+    "talk-no-ssh-bare-metal": "Please welcome to the stage... Karsten Nielsen!",
+    "talk-crossplane-should-not": "Please welcome to the stage... from Vision... Lee-eh-neh Look-shee-ka!",
+    "talk-two-standards": "Please welcome to the stage... CNCF Ambassador and OpenFeature maintainer... Simon Shrot-ner!",
+    "talk-data-swamp": "Please welcome to the stage... from Ack-you-ity and Altinity... Grat-zee-ah-no Casto... and Josh Lee!",
+    "talk-sovereign-boring": "Please welcome to the stage... from Corti... Steffen Karlsson... and Nicklas Frahm!",
+    "talk-operators-in-action": "Please welcome to the stage... from bee-nerd... Veh-ray-na Trowb!",
+    "talk-my-cloud-home": "Please welcome to the stage... cloud native educator and architect... Thomas Shoots!",
+    "thanks-organizers": "Ladies and gentlemen... please give a huge round of applause... for the team who made Cloud Native Denmark happen... your organizers! Jin-hong Brine-holt... Kasper Borg Nissen... Pair Hay-the-gore Kristyansen... Mert Gun-gur... Tor Anker Kvees-gore Lang-eh... Allan Hoy-gore Jensen... Sur-en Boss Yakobsen... Mass Hoe-stet Dan-kwah... Aleksander Novak... and Robert Jensen! Thank you!",
+    "thanks-claude-code": "And now... a very special thank you... to our secret teammate... who worked on this wall with us, slide by slide, all through the night... Claude Code! Thank you, Claude!",
+    "thanks-attendees": "And finally... the biggest thank you of all... goes to you! Every single one of you... Thank you for coming... and thank you for being Cloud Native Denmark!"
   },
   "organizers": {
     "$comment": "The team slide in the walk-in and pre-show loops. From cloudnativedenmark.dk/team; the site's \"Role @ Company\" is written \"Role, Company\" here.",
@@ -87,12 +104,12 @@
       { "name": "Jinhong Brejnholt", "role": "Senior Director, Software Engineering, Unity · Founder, Bitecloud", "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg" },
       { "name": "Kasper Borg Nissen", "role": "Director, Developer Relations, Dash0", "portrait": "assets/organizers/organizer-kasper-nissen.jpg" },
       { "name": "Per Hedegaard Christiansen", "role": "Chief Container Platform Engineer, Saxo Bank", "portrait": "assets/organizers/organizer-per-christiansen.jpg" },
-      { "name": "Mert Gungor", "role": "Software Engineer, Corti", "portrait": "assets/organizers/organizer-mert-gungor.jpg" },
+      { "name": "Mert Gungor", "role": "Platform Engineer, ATP", "portrait": "assets/organizers/organizer-mert-gungor.jpg" },
       { "name": "Thor Anker Kvisgård Lange", "role": "Team Lead Platform Development, Netic", "portrait": "assets/organizers/organizer-thor-lange.jpg" },
       { "name": "Allan Højgaard Jensen", "role": "Platform Development Specialist, Netic", "portrait": "assets/organizers/organizer-allan.jpg" },
       { "name": "Søren Boss Jacobsen", "role": "Regional Sales Manager, EDB", "portrait": "assets/organizers/organizer-soren.jpg" },
       { "name": "Mads Høgstedt Danquah", "role": "Lead Engineer, the LEGO Group", "portrait": "assets/organizers/organizer-mads.jpg" },
-      { "name": "Aleksander Nowak", "role": "Senior Platform Engineer, wawa fertility", "portrait": "assets/organizers/organizer-alek.jpg" },
+      { "name": "Aleksander Nowak", "role": "Member of Technical Staff: Infrastructure & Security, wawa fertility", "portrait": "assets/organizers/organizer-alek.jpg" },
       { "name": "Robert Jensen", "role": "Consulting Field Solutions Architect, EverPure", "portrait": "assets/organizers/organizer-robert-jensen.jpg" }
     ]
   },
@@ -185,7 +202,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "10:05–10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -198,7 +215,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -211,7 +228,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -224,7 +241,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -237,7 +254,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -250,8 +267,14 @@
           "eyebrow": "Coffee break",
           "until": "16:00",
           "$note": "15:30–16:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d1-welcome-back",
+          "offSchedule": true,
+          "$note": "16:00, the hosts again before the afternoon keynotes; not a Sessionize session, so offSchedule"
         },
         {
           "scene": "talk",
@@ -343,7 +366,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "until 10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -356,7 +379,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -369,7 +392,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -382,7 +405,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -395,7 +418,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -483,7 +506,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "10:05–10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -496,7 +519,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -509,7 +532,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -522,7 +545,7 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -535,7 +558,7 @@
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -548,8 +571,14 @@
           "eyebrow": "Coffee break",
           "until": "15:50",
           "$note": "15:30–15:50",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d2-welcome-back",
+          "offSchedule": true,
+          "$note": "15:50, the hosts again before the closing keynote; not a Sessionize session, so offSchedule"
         },
         {
           "scene": "talk",
@@ -560,6 +589,32 @@
           "scene": "talk",
           "talk": "sz-1306366",
           "$note": "16:15; the day now ends at 16:35"
+        },
+        {
+          "scene": "organizers",
+          "$note": "After the closing remarks: the organizers on the wall, the voice of god reads their names over the quiet strings, confetti. Next goes on to Claude Code.",
+          "music": "thanks",
+          "announce": "thanks-organizers",
+          "eyebrow": "Cloud Native Denmark 2026",
+          "headline": "Thank you to all organizers."
+        },
+        {
+          "scene": "teammate",
+          "$note": "Our secret teammate: the Claude Code mascot dances and winks. Same strings carry on.",
+          "music": "thanks",
+          "announce": "thanks-claude-code",
+          "eyebrow": "Our secret teammate",
+          "headline": "Thank you, Claude Code.",
+          "body": "Every slide, every cue and every voice on this wall, built together with us."
+        },
+        {
+          "scene": "attendees",
+          "$note": "Last of the thank-yous, to the room. Next goes to the closing screen and the strings fade out.",
+          "music": "thanks",
+          "announce": "thanks-attendees",
+          "eyebrow": "And most of all",
+          "headline": "Thank you, everyone.",
+          "body": "Two days, one community. Thank you for coming, for every question and every conversation."
         },
         {
           "scene": "message",
@@ -580,7 +635,7 @@
           "eyebrow": "Coffee break",
           "until": "10:25",
           "$note": "until 10:25",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -593,7 +648,7 @@
           "eyebrow": "Coffee break",
           "until": "11:20",
           "$note": "11:00–11:20",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -606,7 +661,7 @@
           "eyebrow": "Coffee break",
           "until": "12:15",
           "$note": "11:55–12:15",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -619,20 +674,20 @@
           "eyebrow": "Lunch",
           "until": "14:00",
           "$note": "12:50–14:00",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
           "scene": "talk",
-          "talk": "talk-manual-otel",
-          "$note": "14:00–14:35"
+          "talk": "talk-operators-in-action",
+          "$note": "14:00–14:35; Verena Traub stepped in when Juliano Costa cancelled"
         },
         {
           "scene": "break",
           "eyebrow": "Coffee break",
           "until": "14:55",
           "$note": "14:35–14:55",
-          "loop": ["break", "feedback", "sponsors", "community", "photos"],
+          "loop": ["feedback", "break", "sponsors", "community", "photos"],
           "every": 30
         },
         {
@@ -683,6 +738,48 @@
         }
       ]
     },
+    "d1-welcome-back": {
+      "kind": "Welcome",
+      "title": "Welcome back",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg"
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-allan.jpg"
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-kasper-nissen.jpg"
+        }
+      ]
+    },
+    "d2-welcome-back": {
+      "kind": "Welcome",
+      "title": "Welcome back",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg"
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-kasper-nissen.jpg"
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-allan.jpg"
+        }
+      ]
+    },
     "d1-morning-wrapup": {
       "kind": "Wrap-up",
       "title": "Morning keynote wrap-up",
@@ -723,5 +820,5 @@
   "clearBeforeWalkon": true,
   "$clearBeforeWalkon": "Every talk starts on a clear wall: the faint field only, no text, no music. The next press brings the walk-on and its music. So a talk is three presses: clear, walk-on, live (live also comes by itself after walkonSeconds).",
   "$countdown": "A countdown cue starts at `minutes` (default 5) the moment it comes up on the wall, and counts down. The control page can restart or nudge it. `at` is only the fallback for renders.",
-  "$loop": "A cue's `loop` alternates between these scenes (hexagon wave between them) while its music carries on. `every` is the seconds per scene: one number for all, or a list with one per scene ([40, 10, 10]: 40 s countdown, 10 s sponsors, 10 s hashtags, every minute). `holdLast` keeps a countdown on its first scene for its final seconds. The phase comes from the clock, so the wall and the control preview switch together."
+  "$loop": "A cue's `loop` alternates between these scenes (hexagon wave between them) while its music carries on. `every` is the seconds per scene: one number for all, or a list with one per scene ([40, 10, 10]: 40 s countdown, 10 s sponsors, 10 s hashtags, every minute). `holdLast` keeps a countdown on its first scene for its final seconds. The loop counts from the moment its cue comes up, so it always opens on its first scene (a break on the feedback QR for the talk just finished, or on its \"back at\" scene when that talk has no QR); the wall and the control preview count from the same moment, so they switch together."
 }

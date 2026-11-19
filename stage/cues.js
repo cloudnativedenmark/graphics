@@ -50,13 +50,17 @@ window.CUES = (() => {
       {
         walkin: `${cue.music === "preshow" ? "Pre-show" : "Walk-in"} · ${(cue.loop ?? ["walkin"]).map((n) => (n === "walkin" ? "welcome" : n)).join(" ⇄ ")}, ${cue.music === "preshow" ? "energetic" : "calm"} music`,
         countdown: `Countdown · ${cue.minutes ?? 5}:00${cue.loop ? " ⇄ sponsors" : ""}`,
-        break: `${cue.eyebrow} · ${cue.headline ?? `Back at ${cue.until}`}${cue.loop ? ` ⇄ ${cue.loop.slice(1).join(" ⇄ ")}` : ""}`,
+        // The loop in its order, the break's own scene named by its time.
+        break: `${cue.eyebrow} · ${(cue.loop ?? ["break"]).map((n) => (n === "break" ? (cue.headline ?? `Back at ${cue.until}`) : n)).join(" ⇄ ")}`,
         pitch: `${state === "running" ? "Pitch clock" : "Sponsor pitch"} · ${cue.sponsor} · ${cue.minutes ?? 2}:00`,
         message: `${cue.eyebrow} · ${cue.headline}`,
         afterparty: `Afterparty${cue.loop ? ` ⇄ ${cue.loop.slice(1).map((n) => (n === "message" ? cue.headline : n)).join(" ⇄ ")}` : ""}, party music`,
         lyrics: `${cue.eyebrow ?? "Sing along"} · ${cue.headline ?? ""}`,
         sponsors: "Sponsor wall",
         community: "Community sponsors & partners",
+        organizers: `${cue.headline ?? "Thank you to all organizers."} · names read out, strings, confetti`,
+        teammate: `${cue.headline ?? "Thank you, Claude Code."} · dancing mascot, strings`,
+        attendees: `${cue.headline ?? "Thank you, everyone."} · strings, confetti`,
       }[cue.scene] ?? cue.scene
     );
   }
@@ -75,9 +79,31 @@ window.CUES = (() => {
     if (cue.scene === "pitch") return "The clock is running.";
     if (cue.scene === "message") return cue.body ?? "";
     if (cue.scene === "lyrics") return "The song starts from the top; the lines follow it.";
+    if (cue.voice) return "The voice of god plays (unless it is off), over quiet strings. Next moves on.";
     if (cue.scene === "afterparty") return `${cue.party?.when ?? "Afterparty"} · starts on "The November Beat"`;
     return "";
   }
 
-  return { stepsFor, cuesFor, nextIn, describe, detail, namesOf };
+  /* Voice of god modes, per room. Same list as VOG_MODES in serve.mjs.
+   *   off    no announcements; the walk-on theme still plays
+   *   hosts  only the hosts' own walk-ons (welcome, wrap-ups, remarks), so the
+   *          hosts introduce every speaker themselves. Main stage only: the
+   *          hosts are never on the breakout's run of show.
+   *   all    every walk-on that has a clip
+   * The first mode is the room's default. */
+  const VOG_MODES = { main: ["all", "hosts", "off"], breakout: ["all", "off"] };
+  const VOG_LABELS = { off: "Off", hosts: "Hosts only", all: "All sessions" };
+  const HOST_KINDS = new Set(["Welcome", "Wrap-up", "Remarks"]);
+  const vogModes = (room = "main") => VOG_MODES[room] ?? VOG_MODES.main;
+  /** The room's mode from the show state; old states held true / false. */
+  function vogMode(vog, room = "main") {
+    const modes = vogModes(room);
+    if (vog === true) return "all";
+    if (vog === false) return "off";
+    return modes.includes(vog) ? vog : modes[0];
+  }
+  /** Whether a talk's walk-on gets its announcement under `mode`. */
+  const vogPlays = (mode, talk) => mode === "all" || (mode === "hosts" && HOST_KINDS.has(talk?.kind));
+
+  return { stepsFor, cuesFor, nextIn, describe, detail, namesOf, vogModes, vogMode, vogPlays, VOG_LABELS };
 })();
