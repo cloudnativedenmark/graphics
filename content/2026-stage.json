@@ -69,6 +69,7 @@
     "talk-sovereign-agentic-coding": "Please welcome to the stage... from Neurospace... Rasmus Stine-ikka!",
     "talk-postgres-observability": "Please welcome to the stage... Gabriele Ross-ee-nee!",
     "d1-welcome-back": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
+    "d2-welcome-back": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
     "d1-whose-code": "Please welcome to the stage... from Dynatrace... Adriana Vee-lella... and from Altinity... Josh Lee!",
     "d1-goblins-druids": "Please welcome to the stage: Michael Cotay!",
     "sz-1306361": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
@@ -575,6 +576,12 @@
         },
         {
           "scene": "talk",
+          "talk": "d2-welcome-back",
+          "offSchedule": true,
+          "$note": "15:50, the hosts again before the closing keynote; not a Sessionize session, so offSchedule"
+        },
+        {
+          "scene": "talk",
           "talk": "d2-dbaas-trap",
           "$note": "15:50, moved up from 16:15 when Paula Kennedy cancelled"
         },
@@ -749,6 +756,27 @@
           "name": "Kasper Borg Nissen",
           "role": "",
           "portrait": "assets/organizers/organizer-kasper-nissen.jpg"
+        }
+      ]
+    },
+    "d2-welcome-back": {
+      "kind": "Welcome",
+      "title": "Welcome back",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "assets/organizers/organizer-jinhong-brejnholt.jpg"
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-kasper-nissen.jpg"
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "assets/organizers/organizer-allan.jpg"
         }
       ]
     },

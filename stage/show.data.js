@@ -903,6 +903,32 @@ window.SHOW = {
       ],
       "announce": "../assets/audio/announce/d1-welcome-back.mp3"
     },
+    "d2-welcome-back": {
+      "slug": "d2-welcome-back",
+      "kind": "Welcome",
+      "title": "Welcome back",
+      "speakers": [
+        {
+          "name": "Jinhong Brejnholt",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-jinhong-brejnholt.jpg",
+          "align": null
+        },
+        {
+          "name": "Kasper Borg Nissen",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-kasper-nissen.jpg",
+          "align": null
+        },
+        {
+          "name": "Allan Højgaard Jensen",
+          "role": "",
+          "portrait": "../assets/organizers/organizer-allan.jpg",
+          "align": null
+        }
+      ],
+      "announce": "../assets/audio/announce/d2-welcome-back.mp3"
+    },
     "d1-morning-wrapup": {
       "slug": "d1-morning-wrapup",
       "kind": "Wrap-up",
@@ -1938,6 +1964,12 @@ window.SHOW = {
             "photos"
           ],
           "every": 30
+        },
+        {
+          "scene": "talk",
+          "talk": "d2-welcome-back",
+          "offSchedule": true,
+          "$note": "15:50, the hosts again before the closing keynote; not a Sessionize session, so offSchedule"
         },
         {
           "scene": "talk",
