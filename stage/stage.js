@@ -753,7 +753,7 @@
       return {
         mode: "ambient",
         html:
-          (sp ? `<div class="rise pitch-logo" style="--i:0">${hexLogo(sp, BREAKOUT ? 640 : 760)}</div>` : "") +
+          (sp ? `<div class="rise pitch-logo" style="--i:0">${hexLogo(sp, BREAKOUT ? 640 : 640)}</div>` : "") +
           `<div class="box zone-right">` +
           `<p class="eyebrow rise" style="--i:1">${esc(sp?.tier ?? "Gold")} sponsor · ${esc(cue.sponsor)}</p>` +
           `<p class="clock rise" style="--i:2" data-minutes="${cue.minutes ?? 2}">${String(cue.minutes ?? 2).padStart(2, "0")}:00</p>` +
