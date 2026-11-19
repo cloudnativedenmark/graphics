@@ -359,7 +359,7 @@ body {
   stroke-width: 0.12;
 }
 .qr-zone      { position: absolute; left: 2685px; top: 178px; }
-.pitch-logo   { position: absolute; left: 160px;  top: 268px; } /* 640 px hexagon: half the old gap to the wall's edge (was 315px), centred on the clock's height */
+.pitch-logo   { position: absolute; left: 110px;  top: 268px; } /* 640 px hexagon near the wall's edge (was 315px), centred on the clock's height */
 
 /* ── sponsors wall ────────────────────────────────────────────────────── */
 
