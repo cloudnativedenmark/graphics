@@ -1256,7 +1256,9 @@ def lay_rate(slide, sec, deck_dir):
             body.string = f"{t['title']} · {names_of(t)}"
     blocks = pad_blocks(pad, "rate", 120)
     blocks_box(slide, 90, 90, 1063, 900, blocks, anchor="m")
-    code = t.get("feedback") if t else None
+    # A talk's Sessionize code, else the slide's own data-qr link (the whole-event form).
+    box = pad.find(class_="qr")
+    code = t.get("feedback") if t else qr_code(box.get("data-qr")) if box is not None else None
     im = qr_image(code, 577, 560, 380, 15)
     picture(slide, im, 1253, 260, 577, 560, name="Feedback QR")
     if not code:
