@@ -1826,6 +1826,10 @@ window.SHOW = {
           "$note": "09:35"
         },
         {
+          "scene": "clear",
+          "$note": "Empty wall, no music, between Michael Munk Lassen's talk and the sponsor pitches, like the clear before a walk-on. Next starts the AWS pitch."
+        },
+        {
           "scene": "pitch",
           "sponsor": "AWS",
           "minutes": 2,

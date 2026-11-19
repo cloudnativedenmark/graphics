@@ -56,6 +56,8 @@ window.CUES = (() => {
         message: `${cue.eyebrow} · ${cue.headline}`,
         afterparty: `Afterparty${cue.loop ? ` ⇄ ${cue.loop.slice(1).map((n) => (n === "message" ? cue.headline : n)).join(" ⇄ ")}` : ""}, party music`,
         lyrics: `${cue.eyebrow ?? "Sing along"} · ${cue.headline ?? ""}`,
+        // A clear of its own, not a talk's (one before the sponsor pitches).
+        clear: "Clear",
         sponsors: "Sponsor wall",
         community: "Community sponsors & partners",
         organizers: `${cue.headline ?? "Thank you to all organizers."} · names read out, strings, confetti`,
@@ -69,6 +71,12 @@ window.CUES = (() => {
   function detail(step) {
     const { cue } = step;
     if (cue.scene === "talk" && step.state === "clear") return "Empty wall, no music. Next starts the walk-on.";
+    if (cue.scene === "clear") {
+      // step.room is the schedule's name for the room ("Breakout"), not its key.
+      const room = Object.keys(SHOW.rooms ?? {}).find((k) => SHOW.rooms[k].schedule === step.room) ?? "main";
+      const next = cuesFor(step.day, room)[step.c + 1];
+      return `Empty wall, no music.${next ? ` Next: ${describe({ cue: next, state: next.scene === "pitch" ? "intro" : "walkon" })}.` : ""}`;
+    }
     if (cue.scene === "talk") return SHOW.talks[cue.talk].title;
     if (cue.scene === "countdown") return cue.title;
     if (cue.scene === "break") {
