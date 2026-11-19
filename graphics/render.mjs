@@ -53,7 +53,8 @@
  *                     scrim, 0 to 1. Her gradient reaches 0.92 navy at the
  *                     bottom edge, which is right under a low text block and
  *                     too heavy when the photograph is the point.
- *   --theme light|dark  linkedin-cover only: sand ground or navy ground
+ *   --theme light|dark  linkedin-cover and forms-header: sand or navy ground
+ *   --line1/--line2/--outline  linkedin-cover and forms-header copy
  *   --out PATH        output PNG
  *   --keep-html       leave the intermediate HTML in place for debugging
  *
@@ -119,6 +120,7 @@ const DEFAULT_CATEGORY = {
   "cfp-notification": "CFP-notifications",
   clean: null,
   "linkedin-cover": null,
+  "forms-header": null,
   poster: null,
   bulletin: null,
   sponsors: null,
@@ -126,7 +128,7 @@ const DEFAULT_CATEGORY = {
 
 // Templates that are a whole document rather than a content layer composed
 // into _social-frame.svg. A cover has no tab, card window or footer band.
-const SELF_CONTAINED = new Set(["linkedin-cover", "poster", "bulletin", "sponsors"]);
+const SELF_CONTAINED = new Set(["linkedin-cover", "forms-header", "poster", "bulletin", "sponsors"]);
 
 // ---------------------------------------------------------------------------
 
@@ -364,6 +366,7 @@ function main() {
   const tokens = loadJSON(join(ROOT, "brand", "tokens.json"));
 
   if (opts.template === "linkedin-cover") return renderCover(opts, geometry, tokens);
+  if (opts.template === "forms-header") return renderFormsHeader(opts, geometry, tokens);
   if (opts.template === "poster") return renderPoster(opts, geometry, tokens);
   if (opts.template === "bulletin") return renderBulletin(opts, geometry, tokens);
   if (opts.template === "sponsors") return renderSponsors(opts, geometry, tokens);
@@ -749,6 +752,98 @@ function renderCover(opts, geometry, tokens) {
     slug: `linkedin-cover-${theme}`,
     out: opts.out ?? join(ROOT, "graphics", "out", `linkedin-cover-${theme}.png`),
     label: `cover, ${theme}`,
+  });
+}
+
+/**
+ * Google Forms header, 1600x400, in either colourway.
+ *
+ * Forms crops headers to 4:1, which cuts the sides off the 6:1 LinkedIn
+ * cover. This reuses the cover's type specs and hexagon cluster, scaled by
+ * FORMS_SCALE, and lays them out for 4:1 with the 2026 lockup on the right.
+ * The positions are composed, not measured: there is no designer reference
+ * for this surface, so judge it by eye.
+ */
+const FORMS_SCALE = 1.45;
+
+function renderFormsHeader(opts, geometry, tokens) {
+  const theme = (opts.theme ?? "light").toLowerCase();
+  if (!["light", "dark"].includes(theme)) {
+    console.error(`--theme must be light or dark (got ${theme})`);
+    process.exit(2);
+  }
+  const dark = theme === "dark";
+  const color = tokens.color;
+  const cover = geometry.cover;
+  const display = cover.text["COPEN HAGEN"];
+  const outlineSpec = cover.text["2026"];
+  const hex = cover.placement.hexagons;
+  const s = FORMS_SCALE;
+  const [canvasW, canvasH] = [1600, 400];
+  const margin = 112;
+
+  // The cover's text block, top of line 1 to the outline baseline, centred.
+  const blockH = (outlineSpec.baseline - display.y) * s;
+  const top = (canvasH - blockH) / 2;
+  const at = (y) => +(top + (y - display.y) * s).toFixed(2);
+
+  // Lockup: the cropped 2026 artwork, 841x434 viewBox.
+  const lockupH = 200;
+  const lockupW = +((lockupH * 841) / 434).toFixed(2);
+  const lockupX = canvasW - margin - lockupW;
+
+  // Hexagons: centred between the copy and the lockup, keeping the cover's
+  // slight drop below the vertical centre.
+  const hexW = hex.w * s;
+  const hexH = hex.h * s;
+  const coverDrop = hex.y + hex.h / 2 - cover.canvas[1] / 2;
+  const textRight = 560; // widest default line, measured from a render
+  const hexX = +((textRight + lockupX) / 2 - hexW / 2).toFixed(2);
+  const hexY = +(canvasH / 2 + coverDrop * s - hexH / 2).toFixed(2);
+
+  const ground = dark ? color.navy : color.sand;
+  const svg = fill(stripLeadComment(load(join(TEMPLATES, "forms-header.svg"))), {
+    canvasW,
+    canvasH,
+    ground,
+    red: color.red,
+    hexagons: assetURL(
+      join(ROOT, "brand", "logo", dark ? "cnd-hexagons-solid.svg" : "cnd-hexagons.svg"),
+    ),
+    hexX,
+    hexY,
+    hexW,
+    hexH,
+    textX: margin,
+    displaySize: +(display.runs[0].size_px * s).toFixed(2),
+    displayTracking: `${display.runs[0].tracking_em}em`,
+    displayColor: dark ? color.white : color.navy,
+    line1: escapeXML((opts.line1 ?? "Tell us").toUpperCase()),
+    line2: escapeXML((opts.line2 ?? "How it went").toUpperCase()),
+    line1Y: at(display.baseline),
+    line2Y: at(display.baseline + leadingOf(display)),
+    outline: escapeXML((opts.outline ?? "Feedback").toUpperCase()),
+    outlineY: at(outlineSpec.baseline),
+    outlineSize: +(outlineSpec.runs[0].size_px * s).toFixed(2),
+    outlineTracking: `${outlineSpec.runs[0].tracking_em}em`,
+    outlineStroke: +(YEAR_STROKE * s).toFixed(2),
+    lockup: assetURL(
+      join(ROOT, "brand", "logo", dark ? "cnd-lockup-2026-white.svg" : "cnd-lockup-2026-navy.svg"),
+    ),
+    lockupX: +lockupX.toFixed(2),
+    lockupY: +((canvasH - lockupH) / 2).toFixed(2),
+    lockupW,
+    lockupH,
+  });
+
+  rasterise(svg, {
+    canvasW,
+    canvasH,
+    scale: opts.scale,
+    keepHtml: opts["keep-html"],
+    slug: `forms-header-${theme}`,
+    out: opts.out ?? join(ROOT, "graphics", "out", `forms-header-${theme}.png`),
+    label: `forms header, ${theme}`,
   });
 }
 
