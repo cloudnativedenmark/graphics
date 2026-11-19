@@ -759,8 +759,8 @@
       "speakers": []
     },
     {
-      "id": "1221120",
-      "title": "How manual OTel instrumentation saves more than just money",
+      "id": "1252414",
+      "title": "Operators in Action: Making Kubernetes Work for You",
       "room": "Breakout",
       "day": "2",
       "start": "14:00",
@@ -768,9 +768,9 @@
       "service": false,
       "speakers": [
         {
-          "name": "Juliano Costa",
-          "tagLine": "CNCF Ambassador | Principal Developer Relations Engineer at Dash0",
-          "portrait": "assets/speakers/juliano_costa.jpg"
+          "name": "Verena Traub",
+          "tagLine": "Cloud & DevOps Consultant at b'nerd GmbH",
+          "portrait": "assets/speakers/verena_traub.jpg"
         }
       ]
     },

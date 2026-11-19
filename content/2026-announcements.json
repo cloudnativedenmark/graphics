@@ -56,12 +56,12 @@
       "portrait2": "assets/speakers/diana_todea.jpg"
     },
     {
-      "slug": "talk-manual-otel",
+      "slug": "talk-operators-in-action",
       "eyebrow": "Session",
-      "headline": "Auto-instrumentation|is quietly|draining your|budget.",
-      "body": "How manual OTel instrumentation saves more|than just money||Juliano Costa",
+      "headline": "Operators|in action.",
+      "body": "Operators in Action: Making Kubernetes|Work for You||Verena Traub",
       "ground": "navy",
-      "portrait": "assets/speakers/juliano_costa.jpg"
+      "portrait": "assets/speakers/verena_traub.jpg"
     },
     {
       "slug": "talk-data-swamp",

@@ -144,8 +144,8 @@ or when the countdown's `at` is not the first talk. It warns when a cue's
 `$note` time is stale, when a cued talk has no walk-on words or clip, and
 when `announce` has words for a talk no cue plays. A cancelled talk comes out
 of the cues, `announce`, `roles` and the announcements file together.
-A hosts' walk-on that is not a Sessionize session (day one's afternoon
-"Welcome back") carries `"offSchedule": true` on its cue: it plays like any
+A hosts' walk-on that is not a Sessionize session (the afternoon "Welcome
+back" on both days) carries `"offSchedule": true` on its cue: it plays like any
 other walk-on, and the order check leaves it out.
 
 The break decks on the projectors (`decks/breaks/`) come from the same
