@@ -74,7 +74,7 @@
     "d1-goblins-druids": "Please welcome to the stage: Michael Cotay!",
     "sz-1306361": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Allan Hoy-gore Jensen... and Kasper Borg Nissen!",
     "sz-1306364": "Good morning, and welcome to day two! Please welcome to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
-    "d2-developers-nightmare": "Please welcome to the stage... Thomas Vee-tah-leh... and from Eficode... Alexandra Hoe Alders-hob!",
+    "d2-developers-nightmare": "Please welcome to the stage... Thomas Vee-tah-leh... and from Eficode... Alexandra Alders-hob!",
     "sz-1371596": "Please welcome to the stage... from ScanNet, by team dot blue... Michael Munk Lassen!",
     "sz-1306365": "Please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
     "talk-root-of-trust": "Please welcome to the stage... from Elastisys... Yakub Kshiv-da... and from Mirantis... Cristian Klein!",
@@ -86,14 +86,15 @@
     "sz-1306366": "For the very last time... please welcome back to the stage... your hosts... Jin-hong Brine-holt... Kasper Borg Nissen... and Allan Hoy-gore Jensen!",
     "talk-lazy-developer": "Please welcome to the stage... Adriana Vih-lella... and Diana Toh-day-ah!",
     "talk-pdb-trust": "Please welcome to the stage... from Saxo Bank... Kar-lis Ah-kots Gree-boo-lis!",
-    "talk-us-independent": "Please welcome to the stage... from ABAX... Thomas Or-nell!",
+    "talk-us-independent": "Please welcome to the stage... Thomas Or-nell!",
     "talk-no-ssh-bare-metal": "Please welcome to the stage... Karsten Nielsen!",
-    "talk-crossplane-should-not": "Please welcome to the stage... from Vision... Lee-eh-neh Look-shee-ka!",
+    "talk-crossplane-should-not": "Please welcome to the stage... Lee-eh-neh Look-shee-ka!",
     "talk-two-standards": "Please welcome to the stage... CNCF Ambassador and OpenFeature maintainer... Simon Shrot-ner!",
     "talk-data-swamp": "Please welcome to the stage... from Ack-you-ity and Altinity... Grat-zee-ah-no Casto... and Josh Lee!",
     "talk-sovereign-boring": "Please welcome to the stage... from Corti... Steffen Karlsson... and Nicklas Frahm!",
     "talk-operators-in-action": "Please welcome to the stage... from bee-nerd... Veh-ray-na Trowb!",
     "talk-my-cloud-home": "Please welcome to the stage... cloud native educator and architect... Thomas Shoots!",
+    "d2-donation": "Please welcome to the stage... the Chairman of Cloud Native Denmark... Pair Hay-the-gore Kristyansen... and the Managing Director of HackYourFuture Denmark... Helena Beerk-holm!",
     "thanks-organizers": "Ladies and gentlemen... please give a huge round of applause... for the team who made Cloud Native Denmark happen... your organizers! Jin-hong Brine-holt... Kasper Borg Nissen... Pair Hay-the-gore Kristyansen... Mert Gun-gur... Tor Anker Kvees-gore Lang-eh... Allan Hoy-gore Jensen... Sur-en Boss Yakobsen... Mass Hoe-stet Dan-kwah... Aleksander Novak... and Robert Jensen! Thank you!",
     "thanks-claude-code": "And now... a very special thank you... to our secret teammate... who worked on this wall with us, slide by slide, all through the night... Claude Code! Thank you, Claude!",
     "thanks-attendees": "And finally... the biggest thank you of all... goes to you! Every single one of you... Thank you for coming... and thank you for being Cloud Native Denmark!"
@@ -476,6 +477,10 @@
           "$note": "09:35"
         },
         {
+          "scene": "clear",
+          "$note": "Empty wall, no music, between Michael Munk Lassen's talk and the sponsor pitches, like the clear before a walk-on. Next starts the AWS pitch."
+        },
+        {
           "scene": "pitch",
           "sponsor": "AWS",
           "minutes": 2,
@@ -591,6 +596,16 @@
           "$note": "16:15; the day now ends at 16:35"
         },
         {
+          "scene": "talk",
+          "talk": "d2-donation",
+          "offSchedule": true,
+          "$note": "After the hosts' closing remarks: Per Hedegaard Christiansen, chairman of Cloud Native Denmark, and Helena Birkholm of HackYourFuture Denmark for the donation. Not a Sessionize session, so offSchedule."
+        },
+        {
+          "scene": "clear",
+          "$note": "Empty wall, no music, after Per and Helena, before the thank-yous. Next starts Thank you to all organizers."
+        },
+        {
           "scene": "organizers",
           "$note": "After the closing remarks: the organizers on the wall, the voice of god reads their names over the quiet strings, confetti. Next goes on to Claude Code.",
           "music": "thanks",
@@ -618,9 +633,46 @@
         },
         {
           "scene": "message",
+          "big": true,
           "eyebrow": "Thank you",
           "headline": "Cloud Native Denmark.",
           "body": "See you in 2027."
+        },
+        {
+          "scene": "lyrics",
+          "$note": "End of day two, after the closing screen: the same sing-along as day one. \"The November Beat\" from the top, the line being sung large with the next one under it.",
+          "music": "november",
+          "length": 178.2,
+          "eyebrow": "Sing along",
+          "headline": "The November Beat.",
+          "lines": [
+            {"at": 14.7, "section": "Verse 1", "text": "Welcome to the gathering in Copenhagen, November days"},
+            {"at": 24.3, "section": "Verse 1", "text": "Cloud Native Denmark shines through the autumn haze"},
+            {"at": 32.3, "section": "Verse 1", "text": "Our organizers guide us, keeping the vision clear"},
+            {"at": 36.9, "section": "Verse 1", "text": "A brand new chapter starts with fresh ideas here"},
+            {"at": 40.9, "section": "Verse 1", "text": "We shape the systems, code the future space"},
+            {"at": 44.9, "section": "Verse 1", "text": "Bringing the whole community to this special place", "until": 49.6},
+            {"at": 50.2, "section": "Chorus", "text": "We are Cloud Native Denmark, unified and strong"},
+            {"at": 55.2, "section": "Chorus", "text": "From Copenhagen to the north where we belong"},
+            {"at": 58.9, "section": "Chorus", "text": "Aarhus is rising, Aalborg is in the sound"},
+            {"at": 64.0, "section": "Chorus", "text": "The greatest tech community that can be found!"},
+            {"at": 70.2, "section": "Chorus", "text": "(Oh-oh, cloud native we stand!)", "until": 73.8},
+            {"at": 84.7, "section": "Verse 2", "text": "Step inside the venue, the talks are on the screen"},
+            {"at": 89.1, "section": "Verse 2", "text": "The brilliant minds of Kubernetes on the scene"},
+            {"at": 93.0, "section": "Verse 2", "text": "We are sharing stories, code, and architectures bold"},
+            {"at": 97.6, "section": "Verse 2", "text": "Secrets of the cluster ready to unfold"},
+            {"at": 101.4, "section": "Verse 2", "text": "From continuous delivery to the service mesh design"},
+            {"at": 109.4, "section": "Verse 2", "text": "In Copenhagen's heart, the future will align", "until": 114.4},
+            {"at": 120.7, "section": "Chorus", "text": "We are Cloud Native Denmark, unified and strong"},
+            {"at": 125.7, "section": "Chorus", "text": "From Copenhagen to the north where we belong"},
+            {"at": 131.0, "section": "Chorus", "text": "Aarhus is rising, Aalborg is in the sound"},
+            {"at": 139.1, "section": "Chorus", "text": "The greatest tech community that can be found!"},
+            {"at": 145.5, "section": "Chorus", "text": "(Oh-oh, cloud native we stand!)", "until": 149.0},
+            {"at": 155.7, "section": "Outro", "text": "See you on November nineteen and twenty…"},
+            {"at": 158.0, "section": "Outro", "text": "Cloud Native Denmark…"},
+            {"at": 162.6, "section": "Outro", "text": "(Join the community!)"},
+            {"at": 166.0, "section": "Outro", "text": "Copenhagen awaits…", "until": 175.0}
+          ]
         }
       ],
       "breakout": [
@@ -777,6 +829,22 @@
           "name": "Allan Højgaard Jensen",
           "role": "",
           "portrait": "assets/organizers/organizer-allan.jpg"
+        }
+      ]
+    },
+    "d2-donation": {
+      "kind": "Remarks",
+      "title": "Donation",
+      "speakers": [
+        {
+          "name": "Per Hedegaard Christiansen",
+          "role": "Chairman, Cloud Native Denmark",
+          "portrait": "assets/organizers/organizer-per-christiansen.jpg"
+        },
+        {
+          "name": "Helena Birkholm",
+          "role": "Managing Director, HackYourFuture Denmark",
+          "portrait": "assets/speakers/helena_birkholm.jpg"
         }
       ]
     },

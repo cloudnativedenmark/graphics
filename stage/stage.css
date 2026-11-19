@@ -175,6 +175,13 @@ body {
 .zone-left  { left: 130px;  top: 120px; width: 1040px; height: 840px; justify-content: center; }
 .zone-right { left: 2526px; top: 120px; width: 1040px; height: 840px; justify-content: center; }
 
+/* The closing screen (a message cue with `big`): everything a size up, the
+ * left zone a little wider but still clear of the honeycomb in the middle. */
+.zone-left.message-big  { width: 1120px; }
+.message-big .eyebrow   { font-size: 64px; margin-bottom: 36px; }
+.message-big .display   { font-size: 240px; }
+.message-big .see-you   { font-size: 172px; }
+
 /* Entrance, after the wipe reveals the scene: a short rise, staggered. */
 .scene .rise {
   animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
@@ -359,7 +366,7 @@ body {
   stroke-width: 0.12;
 }
 .qr-zone      { position: absolute; left: 2685px; top: 178px; }
-.pitch-logo   { position: absolute; left: 315px;  top: 208px; }
+.pitch-logo   { position: absolute; left: 110px;  top: 268px; } /* 640 px hexagon near the wall's edge (was 315px), centred on the clock's height */
 
 /* ── sponsors wall ────────────────────────────────────────────────────── */
 
