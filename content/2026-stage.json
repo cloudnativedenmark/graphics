@@ -94,6 +94,7 @@
     "talk-sovereign-boring": "Please welcome to the stage... from Corti... Steffen Karlsson... and Nicklas Frahm!",
     "talk-operators-in-action": "Please welcome to the stage... from bee-nerd... Veh-ray-na Trowb!",
     "talk-my-cloud-home": "Please welcome to the stage... cloud native educator and architect... Thomas Shoots!",
+    "d2-donation": "Please welcome to the stage... the Chairman of Cloud Native Denmark... Pair Hay-the-gore Kristyansen... and the Managing Director of HackYourFuture Denmark... Helena Beerk-holm!",
     "thanks-organizers": "Ladies and gentlemen... please give a huge round of applause... for the team who made Cloud Native Denmark happen... your organizers! Jin-hong Brine-holt... Kasper Borg Nissen... Pair Hay-the-gore Kristyansen... Mert Gun-gur... Tor Anker Kvees-gore Lang-eh... Allan Hoy-gore Jensen... Sur-en Boss Yakobsen... Mass Hoe-stet Dan-kwah... Aleksander Novak... and Robert Jensen! Thank you!",
     "thanks-claude-code": "And now... a very special thank you... to our secret teammate... who worked on this wall with us, slide by slide, all through the night... Claude Code! Thank you, Claude!",
     "thanks-attendees": "And finally... the biggest thank you of all... goes to you! Every single one of you... Thank you for coming... and thank you for being Cloud Native Denmark!"
@@ -595,6 +596,12 @@
           "$note": "16:15; the day now ends at 16:35"
         },
         {
+          "scene": "talk",
+          "talk": "d2-donation",
+          "offSchedule": true,
+          "$note": "After the hosts' closing remarks: Per Hedegaard Christiansen, chairman of Cloud Native Denmark, and Helena Birkholm of HackYourFuture Denmark for the donation. Not a Sessionize session, so offSchedule."
+        },
+        {
           "scene": "organizers",
           "$note": "After the closing remarks: the organizers on the wall, the voice of god reads their names over the quiet strings, confetti. Next goes on to Claude Code.",
           "music": "thanks",
@@ -781,6 +788,22 @@
           "name": "Allan Højgaard Jensen",
           "role": "",
           "portrait": "assets/organizers/organizer-allan.jpg"
+        }
+      ]
+    },
+    "d2-donation": {
+      "kind": "Remarks",
+      "title": "Donation",
+      "speakers": [
+        {
+          "name": "Per Hedegaard Christiansen",
+          "role": "Chairman, Cloud Native Denmark",
+          "portrait": "assets/organizers/organizer-per-christiansen.jpg"
+        },
+        {
+          "name": "Helena Birkholm",
+          "role": "Managing Director, HackYourFuture Denmark",
+          "portrait": "assets/speakers/helena_birkholm.jpg"
         }
       ]
     },

@@ -924,6 +924,26 @@ window.SHOW = {
       ],
       "announce": "../assets/audio/announce/d2-welcome-back.mp3"
     },
+    "d2-donation": {
+      "slug": "d2-donation",
+      "kind": "Remarks",
+      "title": "Donation",
+      "speakers": [
+        {
+          "name": "Per Hedegaard Christiansen",
+          "role": "Chairman, Cloud Native Denmark",
+          "portrait": "../assets/organizers/organizer-per-christiansen.jpg",
+          "align": null
+        },
+        {
+          "name": "Helena Birkholm",
+          "role": "Managing Director, HackYourFuture Denmark",
+          "portrait": "../assets/speakers/helena_birkholm.jpg",
+          "align": null
+        }
+      ],
+      "announce": "../assets/audio/announce/d2-donation.mp3"
+    },
     "d1-morning-wrapup": {
       "slug": "d1-morning-wrapup",
       "kind": "Wrap-up",
@@ -1979,6 +1999,12 @@ window.SHOW = {
           "scene": "talk",
           "talk": "sz-1306366",
           "$note": "16:15; the day now ends at 16:35"
+        },
+        {
+          "scene": "talk",
+          "talk": "d2-donation",
+          "offSchedule": true,
+          "$note": "After the hosts' closing remarks: Per Hedegaard Christiansen, chairman of Cloud Native Denmark, and Helena Birkholm of HackYourFuture Denmark for the donation. Not a Sessionize session, so offSchedule."
         },
         {
           "scene": "organizers",
