@@ -53,8 +53,8 @@
  *                     scrim, 0 to 1. Her gradient reaches 0.92 navy at the
  *                     bottom edge, which is right under a low text block and
  *                     too heavy when the photograph is the point.
- *   --theme light|dark  linkedin-cover and forms-header: sand or navy ground
- *   --line1/--line2/--outline  linkedin-cover and forms-header copy
+ *   --theme light|dark  linkedin-cover, forms-header, ticket-cover: sand or navy
+ *   --line1/--line2/--outline  copy for those three
  *   --out PATH        output PNG
  *   --keep-html       leave the intermediate HTML in place for debugging
  *
@@ -121,6 +121,7 @@ const DEFAULT_CATEGORY = {
   clean: null,
   "linkedin-cover": null,
   "forms-header": null,
+  "ticket-cover": null,
   poster: null,
   bulletin: null,
   sponsors: null,
@@ -128,7 +129,7 @@ const DEFAULT_CATEGORY = {
 
 // Templates that are a whole document rather than a content layer composed
 // into _social-frame.svg. A cover has no tab, card window or footer band.
-const SELF_CONTAINED = new Set(["linkedin-cover", "forms-header", "poster", "bulletin", "sponsors"]);
+const SELF_CONTAINED = new Set(["linkedin-cover", "forms-header", "ticket-cover", "poster", "bulletin", "sponsors"]);
 
 // ---------------------------------------------------------------------------
 
@@ -367,6 +368,7 @@ function main() {
 
   if (opts.template === "linkedin-cover") return renderCover(opts, geometry, tokens);
   if (opts.template === "forms-header") return renderFormsHeader(opts, geometry, tokens);
+  if (opts.template === "ticket-cover") return renderTicketCover(opts, geometry, tokens);
   if (opts.template === "poster") return renderPoster(opts, geometry, tokens);
   if (opts.template === "bulletin") return renderBulletin(opts, geometry, tokens);
   if (opts.template === "sponsors") return renderSponsors(opts, geometry, tokens);
@@ -844,6 +846,98 @@ function renderFormsHeader(opts, geometry, tokens) {
     slug: `forms-header-${theme}`,
     out: opts.out ?? join(ROOT, "graphics", "out", `forms-header-${theme}.png`),
     label: `forms header, ${theme}`,
+  });
+}
+
+/**
+ * TicketButler event cover, 760x500, in either colourway.
+ *
+ * Built from the cover's parts: the year-free wordmark + mark (so any year
+ * works), its type specs and hexagon cluster. Positions are composed, not
+ * measured, so judge it by eye. The outline defaults to next year because
+ * the cover goes up when that edition's tickets open.
+ */
+function renderTicketCover(opts, geometry, tokens) {
+  const theme = (opts.theme ?? "light").toLowerCase();
+  if (!["light", "dark"].includes(theme)) {
+    console.error(`--theme must be light or dark (got ${theme})`);
+    process.exit(2);
+  }
+  const dark = theme === "dark";
+  const color = tokens.color;
+  const cover = geometry.cover;
+  const display = cover.text["COPEN HAGEN"];
+  const outlineSpec = cover.text["2026"];
+  const place = cover.placement;
+  const [canvasW, canvasH] = [760, 500];
+  const margin = 56;
+
+  // Lockup top left: wordmark and mark keep their relative placement from
+  // the cover, scaled up.
+  const ls = 1.25;
+  const wordmarkX = margin;
+  const wordmarkY = margin + (place.wordmark.y - place.mark.y) * ls;
+  const markX = wordmarkX + (place.mark.x - place.wordmark.x) * ls;
+  const markY = margin;
+
+  // Copy bottom left, outline baseline on the bottom margin.
+  const ts = 1.6;
+  const outlineY = canvasH - margin;
+  const at = (y) => +(outlineY - (outlineSpec.baseline - y) * ts).toFixed(2);
+
+  // Hexagons bleed off the bottom right.
+  const hs = 1.45;
+  const hexW = place.hexagons.w * hs;
+  const hexH = place.hexagons.h * hs;
+
+  const ground = dark ? color.navy : color.sand;
+  const svg = fill(stripLeadComment(load(join(TEMPLATES, "ticket-cover.svg"))), {
+    canvasW,
+    canvasH,
+    ground,
+    red: color.red,
+    hexagons: assetURL(
+      join(ROOT, "brand", "logo", dark ? "cnd-hexagons-solid.svg" : "cnd-hexagons.svg"),
+    ),
+    hexX: +(canvasW - hexW * 0.78).toFixed(2),
+    hexY: +(canvasH - hexH * 0.82).toFixed(2),
+    hexW: +hexW.toFixed(2),
+    hexH: +hexH.toFixed(2),
+    wordmark: assetURL(
+      join(ROOT, "brand", "logo", dark ? "cnd-lockup-cream.svg" : "cnd-lockup-navy.svg"),
+    ),
+    wordmarkX,
+    wordmarkY: +wordmarkY.toFixed(2),
+    wordmarkW: +(place.wordmark.w * ls).toFixed(2),
+    wordmarkH: +(place.wordmark.h * ls).toFixed(2),
+    mark: assetURL(join(ROOT, "brand", "logo", "cnd-mark.svg")),
+    markX: +markX.toFixed(2),
+    markY,
+    markW: +(place.mark.w * ls).toFixed(2),
+    markH: +(place.mark.h * ls).toFixed(2),
+    textX: margin,
+    displaySize: +(display.runs[0].size_px * ts).toFixed(2),
+    displayTracking: `${display.runs[0].tracking_em}em`,
+    displayColor: dark ? color.sand : color.navy,
+    line1: escapeXML((opts.line1 ?? "Blind").toUpperCase()),
+    line2: escapeXML((opts.line2 ?? "Bird").toUpperCase()),
+    line1Y: at(display.baseline),
+    line2Y: at(display.baseline + leadingOf(display)),
+    outline: escapeXML(String(opts.outline ?? Number(tokens.event.year) + 1).toUpperCase()),
+    outlineY,
+    outlineSize: +(outlineSpec.runs[0].size_px * ts).toFixed(2),
+    outlineTracking: `${outlineSpec.runs[0].tracking_em}em`,
+    outlineStroke: +(YEAR_STROKE * ts).toFixed(2),
+  });
+
+  rasterise(svg, {
+    canvasW,
+    canvasH,
+    scale: opts.scale,
+    keepHtml: opts["keep-html"],
+    slug: `ticket-cover-${theme}`,
+    out: opts.out ?? join(ROOT, "graphics", "out", `ticket-cover-${theme}.png`),
+    label: `ticket cover, ${theme}`,
   });
 }
 

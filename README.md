@@ -97,6 +97,10 @@ node graphics/render.mjs linkedin-cover --theme dark \
 # Google Forms header, 1600×400 (Forms crops to 4:1, so the cover won't do)
 node graphics/render.mjs forms-header --theme light \
   --line1 "Tell us" --line2 "How it went" --outline "Feedback"
+
+# TicketButler event cover, 760×500; the outline year defaults to next year
+node graphics/render.mjs ticket-cover --theme light \
+  --line1 "Blind" --line2 "Bird" --outline "2027"
 ```
 
 `speaker-highlight` variants: `1` full-bleed photo, `2` navy card, `3` sand card.
