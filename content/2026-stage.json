@@ -602,6 +602,10 @@
           "$note": "After the hosts' closing remarks: Per Hedegaard Christiansen, chairman of Cloud Native Denmark, and Helena Birkholm of HackYourFuture Denmark for the donation. Not a Sessionize session, so offSchedule."
         },
         {
+          "scene": "clear",
+          "$note": "Empty wall, no music, after Per and Helena, before the thank-yous. Next starts Thank you to all organizers."
+        },
+        {
           "scene": "organizers",
           "$note": "After the closing remarks: the organizers on the wall, the voice of god reads their names over the quiet strings, confetti. Next goes on to Claude Code.",
           "music": "thanks",
