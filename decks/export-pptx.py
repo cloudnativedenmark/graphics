@@ -1487,6 +1487,30 @@ def lay_posts(slide, sec, deck_dir):
         blocks_box(slide, cx + (cw - bw) / 2, top + ih + 26, bw, blocks_height(blocks, bw) + 8, blocks, align="c", name=f"{who} post")
 
 
+def lay_donation(slide, sec, deck_dir):
+    """The lockup, a heart and the charity's logo on its white hexagon, one
+    centred row, as .donation in cnd-deck.css."""
+    row = sec.find(class_="donation")
+    lk, heart = row.find(class_="lockup"), row.find("img", class_="heart")
+    hyf = row.find(class_="hexlogo").find("img")
+    gap = 90
+    w = css_px(lk.get("style"), "--w") or 520
+    h = w * 870.581 / 1511.728
+    over_x, over_y = 0.2507 * w, 0.1077 * w  # the mark's overhang, as the CSS margins
+    hw, hh = 170, 170 * 90 / 100
+    lw, lh = 360, 360 * 1139.1 / 1005.1
+    x = (W - (w + over_x + hw + lw + 2 * gap)) / 2
+    y0 = (H - (h + over_y)) / 2 + over_y
+    picture(slide, load(asset(lk.find(class_="wordmark")["src"], deck_dir)), x, y0, w, h, name="Cloud Native Denmark")
+    mk = load(asset(lk.find(class_="mark")["src"], deck_dir))
+    mx, my, mw_, mh_ = contain_box(mk.size[0], mk.size[1], x + 0.8303 * w, y0 - 0.1875 * h, 0.4207 * w, 0.70 * h)
+    picture(slide, mk, mx, my, mw_, mh_, name="Mark")
+    x += w + over_x + gap
+    picture(slide, load(asset(heart["src"], deck_dir)), x, (H - hh) / 2, hw, hh, name="Heart")
+    x += hw + gap
+    hexlogo_tile(slide, asset(hyf["src"], deck_dir), x, (H - lh) / 2, lw, lh, round_=True, name=hyf.get("alt"))
+
+
 def lay_map(slide, sec, deck_dir):
     lay_flow_left(slide, sec, deck_dir, "map")
     x, y, w, h = 720, 90, W - 90 - 720, 900
@@ -1797,6 +1821,7 @@ def build(deck, soup):
             "logistics": lay_logistics,
             "gallery": lay_gallery,
             "posts": lay_posts,
+            "donation": lay_donation,
             "map": lay_map,
             "people": lay_people,
             "speaker": lay_speaker,

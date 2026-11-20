@@ -632,6 +632,33 @@
   font-size: 26px;
 }
 
+/* ── layout: donation ────────────────────────────────────────────────── */
+/* Cloud Native Denmark, a heart, the charity's logo on its white hexagon:
+ * one row, centred, read as a sentence. */
+
+.donation {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 90px;
+}
+/* The mark hangs past the lockup's box to the upper right; margins count
+ * that overhang so the row centres on what is seen. */
+.donation .lockup {
+  margin: calc(var(--w) * 0.1077) calc(var(--w) * 0.2507) 0 0;
+}
+.donation .heart {
+  width: 170px;
+  aspect-ratio: 100 / 90;
+}
+.donation .hexlogo {
+  position: relative;
+  width: 360px;
+  aspect-ratio: 1005.1 / 1139.1;
+}
+
 /* ── layout: posts ───────────────────────────────────────────────────── */
 /* Social posts side by side: the post's image in the field's hexagon, the
  * author, where and when, and the post's own words. Three to a slide. */
