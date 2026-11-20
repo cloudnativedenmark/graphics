@@ -1257,8 +1257,12 @@ def lay_rate(slide, sec, deck_dir):
     blocks = pad_blocks(pad, "rate", 120)
     blocks_box(slide, 90, 90, 1063, 900, blocks, anchor="m")
     code = t.get("feedback") if t else None
+    q = pad.find(class_="qr")
+    if not code and q is not None and q.get("data-qr"):
+        # A named link from qr in content/2026-stage.json, e.g. tickets-2027.
+        code = qr_code(q["data-qr"])
     im = qr_image(code, 577, 560, 380, 15)
-    picture(slide, im, 1253, 260, 577, 560, name="Feedback QR")
+    picture(slide, im, 1253, 260, 577, 560, name=(q.get("data-label") if q is not None else None) or "Feedback QR")
     if not code:
         _, tf = textbox(slide, 1253, 260, 577, 560, anchor="m")
         para(tf, [("TODO — QR code", style(size=26, color=INK, upper=True, track=0.08))], align="c", first=True)
@@ -1459,6 +1463,55 @@ def lay_gallery(slide, sec, deck_dir):
             if sp:
                 blocks.append(([(txt(sp), style("Inter", 17, color=MUTED, lh=1.25))], 4))
             blocks_box(slide, x - 6, y + h + 16, w + 12, blocks_height(blocks, w + 12) + 8, blocks, align="c")
+
+
+def lay_posts(slide, sec, deck_dir):
+    """Social posts in three columns, as .posts in cnd-deck.css: image in
+    the hexagon, then author, where and when, and the post's words."""
+    top_heading(slide, sec)
+    cols, gap, top, iw, ih = 3, 60, 300, 396, 449
+    cw = (W - 180 - gap * (cols - 1)) / cols
+    for i, fig in enumerate(sec.find(class_="posts").find_all("figure", recursive=False)):
+        cx = 90 + i * (cw + gap)
+        img = fig.find("img")
+        m = re.search(r"object-position:\s*([\d.]+)%\s+([\d.]+)%", img.get("style", ""))
+        pos = (float(m.group(1)) / 100, float(m.group(2)) / 100) if m else (0.5, 0.5)
+        who = txt(fig.find(class_="who"))
+        picture(slide, clipped(asset(img["src"], deck_dir), "hex", iw, ih, pos=pos), cx + (cw - iw) / 2, top, iw, ih, name=who)
+        blocks = [
+            ([(who, style(size=36, bold=True, upper=True, lh=1.08))], 0),
+            ([(txt(fig.find(class_="what")), style(size=20, color=ROSE, upper=True, track=0.08, lh=1.2))], 8),
+            ([(txt(fig.find(class_="said")), style("Inter", 24, color=MUTED, lh=1.35))], 16),
+        ]
+        bw = min(cw, 470)
+        blocks_box(slide, cx + (cw - bw) / 2, top + ih + 26, bw, blocks_height(blocks, bw) + 8, blocks, align="c", name=f"{who} post")
+
+
+def lay_donation(slide, sec, deck_dir):
+    """The lockup, a heart and the charity's logo on its white hexagon, one
+    centred row, as .donation in cnd-deck.css."""
+    label = sec.find(class_="donation-label")
+    if label is not None:
+        blocks_box(slide, 90, 240, W - 180, 50, [([(txt(label), EYEBROW)], 0)], align="c", name="Label")
+    row = sec.find(class_="donation")
+    lk, heart = row.find(class_="lockup"), row.find("img", class_="heart")
+    hyf = row.find(class_="hexlogo").find("img")
+    gap = 90
+    w = css_px(lk.get("style"), "--w") or 520
+    h = w * 870.581 / 1511.728
+    over_x, over_y = 0.2507 * w, 0.1077 * w  # the mark's overhang, as the CSS margins
+    hw, hh = 170, 170 * 90 / 100
+    lw, lh = 360, 360 * 1139.1 / 1005.1
+    x = (W - (w + over_x + hw + lw + 2 * gap)) / 2
+    y0 = (H - (h + over_y)) / 2 + over_y
+    picture(slide, load(asset(lk.find(class_="wordmark")["src"], deck_dir)), x, y0, w, h, name="Cloud Native Denmark")
+    mk = load(asset(lk.find(class_="mark")["src"], deck_dir))
+    mx, my, mw_, mh_ = contain_box(mk.size[0], mk.size[1], x + 0.8303 * w, y0 - 0.1875 * h, 0.4207 * w, 0.70 * h)
+    picture(slide, mk, mx, my, mw_, mh_, name="Mark")
+    x += w + over_x + gap
+    picture(slide, load(asset(heart["src"], deck_dir)), x, (H - hh) / 2, hw, hh, name="Heart")
+    x += hw + gap
+    hexlogo_tile(slide, asset(hyf["src"], deck_dir), x, (H - lh) / 2, lw, lh, round_=True, name=hyf.get("alt"))
 
 
 def lay_map(slide, sec, deck_dir):
@@ -1770,6 +1823,8 @@ def build(deck, soup):
             "quote": lambda s, e, d: lay_centered(s, e, d, "quote"),
             "logistics": lay_logistics,
             "gallery": lay_gallery,
+            "posts": lay_posts,
+            "donation": lay_donation,
             "map": lay_map,
             "people": lay_people,
             "speaker": lay_speaker,

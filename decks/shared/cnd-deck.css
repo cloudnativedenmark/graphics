@@ -632,6 +632,93 @@
   font-size: 26px;
 }
 
+/* ── layout: donation ────────────────────────────────────────────────── */
+/* Cloud Native Denmark, a heart, the charity's logo on its white hexagon:
+ * one row, centred, read as a sentence. */
+
+.donation {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 90px;
+}
+/* The mark hangs past the lockup's box to the upper right; margins count
+ * that overhang so the row centres on what is seen. */
+.donation .lockup {
+  margin: calc(var(--w) * 0.1077) calc(var(--w) * 0.2507) 0 0;
+}
+/* A small label above the row, so the slide says what it is. */
+.donation-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 240px;
+  text-align: center;
+}
+.donation .heart {
+  width: 170px;
+  aspect-ratio: 100 / 90;
+}
+.donation .hexlogo {
+  position: relative;
+  width: 360px;
+  aspect-ratio: 1005.1 / 1139.1;
+}
+
+/* ── layout: posts ───────────────────────────────────────────────────── */
+/* Social posts side by side: the post's image in the field's hexagon, the
+ * author, where and when, and the post's own words. Three to a slide. */
+
+.posts {
+  position: absolute;
+  left: var(--m);
+  right: var(--m);
+  top: 300px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+}
+.post {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+}
+.post img {
+  width: 396px;
+  height: 449px;
+  object-fit: cover;
+  clip-path: url(#cnd-hex);
+}
+.post .who {
+  font-family: var(--cnd-font-display);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.08;
+  text-transform: uppercase;
+  margin: 26px 0 0;
+}
+.post .what {
+  font-family: var(--cnd-font-display);
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: var(--cnd-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--cnd-rose);
+  margin: 8px 0 0;
+}
+.post .said {
+  font-size: 24px;
+  line-height: 1.35;
+  color: var(--muted);
+  margin: 16px 0 0;
+  max-width: 470px;
+  text-wrap: balance;
+}
+
 /* ── layout: gallery ─────────────────────────────────────────────────── */
 /* Words left, photos as a small honeycomb on the right: the wall's sponsor
  * honeycomb with pictures in it, in the field's true hexagon (the logo
