@@ -1490,6 +1490,9 @@ def lay_posts(slide, sec, deck_dir):
 def lay_donation(slide, sec, deck_dir):
     """The lockup, a heart and the charity's logo on its white hexagon, one
     centred row, as .donation in cnd-deck.css."""
+    label = sec.find(class_="donation-label")
+    if label is not None:
+        blocks_box(slide, 90, 240, W - 180, 50, [([(txt(label), EYEBROW)], 0)], align="c", name="Label")
     row = sec.find(class_="donation")
     lk, heart = row.find(class_="lockup"), row.find("img", class_="heart")
     hyf = row.find(class_="hexlogo").find("img")
