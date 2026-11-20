@@ -1257,8 +1257,12 @@ def lay_rate(slide, sec, deck_dir):
     blocks = pad_blocks(pad, "rate", 120)
     blocks_box(slide, 90, 90, 1063, 900, blocks, anchor="m")
     code = t.get("feedback") if t else None
+    q = pad.find(class_="qr")
+    if not code and q is not None and q.get("data-qr"):
+        # A named link from qr in content/2026-stage.json, e.g. tickets-2027.
+        code = qr_code(q["data-qr"])
     im = qr_image(code, 577, 560, 380, 15)
-    picture(slide, im, 1253, 260, 577, 560, name="Feedback QR")
+    picture(slide, im, 1253, 260, 577, 560, name=(q.get("data-label") if q is not None else None) or "Feedback QR")
     if not code:
         _, tf = textbox(slide, 1253, 260, 577, 560, anchor="m")
         para(tf, [("TODO — QR code", style(size=26, color=INK, upper=True, track=0.08))], align="c", first=True)
