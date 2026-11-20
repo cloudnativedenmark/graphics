@@ -3,7 +3,7 @@
  * Render a prize voucher: one A4 page, printed once per prize.
  *
  *   node graphics/build-prize-voucher.mjs
- *   node graphics/build-prize-voucher.mjs --redeem "ardanlabs.com/redeem"
+ *   node graphics/build-prize-voucher.mjs --contact someone@example.com
  *
  * Built for the five Ardan Labs Mastery Bundles, printed in A4 like the CNCF
  * gift cards: the same card family as the stamp card (navy, lockup,
@@ -11,9 +11,8 @@
  * hexagon. The card is designed at A6 and scaled 2x onto A4, which is the
  * same shape to within a millimetre.
  *
- * The code box is left empty to write each code in by hand, so no codes
- * live in the repo. Until --redeem is given, the redeem line prints TODO,
- * highlighted, so a draft can't pass for final.
+ * No codes are printed: the certificate tells the winner to email us, and
+ * we send the code back. --contact changes the address.
  *
  * Output in graphics/out/prize-voucher/:
  *   ardan-labs-mastery.pdf   one A4 page; print one copy per prize
@@ -63,7 +62,8 @@ function findChrome() {
 }
 const CHROME = findChrome();
 
-const redeem = arg("redeem");
+// Winners email us for their code, so no codes are printed or kept here.
+const CONTACT = arg("contact") ?? "contact@cloudnativedenmark.dk";
 
 // A6 trim, bleed and safe margin; page sized in whole pixels (see stamp card).
 const TRIM_W = 105;
@@ -117,7 +117,7 @@ function field() {
       const o = (0.35 + rand() * 0.5) * (0.5 + 0.5 * d);
       const tint = tints[Math.floor(rand() * tints.length)];
       const [l, t] = [cx - w / 2 - off, cy - h / 2 - off]; // cell's top-left in trim mm
-      if (l < 72) continue; // the copy column and the code box
+      if (l < 72) continue; // the copy column and the claim box
       if (l < BADGE.x + BADGE.w + 1 && t < BADGE.y + BADGE.h + 1 && t + h > BADGE.y - 1) continue;
       const k = h / HEX_VB.h;
       cells.push(
@@ -149,11 +149,11 @@ const card = () => `
       <h1 class="display">${PRIZE.title.map(esc).join("<br>")}</h1>
       <p class="body">${esc(PRIZE.body)}</p>
     </div>
-    <div class="code">
-      <span>Your code</span>
-      <b></b>
+    <div class="claim">
+      <span>Claim your bundle</span>
+      <b>${esc(CONTACT)}</b>
     </div>
-    <p class="redeem">Redeem at ${redeem ? `<b>${esc(redeem)}</b>` : `<mark>TODO</mark>`}</p>
+    <p class="how">Email us and we'll send you your code.</p>
   </div>
 </section>`;
 
@@ -210,19 +210,17 @@ const html = `<!doctype html>
   }
   .body { font-size: 3.2mm; line-height: 1.35; margin: 4.5mm 0 0; }
 
-  .code {
-    position: absolute; left: ${SAFE}mm; top: 112mm; width: 62mm; height: 14mm;
+  .claim {
+    position: absolute; left: ${SAFE}mm; top: 112mm; width: 64mm;
     border: 0.35mm solid var(--cnd-sand); border-radius: 1.5mm;
-    padding: 1.6mm 2.4mm;
+    padding: 2mm 2.4mm 2.4mm;
   }
-  .code span {
+  .claim span {
     display: block; font-weight: 500; font-size: 2.2mm;
     letter-spacing: var(--cnd-track-eyebrow); text-transform: uppercase; color: var(--cnd-peach);
   }
-  .code b { display: block; margin-top: 1.4mm; font-weight: 700; font-size: 4.4mm; letter-spacing: 0.04em; }
-  .redeem { position: absolute; left: ${SAFE}mm; bottom: ${SAFE}mm; margin: 0; font-size: 2.9mm; }
-  .redeem b { font-weight: 700; }
-  .redeem mark { background: var(--cnd-peach); color: var(--cnd-navy); padding: 0 1mm; font-weight: 700; }
+  .claim b { display: block; margin-top: 1.6mm; font-weight: 700; font-size: 3.4mm; white-space: nowrap; }
+  .how { position: absolute; left: ${SAFE}mm; bottom: ${SAFE}mm; margin: 0; font-size: 2.9mm; }
 </style>
 </head>
 <body>
