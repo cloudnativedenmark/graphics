@@ -145,7 +145,7 @@ window.SHOW = {
         {
           "name": "Gabriele Bartolini",
           "role": "VP, Chief Architect of Kubernetes at EDB",
-          "portrait": "../assets/speakers/gabriele.png",
+          "portrait": "../assets/speakers/gabriele-bartolini-stage.png",
           "align": null
         }
       ],
