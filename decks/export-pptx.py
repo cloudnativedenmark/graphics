@@ -1465,6 +1465,28 @@ def lay_gallery(slide, sec, deck_dir):
             blocks_box(slide, x - 6, y + h + 16, w + 12, blocks_height(blocks, w + 12) + 8, blocks, align="c")
 
 
+def lay_posts(slide, sec, deck_dir):
+    """Social posts in three columns, as .posts in cnd-deck.css: image in
+    the hexagon, then author, where and when, and the post's words."""
+    top_heading(slide, sec)
+    cols, gap, top, iw, ih = 3, 60, 300, 396, 449
+    cw = (W - 180 - gap * (cols - 1)) / cols
+    for i, fig in enumerate(sec.find(class_="posts").find_all("figure", recursive=False)):
+        cx = 90 + i * (cw + gap)
+        img = fig.find("img")
+        m = re.search(r"object-position:\s*([\d.]+)%\s+([\d.]+)%", img.get("style", ""))
+        pos = (float(m.group(1)) / 100, float(m.group(2)) / 100) if m else (0.5, 0.5)
+        who = txt(fig.find(class_="who"))
+        picture(slide, clipped(asset(img["src"], deck_dir), "hex", iw, ih, pos=pos), cx + (cw - iw) / 2, top, iw, ih, name=who)
+        blocks = [
+            ([(who, style(size=36, bold=True, upper=True, lh=1.08))], 0),
+            ([(txt(fig.find(class_="what")), style(size=20, color=ROSE, upper=True, track=0.08, lh=1.2))], 8),
+            ([(txt(fig.find(class_="said")), style("Inter", 24, color=MUTED, lh=1.35))], 16),
+        ]
+        bw = min(cw, 470)
+        blocks_box(slide, cx + (cw - bw) / 2, top + ih + 26, bw, blocks_height(blocks, bw) + 8, blocks, align="c", name=f"{who} post")
+
+
 def lay_map(slide, sec, deck_dir):
     lay_flow_left(slide, sec, deck_dir, "map")
     x, y, w, h = 720, 90, W - 90 - 720, 900
@@ -1774,6 +1796,7 @@ def build(deck, soup):
             "quote": lambda s, e, d: lay_centered(s, e, d, "quote"),
             "logistics": lay_logistics,
             "gallery": lay_gallery,
+            "posts": lay_posts,
             "map": lay_map,
             "people": lay_people,
             "speaker": lay_speaker,
