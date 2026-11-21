@@ -1,0 +1,41 @@
+<!--
+  Google Forms header image, 1600x400. Forms shows the header at 4:1, so the
+  LinkedIn cover (about 6:1) gets its sides cropped off there. This is the
+  cover's composition rebuilt for 4:1: display lines and outline word left,
+  hexagon cluster centre, lockup right.
+
+  The lockup is the 2026 one (year inside the mark), not the split wordmark +
+  mark the cover uses, so it carries the year and the outline slot is free
+  for a word.
+
+  Forms scales the image into a card about 770px wide, roughly half size, so
+  type is set at about 1.6x the cover's to stay legible on a phone.
+
+  Slots
+    line1, line2   display lines, uppercase
+    outline        the red outline device; "FEEDBACK" by default
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{canvasW}}" height="{{canvasH}}" viewBox="0 0 {{canvasW}} {{canvasH}}">
+
+  <rect width="{{canvasW}}" height="{{canvasH}}" fill="{{ground}}"/>
+
+  <image xlink:href="{{hexagons}}" x="{{hexX}}" y="{{hexY}}"
+         width="{{hexW}}" height="{{hexH}}"/>
+
+  <text font-family="Space Grotesk" font-weight="500"
+        font-size="{{displaySize}}" letter-spacing="{{displayTracking}}"
+        fill="{{displayColor}}">
+    <tspan x="{{textX}}" y="{{line1Y}}">{{line1}}</tspan>
+    <tspan x="{{textX}}" y="{{line2Y}}">{{line2}}</tspan>
+  </text>
+
+  <text x="{{textX}}" y="{{outlineY}}"
+        font-family="Space Grotesk" font-weight="500"
+        font-size="{{outlineSize}}" letter-spacing="{{outlineTracking}}"
+        fill="{{ground}}" stroke="{{red}}" stroke-width="{{outlineStroke}}"
+        paint-order="stroke fill">{{outline}}</text>
+
+  <image xlink:href="{{lockup}}" x="{{lockupX}}" y="{{lockupY}}"
+         width="{{lockupW}}" height="{{lockupH}}"/>
+</svg>

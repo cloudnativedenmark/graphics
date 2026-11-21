@@ -1,0 +1,40 @@
+<!--
+  TicketButler event cover, 760x500 (their recommended size).
+
+  Uses the year-free wordmark + mark, like the LinkedIn cover, so the year
+  comes from the outline device and the cover works for any edition. The
+  2026 lockup has its year baked into the mark as paths.
+
+  Composition: lockup top left, display lines + outline year bottom left,
+  hexagon cluster bleeding off the bottom right.
+
+  Slots
+    line1, line2   display lines, uppercase
+    outline        the red outline device; the next year by default
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{{canvasW}}" height="{{canvasH}}" viewBox="0 0 {{canvasW}} {{canvasH}}">
+
+  <rect width="{{canvasW}}" height="{{canvasH}}" fill="{{ground}}"/>
+
+  <image xlink:href="{{hexagons}}" x="{{hexX}}" y="{{hexY}}"
+         width="{{hexW}}" height="{{hexH}}"/>
+
+  <image xlink:href="{{wordmark}}" x="{{wordmarkX}}" y="{{wordmarkY}}"
+         width="{{wordmarkW}}" height="{{wordmarkH}}"/>
+  <image xlink:href="{{mark}}" x="{{markX}}" y="{{markY}}"
+         width="{{markW}}" height="{{markH}}"/>
+
+  <text font-family="Space Grotesk" font-weight="500"
+        font-size="{{displaySize}}" letter-spacing="{{displayTracking}}"
+        fill="{{displayColor}}">
+    <tspan x="{{textX}}" y="{{line1Y}}">{{line1}}</tspan>
+    <tspan x="{{textX}}" y="{{line2Y}}">{{line2}}</tspan>
+  </text>
+
+  <text x="{{textX}}" y="{{outlineY}}"
+        font-family="Space Grotesk" font-weight="500"
+        font-size="{{outlineSize}}" letter-spacing="{{outlineTracking}}"
+        fill="{{ground}}" stroke="{{red}}" stroke-width="{{outlineStroke}}"
+        paint-order="stroke fill">{{outline}}</text>
+</svg>
